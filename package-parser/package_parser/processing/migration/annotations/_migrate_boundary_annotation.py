@@ -25,6 +25,7 @@ from package_parser.processing.migration.model import (
 )
 
 from ._constants import migration_author
+from ._get_migration_text import get_migration_text
 
 
 def migrate_interval_to_fit_parameter_type(
@@ -80,16 +81,7 @@ def migrate_boundary_annotation(
     authors.append(migration_author)
     boundary_annotation.authors = authors
 
-    migrate_text = (
-        "The @Boundary Annotation with the interval '"
-        + str(boundary_annotation.interval.to_json())
-        + "' from the previous version was at '"
-        + boundary_annotation.target
-        + "' and the possible alternatives in the new version of the api are: "
-        + ", ".join(
-            map(lambda api_element: api_element.name, mapping.get_apiv2_elements())
-        )
-    )
+    migrate_text = get_migration_text(boundary_annotation, mapping)
 
     if isinstance(mapping, (OneToOneMapping, ManyToOneMapping)):
         parameter = mapping.get_apiv2_elements()[0]

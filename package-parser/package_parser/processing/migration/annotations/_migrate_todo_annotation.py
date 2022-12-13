@@ -13,8 +13,10 @@ from package_parser.processing.migration.model import (
 )
 
 from ._constants import migration_author
+from ._get_migration_text import get_migration_text
 
 
+# pylint: disable=duplicate-code
 def migrate_todo_annotation(
     todo_annotation: TodoAnnotation, mapping: Mapping
 ) -> list[AbstractAnnotation]:
@@ -30,21 +32,19 @@ def migrate_todo_annotation(
         todo_annotation.target = element.id
         return [todo_annotation]
 
-    migrate_text = (
-        "The @Todo Annotation with the todo '"
-        + todo_annotation.newTodo
-        + "' from the previous version was at '"
-        + todo_annotation.target
-        + "' and the possible alternatives in the new version of the api are: "
-        + ", ".join(
-            map(lambda api_element: api_element.name, mapping.get_apiv2_elements())
-        )
-    )
+    migrate_text = get_migration_text(todo_annotation, mapping)
 
     annotated_apiv1_element = None
     for element in mapping.get_apiv1_elements():
-        if not isinstance(element, (Attribute, Result)) and element.id:
+        if (
+            not isinstance(element, (Attribute, Result))
+            and todo_annotation.target == element.id
+        ):
             annotated_apiv1_element = element
+            break
+
+    if annotated_apiv1_element is None:
+        return []
 
     todo_annotations: list[AbstractAnnotation] = []
     for element in mapping.get_apiv2_elements():

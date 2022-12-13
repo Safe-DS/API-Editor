@@ -30,6 +30,7 @@ from package_parser.processing.migration.model import (
 )
 
 from ._constants import migration_author
+from ._get_migration_text import get_migration_text
 
 
 def migrate_value_annotation(
@@ -76,7 +77,7 @@ def migrate_value_annotation(
                 value_annotation.reviewers,
                 value_annotation.comment,
                 EnumReviewResult.NONE,
-                _get_migration_text(mapping, value_annotation),
+                get_migration_text(value_annotation, mapping),
             )
         ]
     migrated_annotations: list[AbstractAnnotation] = []
@@ -92,21 +93,21 @@ def migrate_value_annotation(
                     if migrated_constant_annotation is not None:
                         migrated_annotations.append(migrated_constant_annotation)
                         continue
-                if isinstance(value_annotation, OmittedAnnotation):
+                elif isinstance(value_annotation, OmittedAnnotation):
                     migrated_omitted_annotation = migrate_omitted_annotation(
                         value_annotation, parameter, mapping
                     )
                     if migrated_omitted_annotation is not None:
                         migrated_annotations.append(migrated_omitted_annotation)
                         continue
-                if isinstance(value_annotation, OptionalAnnotation):
+                elif isinstance(value_annotation, OptionalAnnotation):
                     migrated_optional_annotation = migrate_optional_annotation(
                         value_annotation, parameter, mapping
                     )
                     if migrated_optional_annotation is not None:
                         migrated_annotations.append(migrated_optional_annotation)
                         continue
-                if isinstance(value_annotation, RequiredAnnotation):
+                elif isinstance(value_annotation, RequiredAnnotation):
                     migrated_required_annotation = migrate_required_annotation(
                         value_annotation, parameter, mapping
                     )
@@ -121,33 +122,10 @@ def migrate_value_annotation(
                         value_annotation.reviewers,
                         value_annotation.comment,
                         EnumReviewResult.UNSURE,
-                        _get_migration_text(mapping, value_annotation),
+                        get_migration_text(value_annotation, mapping),
                     )
                 )
     return migrated_annotations
-
-
-def _get_migration_text(mapping: Mapping, value_annotation: ValueAnnotation) -> str:
-    migrate_text = (
-        "The @Value Annotation with the variant '" + value_annotation.variant.value
-    )
-    if isinstance(value_annotation, (ConstantAnnotation, OptionalAnnotation)):
-        migrate_text += (
-            "' and the default Value '"
-            + value_annotation.defaultValue
-            + " ( type: "
-            + value_annotation.defaultValueType.value
-            + " )"
-        )
-    migrate_text += (
-        "' from the previous version was at '"
-        + value_annotation.target
-        + "' and the possible alternatives in the new version of the api are: "
-        + ", ".join(
-            map(lambda api_element: api_element.name, mapping.get_apiv2_elements())
-        )
-    )
-    return migrate_text
 
 
 def _have_same_type(
@@ -300,7 +278,7 @@ def migrate_constant_annotation(
     constant_annotation: ConstantAnnotation, parameterv2: Parameter, mapping: Mapping
 ) -> Optional[ConstantAnnotation]:
     if parameterv2.type is None:
-        migrate_text = _get_migration_text(mapping, constant_annotation)
+        migrate_text = get_migration_text(constant_annotation, mapping)
         return ConstantAnnotation(
             parameterv2.id,
             constant_annotation.authors,
@@ -349,11 +327,11 @@ def migrate_omitted_annotation(
         )
     review_result = EnumReviewResult.NONE if is_not_unsure else EnumReviewResult.UNSURE
     migrate_text = (
-        _get_migration_text(mapping, omitted_annotation)
+        get_migration_text(omitted_annotation, mapping)
         if len(omitted_annotation.comment) == 0
         else omitted_annotation.comment
         + "\n"
-        + _get_migration_text(mapping, omitted_annotation)
+        + get_migration_text(omitted_annotation, mapping)
     )
 
     return OmittedAnnotation(
@@ -384,7 +362,7 @@ def migrate_optional_annotation(
             optional_annotation.defaultValue,
         )
     if parameterv2.type is None:
-        migrate_text = _get_migration_text(mapping, optional_annotation)
+        migrate_text = get_migration_text(optional_annotation, mapping)
         return OptionalAnnotation(
             parameterv2.id,
             optional_annotation.authors,

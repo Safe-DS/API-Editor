@@ -14,6 +14,7 @@ from package_parser.processing.migration.model import (
 )
 
 from ._constants import migration_author
+from ._get_migration_text import get_migration_text
 
 
 def migrate_rename_annotation(
@@ -32,16 +33,7 @@ def migrate_rename_annotation(
         rename_annotation.target = element.id
         return [rename_annotation]
 
-    migrate_text = (
-        "The @Rename Annotation with the new name '"
-        + rename_annotation.newName
-        + "' from the previous version was at '"
-        + rename_annotation.target
-        + "' and the possible alternatives in the new version of the api are: "
-        + ", ".join(
-            map(lambda api_element: api_element.name, mapping.get_apiv2_elements())
-        )
-    )
+    migrate_text = get_migration_text(rename_annotation, mapping)
 
     todo_annotations: list[AbstractAnnotation] = []
     for element in mapping.get_apiv2_elements():

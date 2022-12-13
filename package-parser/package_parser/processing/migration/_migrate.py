@@ -12,6 +12,9 @@ from package_parser.processing.migration.annotations import (
     migrate_todo_annotation,
     migrate_value_annotation,
 )
+from package_parser.processing.migration.annotations._migrate_move_annotation import (
+    migrate_move_annotation,
+)
 from package_parser.processing.migration.model import Mapping
 
 
@@ -43,6 +46,12 @@ def migrate_annotations(
         mapping = _get_mapping_from_annotation(enum_annotation, mappings)
         if mapping is not None:
             for annotation in migrate_enum_annotation(enum_annotation, mapping):
+                migrated_annotation_store.add_annotation(annotation)
+
+    for move_annotation in annotationsv1.moveAnnotations:
+        mapping = _get_mapping_from_annotation(move_annotation, mappings)
+        if mapping is not None:
+            for annotation in migrate_move_annotation(move_annotation, mapping):
                 migrated_annotation_store.add_annotation(annotation)
 
     for rename_annotation in annotationsv1.renameAnnotations:
