@@ -4,10 +4,6 @@ from package_parser.processing.annotations.model import (
 )
 from package_parser.processing.migration import migrate_annotations
 from package_parser.processing.migration.model import Mapping
-from tests.processing.migration.annotations.test_move_annotation import (
-    migrate_move_annotation_data_one_to_one_mapping__global_function,
-    migrate_move_annotation_data_one_to_one_mapping__class, migrate_move_annotation_data_one_to_many_mapping
-)
 from tests.processing.migration.annotations.test_boundary_migration import (
     migrate_boundary_annotation_data_one_to_many_mapping,
     migrate_boundary_annotation_data_one_to_one_mapping,
@@ -18,6 +14,11 @@ from tests.processing.migration.annotations.test_enum_migration import (
     migrate_enum_annotation_data_one_to_many_mapping,
     migrate_enum_annotation_data_one_to_many_mapping__only_one_relevant_mapping,
     migrate_enum_annotation_data_one_to_one_mapping,
+)
+from tests.processing.migration.annotations.test_move_annotation import (
+    migrate_move_annotation_data_one_to_many_mapping,
+    migrate_move_annotation_data_one_to_one_mapping__class,
+    migrate_move_annotation_data_one_to_one_mapping__global_function,
 )
 from tests.processing.migration.annotations.test_rename_migration import (
     migrate_rename_annotation_data_one_to_many_mapping,

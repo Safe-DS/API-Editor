@@ -1,10 +1,26 @@
 from typing import Tuple
 
-from package_parser.processing.annotations.model import AbstractAnnotation, MoveAnnotation, EnumReviewResult, \
-    TodoAnnotation
-from package_parser.processing.api.model import Function, FunctionDocumentation, Class, ClassDocumentation
-from package_parser.processing.migration import Mapping, OneToOneMapping, OneToManyMapping
-from package_parser.processing.migration.annotations import migration_author, get_migration_text
+from package_parser.processing.annotations.model import (
+    AbstractAnnotation,
+    EnumReviewResult,
+    MoveAnnotation,
+    TodoAnnotation,
+)
+from package_parser.processing.api.model import (
+    Class,
+    ClassDocumentation,
+    Function,
+    FunctionDocumentation,
+)
+from package_parser.processing.migration import (
+    Mapping,
+    OneToManyMapping,
+    OneToOneMapping,
+)
+from package_parser.processing.migration.annotations import (
+    get_migration_text,
+    migration_author,
+)
 
 
 def migrate_move_annotation_data_one_to_one_mapping__global_function() -> Tuple[
@@ -173,6 +189,6 @@ def migrate_move_annotation_data_one_to_many_mapping() -> Tuple[
         reviewers=[],
         comment="",
         reviewResult=EnumReviewResult.UNSURE,
-        newTodo=get_migration_text(annotationv1, mapping)
+        newTodo=get_migration_text(annotationv1, mapping),
     )
     return mapping, annotationv1, [annotationv2_a, annotationv2_b]
