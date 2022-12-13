@@ -264,8 +264,8 @@ def migrate_constant_annotation_data_one_to_many_mapping() -> Tuple[
         "the default Value '2.0 ( type: number )' from the "
         "previous version was at 'test/test.value.test5.test' "
         "and the possible alternatives in the new version of "
-        'the api are: testA, testB, testC, testD, '
-        'test_attribute',
+        "the api are: testA, testB, testC, testD, "
+        "test_attribute",
     )
     annotationv2_b = ConstantAnnotation(
         target="test/test.value.test5.testB",
@@ -306,7 +306,9 @@ def migrate_constant_annotation_data_one_to_many_mapping() -> Tuple[
 
     return (
         OneToManyMapping(
-            1.0, parameterv1, [parameterv2_a, parameterv2_b, parameterv2_c, parameterv2_d, attribute]
+            1.0,
+            parameterv1,
+            [parameterv2_a, parameterv2_b, parameterv2_c, parameterv2_d, attribute],
         ),
         annotation,
         [annotationv2_a, annotationv2_b, annotationv2_c, annotationv2_d],
@@ -424,7 +426,9 @@ def migrate_optional_annotation_data_one_to_many_mapping() -> Tuple[
     )
     return (
         OneToManyMapping(
-            1.0, parameterv1, [parameterv2_a, parameterv2_b, parameterv2_c, parameterv2_d]
+            1.0,
+            parameterv1,
+            [parameterv2_a, parameterv2_b, parameterv2_c, parameterv2_d],
         ),
         annotation,
         [annotationv2_a, annotationv2_b, annotationv2_c, annotation_d],
@@ -575,7 +579,14 @@ def migrate_required_annotation_data_one_to_many_mapping() -> Tuple[
         OneToManyMapping(
             1.0,
             parameterv1,
-            [parameterv2_a, parameterv2_b, parameterv2_c, parameterv2_d, parameterv2_e, parameterv2_f],
+            [
+                parameterv2_a,
+                parameterv2_b,
+                parameterv2_c,
+                parameterv2_d,
+                parameterv2_e,
+                parameterv2_f,
+            ],
         ),
         annotation,
         [
