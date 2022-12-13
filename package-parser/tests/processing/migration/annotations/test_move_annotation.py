@@ -57,6 +57,7 @@ def migrate_move_annotation_data_one_to_one_mapping__global_function() -> Tuple[
     return mapping, annotationv1, [annotationv2]
 
 
+# pylint: disable=duplicate-code
 def migrate_move_annotation_data_one_to_one_mapping__class() -> Tuple[
     Mapping,
     AbstractAnnotation,
