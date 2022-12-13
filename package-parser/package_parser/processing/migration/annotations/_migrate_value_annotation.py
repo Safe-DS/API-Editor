@@ -33,9 +33,9 @@ from ._constants import migration_author
 
 
 def migrate_value_annotation(
-    value_annotation: ValueAnnotation, mapping: Mapping
+    annotation: ValueAnnotation, mapping: Mapping
 ) -> list[AbstractAnnotation]:
-    value_annotation = deepcopy(value_annotation)
+    value_annotation = deepcopy(annotation)
     authors = value_annotation.authors
     authors.append(migration_author)
     value_annotation.authors = authors
@@ -300,8 +300,6 @@ def migrate_constant_annotation(
     constant_annotation: ConstantAnnotation, parameterv2: Parameter, mapping: Mapping
 ) -> Optional[ConstantAnnotation]:
     if parameterv2.type is None:
-        constant_annotation.target = parameterv2.id
-        constant_annotation.reviewResult = EnumReviewResult.UNSURE
         migrate_text = _get_migration_text(mapping, constant_annotation)
         return ConstantAnnotation(
             parameterv2.id,
@@ -373,7 +371,7 @@ def migrate_optional_annotation(
     parameterv1 = get_api_element_from_mapping(optional_annotation, mapping, Parameter)
     if parameterv1 is None:
         return None
-    if parameterv2.type and _have_same_type(
+    if parameterv2.type is not None and _have_same_type(
         optional_annotation.defaultValueType, parameterv1, parameterv2.type
     ):
         return OptionalAnnotation(
@@ -386,8 +384,6 @@ def migrate_optional_annotation(
             optional_annotation.defaultValue,
         )
     if parameterv2.type is None:
-        optional_annotation.target = parameterv2.id
-        optional_annotation.reviewResult = EnumReviewResult.UNSURE
         migrate_text = _get_migration_text(mapping, optional_annotation)
         return OptionalAnnotation(
             parameterv2.id,
