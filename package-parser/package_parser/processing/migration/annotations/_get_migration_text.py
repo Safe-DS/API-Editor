@@ -24,7 +24,11 @@ def _get_further_information(annotation: AbstractAnnotation) -> str:
     if isinstance(annotation, BoundaryAnnotation):
         return " with the interval '" + str(annotation.interval.to_json()) + "'"
     if isinstance(annotation, CalledAfterAnnotation):
-        return " with the method '" + annotation.calledAfterName + "' that should be called before"
+        return (
+            " with the method '"
+            + annotation.calledAfterName
+            + "' that should be called before"
+        )
     if isinstance(annotation, DescriptionAnnotation):
         return " with the new description '" + annotation.newDescription + "'"
     if isinstance(annotation, EnumAnnotation):
@@ -33,13 +37,13 @@ def _get_further_information(annotation: AbstractAnnotation) -> str:
             + annotation.enumName
             + " ("
             + ", ".join(
-            map(
-                lambda enum_pair: enum_pair.stringValue
-                                  + ", "
-                                  + enum_pair.instanceName,
-                annotation.pairs,
+                map(
+                    lambda enum_pair: enum_pair.stringValue
+                    + ", "
+                    + enum_pair.instanceName,
+                    annotation.pairs,
+                )
             )
-        )
             + ")'"
         )
     if isinstance(annotation, GroupAnnotation):
@@ -79,10 +83,7 @@ def get_migration_text(annotation: AbstractAnnotation, mapping: Mapping) -> str:
         class_name = "Value"
 
     migrate_text = (
-        "The @"
-        + class_name
-        + " Annotation"
-        + _get_further_information(annotation)
+        "The @" + class_name + " Annotation" + _get_further_information(annotation)
     )
     migrate_text += (
         " from the previous version was at '"
