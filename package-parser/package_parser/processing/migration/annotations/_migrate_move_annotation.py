@@ -22,9 +22,7 @@ def is_moveable(element:  Attribute | Class | Function | Parameter | Result) -> 
     if isinstance(element, Function):
         # check for global function
         element_parents = element.id.split("/")
-        if len(element_parents) == 2:
-            return element.id == element.id.lower()
-        return True
+        return len(element_parents) == 3
     return isinstance(element, Class)
 
 

@@ -4,6 +4,10 @@ from package_parser.processing.annotations.model import (
 )
 from package_parser.processing.migration import migrate_annotations
 from package_parser.processing.migration.model import Mapping
+from processing.migration.annotations.test_move_annotation import (
+    migrate_move_annotation_data_one_to_one_mapping__global_function,
+    migrate_move_annotation_data_one_to_one_mapping__class, migrate_move_annotation_data_one_to_many_mapping
+)
 from tests.processing.migration.annotations.test_boundary_migration import (
     migrate_boundary_annotation_data_one_to_many_mapping,
     migrate_boundary_annotation_data_one_to_one_mapping,
@@ -46,6 +50,10 @@ test_data = [
     migrate_boundary_annotation_data_one_to_one_mapping_int_to_float(),
     migrate_boundary_annotation_data_one_to_one_mapping_float_to_int(),
     migrate_boundary_annotation_data_one_to_many_mapping(),
+    # move annotation
+    migrate_move_annotation_data_one_to_one_mapping__class(),
+    migrate_move_annotation_data_one_to_one_mapping__global_function(),
+    migrate_move_annotation_data_one_to_many_mapping(),
     # rename annotation
     migrate_rename_annotation_data_one_to_many_mapping__with_changed_new_name(),
     migrate_rename_annotation_data_one_to_one_mapping(),
@@ -112,9 +120,9 @@ def test_migrate_all_annotations() -> None:
     assert sorted(actual_annotations.renameAnnotations, key=get_key) == sorted(
         expected_annotation_store.renameAnnotations, key=get_key
     )
-    # assert sorted(actual_annotations.todoAnnotations, key=get_key) == sorted(
-    #     expected_annotation_store.todoAnnotations, key=get_key
-    # )
+    assert sorted(actual_annotations.todoAnnotations, key=get_key) == sorted(
+        expected_annotation_store.todoAnnotations, key=get_key
+    )
     assert sorted(actual_annotations.valueAnnotations, key=get_key) == sorted(
         expected_annotation_store.valueAnnotations, key=get_key
     )
