@@ -1,10 +1,16 @@
 from package_parser.processing.annotations.model import (
     AbstractAnnotation,
     BoundaryAnnotation,
+    CalledAfterAnnotation,
+    CompleteAnnotation,
     ConstantAnnotation,
+    DescriptionAnnotation,
     EnumAnnotation,
+    GroupAnnotation,
     MoveAnnotation,
     OptionalAnnotation,
+    PureAnnotation,
+    RemoveAnnotation,
     RenameAnnotation,
     TodoAnnotation,
     ValueAnnotation,
@@ -13,31 +19,45 @@ from package_parser.processing.migration import Mapping
 
 
 def _get_further_information(annotation: AbstractAnnotation) -> str:
+    if isinstance(annotation, (CompleteAnnotation, PureAnnotation, RemoveAnnotation)):
+        return ""
     if isinstance(annotation, BoundaryAnnotation):
-        return "the interval '" + str(annotation.interval.to_json()) + "'"
+        return " with the interval '" + str(annotation.interval.to_json()) + "'"
+    if isinstance(annotation, CalledAfterAnnotation):
+        return " with the method '" + annotation.calledAfterName + "' that should be called before"
+    if isinstance(annotation, DescriptionAnnotation):
+        return " with the new description '" + annotation.newDescription + "'"
     if isinstance(annotation, EnumAnnotation):
         return (
-            "the new enum '"
+            " with the new enum '"
             + annotation.enumName
             + " ("
             + ", ".join(
-                map(
-                    lambda enum_pair: enum_pair.stringValue
-                    + ", "
-                    + enum_pair.instanceName,
-                    annotation.pairs,
-                )
+            map(
+                lambda enum_pair: enum_pair.stringValue
+                                  + ", "
+                                  + enum_pair.instanceName,
+                annotation.pairs,
             )
+        )
             + ")'"
         )
+    if isinstance(annotation, GroupAnnotation):
+        return (
+            " with the group name '"
+            + annotation.groupName
+            + "' and the grouped parameters: '"
+            + ", ".join(annotation.parameters)
+            + "'"
+        )
     if isinstance(annotation, MoveAnnotation):
-        return "the destination: '" + annotation.destination + "'"
+        return " with the destination: '" + annotation.destination + "'"
     if isinstance(annotation, RenameAnnotation):
-        return "the new name '" + annotation.newName + "'"
+        return " with the new name '" + annotation.newName + "'"
     if isinstance(annotation, TodoAnnotation):
-        return "the todo '" + annotation.newTodo + "'"
+        return " with the todo '" + annotation.newTodo + "'"
     if isinstance(annotation, ValueAnnotation):
-        value = "the variant '" + annotation.variant.value
+        value = " with the variant '" + annotation.variant.value
         if isinstance(annotation, (ConstantAnnotation, OptionalAnnotation)):
             value += (
                 "' and the default Value '"
@@ -48,7 +68,7 @@ def _get_further_information(annotation: AbstractAnnotation) -> str:
             )
         value += "'"
         return value
-    return "the data '" + str(annotation.to_json()) + "'"
+    return " with the data '" + str(annotation.to_json()) + "'"
 
 
 def get_migration_text(annotation: AbstractAnnotation, mapping: Mapping) -> str:
@@ -61,7 +81,7 @@ def get_migration_text(annotation: AbstractAnnotation, mapping: Mapping) -> str:
     migrate_text = (
         "The @"
         + class_name
-        + " Annotation with "
+        + " Annotation"
         + _get_further_information(annotation)
     )
     migrate_text += (
