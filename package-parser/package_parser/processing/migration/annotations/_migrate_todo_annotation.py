@@ -36,7 +36,10 @@ def migrate_todo_annotation(
 
     annotated_apiv1_element = None
     for element in mapping.get_apiv1_elements():
-        if not isinstance(element, (Attribute, Result)) and todo_annotation.target == element.id:
+        if (
+            not isinstance(element, (Attribute, Result))
+            and todo_annotation.target == element.id
+        ):
             annotated_apiv1_element = element
             break
 
