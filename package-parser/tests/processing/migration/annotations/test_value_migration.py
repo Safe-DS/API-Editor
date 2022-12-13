@@ -250,7 +250,9 @@ def migrate_constant_annotation_data_one_to_many_mapping() -> Tuple[
     attribute = Attribute("test_attribute", NamedType("str"))
 
     mapping = OneToManyMapping(
-        1.0, parameterv1, [parameterv2_a, parameterv2_b, parameterv2_c, parameterv2_d, attribute]
+        1.0,
+        parameterv1,
+        [parameterv2_a, parameterv2_b, parameterv2_c, parameterv2_d, attribute],
     )
 
     annotation = ConstantAnnotation(
@@ -484,7 +486,14 @@ def migrate_required_annotation_data_one_to_many_mapping() -> Tuple[
     mapping = OneToManyMapping(
         1.0,
         parameterv1,
-        [parameterv2_a, parameterv2_b, parameterv2_c, parameterv2_d, parameterv2_e, parameterv2_f],
+        [
+            parameterv2_a,
+            parameterv2_b,
+            parameterv2_c,
+            parameterv2_d,
+            parameterv2_e,
+            parameterv2_f,
+        ],
     )
 
     annotation = RequiredAnnotation(
