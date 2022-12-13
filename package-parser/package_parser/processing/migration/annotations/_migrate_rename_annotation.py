@@ -52,9 +52,11 @@ def migrate_rename_annotation(
             ):
                 rename_annotation.target = element.id
                 rename_annotation.reviewResult = EnumReviewResult.UNSURE
-                if len(rename_annotation.comment) > 0:
-                    rename_annotation.comment += "\n"
-                rename_annotation.comment += migrate_text
+                rename_annotation.comment = (
+                    migrate_text
+                    if len(rename_annotation.comment) == 0
+                    else rename_annotation.comment + "\n" + migrate_text
+                )
                 return [rename_annotation]
             todo_annotations.append(
                 TodoAnnotation(

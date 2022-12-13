@@ -93,6 +93,11 @@ def migrate_enum_annotation(
                     return []
             else:
                 enum_annotation.reviewResult = EnumReviewResult.UNSURE
+                enum_annotation.comment = (
+                    migrate_text
+                    if len(enum_annotation.comment) == 0
+                    else enum_annotation.comment + "\n" + migrate_text
+                )
                 enum_annotation.target = parameter.id
                 return [enum_annotation]
         return [
