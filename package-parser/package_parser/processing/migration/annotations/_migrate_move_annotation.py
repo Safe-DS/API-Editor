@@ -45,19 +45,19 @@ def migrate_move_annotation(
 
     if isinstance(mapping, (ManyToOneMapping, OneToOneMapping)):
         element = mapping.get_apiv2_elements()[0]
-        if isinstance(element, (Attribute, Result)) or not is_moveable(element):
-            if isinstance(element, Parameter):
-                return [
-                    TodoAnnotation(
-                        element.id,
-                        authors,
-                        move_annotation.reviewers,
-                        move_annotation.comment,
-                        EnumReviewResult.NONE,
-                        migrate_text,
-                    )
-                ]
+        if isinstance(element, (Attribute, Result)):
             return []
+        if not is_moveable(element):
+            return [
+                TodoAnnotation(
+                    element.id,
+                    authors,
+                    move_annotation.reviewers,
+                    move_annotation.comment,
+                    EnumReviewResult.NONE,
+                    migrate_text,
+                )
+            ]
         move_annotation.target = element.id
         return [move_annotation]
 
