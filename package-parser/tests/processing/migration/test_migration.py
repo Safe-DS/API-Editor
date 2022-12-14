@@ -4,7 +4,7 @@ from package_parser.processing.annotations.model import (
 )
 from package_parser.processing.migration import migrate_annotations
 from package_parser.processing.migration.model import Mapping
-from processing.migration.annotations.test_remove_migration import migrate_remove_annotation_data_one_to_one_mapping, \
+from tests.processing.migration.annotations.test_remove_migration import migrate_remove_annotation_data_one_to_one_mapping, \
     migrate_remove_annotation_data_one_to_many_mapping
 from tests.processing.migration.annotations.test_boundary_migration import (
     migrate_boundary_annotation_data_one_to_many_mapping,
