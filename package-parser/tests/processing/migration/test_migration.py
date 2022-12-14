@@ -4,6 +4,8 @@ from package_parser.processing.annotations.model import (
 )
 from package_parser.processing.migration import migrate_annotations
 from package_parser.processing.migration.model import Mapping
+from processing.migration.annotations.test_remove_migration import migrate_remove_annotation_data_one_to_one_mapping, \
+    migrate_remove_annotation_data_one_to_many_mapping
 from tests.processing.migration.annotations.test_boundary_migration import (
     migrate_boundary_annotation_data_one_to_many_mapping,
     migrate_boundary_annotation_data_one_to_one_mapping,
@@ -55,6 +57,9 @@ test_data = [
     migrate_move_annotation_data_one_to_one_mapping__class(),
     migrate_move_annotation_data_one_to_one_mapping__global_function(),
     migrate_move_annotation_data_one_to_many_mapping(),
+    # remove annotation
+    migrate_remove_annotation_data_one_to_one_mapping(),
+    migrate_remove_annotation_data_one_to_many_mapping(),
     # rename annotation
     migrate_rename_annotation_data_one_to_many_mapping__with_changed_new_name(),
     migrate_rename_annotation_data_one_to_one_mapping(),
