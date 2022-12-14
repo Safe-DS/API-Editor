@@ -270,7 +270,9 @@ def migrate_constant_annotation(
             constant_annotation.defaultValue,
         )
 
-    parameterv1 = get_annotated_api_element_by_type(constant_annotation, mapping.get_apiv1_elements(), Parameter)
+    parameterv1 = get_annotated_api_element_by_type(
+        constant_annotation, mapping.get_apiv1_elements(), Parameter
+    )
     if parameterv1 is None:
         return None
     if _have_same_type(
@@ -291,7 +293,9 @@ def migrate_constant_annotation(
 def migrate_omitted_annotation(
     omitted_annotation: OmittedAnnotation, parameterv2: Parameter, mapping: Mapping
 ) -> Optional[OmittedAnnotation]:
-    parameterv1 = get_annotated_api_element_by_type(omitted_annotation, mapping.get_apiv1_elements(), Parameter)
+    parameterv1 = get_annotated_api_element_by_type(
+        omitted_annotation, mapping.get_apiv1_elements(), Parameter
+    )
     if parameterv1 is None:
         return None
     type_and_same_value = _have_same_value(parameterv1, parameterv2)
@@ -325,7 +329,9 @@ def migrate_omitted_annotation(
 def migrate_optional_annotation(
     optional_annotation: OptionalAnnotation, parameterv2: Parameter, mapping: Mapping
 ) -> Optional[OptionalAnnotation]:
-    parameterv1 = get_annotated_api_element_by_type(optional_annotation, mapping.get_apiv1_elements(), Parameter)
+    parameterv1 = get_annotated_api_element_by_type(
+        optional_annotation, mapping.get_apiv1_elements(), Parameter
+    )
     if parameterv1 is None:
         return None
     if parameterv2.type is not None and _have_same_type(
@@ -359,7 +365,9 @@ def migrate_optional_annotation(
 def migrate_required_annotation(
     required_annotation: RequiredAnnotation, parameterv2: Parameter, mapping: Mapping
 ) -> Optional[RequiredAnnotation]:
-    parameterv1 = get_annotated_api_element_by_type(required_annotation, mapping.get_apiv1_elements(), Parameter)
+    parameterv1 = get_annotated_api_element_by_type(
+        required_annotation, mapping.get_apiv1_elements(), Parameter
+    )
     if parameterv1 is None:
         return None
     type_and_same_value = _have_same_value(parameterv1, parameterv2)

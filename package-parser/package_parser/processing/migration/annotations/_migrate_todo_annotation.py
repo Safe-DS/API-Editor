@@ -35,7 +35,9 @@ def migrate_todo_annotation(
 
     migrate_text = get_migration_text(todo_annotation, mapping)
 
-    annotated_apiv1_element = get_annotated_api_element(todo_annotation, mapping.get_apiv1_elements())
+    annotated_apiv1_element = get_annotated_api_element(
+        todo_annotation, mapping.get_apiv1_elements()
+    )
     if annotated_apiv1_element is None:
         return []
 

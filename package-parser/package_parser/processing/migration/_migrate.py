@@ -15,7 +15,9 @@ from package_parser.processing.migration.annotations import (
 from package_parser.processing.migration.annotations._migrate_move_annotation import (
     migrate_move_annotation,
 )
-from package_parser.processing.migration.annotations._migrate_remove_annotation import migrate_remove_annotation
+from package_parser.processing.migration.annotations._migrate_remove_annotation import (
+    migrate_remove_annotation,
+)
 from package_parser.processing.migration.model import Mapping
 
 

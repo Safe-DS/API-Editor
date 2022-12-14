@@ -62,7 +62,9 @@ def migrate_move_annotation(
         move_annotation.target = element.id
         return [move_annotation]
 
-    annotated_apiv1_element = get_annotated_api_element(move_annotation, mapping.get_apiv1_elements())
+    annotated_apiv1_element = get_annotated_api_element(
+        move_annotation, mapping.get_apiv1_elements()
+    )
     if annotated_apiv1_element is None:
         return []
 
