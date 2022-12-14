@@ -9,10 +9,7 @@ from package_parser.processing.api.model import (
     Result,
 )
 
-ANNOTATABLE_API_ELEMENTS = TypeVar(
-    "ANNOTATABLE_API_ELEMENTS", Class, Function, Parameter
-)
-API_ELEMENTS = TypeVar("API_ELEMENTS", Attribute, Class, Function, Parameter, Result)
+API_ELEMENTS = TypeVar("API_ELEMENTS", Class, Function, Parameter)
 
 
 def get_annotated_api_element(
@@ -31,8 +28,8 @@ def get_annotated_api_element(
 def get_annotated_api_element_by_type(
     annotation: AbstractAnnotation,
     api_element_list: List[Union[Attribute, Class, Function, Parameter, Result]],
-    api_type: type[ANNOTATABLE_API_ELEMENTS],
-) -> Optional[ANNOTATABLE_API_ELEMENTS]:
+    api_type: type[API_ELEMENTS]
+) -> Optional[API_ELEMENTS]:
     for element in api_element_list:
         if isinstance(element, api_type) and element.id == annotation.target:
             return element
