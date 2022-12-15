@@ -1,5 +1,5 @@
 from copy import deepcopy
-from typing import Optional, Tuple, TypeVar
+from typing import Optional, Tuple
 
 from package_parser.processing.annotations.model import (
     AbstractAnnotation,
@@ -14,8 +14,6 @@ from package_parser.processing.annotations.model import (
 from package_parser.processing.api.model import (
     AbstractType,
     Attribute,
-    Class,
-    Function,
     NamedType,
     Parameter,
     Result,
@@ -30,6 +28,7 @@ from package_parser.processing.migration.model import (
 )
 
 from ._constants import migration_author
+from ._get_annotated_api_element import get_annotated_api_element_by_type
 from ._get_migration_text import get_migration_text
 
 
@@ -254,26 +253,6 @@ def _have_same_value(
     return None
 
 
-API_ELEMENTS = TypeVar("API_ELEMENTS", Class, Function, Parameter)
-
-
-def get_api_element_from_mapping(
-    annotation: AbstractAnnotation, mapping: Mapping, api_type: type[API_ELEMENTS]
-) -> Optional[API_ELEMENTS]:
-    element_list = [
-        element
-        for element in mapping.get_apiv1_elements()
-        if (
-            isinstance(element, api_type)
-            and hasattr(element, "id")
-            and element.id == annotation.target
-        )
-    ]
-    if len(element_list) != 1:
-        return None
-    return element_list[0]
-
-
 def migrate_constant_annotation(
     constant_annotation: ConstantAnnotation, parameterv2: Parameter, mapping: Mapping
 ) -> Optional[ConstantAnnotation]:
@@ -291,7 +270,9 @@ def migrate_constant_annotation(
             constant_annotation.defaultValue,
         )
 
-    parameterv1 = get_api_element_from_mapping(constant_annotation, mapping, Parameter)
+    parameterv1 = get_annotated_api_element_by_type(
+        constant_annotation, mapping.get_apiv1_elements(), Parameter
+    )
     if parameterv1 is None:
         return None
     if _have_same_type(
@@ -312,7 +293,9 @@ def migrate_constant_annotation(
 def migrate_omitted_annotation(
     omitted_annotation: OmittedAnnotation, parameterv2: Parameter, mapping: Mapping
 ) -> Optional[OmittedAnnotation]:
-    parameterv1 = get_api_element_from_mapping(omitted_annotation, mapping, Parameter)
+    parameterv1 = get_annotated_api_element_by_type(
+        omitted_annotation, mapping.get_apiv1_elements(), Parameter
+    )
     if parameterv1 is None:
         return None
     type_and_same_value = _have_same_value(parameterv1, parameterv2)
@@ -346,7 +329,9 @@ def migrate_omitted_annotation(
 def migrate_optional_annotation(
     optional_annotation: OptionalAnnotation, parameterv2: Parameter, mapping: Mapping
 ) -> Optional[OptionalAnnotation]:
-    parameterv1 = get_api_element_from_mapping(optional_annotation, mapping, Parameter)
+    parameterv1 = get_annotated_api_element_by_type(
+        optional_annotation, mapping.get_apiv1_elements(), Parameter
+    )
     if parameterv1 is None:
         return None
     if parameterv2.type is not None and _have_same_type(
@@ -380,7 +365,9 @@ def migrate_optional_annotation(
 def migrate_required_annotation(
     required_annotation: RequiredAnnotation, parameterv2: Parameter, mapping: Mapping
 ) -> Optional[RequiredAnnotation]:
-    parameterv1 = get_api_element_from_mapping(required_annotation, mapping, Parameter)
+    parameterv1 = get_annotated_api_element_by_type(
+        required_annotation, mapping.get_apiv1_elements(), Parameter
+    )
     if parameterv1 is None:
         return None
     type_and_same_value = _have_same_value(parameterv1, parameterv2)

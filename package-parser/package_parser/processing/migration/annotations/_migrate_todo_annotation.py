@@ -13,6 +13,7 @@ from package_parser.processing.migration.model import (
 )
 
 from ._constants import migration_author
+from ._get_annotated_api_element import get_annotated_api_element
 from ._get_migration_text import get_migration_text
 
 
@@ -34,15 +35,9 @@ def migrate_todo_annotation(
 
     migrate_text = get_migration_text(todo_annotation, mapping)
 
-    annotated_apiv1_element = None
-    for element in mapping.get_apiv1_elements():
-        if (
-            not isinstance(element, (Attribute, Result))
-            and todo_annotation.target == element.id
-        ):
-            annotated_apiv1_element = element
-            break
-
+    annotated_apiv1_element = get_annotated_api_element(
+        todo_annotation, mapping.get_apiv1_elements()
+    )
     if annotated_apiv1_element is None:
         return []
 
