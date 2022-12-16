@@ -6,10 +6,7 @@ from package_parser.processing.annotations.model import (
     EnumReviewResult,
     TodoAnnotation,
 )
-from package_parser.processing.api.model import (
-    Function,
-    FunctionDocumentation,
-)
+from package_parser.processing.api.model import Function, FunctionDocumentation
 from package_parser.processing.migration import (
     Mapping,
     OneToManyMapping,
@@ -78,7 +75,7 @@ def migrate_called_after_annotation_data_one_to_one_mapping() -> Tuple[
         reviewers=[],
         comment="",
         reviewResult=EnumReviewResult.NONE,
-        calledAfterName="test_before"
+        calledAfterName="test_before",
     )
     annotationv2 = CalledAfterAnnotation(
         target="test/test.called_after.test1.test/NewClass/new_test_after",
@@ -86,7 +83,7 @@ def migrate_called_after_annotation_data_one_to_one_mapping() -> Tuple[
         reviewers=[],
         comment="",
         reviewResult=EnumReviewResult.NONE,
-        calledAfterName="new_test_before"
+        calledAfterName="new_test_before",
     )
     return [mapping_after, mapping_before], annotationv1, [annotationv2]
 
@@ -151,7 +148,9 @@ def migrate_called_after_annotation_data_one_to_many_mapping() -> Tuple[
         documentation=FunctionDocumentation("", ""),
         code="",
     )
-    mapping_after = OneToManyMapping(1.0, functionv1_after, [functionv2_after_a, functionv2_after_b])
+    mapping_after = OneToManyMapping(
+        1.0, functionv1_after, [functionv2_after_a, functionv2_after_b]
+    )
     mapping_before = OneToOneMapping(1.0, functionv1_before, functionv2_before)
     annotationv1 = CalledAfterAnnotation(
         target="test/test.called_after.test2.test/OldClass/test_after",
@@ -159,7 +158,7 @@ def migrate_called_after_annotation_data_one_to_many_mapping() -> Tuple[
         reviewers=[],
         comment="",
         reviewResult=EnumReviewResult.NONE,
-        calledAfterName="test_before"
+        calledAfterName="test_before",
     )
     annotationv2_a = CalledAfterAnnotation(
         target="test/test.called_after.test2.test/NewClass/new_test_after_a",
@@ -167,7 +166,7 @@ def migrate_called_after_annotation_data_one_to_many_mapping() -> Tuple[
         reviewers=[],
         comment="",
         reviewResult=EnumReviewResult.NONE,
-        calledAfterName="new_test_before"
+        calledAfterName="new_test_before",
     )
     annotationv2_b = CalledAfterAnnotation(
         target="test/test.called_after.test2.test/NewClass/new_test_after_b",
@@ -175,9 +174,13 @@ def migrate_called_after_annotation_data_one_to_many_mapping() -> Tuple[
         reviewers=[],
         comment="",
         reviewResult=EnumReviewResult.NONE,
-        calledAfterName="new_test_before"
+        calledAfterName="new_test_before",
     )
-    return [mapping_after, mapping_before], annotationv1, [annotationv2_a, annotationv2_b]
+    return (
+        [mapping_after, mapping_before],
+        annotationv1,
+        [annotationv2_a, annotationv2_b],
+    )
 
 
 def migrate_called_after_annotation_data_one_to_one_mapping__no_mapping_found() -> Tuple[
@@ -214,7 +217,7 @@ def migrate_called_after_annotation_data_one_to_one_mapping__no_mapping_found() 
         reviewers=[],
         comment="",
         reviewResult=EnumReviewResult.NONE,
-        calledAfterName="test_before"
+        calledAfterName="test_before",
     )
     annotationv2 = CalledAfterAnnotation(
         target="test/test.called_after.test3.test/NewClass/new_test_after",
@@ -222,7 +225,7 @@ def migrate_called_after_annotation_data_one_to_one_mapping__no_mapping_found() 
         reviewers=[],
         comment="",
         reviewResult=EnumReviewResult.UNSURE,
-        calledAfterName="test_before"
+        calledAfterName="test_before",
     )
     return mapping_after, annotationv1, [annotationv2]
 
@@ -288,14 +291,16 @@ def migrate_called_after_annotation_data_one_to_one_mapping__before_splits() -> 
         code="",
     )
     mapping_after = OneToOneMapping(1.0, functionv1_after, functionv2_after)
-    mapping_before = OneToManyMapping(1.0, functionv1_before, [functionv2_before_a, functionv2_before_b])
+    mapping_before = OneToManyMapping(
+        1.0, functionv1_before, [functionv2_before_a, functionv2_before_b]
+    )
     annotationv1 = CalledAfterAnnotation(
         target="test/test.called_after.test4.test/OldClass/test_after",
         authors=["testauthor"],
         reviewers=[],
         comment="",
         reviewResult=EnumReviewResult.NONE,
-        calledAfterName="test_before"
+        calledAfterName="test_before",
     )
     annotationv2 = TodoAnnotation(
         target="test/test.called_after.test4.test/NewClass/new_test_after",
@@ -303,6 +308,8 @@ def migrate_called_after_annotation_data_one_to_one_mapping__before_splits() -> 
         reviewers=[],
         comment="",
         reviewResult=EnumReviewResult.NONE,
-        newTodo=get_migration_text(annotationv1, mapping_after, additional_information=mapping_before)
+        newTodo=get_migration_text(
+            annotationv1, mapping_after, additional_information=mapping_before
+        ),
     )
     return [mapping_after, mapping_before], annotationv1, [annotationv2]

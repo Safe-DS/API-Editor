@@ -17,11 +17,19 @@ from package_parser.processing.annotations.model import (
     TodoAnnotation,
     ValueAnnotation,
 )
-from package_parser.processing.api.model import Attribute, Class, Function, Parameter, Result
+from package_parser.processing.api.model import (
+    Attribute,
+    Class,
+    Function,
+    Parameter,
+    Result,
+)
 from package_parser.processing.migration import Mapping
 
 
-def _get_further_information(annotation: AbstractAnnotation, additional_information: Any = None) -> str:
+def _get_further_information(
+    annotation: AbstractAnnotation, additional_information: Any = None
+) -> str:
     if isinstance(annotation, (CompleteAnnotation, PureAnnotation, RemoveAnnotation)):
         return ""
     if isinstance(annotation, BoundaryAnnotation):
@@ -32,7 +40,9 @@ def _get_further_information(annotation: AbstractAnnotation, additional_informat
             + annotation.calledAfterName
             + "' that should be called before"
         )
-        if additional_information is not None and isinstance(additional_information, Mapping):
+        if additional_information is not None and isinstance(
+            additional_information, Mapping
+        ):
             return_value += (
                 " and its mapping ("
                 + _list_api_elements(additional_information.get_apiv1_elements())
@@ -87,7 +97,9 @@ def _get_further_information(annotation: AbstractAnnotation, additional_informat
     return " with the data '" + str(annotation.to_json()) + "'"
 
 
-def get_migration_text(annotation: AbstractAnnotation, mapping: Mapping, additional_information: Any = None) -> str:
+def get_migration_text(
+    annotation: AbstractAnnotation, mapping: Mapping, additional_information: Any = None
+) -> str:
     class_name = str(annotation.__class__.__name__)
     if class_name.endswith("Annotation"):
         class_name = class_name[:-10]
@@ -95,7 +107,12 @@ def get_migration_text(annotation: AbstractAnnotation, mapping: Mapping, additio
         class_name = "Value"
 
     migrate_text = (
-        "The @" + class_name + " Annotation" + _get_further_information(annotation, additional_information=additional_information)
+        "The @"
+        + class_name
+        + " Annotation"
+        + _get_further_information(
+            annotation, additional_information=additional_information
+        )
     )
     migrate_text += (
         " from the previous version was at '"
@@ -106,7 +123,9 @@ def get_migration_text(annotation: AbstractAnnotation, mapping: Mapping, additio
     return migrate_text
 
 
-def _list_api_elements(api_elements: list[Attribute | Class | Function | Parameter | Result]) -> str:
+def _list_api_elements(
+    api_elements: list[Attribute | Class | Function | Parameter | Result],
+) -> str:
     return ", ".join(
         map(
             lambda api_element: api_element.id
