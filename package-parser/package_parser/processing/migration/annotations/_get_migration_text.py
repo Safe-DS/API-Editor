@@ -94,10 +94,7 @@ def get_migration_text(
         class_name = "Value"
 
     migrate_text = (
-        "The @"
-        + class_name
-        + " Annotation"
-        + _get_further_information(annotation)
+        "The @" + class_name + " Annotation" + _get_further_information(annotation)
     )
     migrate_text += (
         " from the previous version was at '"
@@ -105,10 +102,12 @@ def get_migration_text(
         + "' and the possible alternatives in the new version of the api are: "
         + _list_api_elements(mapping.get_apiv2_elements())
     )
-    if additional_information is not None and isinstance(
-        additional_information, list
-    ):
-        functions = [function for function in additional_information if isinstance(function, Function)]
+    if additional_information is not None and isinstance(additional_information, list):
+        functions = [
+            function
+            for function in additional_information
+            if isinstance(function, Function)
+        ]
         if len(functions) > 0:
             migrate_text += (
                 " and the possible replacements ("

@@ -38,11 +38,15 @@ def migrate_called_after_annotation(
                 )
             )
             continue
-        called_before_functions = _get_function_called_before_for_function_in_same_class(
-            called_after_annotation, mappings, element
+        called_before_functions = (
+            _get_function_called_before_for_function_in_same_class(
+                called_after_annotation, mappings, element
+            )
         )
         migrate_text = get_migration_text(
-            called_after_annotation, mapping, additional_information=called_before_functions
+            called_after_annotation,
+            mapping,
+            additional_information=called_before_functions,
         )
         if len(called_before_functions) == 0:
             migrated_annotations.append(
@@ -55,7 +59,9 @@ def migrate_called_after_annotation(
                     called_after_annotation.calledAfterName,
                 )
             )
-        elif len(called_before_functions) == 1 and called_before_functions[0] != element:
+        elif (
+            len(called_before_functions) == 1 and called_before_functions[0] != element
+        ):
             migrated_annotations.append(
                 CalledAfterAnnotation(
                     element.id,
@@ -66,7 +72,11 @@ def migrate_called_after_annotation(
                     called_before_functions[0].name,
                 )
             )
-        elif len(called_before_functions) == 2 and isinstance(element, Function) and element in called_before_functions:
+        elif (
+            len(called_before_functions) == 2
+            and isinstance(element, Function)
+            and element in called_before_functions
+        ):
             other_function = called_before_functions[0]
             if other_function == element:
                 other_function = called_before_functions[1]
@@ -96,16 +106,16 @@ def migrate_called_after_annotation(
 
 
 def _get_function_called_before_for_function_in_same_class(
-    called_after_annotation: CalledAfterAnnotation, mappings: list[Mapping], functionv2: Function
+    called_after_annotation: CalledAfterAnnotation,
+    mappings: list[Mapping],
+    functionv2: Function,
 ) -> list[Function]:
     called_before_idv1 = (
         "/".join(called_after_annotation.target.split("/")[:-1])
         + "/"
         + called_after_annotation.calledAfterName
     )
-    called_before_idv2_prefix = (
-        "/".join(functionv2.id.split("/")[:-1])
-    )
+    called_before_idv2_prefix = "/".join(functionv2.id.split("/")[:-1])
     functions_in_same_class: list[Function] = []
     for mapping in mappings:
         found_mapped_function_in_same_class = False
@@ -114,7 +124,9 @@ def _get_function_called_before_for_function_in_same_class(
                 found_mapped_function_in_same_class = True
         if found_mapped_function_in_same_class:
             for replacement in mapping.get_apiv2_elements():
-                if isinstance(replacement, Function) and replacement.id.startswith(called_before_idv2_prefix):
+                if isinstance(replacement, Function) and replacement.id.startswith(
+                    called_before_idv2_prefix
+                ):
                     functions_in_same_class.append(replacement)
             break
     return functions_in_same_class
