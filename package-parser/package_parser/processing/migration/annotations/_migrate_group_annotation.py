@@ -106,9 +106,14 @@ def _get_mappings_for_grouped_parameters(
         found = False
         for mapping in mappings:
             for parameterv1 in mapping.get_apiv1_elements():
-                if isinstance(parameterv1, Parameter) and parameterv1.id == parameter_id:
+                if (
+                    isinstance(parameterv1, Parameter)
+                    and parameterv1.id == parameter_id
+                ):
                     for parameterv2 in mapping.get_apiv2_elements():
-                        if isinstance(parameterv2, Parameter) and parameterv2.id.startswith(functionv2.id + "/"):
+                        if isinstance(
+                            parameterv2, Parameter
+                        ) and parameterv2.id.startswith(functionv2.id + "/"):
                             matched_parameters.append(parameterv2)
                             found = True
                             break
