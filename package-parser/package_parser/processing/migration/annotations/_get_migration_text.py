@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Sequence
 
 from package_parser.processing.annotations.model import (
     AbstractAnnotation,
@@ -27,9 +27,7 @@ from package_parser.processing.api.model import (
 from package_parser.processing.migration import Mapping
 
 
-def _get_further_information(
-        annotation: AbstractAnnotation, additional_information: Any = None
-) -> str:
+def _get_further_information(annotation: AbstractAnnotation) -> str:
     if isinstance(annotation, (CompleteAnnotation, PureAnnotation, RemoveAnnotation)):
         return ""
     if isinstance(annotation, BoundaryAnnotation):
@@ -58,24 +56,13 @@ def _get_further_information(
             + ")'"
         )
     if isinstance(annotation, GroupAnnotation):
-        return_value = (
+        return (
             " with the group name '"
             + annotation.groupName
             + "' and the grouped parameters: '"
             + ", ".join(annotation.parameters)
             + "'"
         )
-        if additional_information is not None and isinstance(
-            additional_information, list
-        ):
-            return_value += " and the mappings: "
-            return_value += ", ".join(
-                [
-                    _get_mapping_as_string(mapping)
-                    for mapping in additional_information if isinstance(mapping, Mapping)
-                ]
-            )
-        return return_value
     if isinstance(annotation, MoveAnnotation):
         return " with the destination: '" + annotation.destination + "'"
     if isinstance(annotation, RenameAnnotation):
@@ -107,31 +94,42 @@ def get_migration_text(
         class_name = "Value"
 
     migrate_text = (
-        "The @"
-        + class_name
-        + " Annotation"
-        + _get_further_information(
-            annotation, additional_information=additional_information
-        )
+        "The @" + class_name + " Annotation" + _get_further_information(annotation)
     )
     migrate_text += (
         " from the previous version was at '"
         + annotation.target
         + "' and the possible alternatives in the new version of the api are: "
-        + ", ".join(
-            map(
-                lambda api_element: api_element.id
-                if hasattr(api_element, "id")
-                else api_element.name,
-                mapping.get_apiv2_elements(),
-            )
-        )
+        + _list_api_elements(mapping.get_apiv2_elements())
     )
+    if additional_information is not None and isinstance(additional_information, list):
+        functions = [
+            function
+            for function in additional_information
+            if isinstance(function, Function)
+        ]
+        if len(functions) > 0:
+            migrate_text += (
+                " and the possible replacements (" + _list_api_elements(functions) + ")"
+            )
+        mappings = [
+            mapping
+            for mapping in additional_information
+            if isinstance(mapping, Mapping)
+        ]
+        if len(mappings) > 0:
+            migrate_text += " and the mappings: "
+            migrate_text += ", ".join(
+                [
+                    _get_mapping_as_string(mapping)
+                    for mapping in additional_information if isinstance(mapping, Mapping)
+                ]
+            )
     return migrate_text
 
 
 def _list_api_elements(
-    api_elements: list[Attribute | Class | Function | Parameter | Result],
+    api_elements: Sequence[Attribute | Class | Function | Parameter | Result],
 ) -> str:
     return ", ".join(
         map(

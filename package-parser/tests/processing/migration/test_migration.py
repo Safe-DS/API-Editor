@@ -10,12 +10,19 @@ from tests.processing.migration.annotations.test_boundary_migration import (
     migrate_boundary_annotation_data_one_to_one_mapping_float_to_int,
     migrate_boundary_annotation_data_one_to_one_mapping_int_to_float,
 )
+from tests.processing.migration.annotations.test_called_after_migration import (
+    migrate_called_after_annotation_data_one_to_many_mapping,
+    migrate_called_after_annotation_data_one_to_many_mapping__two_classes,
+    migrate_called_after_annotation_data_one_to_one_mapping,
+    migrate_called_after_annotation_data_one_to_one_mapping__before_splits,
+    migrate_called_after_annotation_data_one_to_one_mapping__no_mapping_found,
+)
 from tests.processing.migration.annotations.test_enum_migration import (
     migrate_enum_annotation_data_one_to_many_mapping,
     migrate_enum_annotation_data_one_to_many_mapping__only_one_relevant_mapping,
     migrate_enum_annotation_data_one_to_one_mapping,
 )
-from tests.processing.migration.annotations.test_move_annotation import (
+from tests.processing.migration.annotations.test_move_migration import (
     migrate_move_annotation_data_one_to_many_mapping,
     migrate_move_annotation_data_one_to_one_mapping__class,
     migrate_move_annotation_data_one_to_one_mapping__global_function,
@@ -46,6 +53,12 @@ from tests.processing.migration.annotations.test_value_migration import (
 )
 
 test_data = [
+    # called after annotation
+    migrate_called_after_annotation_data_one_to_one_mapping(),
+    migrate_called_after_annotation_data_one_to_many_mapping(),
+    migrate_called_after_annotation_data_one_to_one_mapping__no_mapping_found(),
+    migrate_called_after_annotation_data_one_to_one_mapping__before_splits(),
+    migrate_called_after_annotation_data_one_to_many_mapping__two_classes(),
     # enum annotation
     migrate_enum_annotation_data_one_to_one_mapping(),
     migrate_enum_annotation_data_one_to_many_mapping(),
@@ -88,7 +101,10 @@ def test_migrate_all_annotations() -> None:
     expected_annotation_store: AnnotationStore = AnnotationStore()
 
     for mapping, annotationv1, annotationsv2 in test_data:
-        mappings.append(mapping)
+        if isinstance(mapping, list):
+            mappings.extend(mapping)
+        else:
+            mappings.append(mapping)
         annotation_store.add_annotation(annotationv1)
         for expected_annotation in annotationsv2:
             expected_annotation_store.add_annotation(expected_annotation)
