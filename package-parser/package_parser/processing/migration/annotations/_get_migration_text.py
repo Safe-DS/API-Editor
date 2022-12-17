@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Sequence
 
 from package_parser.processing.annotations.model import (
     AbstractAnnotation,
@@ -110,15 +110,13 @@ def get_migration_text(
         ]
         if len(functions) > 0:
             migrate_text += (
-                " and the possible replacements ("
-                + ", ".join(map(lambda function: function.id, functions))
-                + ")"
+                " and the possible replacements (" + _list_api_elements(functions) + ")"
             )
     return migrate_text
 
 
 def _list_api_elements(
-    api_elements: list[Attribute | Class | Function | Parameter | Result],
+    api_elements: Sequence[Attribute | Class | Function | Parameter | Result],
 ) -> str:
     return ", ".join(
         map(

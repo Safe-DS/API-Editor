@@ -22,26 +22,25 @@ def migrate_called_after_annotation(
     authors = called_after_annotation.authors
     authors.append(migration_author)
     called_after_annotation.authors = authors
+
     migrated_annotations: list[AbstractAnnotation] = []
     for element in mapping.get_apiv2_elements():
-        if isinstance(element, (Attribute, Result)):
-            continue
         if not isinstance(element, Function):
-            migrated_annotations.append(
-                TodoAnnotation(
-                    element.id,
-                    authors,
-                    called_after_annotation.reviewers,
-                    called_after_annotation.comment,
-                    called_after_annotation.reviewResult,
-                    get_migration_text(called_after_annotation, mapping),
+            if not isinstance(element, (Attribute, Result)):
+                migrated_annotations.append(
+                    TodoAnnotation(
+                        element.id,
+                        authors,
+                        called_after_annotation.reviewers,
+                        called_after_annotation.comment,
+                        called_after_annotation.reviewResult,
+                        get_migration_text(called_after_annotation, mapping),
+                    )
                 )
-            )
             continue
-        called_before_functions = (
-            _get_function_called_before_for_function_in_same_class(
-                called_after_annotation, mappings, element
-            )
+
+        called_before_functions = _get_function_called_before_replacements(
+            called_after_annotation, mappings, element
         )
         migrate_text = get_migration_text(
             called_after_annotation,
@@ -72,14 +71,10 @@ def migrate_called_after_annotation(
                     called_before_functions[0].name,
                 )
             )
-        elif (
-            len(called_before_functions) == 2
-            and isinstance(element, Function)
-            and element in called_before_functions
-        ):
-            other_function = called_before_functions[0]
-            if other_function == element:
-                other_function = called_before_functions[1]
+        elif len(called_before_functions) == 2 and element in called_before_functions:
+            called_before_functionv2 = called_before_functions[0]
+            if called_before_functionv2 == element:
+                called_before_functionv2 = called_before_functions[1]
             migrated_annotations.append(
                 CalledAfterAnnotation(
                     element.id,
@@ -87,7 +82,7 @@ def migrate_called_after_annotation(
                     called_after_annotation.reviewers,
                     called_after_annotation.comment,
                     called_after_annotation.reviewResult,
-                    other_function.name,
+                    called_before_functionv2.name,
                 )
             )
         else:
@@ -101,11 +96,10 @@ def migrate_called_after_annotation(
                     migrate_text,
                 )
             )
-
     return migrated_annotations
 
 
-def _get_function_called_before_for_function_in_same_class(
+def _get_function_called_before_replacements(
     called_after_annotation: CalledAfterAnnotation,
     mappings: list[Mapping],
     functionv2: Function,
@@ -122,6 +116,7 @@ def _get_function_called_before_for_function_in_same_class(
         for element in mapping.get_apiv1_elements():
             if isinstance(element, Function) and called_before_idv1 == element.id:
                 found_mapped_function_in_same_class = True
+
         if found_mapped_function_in_same_class:
             for replacement in mapping.get_apiv2_elements():
                 if isinstance(replacement, Function) and replacement.id.startswith(
