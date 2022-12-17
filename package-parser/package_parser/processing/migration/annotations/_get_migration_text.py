@@ -27,30 +27,17 @@ from package_parser.processing.api.model import (
 from package_parser.processing.migration import Mapping
 
 
-def _get_further_information(
-    annotation: AbstractAnnotation, additional_information: Any = None
-) -> str:
+def _get_further_information(annotation: AbstractAnnotation) -> str:
     if isinstance(annotation, (CompleteAnnotation, PureAnnotation, RemoveAnnotation)):
         return ""
     if isinstance(annotation, BoundaryAnnotation):
         return " with the interval '" + str(annotation.interval.to_json()) + "'"
     if isinstance(annotation, CalledAfterAnnotation):
-        return_value = (
+        return (
             " with the method '"
             + annotation.calledAfterName
             + "' that should be called before"
         )
-        if additional_information is not None and isinstance(
-            additional_information, Mapping
-        ):
-            return_value += (
-                " and its mapping ("
-                + _list_api_elements(additional_information.get_apiv1_elements())
-                + ") -> ("
-                + _list_api_elements(additional_information.get_apiv1_elements())
-                + ")"
-            )
-        return return_value
     if isinstance(annotation, DescriptionAnnotation):
         return " with the new description '" + annotation.newDescription + "'"
     if isinstance(annotation, EnumAnnotation):
@@ -110,9 +97,7 @@ def get_migration_text(
         "The @"
         + class_name
         + " Annotation"
-        + _get_further_information(
-            annotation, additional_information=additional_information
-        )
+        + _get_further_information(annotation)
     )
     migrate_text += (
         " from the previous version was at '"
@@ -120,6 +105,16 @@ def get_migration_text(
         + "' and the possible alternatives in the new version of the api are: "
         + _list_api_elements(mapping.get_apiv2_elements())
     )
+    if additional_information is not None and isinstance(
+        additional_information, list
+    ):
+        functions = [function for function in additional_information if isinstance(function, Function)]
+        if len(functions) > 0:
+            migrate_text += (
+                " and the possible replacements ("
+                + ", ".join(map(lambda function: function.id, functions))
+                + ")"
+            )
     return migrate_text
 
 

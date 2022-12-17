@@ -309,7 +309,7 @@ def migrate_called_after_annotation_data_one_to_one_mapping__before_splits() -> 
         comment="",
         reviewResult=EnumReviewResult.NONE,
         newTodo=get_migration_text(
-            annotationv1, mapping_after, additional_information=mapping_before
+            annotationv1, mapping_after, additional_information=[functionv2_before_a, functionv2_before_b]
         ),
     )
     return [mapping_after, mapping_before], annotationv1, [annotationv2]
