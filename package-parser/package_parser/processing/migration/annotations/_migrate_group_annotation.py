@@ -3,8 +3,8 @@ from typing import Optional
 
 from package_parser.processing.annotations.model import (
     AbstractAnnotation,
-    GroupAnnotation,
     EnumReviewResult,
+    GroupAnnotation,
     TodoAnnotation,
 )
 from package_parser.processing.api.model import Attribute, Function, Parameter, Result
@@ -22,9 +22,13 @@ def migrate_group_annotation(
     authors.append(migration_author)
     group_annotation.authors = authors
 
-    parameter_mappings = _get_mappings_for_grouped_parameters(group_annotation, mappings)
+    parameter_mappings = _get_mappings_for_grouped_parameters(
+        group_annotation, mappings
+    )
 
-    migrate_text = get_migration_text(group_annotation, mapping, additional_information=parameter_mappings)
+    migrate_text = get_migration_text(
+        group_annotation, mapping, additional_information=parameter_mappings
+    )
 
     migrated_annotations: list[AbstractAnnotation] = []
 
@@ -32,14 +36,16 @@ def migrate_group_annotation(
         if isinstance(functionv2, (Attribute, Result)):
             continue
         if not isinstance(functionv2, Function):
-            migrated_annotations.append(TodoAnnotation(
-                target=functionv2.id,
-                authors=authors,
-                reviewers=group_annotation.reviewers,
-                comment=group_annotation.comment,
-                reviewResult=group_annotation.reviewResult,
-                newTodo=migrate_text,
-            ))
+            migrated_annotations.append(
+                TodoAnnotation(
+                    target=functionv2.id,
+                    authors=authors,
+                    reviewers=group_annotation.reviewers,
+                    comment=group_annotation.comment,
+                    reviewResult=group_annotation.reviewResult,
+                    newTodo=migrate_text,
+                )
+            )
         else:
             grouped_parameters: list[Parameter] = []
             name_modifier = ""
@@ -50,7 +56,9 @@ def migrate_group_annotation(
                     continue
                 found = False
                 for parameter in parameter_mapping.get_apiv2_elements():
-                    if isinstance(parameter, Parameter) and parameter.id.startswith(functionv2.id + "/"):
+                    if isinstance(parameter, Parameter) and parameter.id.startswith(
+                        functionv2.id + "/"
+                    ):
                         grouped_parameters.append(parameter)
                         name_modifier += "1"
                         found = True
@@ -61,34 +69,45 @@ def migrate_group_annotation(
             review_result = EnumReviewResult.NONE
 
             if len(grouped_parameters) == 0:
-                migrated_annotations.append(TodoAnnotation(
-                    target=functionv2.id,
-                    authors=authors,
-                    reviewers=group_annotation.reviewers,
-                    comment=group_annotation.comment,
-                    reviewResult=group_annotation.reviewResult,
-                    newTodo=migrate_text,
-                ))
+                migrated_annotations.append(
+                    TodoAnnotation(
+                        target=functionv2.id,
+                        authors=authors,
+                        reviewers=group_annotation.reviewers,
+                        comment=group_annotation.comment,
+                        reviewResult=group_annotation.reviewResult,
+                        newTodo=migrate_text,
+                    )
+                )
 
             if len(grouped_parameters) != len(group_annotation.parameters):
                 group_name += str(int(name_modifier, base=2))
                 review_result = EnumReviewResult.UNSURE
 
-            migrated_annotations.append(GroupAnnotation(
-                target=functionv2.id,
-                authors=authors,
-                reviewers=group_annotation.reviewers,
-                comment=group_annotation.comment,
-                reviewResult=review_result,
-                groupName=group_name,
-                parameters=list(map(lambda parameter: parameter.name, grouped_parameters)),
-            ))
+            migrated_annotations.append(
+                GroupAnnotation(
+                    target=functionv2.id,
+                    authors=authors,
+                    reviewers=group_annotation.reviewers,
+                    comment=group_annotation.comment,
+                    reviewResult=review_result,
+                    groupName=group_name,
+                    parameters=list(
+                        map(lambda parameter: parameter.name, grouped_parameters)
+                    ),
+                )
+            )
 
     return migrated_annotations
 
 
-def _get_mappings_for_grouped_parameters(group_annotation: GroupAnnotation, mappings: list[Mapping]) -> list[Optional[Mapping]]:
-    parameter_ids = [group_annotation.target + "/" + parameter_name for parameter_name in group_annotation.parameters]
+def _get_mappings_for_grouped_parameters(
+    group_annotation: GroupAnnotation, mappings: list[Mapping]
+) -> list[Optional[Mapping]]:
+    parameter_ids = [
+        group_annotation.target + "/" + parameter_name
+        for parameter_name in group_annotation.parameters
+    ]
 
     matched_mappings: list[Optional[Mapping]] = []
     for parameter_id in parameter_ids:

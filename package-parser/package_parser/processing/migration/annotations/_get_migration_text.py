@@ -122,7 +122,8 @@ def get_migration_text(
             migrate_text += ", ".join(
                 [
                     _get_mapping_as_string(mapping)
-                    for mapping in additional_information if isinstance(mapping, Mapping)
+                    for mapping in additional_information
+                    if isinstance(mapping, Mapping)
                 ]
             )
     return migrate_text
