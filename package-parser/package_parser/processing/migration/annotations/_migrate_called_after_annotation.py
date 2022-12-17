@@ -71,20 +71,6 @@ def migrate_called_after_annotation(
                     called_before_functions[0].name,
                 )
             )
-        elif len(called_before_functions) == 2 and element in called_before_functions:
-            called_before_functionv2 = called_before_functions[0]
-            if called_before_functionv2 == element:
-                called_before_functionv2 = called_before_functions[1]
-            migrated_annotations.append(
-                CalledAfterAnnotation(
-                    element.id,
-                    authors,
-                    called_after_annotation.reviewers,
-                    called_after_annotation.comment,
-                    called_after_annotation.reviewResult,
-                    called_before_functionv2.name,
-                )
-            )
         else:
             migrated_annotations.append(
                 TodoAnnotation(
