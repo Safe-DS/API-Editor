@@ -31,7 +31,7 @@ def migrate_remove_annotation_data_one_to_one_mapping() -> Tuple[
 ]:
     functionv1 = Function(
         id="test/test.remove.test1.test/test",
-        qname="test.remove.test1.test/test",
+        qname="test.remove.test1.test.test",
         decorators=[],
         parameters=[],
         results=[],
@@ -43,7 +43,7 @@ def migrate_remove_annotation_data_one_to_one_mapping() -> Tuple[
 
     functionv2 = Function(
         id="test/test.remove.test1.test/new_test",
-        qname="test.remove.test1.test/new_test",
+        qname="test.remove.test1.test.new_test",
         decorators=[],
         parameters=[],
         results=[],

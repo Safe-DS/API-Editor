@@ -12,6 +12,7 @@ from tests.processing.migration.annotations.test_boundary_migration import (
 )
 from tests.processing.migration.annotations.test_called_after_migration import (
     migrate_called_after_annotation_data_one_to_many_mapping,
+    migrate_called_after_annotation_data_one_to_many_mapping__two_classes,
     migrate_called_after_annotation_data_one_to_one_mapping,
     migrate_called_after_annotation_data_one_to_one_mapping__before_splits,
     migrate_called_after_annotation_data_one_to_one_mapping__no_mapping_found,
@@ -57,6 +58,7 @@ test_data = [
     migrate_called_after_annotation_data_one_to_many_mapping(),
     migrate_called_after_annotation_data_one_to_one_mapping__no_mapping_found(),
     migrate_called_after_annotation_data_one_to_one_mapping__before_splits(),
+    migrate_called_after_annotation_data_one_to_many_mapping__two_classes(),
     # enum annotation
     migrate_enum_annotation_data_one_to_one_mapping(),
     migrate_enum_annotation_data_one_to_many_mapping(),

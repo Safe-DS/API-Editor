@@ -30,7 +30,7 @@ def migrate_boundary_annotation_data_one_to_one_mapping() -> Tuple[
     parameterv1 = Parameter(
         id_="test/test.boundary.test1.testA",
         name="testA",
-        qname="test.enum.test1.testA",
+        qname="test.boundary.test1.testA",
         default_value="1",
         assigned_by=ParameterAssignment.POSITION_OR_NAME,
         is_public=True,
@@ -39,7 +39,7 @@ def migrate_boundary_annotation_data_one_to_one_mapping() -> Tuple[
     parameterv2 = Parameter(
         id_="test/test.boundary.test1.testB",
         name="testB",
-        qname="test.enum.test1.testB",
+        qname="test.boundary.test1.testB",
         default_value="1",
         assigned_by=ParameterAssignment.POSITION_OR_NAME,
         is_public=True,
@@ -88,7 +88,7 @@ def migrate_boundary_annotation_data_one_to_one_mapping_int_to_float() -> Tuple[
     parameterv1 = Parameter(
         id_="test/test.boundary.test2.testA",
         name="testA",
-        qname="test.enum.test2.testA",
+        qname="test.boundary.test2.testA",
         default_value="1",
         assigned_by=ParameterAssignment.POSITION_OR_NAME,
         is_public=True,
@@ -97,7 +97,7 @@ def migrate_boundary_annotation_data_one_to_one_mapping_int_to_float() -> Tuple[
     parameterv2 = Parameter(
         id_="test/test.boundary.test2.testB",
         name="testB",
-        qname="test.enum.test2.testB",
+        qname="test.boundary.test2.testB",
         default_value="1.0",
         assigned_by=ParameterAssignment.POSITION_OR_NAME,
         is_public=True,
@@ -152,7 +152,7 @@ def migrate_boundary_annotation_data_one_to_one_mapping_float_to_int() -> Tuple[
     parameterv1 = Parameter(
         id_="test/test.boundary.test3.testA",
         name="testA",
-        qname="test.enum.test3.testA",
+        qname="test.boundary.test3.testA",
         default_value="1.0",
         assigned_by=ParameterAssignment.POSITION_OR_NAME,
         is_public=True,
@@ -163,7 +163,7 @@ def migrate_boundary_annotation_data_one_to_one_mapping_float_to_int() -> Tuple[
     parameterv2 = Parameter(
         id_="test/test.boundary.test3.testB",
         name="testB",
-        qname="test.enum.test3.testB",
+        qname="test.boundary.test3.testB",
         default_value="1",
         assigned_by=ParameterAssignment.POSITION_OR_NAME,
         is_public=True,
@@ -215,7 +215,7 @@ def migrate_boundary_annotation_data_one_to_many_mapping() -> Tuple[
     parameterv1 = Parameter(
         id_="test/test.boundary.test4.testv1",
         name="testA",
-        qname="test.enum.test4.testA",
+        qname="test.boundary.test4.testA",
         default_value="1",
         assigned_by=ParameterAssignment.POSITION_OR_NAME,
         is_public=True,
@@ -224,7 +224,7 @@ def migrate_boundary_annotation_data_one_to_many_mapping() -> Tuple[
     parameterv2_a = Parameter(
         id_="test/test.boundary.test4.testA",
         name="testA",
-        qname="test.enum.test4.testA",
+        qname="test.boundary.test4.testA",
         default_value="1",
         assigned_by=ParameterAssignment.POSITION_OR_NAME,
         is_public=True,
@@ -233,7 +233,7 @@ def migrate_boundary_annotation_data_one_to_many_mapping() -> Tuple[
     parameterv2_b = Parameter(
         id_="test/test.boundary.test4.testB",
         name="testB",
-        qname="test.enum.test4.testB",
+        qname="test.boundary.test4.testB",
         default_value="1.0",
         assigned_by=ParameterAssignment.POSITION_OR_NAME,
         is_public=True,
@@ -244,7 +244,7 @@ def migrate_boundary_annotation_data_one_to_many_mapping() -> Tuple[
     parameterv2_c = Parameter(
         id_="test/test.boundary.test4.testC",
         name="testC",
-        qname="test.enum.test4.testC",
+        qname="test.boundary.test4.testC",
         default_value="",
         assigned_by=ParameterAssignment.POSITION_OR_NAME,
         is_public=True,

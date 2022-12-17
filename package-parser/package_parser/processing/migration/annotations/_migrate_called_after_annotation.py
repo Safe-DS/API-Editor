@@ -109,13 +109,14 @@ def _get_function_called_before_replacements(
         + "/"
         + called_after_annotation.calledAfterName
     )
-    called_before_idv2_prefix = "/".join(functionv2.id.split("/")[:-1])
+    called_before_idv2_prefix = "/".join(functionv2.id.split("/")[:-1]) + "/"
     functions_in_same_class: list[Function] = []
     for mapping in mappings:
         found_mapped_function_in_same_class = False
         for element in mapping.get_apiv1_elements():
             if isinstance(element, Function) and called_before_idv1 == element.id:
                 found_mapped_function_in_same_class = True
+                break
 
         if found_mapped_function_in_same_class:
             for replacement in mapping.get_apiv2_elements():
