@@ -1,3 +1,5 @@
+from typing import Any, Sequence
+
 from package_parser.processing.annotations.model import (
     AbstractAnnotation,
     BoundaryAnnotation,
@@ -14,6 +16,13 @@ from package_parser.processing.annotations.model import (
     RenameAnnotation,
     TodoAnnotation,
     ValueAnnotation,
+)
+from package_parser.processing.api.model import (
+    Attribute,
+    Class,
+    Function,
+    Parameter,
+    Result,
 )
 from package_parser.processing.migration import Mapping
 
@@ -75,7 +84,9 @@ def _get_further_information(annotation: AbstractAnnotation) -> str:
     return " with the data '" + str(annotation.to_json()) + "'"
 
 
-def get_migration_text(annotation: AbstractAnnotation, mapping: Mapping) -> str:
+def get_migration_text(
+    annotation: AbstractAnnotation, mapping: Mapping, additional_information: Any = None
+) -> str:
     class_name = str(annotation.__class__.__name__)
     if class_name.endswith("Annotation"):
         class_name = class_name[:-10]
@@ -89,13 +100,29 @@ def get_migration_text(annotation: AbstractAnnotation, mapping: Mapping) -> str:
         " from the previous version was at '"
         + annotation.target
         + "' and the possible alternatives in the new version of the api are: "
-        + ", ".join(
-            map(
-                lambda api_element: api_element.id
-                if hasattr(api_element, "id")
-                else api_element.name,
-                mapping.get_apiv2_elements(),
+        + _list_api_elements(mapping.get_apiv2_elements())
+    )
+    if additional_information is not None and isinstance(additional_information, list):
+        functions = [
+            function
+            for function in additional_information
+            if isinstance(function, Function)
+        ]
+        if len(functions) > 0:
+            migrate_text += (
+                " and the possible replacements (" + _list_api_elements(functions) + ")"
             )
+    return migrate_text
+
+
+def _list_api_elements(
+    api_elements: Sequence[Attribute | Class | Function | Parameter | Result],
+) -> str:
+    return ", ".join(
+        map(
+            lambda api_element: api_element.id
+            if hasattr(api_element, "id")
+            else api_element.name,
+            api_elements,
         )
     )
-    return migrate_text

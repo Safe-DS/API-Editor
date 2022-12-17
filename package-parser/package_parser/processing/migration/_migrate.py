@@ -7,16 +7,13 @@ from package_parser.processing.annotations.model import (
 from package_parser.processing.api.model import Attribute, Result
 from package_parser.processing.migration.annotations import (
     migrate_boundary_annotation,
+    migrate_called_after_annotation,
     migrate_enum_annotation,
+    migrate_move_annotation,
+    migrate_remove_annotation,
     migrate_rename_annotation,
     migrate_todo_annotation,
     migrate_value_annotation,
-)
-from package_parser.processing.migration.annotations._migrate_move_annotation import (
-    migrate_move_annotation,
-)
-from package_parser.processing.migration.annotations._migrate_remove_annotation import (
-    migrate_remove_annotation,
 )
 from package_parser.processing.migration.model import Mapping
 
@@ -43,6 +40,14 @@ def migrate_annotations(
         mapping = _get_mapping_from_annotation(boundary_annotation, mappings)
         if mapping is not None:
             for annotation in migrate_boundary_annotation(boundary_annotation, mapping):
+                migrated_annotation_store.add_annotation(annotation)
+
+    for called_after_annotation in annotationsv1.calledAfterAnnotations:
+        mapping = _get_mapping_from_annotation(called_after_annotation, mappings)
+        if mapping is not None:
+            for annotation in migrate_called_after_annotation(
+                called_after_annotation, mapping, mappings
+            ):
                 migrated_annotation_store.add_annotation(annotation)
 
     for enum_annotation in annotationsv1.enumAnnotations:
