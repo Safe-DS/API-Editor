@@ -1,3 +1,5 @@
+from typing import Any
+
 from package_parser.processing.annotations.model import (
     AbstractAnnotation,
     BoundaryAnnotation,
@@ -15,10 +17,19 @@ from package_parser.processing.annotations.model import (
     TodoAnnotation,
     ValueAnnotation,
 )
+from package_parser.processing.api.model import (
+    Attribute,
+    Class,
+    Function,
+    Parameter,
+    Result,
+)
 from package_parser.processing.migration import Mapping
 
 
-def _get_further_information(annotation: AbstractAnnotation) -> str:
+def _get_further_information(
+        annotation: AbstractAnnotation, additional_information: Any = None
+) -> str:
     if isinstance(annotation, (CompleteAnnotation, PureAnnotation, RemoveAnnotation)):
         return ""
     if isinstance(annotation, BoundaryAnnotation):
@@ -47,13 +58,24 @@ def _get_further_information(annotation: AbstractAnnotation) -> str:
             + ")'"
         )
     if isinstance(annotation, GroupAnnotation):
-        return (
+        return_value = (
             " with the group name '"
             + annotation.groupName
             + "' and the grouped parameters: '"
             + ", ".join(annotation.parameters)
             + "'"
         )
+        if additional_information is not None and isinstance(
+            additional_information, list
+        ):
+            return_value += " and the mappings: "
+            return_value += ", ".join(
+                [
+                    _get_mapping_as_string(mapping)
+                    for mapping in additional_information if isinstance(mapping, Mapping)
+                ]
+            )
+        return return_value
     if isinstance(annotation, MoveAnnotation):
         return " with the destination: '" + annotation.destination + "'"
     if isinstance(annotation, RenameAnnotation):
@@ -75,7 +97,9 @@ def _get_further_information(annotation: AbstractAnnotation) -> str:
     return " with the data '" + str(annotation.to_json()) + "'"
 
 
-def get_migration_text(annotation: AbstractAnnotation, mapping: Mapping) -> str:
+def get_migration_text(
+    annotation: AbstractAnnotation, mapping: Mapping, additional_information: Any = None
+) -> str:
     class_name = str(annotation.__class__.__name__)
     if class_name.endswith("Annotation"):
         class_name = class_name[:-10]
@@ -83,7 +107,12 @@ def get_migration_text(annotation: AbstractAnnotation, mapping: Mapping) -> str:
         class_name = "Value"
 
     migrate_text = (
-        "The @" + class_name + " Annotation" + _get_further_information(annotation)
+        "The @"
+        + class_name
+        + " Annotation"
+        + _get_further_information(
+            annotation, additional_information=additional_information
+        )
     )
     migrate_text += (
         " from the previous version was at '"
@@ -99,3 +128,26 @@ def get_migration_text(annotation: AbstractAnnotation, mapping: Mapping) -> str:
         )
     )
     return migrate_text
+
+
+def _list_api_elements(
+    api_elements: list[Attribute | Class | Function | Parameter | Result],
+) -> str:
+    return ", ".join(
+        map(
+            lambda api_element: api_element.id
+            if hasattr(api_element, "id")
+            else api_element.name,
+            api_elements,
+        )
+    )
+
+
+def _get_mapping_as_string(mapping: Mapping) -> str:
+    return (
+        "[("
+        + _list_api_elements(mapping.get_apiv1_elements())
+        + ") -> ("
+        + _list_api_elements(mapping.get_apiv2_elements())
+        + ")]"
+    )
