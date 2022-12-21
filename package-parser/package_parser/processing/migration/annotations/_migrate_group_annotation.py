@@ -36,8 +36,7 @@ def migrate_group_annotation(
                     comment=group_annotation.comment,
                     reviewResult=group_annotation.reviewResult,
                     newTodo=get_migration_text(
-                        group_annotation, mapping, additional_information=None
-                    ),
+                        group_annotation, mapping),
                 )
             )
         else:
@@ -52,10 +51,10 @@ def migrate_group_annotation(
 
             for parameter in parameter_replacements:
                 if parameter is None:
-                    name_modifier += "0"
+                    name_modifier = "0" + name_modifier
                 else:
                     grouped_parameters.append(parameter)
-                    name_modifier += "1"
+                    name_modifier = "1" + name_modifier
 
             group_name = group_annotation.groupName
             review_result = EnumReviewResult.NONE
@@ -71,6 +70,7 @@ def migrate_group_annotation(
                         newTodo=migrate_text,
                     )
                 )
+                continue
 
             if len(grouped_parameters) != len(group_annotation.parameters):
                 group_name += str(int(name_modifier, base=2))
@@ -84,9 +84,7 @@ def migrate_group_annotation(
                     comment=group_annotation.comment,
                     reviewResult=review_result,
                     groupName=group_name,
-                    parameters=list(
-                        map(lambda parameter: parameter.name, grouped_parameters)
-                    ),
+                    parameters=[parameter.name for parameter in grouped_parameters],
                 )
             )
 
