@@ -23,8 +23,8 @@ from tests.processing.migration.annotations.test_enum_migration import (
     migrate_enum_annotation_data_one_to_one_mapping,
 )
 from tests.processing.migration.annotations.test_group_annotation import (
-    migrate_group_annotation_data_one_to_one_mapping,
     migrate_group_annotation_data_one_to_many_mapping,
+    migrate_group_annotation_data_one_to_one_mapping,
 )
 from tests.processing.migration.annotations.test_move_migration import (
     migrate_move_annotation_data_one_to_many_mapping,

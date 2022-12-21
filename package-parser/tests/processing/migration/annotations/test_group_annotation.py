@@ -2,8 +2,8 @@ from typing import Tuple
 
 from package_parser.processing.annotations.model import (
     AbstractAnnotation,
-    GroupAnnotation,
     EnumReviewResult,
+    GroupAnnotation,
     TodoAnnotation,
 )
 from package_parser.processing.api.model import (
@@ -12,8 +12,8 @@ from package_parser.processing.api.model import (
     Function,
     FunctionDocumentation,
     Parameter,
-    ParameterDocumentation,
     ParameterAssignment,
+    ParameterDocumentation,
 )
 from package_parser.processing.migration import (
     Mapping,
@@ -155,14 +155,17 @@ def migrate_group_annotation_data_one_to_many_mapping() -> Tuple[
         instance_attributes=[],
     )
 
-    mapping_function = OneToManyMapping(1.0, functionv1, [
-        functionv2,
-        functionv2_2,
-        functionv2_3,
-        functionv2_4,
-        classv2_5])
-    mapping_parameter_a = OneToManyMapping(1.0, parameterv1_a, [parameterv2_a, parameterv2_a, parameterv2_2_a])
-    mapping_parameter_b = OneToManyMapping(1.0, parameterv1_b, [parameterv2_b, parameterv2_b, parameterv2_3_b])
+    mapping_function = OneToManyMapping(
+        1.0,
+        functionv1,
+        [functionv2, functionv2_2, functionv2_3, functionv2_4, classv2_5],
+    )
+    mapping_parameter_a = OneToManyMapping(
+        1.0, parameterv1_a, [parameterv2_a, parameterv2_a, parameterv2_2_a]
+    )
+    mapping_parameter_b = OneToManyMapping(
+        1.0, parameterv1_b, [parameterv2_b, parameterv2_b, parameterv2_3_b]
+    )
     annotation = GroupAnnotation(
         target="test/test.group.test1.test/TestClass/test",
         authors=["testauthor"],
@@ -205,7 +208,9 @@ def migrate_group_annotation_data_one_to_many_mapping() -> Tuple[
         reviewers=[],
         comment="",
         reviewResult=EnumReviewResult.NONE,
-        newTodo=get_migration_text(annotation, mapping_function, additional_information=None)
+        newTodo=get_migration_text(
+            annotation, mapping_function, additional_information=None
+        ),
     )
     migrated_annotation_5 = TodoAnnotation(
         target="test/test.group.test5.test/NewClass",
@@ -213,9 +218,21 @@ def migrate_group_annotation_data_one_to_many_mapping() -> Tuple[
         reviewers=[],
         comment="",
         reviewResult=EnumReviewResult.NONE,
-        newTodo=get_migration_text(annotation, mapping_function, additional_information=None)
+        newTodo=get_migration_text(
+            annotation, mapping_function, additional_information=None
+        ),
     )
-    return [mapping_function, mapping_parameter_a, mapping_parameter_b], annotation, [migrated_annotation_1, migrated_annotation_2, migrated_annotation_3, migrated_annotation_4, migrated_annotation_5]
+    return (
+        [mapping_function, mapping_parameter_a, mapping_parameter_b],
+        annotation,
+        [
+            migrated_annotation_1,
+            migrated_annotation_2,
+            migrated_annotation_3,
+            migrated_annotation_4,
+            migrated_annotation_5,
+        ],
+    )
 
 
 def migrate_group_annotation_data_one_to_one_mapping() -> Tuple[
@@ -304,4 +321,8 @@ def migrate_group_annotation_data_one_to_one_mapping() -> Tuple[
         groupName="GroupName",
         parameters=["new_parameter_a", "new_parameter_b"],
     )
-    return [mapping_function, mapping_parameter_a, mapping_parameter_b], annotation, [migrated_annotation]
+    return (
+        [mapping_function, mapping_parameter_a, mapping_parameter_b],
+        annotation,
+        [migrated_annotation],
+    )
