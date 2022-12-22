@@ -74,13 +74,19 @@ def migrate_group_annotation(
             if len(grouped_parameters) != len(group_annotation.parameters):
                 group_name += str(int(name_modifier, base=2))
                 review_result = EnumReviewResult.UNSURE
+                if len(group_annotation.comment) != 0:
+                    migrate_text = group_annotation.comment + "\n" + migrate_text
 
             migrated_annotations.append(
                 GroupAnnotation(
                     target=functionv2.id,
                     authors=authors,
                     reviewers=group_annotation.reviewers,
-                    comment=group_annotation.comment,
+                    comment=(
+                        migrate_text
+                        if review_result is EnumReviewResult.UNSURE
+                        else group_annotation.comment
+                    ),
                     reviewResult=review_result,
                     groupName=group_name,
                     parameters=[parameter.name for parameter in grouped_parameters],

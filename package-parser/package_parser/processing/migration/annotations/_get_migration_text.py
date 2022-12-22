@@ -112,20 +112,6 @@ def get_migration_text(
             migrate_text += (
                 " and the possible replacements (" + _list_api_elements(functions) + ")"
             )
-        mappings = [
-            mapping
-            for mapping in additional_information
-            if isinstance(mapping, Mapping)
-        ]
-        if len(mappings) > 0:
-            migrate_text += " and the mappings: "
-            migrate_text += ", ".join(
-                [
-                    _get_mapping_as_string(mapping)
-                    for mapping in additional_information
-                    if isinstance(mapping, Mapping)
-                ]
-            )
     return migrate_text
 
 
@@ -139,14 +125,4 @@ def _list_api_elements(
             else api_element.name,
             api_elements,
         )
-    )
-
-
-def _get_mapping_as_string(mapping: Mapping) -> str:
-    return (
-        "[("
-        + _list_api_elements(mapping.get_apiv1_elements())
-        + ") -> ("
-        + _list_api_elements(mapping.get_apiv2_elements())
-        + ")]"
     )
