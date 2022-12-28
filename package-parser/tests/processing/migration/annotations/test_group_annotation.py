@@ -16,9 +16,10 @@ from package_parser.processing.api.model import (
     ParameterDocumentation,
 )
 from package_parser.processing.migration import (
+    ManyToManyMapping,
     Mapping,
     OneToManyMapping,
-    OneToOneMapping, ManyToManyMapping,
+    OneToOneMapping,
 )
 from package_parser.processing.migration.annotations import (
     get_migration_text,
@@ -390,7 +391,9 @@ def migrate_group_annotation_data_one_to_one_mapping__one_mapping_for_parameters
     )
 
     mapping_function = OneToOneMapping(1.0, functionv1, functionv2)
-    mapping_parameters = ManyToManyMapping(1.0, [parameterv1_a, parameterv1_b], [parameterv2_a, parameterv2_b])
+    mapping_parameters = ManyToManyMapping(
+        1.0, [parameterv1_a, parameterv1_b], [parameterv2_a, parameterv2_b]
+    )
     annotation = GroupAnnotation(
         target="test/test.group.test7.test/TestClass/test",
         authors=["testauthor"],
