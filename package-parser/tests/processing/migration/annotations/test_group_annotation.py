@@ -324,7 +324,7 @@ def migrate_group_annotation_data_one_to_one_mapping() -> Tuple[
     )
 
 
-def migrate_group_annotation_data_one_to_one_mapping() -> Tuple[
+def migrate_group_annotation_data_one_to_one_mapping__one_mapping_for_parameters() -> Tuple[
     list[Mapping],
     AbstractAnnotation,
     list[AbstractAnnotation],
