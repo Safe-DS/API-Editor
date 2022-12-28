@@ -53,7 +53,9 @@ def migrate_group_annotation(
                 else:
                     grouped_parameters.extend(parameter)
                     name_modifier = "1" + name_modifier
-            grouped_parameters = list(set(grouped_parameters))
+
+            remove_duplicates_and_preserve_order = [i for n, i in enumerate(grouped_parameters) if i not in grouped_parameters[:n]]
+            grouped_parameters = remove_duplicates_and_preserve_order
 
             group_name = group_annotation.groupName
             review_result = EnumReviewResult.NONE

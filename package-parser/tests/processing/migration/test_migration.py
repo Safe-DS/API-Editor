@@ -25,6 +25,7 @@ from tests.processing.migration.annotations.test_enum_migration import (
 from tests.processing.migration.annotations.test_group_annotation import (
     migrate_group_annotation_data_one_to_many_mapping,
     migrate_group_annotation_data_one_to_one_mapping,
+    migrate_group_annotation_data_one_to_one_mapping__one_mapping_for_parameters,
 )
 from tests.processing.migration.annotations.test_move_migration import (
     migrate_move_annotation_data_one_to_many_mapping,
@@ -75,6 +76,7 @@ test_data = [
     # group annotation
     migrate_group_annotation_data_one_to_one_mapping(),
     migrate_group_annotation_data_one_to_many_mapping(),
+    migrate_group_annotation_data_one_to_one_mapping__one_mapping_for_parameters(),
     # move annotation
     migrate_move_annotation_data_one_to_one_mapping__class(),
     migrate_move_annotation_data_one_to_one_mapping__global_function(),
