@@ -164,6 +164,10 @@ class AnnotationStore:
                 annotation.target: annotation.to_json()
                 for annotation in self.enumAnnotations
             },
+            "expertAnnotations": {
+                annotation.target: annotation.to_json()
+                for annotation in self.expertAnnotations
+            },
             "groupAnnotations": {
                 annotation.target: annotation.to_json()
                 for annotation in self.groupAnnotations
