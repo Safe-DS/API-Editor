@@ -49,11 +49,12 @@ def migrate_group_annotation(
             name_modifier = ""
 
             for parameter in parameter_replacements:
-                if parameter is None:
+                if len(parameter) == 0:
                     name_modifier = "0" + name_modifier
                 else:
-                    grouped_parameters.append(parameter)
+                    grouped_parameters.extend(parameter)
                     name_modifier = "1" + name_modifier
+            grouped_parameters = list(set(grouped_parameters))
 
             group_name = group_annotation.groupName
             review_result = EnumReviewResult.NONE
@@ -98,31 +99,26 @@ def migrate_group_annotation(
 
 def _get_mappings_for_grouped_parameters(
     group_annotation: GroupAnnotation, mappings: list[Mapping], functionv2: Function
-) -> list[Optional[Parameter]]:
+) -> list[list[Parameter]]:
     parameter_ids = [
         group_annotation.target + "/" + parameter_name
         for parameter_name in group_annotation.parameters
     ]
 
-    matched_parameters: list[Optional[Parameter]] = []
+    matched_parameters: list[list[Parameter]] = []
     for parameter_id in parameter_ids:
-        found = False
         for mapping in mappings:
             for parameterv1 in mapping.get_apiv1_elements():
                 if (
                     isinstance(parameterv1, Parameter)
                     and parameterv1.id == parameter_id
                 ):
+                    mapped_parameters: list[Parameter] = []
                     for parameterv2 in mapping.get_apiv2_elements():
                         if isinstance(
                             parameterv2, Parameter
                         ) and parameterv2.id.startswith(functionv2.id + "/"):
-                            matched_parameters.append(parameterv2)
-                            found = True
-                            break
-                    if not found:
-                        matched_parameters.append(None)
+                            mapped_parameters.append(parameterv2)
+                    matched_parameters.append(mapped_parameters)
                     break
-            if found:
-                break
     return matched_parameters

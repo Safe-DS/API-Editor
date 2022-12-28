@@ -18,7 +18,7 @@ from package_parser.processing.api.model import (
 from package_parser.processing.migration import (
     Mapping,
     OneToManyMapping,
-    OneToOneMapping,
+    OneToOneMapping, ManyToManyMapping,
 )
 from package_parser.processing.migration.annotations import (
     get_migration_text,
@@ -319,6 +319,98 @@ def migrate_group_annotation_data_one_to_one_mapping() -> Tuple[
     )
     return (
         [mapping_function, mapping_parameter_a, mapping_parameter_b],
+        annotation,
+        [migrated_annotation],
+    )
+
+
+def migrate_group_annotation_data_one_to_one_mapping() -> Tuple[
+    list[Mapping],
+    AbstractAnnotation,
+    list[AbstractAnnotation],
+]:
+    functionv1 = Function(
+        id="test/test.group.test7.test/TestClass/test",
+        qname="test.group.test7.test.TestClass.test",
+        decorators=[],
+        parameters=[],
+        results=[],
+        is_public=True,
+        reexported_by=[],
+        documentation=FunctionDocumentation("", ""),
+        code="",
+    )
+    parameterv1_a = Parameter(
+        id_="test/test.group.test7.test/TestClass/test/parameter_a",
+        name="parameter_a",
+        qname="test.group.test7.test.TestClass.test.parameter_a",
+        default_value="1",
+        assigned_by=ParameterAssignment.POSITION_OR_NAME,
+        is_public=True,
+        documentation=ParameterDocumentation("int", "1", "int in the range of (0, 10)"),
+    )
+    parameterv1_b = Parameter(
+        id_="test/test.group.test7.test/TestClass/test/parameter_b",
+        name="parameter_b",
+        qname="test.group.test7.test.TestClass.test.parameter_b",
+        default_value="'test'",
+        assigned_by=ParameterAssignment.POSITION_OR_NAME,
+        is_public=True,
+        documentation=ParameterDocumentation("str", "'test'", "str"),
+    )
+
+    functionv2 = Function(
+        id="test/test.group.test7.test/NewTestClass/test",
+        qname="test.group.test7.test.NewTestClass.test",
+        decorators=[],
+        parameters=[],
+        results=[],
+        is_public=True,
+        reexported_by=[],
+        documentation=FunctionDocumentation("", ""),
+        code="",
+    )
+    parameterv2_a = Parameter(
+        id_="test/test.group.test7.test/NewTestClass/test/new_parameter_a",
+        name="new_parameter_a",
+        qname="test.group.test7.test.NewTestClass.test.new_parameter_a",
+        default_value="1",
+        assigned_by=ParameterAssignment.POSITION_OR_NAME,
+        is_public=True,
+        documentation=ParameterDocumentation("int", "1", "int in the range of (0, 10)"),
+    )
+    parameterv2_b = Parameter(
+        id_="test/test.group.test7.test/NewTestClass/test/new_parameter_b",
+        name="new_parameter_b",
+        qname="test.group.test6.test.NewTestClass.test.new_parameter_b",
+        default_value="'test'",
+        assigned_by=ParameterAssignment.POSITION_OR_NAME,
+        is_public=True,
+        documentation=ParameterDocumentation("str", "'test'", "str"),
+    )
+
+    mapping_function = OneToOneMapping(1.0, functionv1, functionv2)
+    mapping_parameters = ManyToManyMapping(1.0, [parameterv1_a, parameterv1_b], [parameterv2_a, parameterv2_b])
+    annotation = GroupAnnotation(
+        target="test/test.group.test7.test/TestClass/test",
+        authors=["testauthor"],
+        reviewers=[],
+        comment="",
+        reviewResult=EnumReviewResult.NONE,
+        groupName="GroupName",
+        parameters=["parameter_a", "parameter_b"],
+    )
+    migrated_annotation = GroupAnnotation(
+        target="test/test.group.test7.test/NewTestClass/test",
+        authors=["testauthor", migration_author],
+        reviewers=[],
+        comment="",
+        reviewResult=EnumReviewResult.NONE,
+        groupName="GroupName",
+        parameters=["new_parameter_a", "new_parameter_b"],
+    )
+    return (
+        [mapping_function, mapping_parameters],
         annotation,
         [migrated_annotation],
     )
