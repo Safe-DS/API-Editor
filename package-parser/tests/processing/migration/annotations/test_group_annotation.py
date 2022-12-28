@@ -268,7 +268,9 @@ def migrate_group_annotation_data_one_to_many_mapping() -> Tuple[
         reviewers=[],
         comment="",
         reviewResult=EnumReviewResult.NONE,
-        newTodo=get_migration_text(annotation, mapping_function, additional_information=[parameterv2_4_b]),
+        newTodo=get_migration_text(
+            annotation, mapping_function, additional_information=[parameterv2_4_b]
+        ),
     )
     migrated_annotation_5 = TodoAnnotation(
         target="test/test.group.test5.test/NewTestClass/test",
@@ -287,7 +289,12 @@ def migrate_group_annotation_data_one_to_many_mapping() -> Tuple[
         newTodo=get_migration_text(annotation, mapping_function),
     )
     return (
-        [mapping_function, mapping_parameter_a, mapping_parameter_b, mapping_parameter_c],
+        [
+            mapping_function,
+            mapping_parameter_a,
+            mapping_parameter_b,
+            mapping_parameter_c,
+        ],
         annotation,
         [
             migrated_annotation_1,

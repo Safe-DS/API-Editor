@@ -120,7 +120,9 @@ def get_migration_text(
         ]
         if len(parameters) > 0:
             migrate_text += (
-                " and the possible replacements (" + _list_api_elements(parameters) + ")"
+                " and the possible replacements ("
+                + _list_api_elements(parameters)
+                + ")"
             )
 
     return migrate_text

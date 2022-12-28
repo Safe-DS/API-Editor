@@ -71,7 +71,9 @@ def migrate_group_annotation(
                         comment=group_annotation.comment,
                         reviewResult=group_annotation.reviewResult,
                         newTodo=get_migration_text(
-                            group_annotation, mapping, additional_information=grouped_parameters
+                            group_annotation,
+                            mapping,
+                            additional_information=grouped_parameters,
                         ),
                     )
                 )
