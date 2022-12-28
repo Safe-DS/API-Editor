@@ -49,7 +49,10 @@ def migrate_group_annotation(
                     name_modifier = "0" + name_modifier
                 else:
                     grouped_parameters.extend(parameter_list)
-                    name_modifier = "1" + name_modifier
+                    if len(parameter_list) == 1:
+                        name_modifier = "1" + name_modifier
+                    else:
+                        name_modifier = "0" + name_modifier
 
             remove_duplicates_and_preserve_order = [
                 i
