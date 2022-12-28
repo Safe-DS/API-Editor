@@ -54,7 +54,11 @@ def migrate_group_annotation(
                     grouped_parameters.extend(parameter)
                     name_modifier = "1" + name_modifier
 
-            remove_duplicates_and_preserve_order = [i for n, i in enumerate(grouped_parameters) if i not in grouped_parameters[:n]]
+            remove_duplicates_and_preserve_order = [
+                i
+                for n, i in enumerate(grouped_parameters)
+                if i not in grouped_parameters[:n]
+            ]
             grouped_parameters = remove_duplicates_and_preserve_order
 
             group_name = group_annotation.groupName
