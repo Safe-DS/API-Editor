@@ -4,6 +4,8 @@ from package_parser.processing.annotations.model import (
 )
 from package_parser.processing.migration import migrate_annotations
 from package_parser.processing.migration.model import Mapping
+from processing.migration.annotations.test_expert_migration import migrate_expert_annotation_data__function, \
+    migrate_expert_annotation_data__class, migrate_expert_annotation_data__parameter
 from tests.processing.migration.annotations.test_boundary_migration import (
     migrate_boundary_annotation_data_one_to_many_mapping,
     migrate_boundary_annotation_data_one_to_one_mapping,
@@ -73,6 +75,10 @@ test_data = [
     migrate_enum_annotation_data_one_to_one_mapping(),
     migrate_enum_annotation_data_one_to_many_mapping(),
     migrate_enum_annotation_data_one_to_many_mapping__only_one_relevant_mapping(),
+    # expert annotation
+    migrate_expert_annotation_data__function(),
+    migrate_expert_annotation_data__class(),
+    # migrate_expert_annotation_data__parameter(),
     # group annotation
     migrate_group_annotation_data_one_to_one_mapping(),
     migrate_group_annotation_data_one_to_many_mapping(),
