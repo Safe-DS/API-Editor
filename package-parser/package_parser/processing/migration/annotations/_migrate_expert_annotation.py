@@ -6,10 +6,7 @@ from package_parser.processing.annotations.model import (
     ExpertAnnotation,
     TodoAnnotation,
 )
-from package_parser.processing.api.model import (
-    Attribute,
-    Result,
-)
+from package_parser.processing.api.model import Attribute, Result
 from package_parser.processing.migration.model import (
     ManyToOneMapping,
     Mapping,
@@ -45,9 +42,8 @@ def migrate_expert_annotation(
 
     expert_annotations: list[AbstractAnnotation] = []
     for element in mapping.get_apiv2_elements():
-        if (
-            isinstance(element, type(annotated_apiv1_element))
-            and not isinstance(element, (Attribute, Result))
+        if isinstance(element, type(annotated_apiv1_element)) and not isinstance(
+            element, (Attribute, Result)
         ):
             expert_annotations.append(
                 ExpertAnnotation(

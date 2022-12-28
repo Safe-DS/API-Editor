@@ -10,7 +10,10 @@ from package_parser.processing.api.model import (
     Class,
     ClassDocumentation,
     Function,
-    FunctionDocumentation, ParameterAssignment, Parameter, ParameterDocumentation,
+    FunctionDocumentation,
+    Parameter,
+    ParameterAssignment,
+    ParameterDocumentation,
 )
 from package_parser.processing.migration import (
     Mapping,
@@ -133,7 +136,7 @@ def migrate_expert_annotation_data__class() -> Tuple[
         reviewers=[],
         comment="",
         reviewResult=EnumReviewResult.NONE,
-        newTodo=get_migration_text(annotationv1, mapping)
+        newTodo=get_migration_text(annotationv1, mapping),
     )
     return mapping, annotationv1, [annotationv2, annotationv2_function]
 
