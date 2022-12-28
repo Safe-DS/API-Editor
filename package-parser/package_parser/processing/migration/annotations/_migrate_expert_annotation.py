@@ -8,9 +8,6 @@ from package_parser.processing.annotations.model import (
 )
 from package_parser.processing.api.model import (
     Attribute,
-    Class,
-    Function,
-    Parameter,
     Result,
 )
 from package_parser.processing.migration.model import (
