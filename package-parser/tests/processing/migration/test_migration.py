@@ -22,6 +22,11 @@ from tests.processing.migration.annotations.test_enum_migration import (
     migrate_enum_annotation_data_one_to_many_mapping__only_one_relevant_mapping,
     migrate_enum_annotation_data_one_to_one_mapping,
 )
+from tests.processing.migration.annotations.test_group_annotation import (
+    migrate_group_annotation_data_one_to_many_mapping,
+    migrate_group_annotation_data_one_to_one_mapping,
+    migrate_group_annotation_data_one_to_one_mapping__one_mapping_for_parameters,
+)
 from tests.processing.migration.annotations.test_move_migration import (
     migrate_move_annotation_data_one_to_many_mapping,
     migrate_move_annotation_data_one_to_one_mapping__class,
@@ -53,6 +58,11 @@ from tests.processing.migration.annotations.test_value_migration import (
 )
 
 test_data = [
+    # boundary annotation
+    migrate_boundary_annotation_data_one_to_one_mapping(),
+    migrate_boundary_annotation_data_one_to_one_mapping_int_to_float(),
+    migrate_boundary_annotation_data_one_to_one_mapping_float_to_int(),
+    migrate_boundary_annotation_data_one_to_many_mapping(),
     # called after annotation
     migrate_called_after_annotation_data_one_to_one_mapping(),
     migrate_called_after_annotation_data_one_to_many_mapping(),
@@ -63,11 +73,10 @@ test_data = [
     migrate_enum_annotation_data_one_to_one_mapping(),
     migrate_enum_annotation_data_one_to_many_mapping(),
     migrate_enum_annotation_data_one_to_many_mapping__only_one_relevant_mapping(),
-    # boundary annotation
-    migrate_boundary_annotation_data_one_to_one_mapping(),
-    migrate_boundary_annotation_data_one_to_one_mapping_int_to_float(),
-    migrate_boundary_annotation_data_one_to_one_mapping_float_to_int(),
-    migrate_boundary_annotation_data_one_to_many_mapping(),
+    # group annotation
+    migrate_group_annotation_data_one_to_one_mapping(),
+    migrate_group_annotation_data_one_to_many_mapping(),
+    migrate_group_annotation_data_one_to_one_mapping__one_mapping_for_parameters(),
     # move annotation
     migrate_move_annotation_data_one_to_one_mapping__class(),
     migrate_move_annotation_data_one_to_one_mapping__global_function(),

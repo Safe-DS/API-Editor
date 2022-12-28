@@ -112,6 +112,19 @@ def get_migration_text(
             migrate_text += (
                 " and the possible replacements (" + _list_api_elements(functions) + ")"
             )
+
+        parameters = [
+            parameter
+            for parameter in additional_information
+            if isinstance(parameter, Parameter)
+        ]
+        if len(parameters) > 0:
+            migrate_text += (
+                " and the possible replacements ("
+                + _list_api_elements(parameters)
+                + ")"
+            )
+
     return migrate_text
 
 
