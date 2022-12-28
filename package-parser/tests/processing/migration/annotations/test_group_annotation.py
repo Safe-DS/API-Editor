@@ -50,11 +50,20 @@ def migrate_group_annotation_data_one_to_many_mapping() -> Tuple[
         is_public=True,
         documentation=ParameterDocumentation("str", "'test'", "str"),
     )
+    parameterv1_c = Parameter(
+        id_="test/test.group.test1.test/TestClass/test/parameter_c",
+        name="parameter_c",
+        qname="test.group.test1.test.TestClass.test.parameter_c",
+        default_value="'test_c'",
+        assigned_by=ParameterAssignment.POSITION_OR_NAME,
+        is_public=True,
+        documentation=ParameterDocumentation("str", "'test_c'", "str"),
+    )
     functionv1 = Function(
         id="test/test.group.test1.test/TestClass/test",
         qname="test.group.test1.test.TestClass.test",
         decorators=[],
-        parameters=[parameterv1_a, parameterv1_b],
+        parameters=[parameterv1_a, parameterv1_b, parameterv1_c],
         results=[],
         is_public=True,
         reexported_by=[],
@@ -80,11 +89,20 @@ def migrate_group_annotation_data_one_to_many_mapping() -> Tuple[
         is_public=True,
         documentation=ParameterDocumentation("str", "'test'", "str"),
     )
+    parameterv2_c = Parameter(
+        id_="test/test.group.test1.test/NewTestClass/test/new_parameter_c",
+        name="new_parameter_c",
+        qname="test.group.test1.test.NewTestClass.test.new_parameter_c",
+        default_value="'test_c'",
+        assigned_by=ParameterAssignment.POSITION_OR_NAME,
+        is_public=True,
+        documentation=ParameterDocumentation("str", "'test_c'", "str"),
+    )
     functionv2 = Function(
         id="test/test.group.test1.test/NewTestClass/test",
         qname="test.group.test1.test.NewTestClass.test",
         decorators=[],
-        parameters=[parameterv2_a, parameterv2_b],
+        parameters=[parameterv2_a, parameterv2_b, parameterv2_c],
         results=[],
         is_public=True,
         reexported_by=[],
@@ -101,11 +119,20 @@ def migrate_group_annotation_data_one_to_many_mapping() -> Tuple[
         is_public=True,
         documentation=ParameterDocumentation("int", "1", "int in the range of (0, 10)"),
     )
+    parameterv2_2_c = Parameter(
+        id_="test/test.group.test2.test/NewTestClass/test/new_parameter_c",
+        name="new_parameter_c",
+        qname="test.group.test2.test.NewTestClass.test.new_parameter_c",
+        default_value="test",
+        assigned_by=ParameterAssignment.POSITION_OR_NAME,
+        is_public=True,
+        documentation=ParameterDocumentation("str", "test_c", "str"),
+    )
     functionv2_2 = Function(
         id="test/test.group.test2.test/NewTestClass/test",
         qname="test.group.test2.test.NewTestClass.test",
         decorators=[],
-        parameters=[parameterv2_2_a],
+        parameters=[parameterv2_2_a, parameterv2_2_c],
         results=[],
         is_public=True,
         reexported_by=[],
@@ -122,6 +149,15 @@ def migrate_group_annotation_data_one_to_many_mapping() -> Tuple[
         is_public=True,
         documentation=ParameterDocumentation("str", "'test'", "str"),
     )
+    parameterv2_3_c = Parameter(
+        id_="test/test.group.test3.test/NewTestClass/test/new_parameter_c",
+        name="new_parameter_c",
+        qname="test.group.test3.test.NewTestClass.test.new_parameter_c",
+        default_value="test",
+        assigned_by=ParameterAssignment.POSITION_OR_NAME,
+        is_public=True,
+        documentation=ParameterDocumentation("str", "test_c", "str"),
+    )
     functionv2_3 = Function(
         id="test/test.group.test3.test/NewTestClass/test",
         qname="test.group.test3.test.NewTestClass.test",
@@ -133,9 +169,29 @@ def migrate_group_annotation_data_one_to_many_mapping() -> Tuple[
         documentation=FunctionDocumentation("", ""),
         code="",
     )
+    parameterv2_4_b = Parameter(
+        id_="test/test.group.test4.test/NewTestClass/test/new_parameter_b",
+        name="new_parameter_b",
+        qname="test.group.test4.test.NewTestClass.test.new_parameter_b",
+        default_value="'test'",
+        assigned_by=ParameterAssignment.POSITION_OR_NAME,
+        is_public=True,
+        documentation=ParameterDocumentation("str", "'test'", "str"),
+    )
     functionv2_4 = Function(
         id="test/test.group.test4.test/NewTestClass/test",
         qname="test.group.test4.test.NewTestClass.test",
+        decorators=[],
+        parameters=[parameterv2_3_b],
+        results=[],
+        is_public=True,
+        reexported_by=[],
+        documentation=FunctionDocumentation("", ""),
+        code="",
+    )
+    functionv2_5 = Function(
+        id="test/test.group.test5.test/NewTestClass/test",
+        qname="test.group.test5.test.NewTestClass.test",
         decorators=[],
         parameters=[],
         results=[],
@@ -144,9 +200,9 @@ def migrate_group_annotation_data_one_to_many_mapping() -> Tuple[
         documentation=FunctionDocumentation("", ""),
         code="",
     )
-    classv2_5 = Class(
-        id_="test/test.group.test5.test/NewClass",
-        qname="test.remove.test5.test.NewClass",
+    classv2_6 = Class(
+        id_="test/test.group.test6.test/NewClass",
+        qname="test.remove.test6.test.NewClass",
         decorators=[],
         superclasses=[],
         is_public=True,
@@ -159,13 +215,16 @@ def migrate_group_annotation_data_one_to_many_mapping() -> Tuple[
     mapping_function = OneToManyMapping(
         1.0,
         functionv1,
-        [functionv2, functionv2_2, functionv2_3, functionv2_4, classv2_5],
+        [functionv2, functionv2_2, functionv2_3, functionv2_4, functionv2_5, classv2_6],
     )
     mapping_parameter_a = OneToManyMapping(
-        1.0, parameterv1_a, [parameterv2_a, parameterv2_a, parameterv2_2_a]
+        1.0, parameterv1_a, [parameterv2_a, parameterv2_2_a]
     )
     mapping_parameter_b = OneToManyMapping(
-        1.0, parameterv1_b, [parameterv2_b, parameterv2_b, parameterv2_3_b]
+        1.0, parameterv1_b, [parameterv2_b, parameterv2_3_b, parameterv2_4_b]
+    )
+    mapping_parameter_c = OneToManyMapping(
+        1.0, parameterv1_c, [parameterv2_c, parameterv2_2_c, parameterv2_3_c]
     )
     annotation = GroupAnnotation(
         target="test/test.group.test1.test/TestClass/test",
@@ -174,7 +233,7 @@ def migrate_group_annotation_data_one_to_many_mapping() -> Tuple[
         comment="",
         reviewResult=EnumReviewResult.NONE,
         groupName="GroupName",
-        parameters=["parameter_a", "parameter_b"],
+        parameters=["parameter_a", "parameter_b", "parameter_c"],
     )
     migrated_annotation_1 = GroupAnnotation(
         target="test/test.group.test1.test/NewTestClass/test",
@@ -183,7 +242,7 @@ def migrate_group_annotation_data_one_to_many_mapping() -> Tuple[
         comment="",
         reviewResult=EnumReviewResult.NONE,
         groupName="GroupName",
-        parameters=["new_parameter_a", "new_parameter_b"],
+        parameters=["new_parameter_a", "new_parameter_b", "new_parameter_c"],
     )
     migrated_annotation_2 = GroupAnnotation(
         target="test/test.group.test2.test/NewTestClass/test",
@@ -191,8 +250,8 @@ def migrate_group_annotation_data_one_to_many_mapping() -> Tuple[
         reviewers=[],
         comment=get_migration_text(annotation, mapping_function),
         reviewResult=EnumReviewResult.UNSURE,
-        groupName="GroupName1",
-        parameters=["new_parameter_a"],
+        groupName="GroupName5",
+        parameters=["new_parameter_a", "new_parameter_c"],
     )
     migrated_annotation_3 = GroupAnnotation(
         target="test/test.group.test3.test/NewTestClass/test",
@@ -200,19 +259,27 @@ def migrate_group_annotation_data_one_to_many_mapping() -> Tuple[
         reviewers=[],
         comment=get_migration_text(annotation, mapping_function),
         reviewResult=EnumReviewResult.UNSURE,
-        groupName="GroupName2",
-        parameters=["new_parameter_b"],
+        groupName="GroupName6",
+        parameters=["new_parameter_b", "new_parameter_c"],
     )
     migrated_annotation_4 = TodoAnnotation(
-        target="test/test.group.test4.test/NewTestClass/test",
+        target="test/test.group.test4.test/NewTestClass/test ",
+        authors=["testauthor", migration_author],
+        reviewers=[],
+        comment="",
+        reviewResult=EnumReviewResult.NONE,
+        newTodo=get_migration_text(annotation, mapping_function, additional_information=[parameterv2_4_b]),
+    )
+    migrated_annotation_5 = TodoAnnotation(
+        target="test/test.group.test5.test/NewTestClass/test",
         authors=["testauthor", migration_author],
         reviewers=[],
         comment="",
         reviewResult=EnumReviewResult.NONE,
         newTodo=get_migration_text(annotation, mapping_function),
     )
-    migrated_annotation_5 = TodoAnnotation(
-        target="test/test.group.test5.test/NewClass",
+    migrated_annotation_6 = TodoAnnotation(
+        target="test/test.group.test6.test/NewClass",
         authors=["testauthor", migration_author],
         reviewers=[],
         comment="",
@@ -220,7 +287,7 @@ def migrate_group_annotation_data_one_to_many_mapping() -> Tuple[
         newTodo=get_migration_text(annotation, mapping_function),
     )
     return (
-        [mapping_function, mapping_parameter_a, mapping_parameter_b],
+        [mapping_function, mapping_parameter_a, mapping_parameter_b, mapping_parameter_c],
         annotation,
         [
             migrated_annotation_1,
@@ -228,6 +295,7 @@ def migrate_group_annotation_data_one_to_many_mapping() -> Tuple[
             migrated_annotation_3,
             migrated_annotation_4,
             migrated_annotation_5,
+            migrated_annotation_6,
         ],
     )
 

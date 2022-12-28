@@ -41,17 +41,14 @@ def migrate_group_annotation(
             parameter_replacements = _get_mappings_for_grouped_parameters(
                 group_annotation, mappings, functionv2
             )
-            migrate_text = get_migration_text(
-                group_annotation, mapping, additional_information=parameter_replacements
-            )
             grouped_parameters: list[Parameter] = []
             name_modifier = ""
 
-            for parameter in parameter_replacements:
-                if len(parameter) == 0:
+            for parameter_list in parameter_replacements:
+                if len(parameter_list) == 0:
                     name_modifier = "0" + name_modifier
                 else:
-                    grouped_parameters.extend(parameter)
+                    grouped_parameters.extend(parameter_list)
                     name_modifier = "1" + name_modifier
 
             remove_duplicates_and_preserve_order = [
@@ -63,8 +60,9 @@ def migrate_group_annotation(
 
             group_name = group_annotation.groupName
             review_result = EnumReviewResult.NONE
+            migrate_text = get_migration_text(group_annotation, mapping)
 
-            if len(grouped_parameters) == 0:
+            if len(grouped_parameters) < 2 < len(group_annotation.parameters):
                 migrated_annotations.append(
                     TodoAnnotation(
                         target=functionv2.id,
@@ -72,7 +70,9 @@ def migrate_group_annotation(
                         reviewers=group_annotation.reviewers,
                         comment=group_annotation.comment,
                         reviewResult=group_annotation.reviewResult,
-                        newTodo=migrate_text,
+                        newTodo=get_migration_text(
+                            group_annotation, mapping, additional_information=grouped_parameters
+                        ),
                     )
                 )
                 continue
