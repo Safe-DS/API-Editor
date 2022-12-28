@@ -263,7 +263,7 @@ def migrate_group_annotation_data_one_to_many_mapping() -> Tuple[
         parameters=["new_parameter_b", "new_parameter_c"],
     )
     migrated_annotation_4 = TodoAnnotation(
-        target="test/test.group.test4.test/NewTestClass/test ",
+        target="test/test.group.test4.test/NewTestClass/test",
         authors=["testauthor", migration_author],
         reviewers=[],
         comment="",
