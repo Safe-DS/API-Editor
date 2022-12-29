@@ -149,7 +149,7 @@ def migrate_expert_annotation_data__parameter() -> Tuple[
     parameterv1 = Parameter(
         id_="test/test.expert/test3/testA",
         name="testA",
-        qname="test.value.expert.testA",
+        qname="test.expert.test3.testA",
         default_value="'this is a string'",
         assigned_by=ParameterAssignment.POSITION_OR_NAME,
         is_public=True,
@@ -158,7 +158,7 @@ def migrate_expert_annotation_data__parameter() -> Tuple[
     parameterv2 = Parameter(
         id_="test/test.expert/test3/testB",
         name="testB",
-        qname="test.expert.test1.testB",
+        qname="test.expert.test3.testB",
         default_value="'test string'",
         assigned_by=ParameterAssignment.POSITION_OR_NAME,
         is_public=True,
