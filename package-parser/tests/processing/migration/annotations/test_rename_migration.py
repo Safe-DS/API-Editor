@@ -28,18 +28,18 @@ def migrate_rename_annotation_data_one_to_one_mapping() -> Tuple[
     list[AbstractAnnotation],
 ]:
     parameterv1 = Parameter(
-        id_="test/test.Test_",
+        id_="test/test.rename.test1.Test_",
         name="Test",
-        qname="test.Test",
+        qname="test.rename.test1.Test_",
         default_value=None,
         assigned_by=ParameterAssignment.POSITION_OR_NAME,
         is_public=True,
         documentation=ParameterDocumentation("", "", ""),
     )
     parameterv2 = Parameter(
-        id_="test/test.TestB",
+        id_="test/test.rename.test1.TestB",
         name="TestB",
-        qname="test.TestB",
+        qname="test.rename.test1.TestB",
         default_value=None,
         assigned_by=ParameterAssignment.POSITION_OR_NAME,
         is_public=True,
@@ -47,7 +47,7 @@ def migrate_rename_annotation_data_one_to_one_mapping() -> Tuple[
     )
     mappings = OneToOneMapping(1.0, parameterv1, parameterv2)
     annotationv1 = RenameAnnotation(
-        target="test/test.Test_",
+        target="test/test.rename.test1.Test_",
         authors=["testauthor"],
         reviewers=[],
         comment="",
@@ -55,7 +55,7 @@ def migrate_rename_annotation_data_one_to_one_mapping() -> Tuple[
         newName="TestE",
     )
     annotationv2 = RenameAnnotation(
-        target="test/test.TestB",
+        target="test/test.rename.test1.TestB",
         authors=["testauthor", migration_author],
         reviewers=[],
         comment="",
@@ -71,27 +71,27 @@ def migrate_rename_annotation_data_one_to_many_mapping__with_changed_new_name() 
     list[AbstractAnnotation],
 ]:
     parameterv1 = Parameter(
-        id_="test/test.rename.Test",
+        id_="test/test.rename.test2.Test",
         name="Test",
-        qname="test.rename.Test",
+        qname="test.rename.test2.Test",
         default_value=None,
         assigned_by=ParameterAssignment.POSITION_OR_NAME,
         is_public=True,
         documentation=ParameterDocumentation("", "", ""),
     )
     parameterv2_a = Parameter(
-        id_="test/test.rename.TestA",
+        id_="test/test.rename.test2.TestA",
         name="TestA",
-        qname="test.rename.TestA",
+        qname="test.rename.test2.TestA",
         default_value=None,
         assigned_by=ParameterAssignment.POSITION_OR_NAME,
         is_public=True,
         documentation=ParameterDocumentation("", "", ""),
     )
     parameterv2_b = Parameter(
-        id_="test/test.rename.TestB",
+        id_="test/test.rename.test2.TestB",
         name="TestB",
-        qname="test.rename.TestB",
+        qname="test.rename.test2.TestB",
         default_value=None,
         assigned_by=ParameterAssignment.POSITION_OR_NAME,
         is_public=True,
@@ -99,7 +99,7 @@ def migrate_rename_annotation_data_one_to_many_mapping__with_changed_new_name() 
     )
     mappings = OneToManyMapping(1.0, parameterv1, [parameterv2_a, parameterv2_b])
     annotationv1 = RenameAnnotation(
-        target="test/test.rename.Test",
+        target="test/test.rename.test2.Test",
         authors=["testauthor"],
         reviewers=[],
         comment="",
@@ -107,7 +107,7 @@ def migrate_rename_annotation_data_one_to_many_mapping__with_changed_new_name() 
         newName="TestA",
     )
     annotationv2 = RenameAnnotation(
-        target="test/test.rename.TestA",
+        target="test/test.rename.test2.TestA",
         authors=["testauthor", migration_author],
         reviewers=[],
         comment=get_migration_text(annotationv1, mappings),
@@ -123,27 +123,27 @@ def migrate_rename_annotation_data_one_to_many_mapping() -> Tuple[
     list[AbstractAnnotation],
 ]:
     parameterv1 = Parameter(
-        id_="test/test.rename.Test",
+        id_="test/test.rename.test3.Test",
         name="Test",
-        qname="test.rename.Test",
+        qname="test.rename.test3.Test",
         default_value=None,
         assigned_by=ParameterAssignment.POSITION_OR_NAME,
         is_public=True,
         documentation=ParameterDocumentation("", "", ""),
     )
     parameterv2_a = Parameter(
-        id_="test/test.rename.TestA",
+        id_="test/test.rename.test3.TestA",
         name="TestA",
-        qname="test.rename.TestA",
+        qname="test.rename.test3.TestA",
         default_value=None,
         assigned_by=ParameterAssignment.POSITION_OR_NAME,
         is_public=True,
         documentation=ParameterDocumentation("", "", ""),
     )
     parameterv2_b = Parameter(
-        id_="test/test.rename.TestB",
+        id_="test/test.rename.test3.TestB",
         name="TestB",
-        qname="test.rename.TestB",
+        qname="test.rename.test3.TestB",
         default_value=None,
         assigned_by=ParameterAssignment.POSITION_OR_NAME,
         is_public=True,
@@ -151,7 +151,7 @@ def migrate_rename_annotation_data_one_to_many_mapping() -> Tuple[
     )
     mappings = OneToManyMapping(1.0, parameterv1, [parameterv2_a, parameterv2_b])
     annotationv1 = RenameAnnotation(
-        target="test/test.rename.Test",
+        target="test/test.rename.test3.Test",
         authors=["testauthor"],
         reviewers=[],
         comment="",
@@ -159,7 +159,7 @@ def migrate_rename_annotation_data_one_to_many_mapping() -> Tuple[
         newName="TestZ",
     )
     annotationv2_a = TodoAnnotation(
-        target="test/test.rename.TestA",
+        target="test/test.rename.test3.TestA",
         authors=["testauthor", migration_author],
         reviewers=[],
         comment="",
@@ -167,7 +167,7 @@ def migrate_rename_annotation_data_one_to_many_mapping() -> Tuple[
         newTodo=get_migration_text(annotationv1, mappings),
     )
     annotationv2_b = TodoAnnotation(
-        target="test/test.rename.TestB",
+        target="test/test.rename.test3.TestB",
         authors=["testauthor", migration_author],
         reviewers=[],
         comment="",
