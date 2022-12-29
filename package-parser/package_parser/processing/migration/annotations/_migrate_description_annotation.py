@@ -2,8 +2,8 @@ from copy import deepcopy
 
 from package_parser.processing.annotations.model import (
     AbstractAnnotation,
-    EnumReviewResult,
     DescriptionAnnotation,
+    EnumReviewResult,
     TodoAnnotation,
 )
 from package_parser.processing.api.model import Attribute, Result

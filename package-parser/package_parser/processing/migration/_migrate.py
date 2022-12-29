@@ -55,7 +55,9 @@ def migrate_annotations(
     for description_annotation in annotationsv1.descriptionAnnotations:
         mapping = _get_mapping_from_annotation(description_annotation, mappings)
         if mapping is not None:
-            for annotation in migrate_description_annotation(description_annotation, mapping):
+            for annotation in migrate_description_annotation(
+                description_annotation, mapping
+            ):
                 migrated_annotation_store.add_annotation(annotation)
 
     for enum_annotation in annotationsv1.enumAnnotations:
