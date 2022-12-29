@@ -27,6 +27,7 @@ from package_parser.processing.migration.annotations import (
 )
 
 
+# pylint: disable=duplicate-code
 def migrate_group_annotation_data_one_to_many_mapping() -> Tuple[
     list[Mapping],
     AbstractAnnotation,
