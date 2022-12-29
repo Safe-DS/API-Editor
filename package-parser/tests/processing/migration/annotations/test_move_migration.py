@@ -82,7 +82,7 @@ def migrate_move_annotation_data_one_to_one_mapping__class() -> Tuple[
 ]:
     classv1 = Class(
         id_="test/test.move.test2.test/MoveTestClass",
-        qname="test.move.test2.test.TestClass",
+        qname="test.move.test2.test.MoveTestClass",
         decorators=[],
         superclasses=[],
         is_public=True,

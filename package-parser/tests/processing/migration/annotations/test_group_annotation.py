@@ -27,6 +27,7 @@ from package_parser.processing.migration.annotations import (
 )
 
 
+# pylint: disable=duplicate-code
 def migrate_group_annotation_data_one_to_many_mapping() -> Tuple[
     list[Mapping],
     AbstractAnnotation,
@@ -202,7 +203,7 @@ def migrate_group_annotation_data_one_to_many_mapping() -> Tuple[
     )
     classv2_6 = Class(
         id_="test/test.group.test6.test/NewClass",
-        qname="test.remove.test6.test.NewClass",
+        qname="test.group.test6.test.NewClass",
         decorators=[],
         superclasses=[],
         is_public=True,
@@ -458,7 +459,7 @@ def migrate_group_annotation_data_one_to_one_mapping__one_mapping_for_parameters
     parameterv2_b = Parameter(
         id_="test/test.group.test7.test/NewTestClass/test/new_parameter_b",
         name="new_parameter_b",
-        qname="test.group.test6.test.NewTestClass.test.new_parameter_b",
+        qname="test.group.test7.test.NewTestClass.test.new_parameter_b",
         default_value="'test'",
         assigned_by=ParameterAssignment.POSITION_OR_NAME,
         is_public=True,

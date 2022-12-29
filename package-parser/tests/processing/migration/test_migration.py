@@ -17,6 +17,11 @@ from tests.processing.migration.annotations.test_called_after_migration import (
     migrate_called_after_annotation_data_one_to_one_mapping__before_splits,
     migrate_called_after_annotation_data_one_to_one_mapping__no_mapping_found,
 )
+from tests.processing.migration.annotations.test_description_migration import (
+    migrate_description_annotation_data_one_to_many_mapping__class,
+    migrate_description_annotation_data_one_to_one_mapping__function,
+    migrate_description_annotation_data_one_to_one_mapping__parameter,
+)
 from tests.processing.migration.annotations.test_enum_migration import (
     migrate_enum_annotation_data_one_to_many_mapping,
     migrate_enum_annotation_data_one_to_many_mapping__only_one_relevant_mapping,
@@ -69,6 +74,10 @@ test_data = [
     migrate_called_after_annotation_data_one_to_one_mapping__no_mapping_found(),
     migrate_called_after_annotation_data_one_to_one_mapping__before_splits(),
     migrate_called_after_annotation_data_one_to_many_mapping__two_classes(),
+    # description annotation
+    migrate_description_annotation_data_one_to_one_mapping__function(),
+    migrate_description_annotation_data_one_to_many_mapping__class(),
+    migrate_description_annotation_data_one_to_one_mapping__parameter(),
     # enum annotation
     migrate_enum_annotation_data_one_to_one_mapping(),
     migrate_enum_annotation_data_one_to_many_mapping(),
