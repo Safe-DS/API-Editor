@@ -2,7 +2,7 @@ from package_parser.processing.annotations.model import (
     AbstractAnnotation,
     AnnotationStore,
 )
-from package_parser.processing.migration import migrate_annotations
+from package_parser.processing.migration import Migration
 from package_parser.processing.migration.model import Mapping
 from tests.processing.migration.annotations.test_boundary_migration import (
     migrate_boundary_annotation_data_one_to_many_mapping,
@@ -118,7 +118,7 @@ def test_migrate_all_annotations() -> None:
         for expected_annotation in annotationsv2:
             expected_annotation_store.add_annotation(expected_annotation)
 
-    actual_annotations = migrate_annotations(annotation_store, mappings)
+    actual_annotations = Migration().migrate_annotations(annotation_store, mappings)
 
     def get_key(annotation: AbstractAnnotation) -> str:
         return annotation.target
