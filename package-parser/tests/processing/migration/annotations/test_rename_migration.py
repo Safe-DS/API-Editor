@@ -30,7 +30,7 @@ def migrate_rename_annotation_data_one_to_one_mapping() -> Tuple[
     parameterv1 = Parameter(
         id_="test/test.rename.test1.Test_",
         name="Test",
-        qname="test.rename.test1.Test",
+        qname="test.rename.test1.Test_",
         default_value=None,
         assigned_by=ParameterAssignment.POSITION_OR_NAME,
         is_public=True,

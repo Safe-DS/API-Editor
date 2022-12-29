@@ -458,7 +458,7 @@ def migrate_group_annotation_data_one_to_one_mapping__one_mapping_for_parameters
     parameterv2_b = Parameter(
         id_="test/test.group.test7.test/NewTestClass/test/new_parameter_b",
         name="new_parameter_b",
-        qname="test.group.test6.test.NewTestClass.test.new_parameter_b",
+        qname="test.group.test7.test.NewTestClass.test.new_parameter_b",
         default_value="'test'",
         assigned_by=ParameterAssignment.POSITION_OR_NAME,
         is_public=True,
