@@ -2,15 +2,18 @@ from typing import Tuple
 
 from package_parser.processing.annotations.model import (
     AbstractAnnotation,
-    EnumReviewResult,
     DescriptionAnnotation,
+    EnumReviewResult,
     TodoAnnotation,
 )
 from package_parser.processing.api.model import (
     Class,
     ClassDocumentation,
     Function,
-    FunctionDocumentation, Parameter, ParameterAssignment, ParameterDocumentation,
+    FunctionDocumentation,
+    Parameter,
+    ParameterAssignment,
+    ParameterDocumentation,
 )
 from package_parser.processing.migration import (
     Mapping,
