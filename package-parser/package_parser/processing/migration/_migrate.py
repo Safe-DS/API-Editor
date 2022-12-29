@@ -9,7 +9,9 @@ from package_parser.processing.api.model import Attribute, Result
 from package_parser.processing.migration.annotations import (
     migrate_boundary_annotation,
     migrate_called_after_annotation,
+    migrate_description_annotation,
     migrate_enum_annotation,
+    migrate_expert_annotation,
     migrate_group_annotation,
     migrate_move_annotation,
     migrate_remove_annotation,

@@ -73,7 +73,7 @@ def migrate_todo_annotation_data_one_to_many_mapping() -> Tuple[
     parameterv1 = Parameter(
         id_="test/test.todo.test2.Test",
         name="Test",
-        qname="test.todo.test1.Test",
+        qname="test.todo.test2.Test",
         default_value=None,
         assigned_by=ParameterAssignment.POSITION_OR_NAME,
         is_public=True,

@@ -11,6 +11,7 @@ from ._annotations import (
     CompleteAnnotation,
     DescriptionAnnotation,
     EnumAnnotation,
+    ExpertAnnotation,
     GroupAnnotation,
     MoveAnnotation,
     PureAnnotation,
@@ -28,6 +29,7 @@ class AnnotationStore:
     completeAnnotations: list[CompleteAnnotation] = field(default_factory=list)
     descriptionAnnotations: list[DescriptionAnnotation] = field(default_factory=list)
     enumAnnotations: list[EnumAnnotation] = field(default_factory=list)
+    expertAnnotations: list[ExpertAnnotation] = field(default_factory=list)
     groupAnnotations: list[GroupAnnotation] = field(default_factory=list)
     moveAnnotations: list[MoveAnnotation] = field(default_factory=list)
     pureAnnotations: list[PureAnnotation] = field(default_factory=list)
@@ -63,6 +65,10 @@ class AnnotationStore:
         for annotation in json["enumAnnotations"].values():
             enumAnnotations.append(EnumAnnotation.from_json(annotation))
 
+        expertAnnotations = []
+        for annotation in json["expertAnnotations"].values():
+            expertAnnotations.append(ExpertAnnotation.from_json(annotation))
+
         groupAnnotations = []
         for annotation in json["groupAnnotations"].values():
             groupAnnotations.append(GroupAnnotation.from_json(annotation))
@@ -97,6 +103,7 @@ class AnnotationStore:
             completeAnnotations,
             descriptionAnnotations,
             enumAnnotations,
+            expertAnnotations,
             groupAnnotations,
             moveAnnotations,
             pureAnnotations,
@@ -117,6 +124,8 @@ class AnnotationStore:
             self.descriptionAnnotations.append(annotation)
         elif isinstance(annotation, EnumAnnotation):
             self.enumAnnotations.append(annotation)
+        elif isinstance(annotation, ExpertAnnotation):
+            self.expertAnnotations.append(annotation)
         elif isinstance(annotation, GroupAnnotation):
             self.groupAnnotations.append(annotation)
         elif isinstance(annotation, MoveAnnotation):
@@ -154,6 +163,10 @@ class AnnotationStore:
             "enumAnnotations": {
                 annotation.target: annotation.to_json()
                 for annotation in self.enumAnnotations
+            },
+            "expertAnnotations": {
+                annotation.target: annotation.to_json()
+                for annotation in self.expertAnnotations
             },
             "groupAnnotations": {
                 annotation.target: annotation.to_json()

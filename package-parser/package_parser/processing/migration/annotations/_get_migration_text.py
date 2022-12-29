@@ -8,6 +8,7 @@ from package_parser.processing.annotations.model import (
     ConstantAnnotation,
     DescriptionAnnotation,
     EnumAnnotation,
+    ExpertAnnotation,
     GroupAnnotation,
     MoveAnnotation,
     OptionalAnnotation,
@@ -28,7 +29,10 @@ from package_parser.processing.migration import Mapping
 
 
 def _get_further_information(annotation: AbstractAnnotation) -> str:
-    if isinstance(annotation, (CompleteAnnotation, PureAnnotation, RemoveAnnotation)):
+    if isinstance(
+        annotation,
+        (CompleteAnnotation, ExpertAnnotation, PureAnnotation, RemoveAnnotation),
+    ):
         return ""
     if isinstance(annotation, BoundaryAnnotation):
         return " with the interval '" + str(annotation.interval.to_json()) + "'"
