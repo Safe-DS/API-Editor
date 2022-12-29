@@ -202,7 +202,7 @@ def migrate_group_annotation_data_one_to_many_mapping() -> Tuple[
     )
     classv2_6 = Class(
         id_="test/test.group.test6.test/NewClass",
-        qname="test.remove.test6.test.NewClass",
+        qname="test.group.test6.test.NewClass",
         decorators=[],
         superclasses=[],
         is_public=True,
