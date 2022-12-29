@@ -28,7 +28,7 @@ class Migration:
     migrated_annotation_store: AnnotationStore = AnnotationStore()
     unsure_annotation_store: AnnotationStore = AnnotationStore()
 
-    def __init__(self, reliable_similarity=0.9, unsure_similarity=0.5):
+    def __init__(self, reliable_similarity: float = 0.9, unsure_similarity: float = 0.5) -> None:
         self.reliable_similarity = reliable_similarity
         self.unsure_similarity = unsure_similarity
 

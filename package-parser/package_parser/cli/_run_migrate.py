@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from package_parser.processing.migration import migrate_annotations
+from package_parser.processing.migration import Migration
 from package_parser.processing.migration.model import APIMapping, SimpleDiffer
 
 from ._read_and_write_file import (
@@ -22,5 +22,5 @@ def _run_migrate_command(
     differ = SimpleDiffer()
     api_mapping = APIMapping(apiv1, apiv2, differ)
     mappings = api_mapping.map_api()
-    annotationsv2 = migrate_annotations(annotationsv1, mappings)
+    annotationsv2 = Migration().migrate_annotations(annotationsv1, mappings)
     _write_annotations_file(annotationsv2, out_dir_path)
