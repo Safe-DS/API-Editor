@@ -4,6 +4,7 @@ from ._migrate_boundary_annotation import migrate_boundary_annotation
 from ._migrate_called_after_annotation import migrate_called_after_annotation
 from ._migrate_description_annotation import migrate_description_annotation
 from ._migrate_enum_annotation import migrate_enum_annotation
+from ._migrate_expert_annotation import migrate_expert_annotation
 from ._migrate_group_annotation import migrate_group_annotation
 from ._migrate_move_annotation import migrate_move_annotation
 from ._migrate_remove_annotation import migrate_remove_annotation

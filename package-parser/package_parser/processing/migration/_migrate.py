@@ -10,6 +10,7 @@ from package_parser.processing.migration.annotations import (
     migrate_called_after_annotation,
     migrate_description_annotation,
     migrate_enum_annotation,
+    migrate_expert_annotation,
     migrate_group_annotation,
     migrate_move_annotation,
     migrate_remove_annotation,
@@ -64,6 +65,12 @@ def migrate_annotations(
         mapping = _get_mapping_from_annotation(enum_annotation, mappings)
         if mapping is not None:
             for annotation in migrate_enum_annotation(enum_annotation, mapping):
+                migrated_annotation_store.add_annotation(annotation)
+
+    for expert_annotation in annotationsv1.expertAnnotations:
+        mapping = _get_mapping_from_annotation(expert_annotation, mappings)
+        if mapping is not None:
+            for annotation in migrate_expert_annotation(expert_annotation, mapping):
                 migrated_annotation_store.add_annotation(annotation)
 
     for group_annotation in annotationsv1.groupAnnotations:

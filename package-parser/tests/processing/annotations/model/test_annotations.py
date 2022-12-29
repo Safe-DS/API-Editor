@@ -26,7 +26,7 @@ from package_parser.processing.annotations.model import (
 )
 
 
-def test_annotation_store():
+def test_annotation_store() -> None:
     annotations = AnnotationStore()
     annotations.removeAnnotations.append(
         RemoveAnnotation(
@@ -168,6 +168,15 @@ def test_annotation_store():
             newTodo="TODO replace me",
         )
     )
+    annotations.expertAnnotations.append(
+        ExpertAnnotation(
+            target="test/expert",
+            authors=["$autogen$"],
+            reviewers=[],
+            comment="",
+            reviewResult=EnumReviewResult.NONE,
+        )
+    )
     json_store = {
         "schemaVersion": ANNOTATION_SCHEMA_VERSION,
         "boundaryAnnotations": {
@@ -195,6 +204,15 @@ def test_annotation_store():
                 "reviewResult": "",
                 "enumName": "test",
                 "pairs": [{"instanceName": "test", "stringValue": "test"}],
+            }
+        },
+        "expertAnnotations": {
+            "test/expert": {
+                "target": "test/expert",
+                "authors": ["$autogen$"],
+                "reviewers": [],
+                "comment": "",
+                "reviewResult": "",
             }
         },
         "removeAnnotations": {
@@ -653,7 +671,9 @@ def test_annotation_store():
         "test import and export of rename annotation",
         "test import and export of todo annotation",
     ],
-)
-def test_conversion_between_json_and_annotation(annotation: AbstractAnnotation, json):
+)  # type: ignore
+def test_conversion_between_json_and_annotation(
+    annotation: AbstractAnnotation, json: dict
+) -> None:
     assert annotation.to_json() == json
     assert type(annotation).from_json(json) == annotation
