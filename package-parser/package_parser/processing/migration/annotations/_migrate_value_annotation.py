@@ -216,19 +216,19 @@ def _have_same_value(
     ) and parameterv2_default_value in ("True", "False"):
         return bool(parameterv1_default_value) == bool(parameterv2_default_value)
     valuev1_is_in_quotation_marks = (
-                                            parameterv1_default_value.startswith("'")
-                                            and parameterv1_default_value.endswith("'")
-                                        ) or (
-                                            parameterv1_default_value.startswith('"')
-                                            and parameterv1_default_value.endswith('"')
-                                        )
+        parameterv1_default_value.startswith("'")
+        and parameterv1_default_value.endswith("'")
+    ) or (
+        parameterv1_default_value.startswith('"')
+        and parameterv1_default_value.endswith('"')
+    )
     valuev2_is_in_quotation_marks = (
-                                            parameterv2_default_value.startswith("'")
-                                            and parameterv2_default_value.endswith("'")
-                                        ) or (
-                                            parameterv2_default_value.startswith('"')
-                                            and parameterv2_default_value.endswith('"')
-                                        )
+        parameterv2_default_value.startswith("'")
+        and parameterv2_default_value.endswith("'")
+    ) or (
+        parameterv2_default_value.startswith('"')
+        and parameterv2_default_value.endswith('"')
+    )
     if valuev1_is_in_quotation_marks and valuev2_is_in_quotation_marks:
         return parameterv1_default_value[1:-1] == parameterv2_default_value[1:-1]
     return False
@@ -242,7 +242,9 @@ def migrate_constant_annotation(
     )
     if parameterv1 is None:
         return None
-    if not _have_same_type(parameterv1.type, parameterv2.type) or not _have_same_value(parameterv1.default_value, parameterv2.default_value):
+    if not _have_same_type(parameterv1.type, parameterv2.type) or not _have_same_value(
+        parameterv1.default_value, parameterv2.default_value
+    ):
         migrate_text = get_migration_text(constant_annotation, mapping)
         return ConstantAnnotation(
             parameterv2.id,
@@ -281,7 +283,9 @@ def migrate_omitted_annotation(
     )
     if parameterv1 is None:
         return None
-    if _have_same_type(parameterv1.type, parameterv2.type) and _have_same_value(parameterv1.default_value, parameterv2.default_value):
+    if _have_same_type(parameterv1.type, parameterv2.type) and _have_same_value(
+        parameterv1.default_value, parameterv2.default_value
+    ):
         return OmittedAnnotation(
             parameterv2.id,
             omitted_annotation.authors,
@@ -307,9 +311,8 @@ def migrate_optional_annotation(
     if parameterv1 is None:
         return None
     migrate_text = get_migration_text(optional_annotation, mapping)
-    if (
-        _have_same_type(parameterv1.type, parameterv2.type)
-        and _have_same_value(parameterv1.default_value, parameterv2.default_value)
+    if _have_same_type(parameterv1.type, parameterv2.type) and _have_same_value(
+        parameterv1.default_value, parameterv2.default_value
     ):
         return OptionalAnnotation(
             parameterv2.id,
@@ -341,13 +344,12 @@ def migrate_required_annotation(
     )
     if parameterv1 is None:
         return None
-    if (
-        _have_same_type(parameterv1.type, parameterv2.type)
-        and
+    if _have_same_type(parameterv1.type, parameterv2.type) and (
         (
-            (parameterv1.default_value is not None and parameterv2.default_value is not None)
-            or (parameterv1.default_value is None and parameterv2.default_value is None)
+            parameterv1.default_value is not None
+            and parameterv2.default_value is not None
         )
+        or (parameterv1.default_value is None and parameterv2.default_value is None)
     ):
         return RequiredAnnotation(
             parameterv2.id,
