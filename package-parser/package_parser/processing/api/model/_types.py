@@ -10,7 +10,7 @@ from ._documentation import ParameterDocumentation
 
 class AbstractType(metaclass=ABCMeta):
     @abstractmethod
-    def to_json(self):
+    def to_json(self) -> Any:
         pass
 
     @classmethod

@@ -211,7 +211,7 @@ class SimpleDiffer(AbstractDiffer):
             function_a.name, function_b.name
         )
 
-        def are_parameters_similar(parameter_a: Parameter, parameter_b: Parameter) -> float:
+        def are_parameters_similar(parameter_a: Parameter, parameter_b: Parameter) -> bool:
             return self.compute_parameter_similarity(parameter_a, parameter_b) == 1
 
         parameter_similarity = distance_elements(
