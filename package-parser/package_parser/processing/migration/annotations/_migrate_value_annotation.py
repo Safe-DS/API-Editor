@@ -120,7 +120,7 @@ def migrate_value_annotation(
                         authors,
                         value_annotation.reviewers,
                         value_annotation.comment,
-                        EnumReviewResult.UNSURE,
+                        EnumReviewResult.NONE,
                         get_migration_text(value_annotation, mapping),
                     )
                 )

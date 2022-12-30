@@ -33,7 +33,7 @@ def migrate_called_after_annotation(
                         authors,
                         called_after_annotation.reviewers,
                         called_after_annotation.comment,
-                        called_after_annotation.reviewResult,
+                        EnumReviewResult.NONE,
                         get_migration_text(called_after_annotation, mapping),
                     )
                 )

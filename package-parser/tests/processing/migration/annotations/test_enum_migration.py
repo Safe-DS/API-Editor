@@ -201,7 +201,7 @@ def migrate_enum_annotation_data_one_to_many_mapping__only_one_relevant_mapping(
         target="test/test.enum.test3.TestA",
         authors=["testauthor", migration_author],
         reviewers=[],
-        reviewResult=EnumReviewResult.UNSURE,
+        reviewResult=EnumReviewResult.NONE,
         comment="",
         newTodo=get_migration_text(enum_annotation, mapping),
     )

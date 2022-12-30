@@ -63,7 +63,7 @@ def migrate_todo_annotation(
                     authors,
                     todo_annotation.reviewers,
                     todo_annotation.comment,
-                    EnumReviewResult.UNSURE,
+                    EnumReviewResult.NONE,
                     migrate_text,
                 )
             )

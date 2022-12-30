@@ -92,7 +92,7 @@ def migrate_move_annotation(
                     authors,
                     move_annotation.reviewers,
                     move_annotation.comment,
-                    EnumReviewResult.UNSURE,
+                    EnumReviewResult.NONE,
                     migrate_text,
                 )
             )

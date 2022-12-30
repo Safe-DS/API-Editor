@@ -189,7 +189,7 @@ def migrate_move_annotation_data_one_to_many_mapping() -> Tuple[
         authors=["testauthor", migration_author],
         reviewers=[],
         comment="",
-        reviewResult=EnumReviewResult.UNSURE,
+        reviewResult=EnumReviewResult.NONE,
         newTodo=get_migration_text(annotationv1, mapping),
     )
     return mapping, annotationv1, [annotationv2_a, annotationv2_b]

@@ -187,7 +187,7 @@ def migrate_boundary_annotation(
                         authors,
                         boundary_annotation.reviewers,
                         boundary_annotation.comment,
-                        EnumReviewResult.UNSURE,
+                        EnumReviewResult.NONE,
                         migrate_text,
                     )
                 )

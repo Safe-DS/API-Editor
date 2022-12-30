@@ -126,7 +126,7 @@ def migrate_enum_annotation(
                             authors,
                             enum_annotation.reviewers,
                             enum_annotation.comment,
-                            EnumReviewResult.UNSURE,
+                            EnumReviewResult.NONE,
                             migrate_text,
                         )
                     )

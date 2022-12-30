@@ -33,7 +33,7 @@ def migrate_group_annotation(
                     authors=authors,
                     reviewers=group_annotation.reviewers,
                     comment=group_annotation.comment,
-                    reviewResult=group_annotation.reviewResult,
+                    reviewResult=EnumReviewResult.NONE,
                     newTodo=get_migration_text(group_annotation, mapping),
                 )
             )
@@ -72,7 +72,7 @@ def migrate_group_annotation(
                         authors=authors,
                         reviewers=group_annotation.reviewers,
                         comment=group_annotation.comment,
-                        reviewResult=group_annotation.reviewResult,
+                        reviewResult=EnumReviewResult.NONE,
                         newTodo=get_migration_text(
                             group_annotation,
                             mapping,
