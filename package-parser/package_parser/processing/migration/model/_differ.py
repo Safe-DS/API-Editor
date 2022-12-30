@@ -47,7 +47,9 @@ X = TypeVar("X")
 
 
 def distance_elements(
-    list_a: list[X], list_b: list[X], are_similar: Callable[[X, X], bool] = lambda x, y: x == y
+    list_a: list[X],
+    list_b: list[X],
+    are_similar: Callable[[X, X], bool] = lambda x, y: x == y,
 ) -> float:
     if len(list_a) == 0:
         return len(list_b)
@@ -211,7 +213,9 @@ class SimpleDiffer(AbstractDiffer):
             function_a.name, function_b.name
         )
 
-        def are_parameters_similar(parameter_a: Parameter, parameter_b: Parameter) -> bool:
+        def are_parameters_similar(
+            parameter_a: Parameter, parameter_b: Parameter
+        ) -> bool:
             return self.compute_parameter_similarity(parameter_a, parameter_b) == 1
 
         parameter_similarity = distance_elements(
