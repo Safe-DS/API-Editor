@@ -128,8 +128,8 @@ def migrate_value_annotation(
 
 
 def _have_same_type(
-    typev1: AbstractType,
-    typev2: AbstractType,
+    typev1: Optional[AbstractType],
+    typev2: Optional[AbstractType],
 ) -> bool:
     if typev2 is None and typev1 is None:
         return True
