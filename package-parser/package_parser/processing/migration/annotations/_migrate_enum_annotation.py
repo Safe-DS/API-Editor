@@ -121,7 +121,9 @@ def migrate_enum_annotation(
                             enum_annotation.reviewers,
                             enum_annotation.comment,
                             EnumReviewResult.NONE,
-                            get_migration_text(enum_annotation, mapping, for_todo_annotation=True),
+                            get_migration_text(
+                                enum_annotation, mapping, for_todo_annotation=True
+                            ),
                         )
                     )
     return migrated_annotations

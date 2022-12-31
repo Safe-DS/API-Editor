@@ -55,7 +55,9 @@ def migrate_move_annotation(
                     move_annotation.reviewers,
                     move_annotation.comment,
                     EnumReviewResult.NONE,
-                    get_migration_text(move_annotation, mapping, for_todo_annotation=True),
+                    get_migration_text(
+                        move_annotation, mapping, for_todo_annotation=True
+                    ),
                 )
             ]
         move_annotation.target = element.id
@@ -92,7 +94,9 @@ def migrate_move_annotation(
                     move_annotation.reviewers,
                     move_annotation.comment,
                     EnumReviewResult.NONE,
-                    get_migration_text(move_annotation, mapping, for_todo_annotation=True),
+                    get_migration_text(
+                        move_annotation, mapping, for_todo_annotation=True
+                    ),
                 )
             )
     return move_annotations

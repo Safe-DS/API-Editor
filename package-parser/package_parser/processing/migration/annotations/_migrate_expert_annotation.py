@@ -61,7 +61,9 @@ def migrate_expert_annotation(
                     expert_annotation.reviewers,
                     expert_annotation.comment,
                     EnumReviewResult.NONE,
-                    get_migration_text(expert_annotation, mapping, for_todo_annotation=True),
+                    get_migration_text(
+                        expert_annotation, mapping, for_todo_annotation=True
+                    ),
                 )
             )
     return expert_annotations

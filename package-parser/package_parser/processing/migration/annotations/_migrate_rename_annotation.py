@@ -41,7 +41,9 @@ def migrate_rename_annotation(
                 rename_annotation.target.split(".")[-1],
             ):
                 rename_annotation.reviewResult = EnumReviewResult.UNSURE
-                rename_annotation.comment = get_migration_text(rename_annotation, mapping)
+                rename_annotation.comment = get_migration_text(
+                    rename_annotation, mapping
+                )
                 rename_annotation.target = element.id
                 return [rename_annotation]
             todo_annotations.append(
@@ -51,7 +53,9 @@ def migrate_rename_annotation(
                     rename_annotation.reviewers,
                     rename_annotation.comment,
                     EnumReviewResult.NONE,
-                    get_migration_text(rename_annotation, mapping, for_todo_annotation=True),
+                    get_migration_text(
+                        rename_annotation, mapping, for_todo_annotation=True
+                    ),
                 )
             )
     return todo_annotations

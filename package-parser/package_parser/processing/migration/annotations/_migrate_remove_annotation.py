@@ -48,7 +48,9 @@ def migrate_remove_annotation(
                     remove_annotation.reviewers,
                     remove_annotation.comment,
                     EnumReviewResult.NONE,
-                    get_migration_text(remove_annotation, mapping, for_todo_annotation=True),
+                    get_migration_text(
+                        remove_annotation, mapping, for_todo_annotation=True
+                    ),
                 )
             ]
         remove_annotation.target = element.id
@@ -84,7 +86,9 @@ def migrate_remove_annotation(
                     remove_annotation.reviewers,
                     remove_annotation.comment,
                     EnumReviewResult.NONE,
-                    get_migration_text(remove_annotation, mapping, for_todo_annotation=True),
+                    get_migration_text(
+                        remove_annotation, mapping, for_todo_annotation=True
+                    ),
                 )
             )
     return remove_annotations

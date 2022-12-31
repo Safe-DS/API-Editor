@@ -320,10 +320,19 @@ def migrate_optional_annotation(
     have_implicit_same_value = False
     if parameterv1.default_value is not None and parameterv2.default_value is not None:
         try:
-            have_implicit_same_value = float(parameterv1.default_value) == float(parameterv2.default_value)
+            have_implicit_same_value = float(parameterv1.default_value) == float(
+                parameterv2.default_value
+            )
         except ValueError:
             pass
-    if _have_same_type(parameterv1.type, parameterv2.type) or ((parameterv1.default_value is None) is not (parameterv2.default_value is None)) or have_implicit_same_value:
+    if (
+        _have_same_type(parameterv1.type, parameterv2.type)
+        or (
+            (parameterv1.default_value is None)
+            is not (parameterv2.default_value is None)
+        )
+        or have_implicit_same_value
+    ):
         return OptionalAnnotation(
             parameterv2.id,
             optional_annotation.authors,

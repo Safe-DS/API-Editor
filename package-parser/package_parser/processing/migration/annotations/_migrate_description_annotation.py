@@ -62,7 +62,9 @@ def migrate_description_annotation(
                     description_annotation.reviewers,
                     description_annotation.comment,
                     EnumReviewResult.NONE,
-                    get_migration_text(description_annotation, mapping, for_todo_annotation=True),
+                    get_migration_text(
+                        description_annotation, mapping, for_todo_annotation=True
+                    ),
                 )
             )
     return description_annotations
