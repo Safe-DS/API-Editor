@@ -48,7 +48,7 @@ def migrate_called_after_annotation(
                     element.id,
                     authors,
                     called_after_annotation.reviewers,
-                    get_migration_text(called_after_annotation, mapping, EnumReviewResult.UNSURE, additional_information=called_before_functions),
+                    get_migration_text(called_after_annotation, mapping, additional_information=called_before_functions),
                     EnumReviewResult.UNSURE,
                     called_after_annotation.calledAfterName,
                 )

@@ -243,14 +243,7 @@ def migrate_constant_annotation(
     if parameterv1 is None:
         return None
     if not _have_same_type(parameterv1.type, parameterv2.type):
-        return TodoAnnotation(
-            parameterv2.id,
-            constant_annotation.authors,
-            constant_annotation.reviewers,
-            constant_annotation.comment,
-            EnumReviewResult.NONE,
-            get_migration_text(constant_annotation, mapping, for_todo_annotation=True)
-        )
+        return None
     if not _have_same_value(parameterv1.default_value, parameterv2.default_value):
         return ConstantAnnotation(
             parameterv2.id,
@@ -366,11 +359,4 @@ def migrate_required_annotation(
             required_annotation.comment,
             EnumReviewResult.NONE,
         )
-    return TodoAnnotation(
-        parameterv2.id,
-        required_annotation.authors,
-        required_annotation.reviewers,
-        required_annotation.comment,
-        EnumReviewResult.NONE,
-        get_migration_text(required_annotation, mapping),
-    )
+    return None

@@ -26,6 +26,7 @@ from package_parser.processing.migration.annotations import (
 )
 
 
+# pylint: disable=duplicate-code
 def migrate_expert_annotation_data__function() -> Tuple[
     Mapping,
     AbstractAnnotation,

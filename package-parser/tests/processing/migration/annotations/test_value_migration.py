@@ -566,6 +566,7 @@ def migrate_required_annotation_data_one_to_many_mapping() -> Tuple[
     )
 
 
+# pylint: disable=duplicate-code
 def migrate_omitted_annotation_data_one_to_many_mapping() -> Tuple[
     Mapping,
     AbstractAnnotation,
