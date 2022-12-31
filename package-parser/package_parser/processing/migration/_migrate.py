@@ -21,7 +21,7 @@ from package_parser.processing.migration.annotations import (
     migrate_value_annotation,
 )
 from package_parser.processing.migration.model import Mapping
-from typing import Optional, Tuple
+from typing import Optional, Tuple, Sequence
 
 
 class Migration:
@@ -163,20 +163,21 @@ class Migration:
         else:
             self.unsure_annotation_store.add_annotation(annotation)
 
-    def _remove_duplicates(self):
+    def _remove_duplicates(self) -> None:
         duplicates: list[Tuple[AbstractAnnotation, AbstractAnnotation]] = []
         for annotation_store in [self.migrated_annotation_store, self.unsure_annotation_store]:
-            for annotation_type_store in [annotation_store.boundaryAnnotations,
-                                          annotation_store.calledAfterAnnotations,
-                                          annotation_store.descriptionAnnotations,
-                                          annotation_store.enumAnnotations,
-                                          annotation_store.expertAnnotations,
-                                          annotation_store.groupAnnotations,
-                                          annotation_store.moveAnnotations,
-                                          annotation_store.removeAnnotations,
-                                          annotation_store.renameAnnotations,
-                                          annotation_store.todoAnnotations,
-                                          annotation_store.valueAnnotations]:
+            annotations_stores: Sequence[Sequence[AbstractAnnotation]] = [annotation_store.boundaryAnnotations,
+                            annotation_store.calledAfterAnnotations,
+                            annotation_store.descriptionAnnotations,
+                            annotation_store.enumAnnotations,
+                            annotation_store.expertAnnotations,
+                            annotation_store.groupAnnotations,
+                            annotation_store.moveAnnotations,
+                            annotation_store.removeAnnotations,
+                            annotation_store.renameAnnotations,
+                            annotation_store.todoAnnotations,
+                            annotation_store.valueAnnotations]
+            for annotation_type_store in annotations_stores:
                 for annotation_a in annotation_type_store:
                     for annotation_b in annotation_type_store:
                         if _are_semantic_equal(annotation_a, annotation_b):
@@ -186,8 +187,8 @@ class Migration:
             pass
 
 
-def _are_semantic_equal(annotation_a: AbstractAnnotation, annotation_b: AbstractAnnotation):
-    # todo
+def _are_semantic_equal(annotation_a: AbstractAnnotation, annotation_b: AbstractAnnotation) -> bool:
+    # todo check for correctness
     if annotation_a.target == annotation_b.target and isinstance(annotation_a, type(annotation_b)) and isinstance(annotation_b, type(annotation_a)):
         if isinstance(annotation_a, BoundaryAnnotation) and isinstance(annotation_b, BoundaryAnnotation):
             return annotation_a.interval == annotation_b.interval
@@ -196,7 +197,13 @@ def _are_semantic_equal(annotation_a: AbstractAnnotation, annotation_b: Abstract
         if isinstance(annotation_a, DescriptionAnnotation) and isinstance(annotation_b, DescriptionAnnotation):
             return annotation_a.newDescription == annotation_b.newDescription
         if isinstance(annotation_a, EnumAnnotation) and isinstance(annotation_b, EnumAnnotation):
-            return annotation_a.enumName == annotation_b.enumName and set(annotation_a.pairs) == set(annotation_b.pairs)
+            if annotation_a.enumName == annotation_b.enumName and len(annotation_a.pairs) == len(annotation_a.pairs):
+                list_a = sorted(list(annotation_a.pairs), key=lambda x: x.stringValue)
+                list_b = sorted(list(annotation_b.pairs), key=lambda x: x.stringValue)
+                for i in range(len(annotation_a.pairs)):
+                    if list_a[i].stringValue != list_b[i].stringValue or list_b[i].instanceName != list_b[i].instanceName:
+                        return False
+                return True
         if isinstance(annotation_a, ExpertAnnotation) and isinstance(annotation_b, ExpertAnnotation):
             return True
         if isinstance(annotation_a, GroupAnnotation) and isinstance(annotation_b, GroupAnnotation):

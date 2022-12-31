@@ -88,7 +88,7 @@ class Interval:
             and self.isDiscrete == other.isDiscrete
             and self.lowerIntervalLimit == other.lowerIntervalLimit
             and isinstance(self.lowerIntervalLimit, type(self.lowerIntervalLimit))
-            and self.lowerLimitType == other.lowerIntervalLimit
+            and self.lowerLimitType == other.lowerLimitType
             and self.upperIntervalLimit == other.upperIntervalLimit
             and isinstance(self.upperIntervalLimit, type(self.upperIntervalLimit))
             and self.upperLimitType == self.upperLimitType
@@ -135,7 +135,7 @@ class EnumPair:
     def from_json(json: Any) -> EnumPair:
         return EnumPair(json["stringValue"], json["instanceName"])
 
-    def __eq__(self, other):
+    def __eq__(self, other: Any) -> bool:
         return isinstance(other, EnumPair) and self.stringValue == other.stringValue and self.instanceName == other.instanceName
 
 
@@ -327,7 +327,7 @@ class ParameterInfo:
     value: str
     value_type: str
 
-    def __init__(self, parameter_type, value="", value_type=""):
+    def __init__(self, parameter_type: ParameterType, value: str = "", value_type: str ="") -> None:
         self.type = parameter_type
         self.value = value
         self.value_type = value_type
