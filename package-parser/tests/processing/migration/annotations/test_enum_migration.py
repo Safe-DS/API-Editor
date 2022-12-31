@@ -153,7 +153,7 @@ def migrate_enum_annotation_data_one_to_many_mapping__only_one_relevant_mapping(
         id_="test/test.enum.test3.TestA",
         name="TestA",
         qname="test.enum.test3.TestA",
-        default_value="",
+        default_value=None,
         assigned_by=ParameterAssignment.POSITION_OR_NAME,
         is_public=True,
         documentation=ParameterDocumentation("", "", ""),
@@ -203,7 +203,7 @@ def migrate_enum_annotation_data_one_to_many_mapping__only_one_relevant_mapping(
         reviewers=[],
         reviewResult=EnumReviewResult.NONE,
         comment="",
-        newTodo=get_migration_text(enum_annotation, mapping),
+        newTodo=get_migration_text(enum_annotation, mapping, for_todo_annotation=True),
     )
     return (
         mapping,

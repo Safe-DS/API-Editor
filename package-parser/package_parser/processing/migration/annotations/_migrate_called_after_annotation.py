@@ -34,7 +34,7 @@ def migrate_called_after_annotation(
                         called_after_annotation.reviewers,
                         called_after_annotation.comment,
                         EnumReviewResult.NONE,
-                        get_migration_text(called_after_annotation, mapping),
+                        get_migration_text(called_after_annotation, mapping, for_todo_annotation=True),
                     )
                 )
             continue
@@ -42,18 +42,13 @@ def migrate_called_after_annotation(
         called_before_functions = _get_function_called_before_replacements(
             called_after_annotation, mappings, element
         )
-        migrate_text = get_migration_text(
-            called_after_annotation,
-            mapping,
-            additional_information=called_before_functions,
-        )
         if len(called_before_functions) == 0:
             migrated_annotations.append(
                 CalledAfterAnnotation(
                     element.id,
                     authors,
                     called_after_annotation.reviewers,
-                    called_after_annotation.comment,
+                    get_migration_text(called_after_annotation, mapping, EnumReviewResult.UNSURE, additional_information=called_before_functions),
                     EnumReviewResult.UNSURE,
                     called_after_annotation.calledAfterName,
                 )
@@ -79,7 +74,7 @@ def migrate_called_after_annotation(
                     called_after_annotation.reviewers,
                     called_after_annotation.comment,
                     EnumReviewResult.NONE,
-                    migrate_text,
+                    get_migration_text(called_after_annotation, mapping, for_todo_annotation=True, additional_information=called_before_functions),
                 )
             )
     return migrated_annotations

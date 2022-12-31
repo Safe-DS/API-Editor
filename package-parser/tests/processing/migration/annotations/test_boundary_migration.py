@@ -245,7 +245,7 @@ def migrate_boundary_annotation_data_one_to_many_mapping() -> Tuple[
         id_="test/test.boundary.test4.testC",
         name="testC",
         qname="test.boundary.test4.testC",
-        default_value="",
+        default_value=None,
         assigned_by=ParameterAssignment.POSITION_OR_NAME,
         is_public=True,
         documentation=ParameterDocumentation("", "", ""),

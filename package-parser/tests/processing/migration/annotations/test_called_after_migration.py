@@ -223,7 +223,7 @@ def migrate_called_after_annotation_data_one_to_one_mapping__no_mapping_found() 
         target="test/test.called_after.test3.test/NewClass/new_test_after",
         authors=["testauthor", migration_author],
         reviewers=[],
-        comment="",
+        comment=get_migration_text(annotationv1, mapping_after, EnumReviewResult.UNSURE),
         reviewResult=EnumReviewResult.UNSURE,
         calledAfterName="test_before",
     )

@@ -161,7 +161,7 @@ def migrate_description_annotation_data_one_to_many_mapping__class() -> Tuple[
         reviewers=[],
         comment="",
         reviewResult=EnumReviewResult.NONE,
-        newTodo=get_migration_text(annotationv1, mapping),
+        newTodo=get_migration_text(annotationv1, mapping, for_todo_annotation=True),
     )
     return mapping, annotationv1, [annotationv2_a, annotationv2_b, annotationv2_c]
 

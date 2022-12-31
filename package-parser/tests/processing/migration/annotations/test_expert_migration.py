@@ -136,7 +136,7 @@ def migrate_expert_annotation_data__class() -> Tuple[
         reviewers=[],
         comment="",
         reviewResult=EnumReviewResult.NONE,
-        newTodo=get_migration_text(annotationv1, mapping),
+        newTodo=get_migration_text(annotationv1, mapping, for_todo_annotation=True),
     )
     return mapping, annotationv1, [annotationv2, annotationv2_function]
 

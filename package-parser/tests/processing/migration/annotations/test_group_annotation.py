@@ -249,7 +249,7 @@ def migrate_group_annotation_data_one_to_many_mapping() -> Tuple[
         target="test/test.group.test2.test/NewTestClass/test",
         authors=["testauthor", migration_author],
         reviewers=[],
-        comment=get_migration_text(annotation, mapping_function),
+        comment=get_migration_text(annotation, mapping_function, additional_information=[parameterv2_2_a, parameterv2_2_c]),
         reviewResult=EnumReviewResult.UNSURE,
         groupName="GroupName5",
         parameters=["new_parameter_a", "new_parameter_c"],
@@ -258,7 +258,7 @@ def migrate_group_annotation_data_one_to_many_mapping() -> Tuple[
         target="test/test.group.test3.test/NewTestClass/test",
         authors=["testauthor", migration_author],
         reviewers=[],
-        comment=get_migration_text(annotation, mapping_function),
+        comment=get_migration_text(annotation, mapping_function, additional_information=[parameterv2_3_b, parameterv2_3_c]),
         reviewResult=EnumReviewResult.UNSURE,
         groupName="GroupName6",
         parameters=["new_parameter_b", "new_parameter_c"],
@@ -270,7 +270,7 @@ def migrate_group_annotation_data_one_to_many_mapping() -> Tuple[
         comment="",
         reviewResult=EnumReviewResult.NONE,
         newTodo=get_migration_text(
-            annotation, mapping_function, additional_information=[parameterv2_4_b]
+            annotation, mapping_function, for_todo_annotation=True, additional_information=[parameterv2_4_b]
         ),
     )
     migrated_annotation_5 = TodoAnnotation(
@@ -279,7 +279,7 @@ def migrate_group_annotation_data_one_to_many_mapping() -> Tuple[
         reviewers=[],
         comment="",
         reviewResult=EnumReviewResult.NONE,
-        newTodo=get_migration_text(annotation, mapping_function),
+        newTodo=get_migration_text(annotation, mapping_function, for_todo_annotation=True),
     )
     migrated_annotation_6 = TodoAnnotation(
         target="test/test.group.test6.test/NewClass",
@@ -287,7 +287,7 @@ def migrate_group_annotation_data_one_to_many_mapping() -> Tuple[
         reviewers=[],
         comment="",
         reviewResult=EnumReviewResult.NONE,
-        newTodo=get_migration_text(annotation, mapping_function),
+        newTodo=get_migration_text(annotation, mapping_function, for_todo_annotation=True),
     )
     return (
         [

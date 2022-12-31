@@ -57,8 +57,6 @@ def migrate_enum_annotation(
     authors.append(migration_author)
     enum_annotation.authors = authors
 
-    migrate_text = get_migration_text(enum_annotation, mapping)
-
     if isinstance(mapping, (OneToOneMapping, ManyToOneMapping)):
         parameter = mapping.get_apiv2_elements()[0]
         if isinstance(parameter, (Attribute, Result)):
@@ -78,11 +76,7 @@ def migrate_enum_annotation(
                     return []
             else:
                 enum_annotation.reviewResult = EnumReviewResult.UNSURE
-                enum_annotation.comment = (
-                    migrate_text
-                    if len(enum_annotation.comment) == 0
-                    else enum_annotation.comment + "\n" + migrate_text
-                )
+                enum_annotation.comment = get_migration_text(enum_annotation, mapping)
                 enum_annotation.target = parameter.id
                 return [enum_annotation]
         return [
@@ -92,7 +86,7 @@ def migrate_enum_annotation(
                 enum_annotation.reviewers,
                 enum_annotation.comment,
                 EnumReviewResult.NONE,
-                migrate_text,
+                get_migration_text(enum_annotation, mapping, for_todo_annotation=True),
             )
         ]
 
@@ -127,7 +121,7 @@ def migrate_enum_annotation(
                             enum_annotation.reviewers,
                             enum_annotation.comment,
                             EnumReviewResult.NONE,
-                            migrate_text,
+                            get_migration_text(enum_annotation, mapping, for_todo_annotation=True),
                         )
                     )
     return migrated_annotations

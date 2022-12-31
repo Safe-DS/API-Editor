@@ -242,17 +242,21 @@ def migrate_constant_annotation(
     )
     if parameterv1 is None:
         return None
-    if not _have_same_type(parameterv1.type, parameterv2.type) or not _have_same_value(
-        parameterv1.default_value, parameterv2.default_value
-    ):
-        migrate_text = get_migration_text(constant_annotation, mapping)
+    if not _have_same_type(parameterv1.type, parameterv2.type):
+        return TodoAnnotation(
+            parameterv2.id,
+            constant_annotation.authors,
+            constant_annotation.reviewers,
+            constant_annotation.comment,
+            EnumReviewResult.NONE,
+            get_migration_text(constant_annotation, mapping, for_todo_annotation=True)
+        )
+    if not _have_same_value(parameterv1.default_value, parameterv2.default_value):
         return ConstantAnnotation(
             parameterv2.id,
             constant_annotation.authors,
             constant_annotation.reviewers,
-            migrate_text
-            if len(constant_annotation.comment) == 0
-            else constant_annotation.comment + "\n" + migrate_text,
+            get_migration_text(constant_annotation, mapping),
             EnumReviewResult.UNSURE,
             constant_annotation.defaultValueType,
             constant_annotation.defaultValue,
@@ -274,13 +278,6 @@ def migrate_omitted_annotation(
     parameterv1 = get_annotated_api_element_by_type(
         omitted_annotation, mapping.get_apiv1_elements(), Parameter
     )
-    migrate_text = (
-        get_migration_text(omitted_annotation, mapping)
-        if len(omitted_annotation.comment) == 0
-        else omitted_annotation.comment
-        + "\n"
-        + get_migration_text(omitted_annotation, mapping)
-    )
     if parameterv1 is None:
         return None
     if _have_same_type(parameterv1.type, parameterv2.type) and _have_same_value(
@@ -293,13 +290,18 @@ def migrate_omitted_annotation(
             omitted_annotation.comment,
             EnumReviewResult.NONE,
         )
-    return OmittedAnnotation(
-        parameterv2.id,
-        omitted_annotation.authors,
-        omitted_annotation.reviewers,
-        migrate_text,
-        EnumReviewResult.UNSURE,
-    )
+    if _have_same_type(parameterv1.type, parameterv2.type) and not _have_same_value(
+        parameterv1.default_value, parameterv2.default_value
+    ):
+        return OmittedAnnotation(
+            parameterv2.id,
+            omitted_annotation.authors,
+            omitted_annotation.reviewers,
+            get_migration_text(omitted_annotation, mapping),
+            EnumReviewResult.UNSURE,
+        )
+
+    return None
 
 
 def migrate_optional_annotation(
@@ -310,7 +312,6 @@ def migrate_optional_annotation(
     )
     if parameterv1 is None:
         return None
-    migrate_text = get_migration_text(optional_annotation, mapping)
     if _have_same_type(parameterv1.type, parameterv2.type) and _have_same_value(
         parameterv1.default_value, parameterv2.default_value
     ):
@@ -323,17 +324,24 @@ def migrate_optional_annotation(
             optional_annotation.defaultValueType,
             optional_annotation.defaultValue,
         )
-    return OptionalAnnotation(
-        parameterv2.id,
-        optional_annotation.authors,
-        optional_annotation.reviewers,
-        migrate_text
-        if len(optional_annotation.comment) == 0
-        else optional_annotation.comment + "\n" + migrate_text,
-        EnumReviewResult.UNSURE,
-        optional_annotation.defaultValueType,
-        optional_annotation.defaultValue,
-    )
+    have_implicit_same_value = False
+    if parameterv1.default_value is not None and parameterv2.default_value is not None:
+        try:
+            have_implicit_same_value = float(parameterv1.default_value) == float(parameterv2.default_value)
+        except ValueError:
+            pass
+    if _have_same_type(parameterv1.type, parameterv2.type) or ((parameterv1.default_value is None) is not (parameterv2.default_value is None)) or have_implicit_same_value:
+        return OptionalAnnotation(
+            parameterv2.id,
+            optional_annotation.authors,
+            optional_annotation.reviewers,
+            get_migration_text(optional_annotation, mapping),
+            EnumReviewResult.UNSURE,
+            optional_annotation.defaultValueType,
+            optional_annotation.defaultValue,
+        )
+
+    return None
 
 
 def migrate_required_annotation(
@@ -358,13 +366,11 @@ def migrate_required_annotation(
             required_annotation.comment,
             EnumReviewResult.NONE,
         )
-    migrate_text = get_migration_text(required_annotation, mapping)
-    return RequiredAnnotation(
+    return TodoAnnotation(
         parameterv2.id,
         required_annotation.authors,
         required_annotation.reviewers,
-        migrate_text
-        if len(required_annotation.comment) == 0
-        else required_annotation.comment + "\n" + migrate_text,
-        EnumReviewResult.UNSURE,
+        required_annotation.comment,
+        EnumReviewResult.NONE,
+        get_migration_text(required_annotation, mapping),
     )

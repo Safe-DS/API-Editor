@@ -51,6 +51,7 @@ def migrate_constant_annotation_data_one_to_one_mapping() -> Tuple[
         is_public=True,
         documentation=ParameterDocumentation("str", "'test string'", ""),
     )
+    mapping = OneToOneMapping(1.0, parameterv1, parameterv2)
     annotation = ConstantAnnotation(
         target="test/test.value.test1.testA",
         authors=["testauthor"],
@@ -64,12 +65,12 @@ def migrate_constant_annotation_data_one_to_one_mapping() -> Tuple[
         target="test/test.value.test1.testB",
         authors=["testauthor", migration_author],
         reviewers=[],
-        comment="",
-        reviewResult=EnumReviewResult.NONE,
+        comment=get_migration_text(annotation, mapping),
+        reviewResult=EnumReviewResult.UNSURE,
         defaultValueType=ValueAnnotation.DefaultValueType.STRING,
         defaultValue="This is a string",
     )
-    return OneToOneMapping(1.0, parameterv1, parameterv2), annotation, [annotationv2]
+    return mapping, annotation, [annotationv2]
 
 
 def migrate_omitted_annotation_data_one_to_one_mapping() -> Tuple[
@@ -224,7 +225,7 @@ def migrate_constant_annotation_data_one_to_many_mapping() -> Tuple[
         id_="test/test.value.test5.testB",
         name="testB",
         qname="test.value.test5.testB",
-        default_value="",
+        default_value=None,
         assigned_by=ParameterAssignment.POSITION_OR_NAME,
         is_public=True,
         documentation=ParameterDocumentation("", "", ""),
@@ -272,14 +273,13 @@ def migrate_constant_annotation_data_one_to_many_mapping() -> Tuple[
         reviewResult=EnumReviewResult.NONE,
         newTodo=get_migration_text(annotation, mapping),
     )
-    annotationv2_b = ConstantAnnotation(
+    annotationv2_b = TodoAnnotation(
         target="test/test.value.test5.testB",
         authors=["testauthor", migration_author],
         reviewers=[],
-        comment=get_migration_text(annotation, mapping),
-        reviewResult=EnumReviewResult.UNSURE,
-        defaultValueType=ValueAnnotation.DefaultValueType.NUMBER,
-        defaultValue="2.0",
+        comment="",
+        reviewResult=EnumReviewResult.NONE,
+        newTodo=get_migration_text(annotation, mapping, for_todo_annotation=True),
     )
     annotationv2_c = TodoAnnotation(
         target="test/test.value.test5.testC",
@@ -287,14 +287,14 @@ def migrate_constant_annotation_data_one_to_many_mapping() -> Tuple[
         reviewers=[],
         comment="",
         reviewResult=EnumReviewResult.NONE,
-        newTodo=get_migration_text(annotation, mapping),
+        newTodo=get_migration_text(annotation, mapping, for_todo_annotation=True),
     )
     annotationv2_d = ConstantAnnotation(
         target="test/test.value.test5.testD",
         authors=["testauthor", migration_author],
         reviewers=[],
-        comment="",
-        reviewResult=EnumReviewResult.NONE,
+        comment=get_migration_text(annotation, mapping),
+        reviewResult=EnumReviewResult.UNSURE,
         defaultValueType=ValueAnnotation.DefaultValueType.NUMBER,
         defaultValue="2.0",
     )
@@ -334,7 +334,7 @@ def migrate_optional_annotation_data_one_to_many_mapping() -> Tuple[
         id_="test/test.value.test6.testB",
         name="testB",
         qname="test.value.test6.testB",
-        default_value="",
+        default_value=None,
         assigned_by=ParameterAssignment.POSITION_OR_NAME,
         is_public=True,
         documentation=ParameterDocumentation("", "", ""),
@@ -376,7 +376,7 @@ def migrate_optional_annotation_data_one_to_many_mapping() -> Tuple[
         authors=["testauthor", migration_author],
         reviewers=[],
         comment="",
-        newTodo=get_migration_text(annotation, mapping),
+        newTodo=get_migration_text(annotation, mapping, for_todo_annotation=True),
         reviewResult=EnumReviewResult.NONE,
     )
     annotationv2_b = OptionalAnnotation(
@@ -394,14 +394,14 @@ def migrate_optional_annotation_data_one_to_many_mapping() -> Tuple[
         reviewers=[],
         comment="",
         reviewResult=EnumReviewResult.NONE,
-        newTodo=get_migration_text(annotation, mapping),
+        newTodo=get_migration_text(annotation, mapping, for_todo_annotation=True),
     )
     annotationv2_d = OptionalAnnotation(
         target="test/test.value.test6.testD",
         authors=["testauthor", migration_author],
         reviewers=[],
-        comment="",
-        reviewResult=EnumReviewResult.NONE,
+        comment=get_migration_text(annotation, mapping),
+        reviewResult=EnumReviewResult.UNSURE,
         defaultValueType=ValueAnnotation.DefaultValueType.NUMBER,
         defaultValue="2",
     )
@@ -459,10 +459,10 @@ def migrate_required_annotation_data_one_to_many_mapping() -> Tuple[
         id_="test/test.value.test7.testD",
         name="testD",
         qname="test.value.test7.testD",
-        default_value="None",
+        default_value=None,
         assigned_by=ParameterAssignment.POSITION_OR_NAME,
         is_public=True,
-        documentation=ParameterDocumentation("", "None", ""),
+        documentation=ParameterDocumentation("", "", ""),
     )
     parameterv2_e = Parameter(
         id_="test/test.value.test7.testE",
@@ -509,7 +509,7 @@ def migrate_required_annotation_data_one_to_many_mapping() -> Tuple[
         reviewers=[],
         comment="",
         reviewResult=EnumReviewResult.NONE,
-        newTodo=get_migration_text(annotation, mapping),
+        newTodo=get_migration_text(annotation, mapping, for_todo_annotation=True),
     )
     annotationv2_b = RequiredAnnotation(
         target="test/test.value.test7.testB",
@@ -524,7 +524,7 @@ def migrate_required_annotation_data_one_to_many_mapping() -> Tuple[
         reviewers=[],
         comment="",
         reviewResult=EnumReviewResult.NONE,
-        newTodo=get_migration_text(annotation, mapping),
+        newTodo=get_migration_text(annotation, mapping, for_todo_annotation=True),
     )
 
     annotationv2_d = TodoAnnotation(
@@ -533,7 +533,7 @@ def migrate_required_annotation_data_one_to_many_mapping() -> Tuple[
         reviewers=[],
         comment="",
         reviewResult=EnumReviewResult.NONE,
-        newTodo=get_migration_text(annotation, mapping),
+        newTodo=get_migration_text(annotation, mapping, for_todo_annotation=True),
     )
     annotationv2_e = TodoAnnotation(
         target="test/test.value.test7.testE",
@@ -541,7 +541,7 @@ def migrate_required_annotation_data_one_to_many_mapping() -> Tuple[
         reviewers=[],
         comment="",
         reviewResult=EnumReviewResult.NONE,
-        newTodo=get_migration_text(annotation, mapping),
+        newTodo=get_migration_text(annotation, mapping, for_todo_annotation=True),
     )
 
     annotationv2_f = RequiredAnnotation(
@@ -653,7 +653,7 @@ def migrate_omitted_annotation_data_one_to_many_mapping() -> Tuple[
         reviewers=[],
         comment="",
         reviewResult=EnumReviewResult.NONE,
-        newTodo=get_migration_text(annotation, mapping),
+        newTodo=get_migration_text(annotation, mapping, for_todo_annotation=True),
     )
     annotationv2_c = TodoAnnotation(
         target="test/test.value.test8.testC",
@@ -661,7 +661,7 @@ def migrate_omitted_annotation_data_one_to_many_mapping() -> Tuple[
         reviewers=[],
         comment="",
         reviewResult=EnumReviewResult.NONE,
-        newTodo=get_migration_text(annotation, mapping),
+        newTodo=get_migration_text(annotation, mapping, for_todo_annotation=True),
     )
 
     annotationv2_d = TodoAnnotation(
@@ -670,7 +670,7 @@ def migrate_omitted_annotation_data_one_to_many_mapping() -> Tuple[
         reviewers=[],
         comment="",
         reviewResult=EnumReviewResult.NONE,
-        newTodo=get_migration_text(annotation, mapping),
+        newTodo=get_migration_text(annotation, mapping, for_todo_annotation=True),
     )
     annotationv2_e = TodoAnnotation(
         target="test/test.value.test8.testE",
@@ -678,7 +678,7 @@ def migrate_omitted_annotation_data_one_to_many_mapping() -> Tuple[
         reviewers=[],
         comment="",
         reviewResult=EnumReviewResult.NONE,
-        newTodo=get_migration_text(annotation, mapping),
+        newTodo=get_migration_text(annotation, mapping, for_todo_annotation=True),
     )
 
     return (

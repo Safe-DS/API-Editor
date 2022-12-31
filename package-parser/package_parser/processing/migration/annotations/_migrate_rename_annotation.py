@@ -33,8 +33,6 @@ def migrate_rename_annotation(
         rename_annotation.target = element.id
         return [rename_annotation]
 
-    migrate_text = get_migration_text(rename_annotation, mapping)
-
     todo_annotations: list[AbstractAnnotation] = []
     for element in mapping.get_apiv2_elements():
         if not isinstance(element, (Attribute, Result)):
@@ -42,13 +40,9 @@ def migrate_rename_annotation(
                 new_name,
                 rename_annotation.target.split(".")[-1],
             ):
-                rename_annotation.target = element.id
                 rename_annotation.reviewResult = EnumReviewResult.UNSURE
-                rename_annotation.comment = (
-                    migrate_text
-                    if len(rename_annotation.comment) == 0
-                    else rename_annotation.comment + "\n" + migrate_text
-                )
+                rename_annotation.comment = get_migration_text(rename_annotation, mapping)
+                rename_annotation.target = element.id
                 return [rename_annotation]
             todo_annotations.append(
                 TodoAnnotation(
@@ -57,7 +51,7 @@ def migrate_rename_annotation(
                     rename_annotation.reviewers,
                     rename_annotation.comment,
                     EnumReviewResult.NONE,
-                    migrate_text,
+                    get_migration_text(rename_annotation, mapping, for_todo_annotation=True),
                 )
             )
     return todo_annotations

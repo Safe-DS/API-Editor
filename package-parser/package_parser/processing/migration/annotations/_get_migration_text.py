@@ -88,7 +88,7 @@ def _get_further_information(annotation: AbstractAnnotation) -> str:
     return " with the data '" + str(annotation.to_json()) + "'"
 
 
-def get_migration_text(
+def _get_migration_text(
     annotation: AbstractAnnotation, mapping: Mapping, additional_information: Any = None
 ) -> str:
     class_name = str(annotation.__class__.__name__)
@@ -130,6 +130,15 @@ def get_migration_text(
             )
 
     return migrate_text
+
+
+def get_migration_text(annotation: AbstractAnnotation, mapping: Mapping, for_todo_annotation: bool = False, additional_information: Any = None) -> str:
+    migration_text = _get_migration_text(annotation, mapping, additional_information=additional_information)
+    if for_todo_annotation:
+        return migration_text
+    if len(annotation.comment) == 0:
+        return migration_text
+    return annotation.comment + "\n" + migration_text
 
 
 def _list_api_elements(
