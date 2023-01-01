@@ -1,11 +1,25 @@
+from typing import Optional, Sequence, Tuple
+
 from package_parser.processing.annotations.model import (
     AbstractAnnotation,
     AnnotationStore,
-    EnumReviewResult, BoundaryAnnotation, CalledAfterAnnotation, DescriptionAnnotation, EnumAnnotation,
-    ExpertAnnotation, GroupAnnotation, MoveAnnotation, RemoveAnnotation, RenameAnnotation, TodoAnnotation,
-    ValueAnnotation, ConstantAnnotation, OptionalAnnotation, OmittedAnnotation, RequiredAnnotation,
+    BoundaryAnnotation,
+    CalledAfterAnnotation,
+    ConstantAnnotation,
+    DescriptionAnnotation,
+    EnumAnnotation,
+    EnumReviewResult,
+    ExpertAnnotation,
+    GroupAnnotation,
+    MoveAnnotation,
+    OmittedAnnotation,
+    OptionalAnnotation,
+    RemoveAnnotation,
+    RenameAnnotation,
+    RequiredAnnotation,
+    TodoAnnotation,
+    ValueAnnotation,
 )
-
 from package_parser.processing.api.model import Attribute, Result
 from package_parser.processing.migration.annotations import (
     migrate_boundary_annotation,
@@ -21,7 +35,6 @@ from package_parser.processing.migration.annotations import (
     migrate_value_annotation,
 )
 from package_parser.processing.migration.model import Mapping
-from typing import Optional, Tuple, Sequence
 
 
 class Migration:
@@ -29,11 +42,13 @@ class Migration:
     unsure_similarity: float
     migrated_annotation_store: AnnotationStore = AnnotationStore()
     unsure_annotation_store: AnnotationStore = AnnotationStore()
+
     def __init__(
         self, reliable_similarity: float = 0.9, unsure_similarity: float = 0.5
     ) -> None:
         self.reliable_similarity = reliable_similarity
         self.unsure_similarity = unsure_similarity
+
     @staticmethod
     def _get_mapping_from_annotation(
         annotation: AbstractAnnotation, mappings: list[Mapping]
@@ -165,18 +180,23 @@ class Migration:
 
     def _remove_duplicates(self) -> None:
         duplicates: list[Tuple[AbstractAnnotation, AbstractAnnotation]] = []
-        for annotation_store in [self.migrated_annotation_store, self.unsure_annotation_store]:
-            annotations_stores: Sequence[Sequence[AbstractAnnotation]] = [annotation_store.boundaryAnnotations,
-                            annotation_store.calledAfterAnnotations,
-                            annotation_store.descriptionAnnotations,
-                            annotation_store.enumAnnotations,
-                            annotation_store.expertAnnotations,
-                            annotation_store.groupAnnotations,
-                            annotation_store.moveAnnotations,
-                            annotation_store.removeAnnotations,
-                            annotation_store.renameAnnotations,
-                            annotation_store.todoAnnotations,
-                            annotation_store.valueAnnotations]
+        for annotation_store in [
+            self.migrated_annotation_store,
+            self.unsure_annotation_store,
+        ]:
+            annotations_stores: Sequence[Sequence[AbstractAnnotation]] = [
+                annotation_store.boundaryAnnotations,
+                annotation_store.calledAfterAnnotations,
+                annotation_store.descriptionAnnotations,
+                annotation_store.enumAnnotations,
+                annotation_store.expertAnnotations,
+                annotation_store.groupAnnotations,
+                annotation_store.moveAnnotations,
+                annotation_store.removeAnnotations,
+                annotation_store.renameAnnotations,
+                annotation_store.todoAnnotations,
+                annotation_store.valueAnnotations,
+            ]
             for annotation_type_store in annotations_stores:
                 for annotation_a in annotation_type_store:
                     for annotation_b in annotation_type_store:
@@ -187,43 +207,94 @@ class Migration:
             pass
 
 
-def _are_semantic_equal(annotation_a: AbstractAnnotation, annotation_b: AbstractAnnotation) -> bool:
+def _are_semantic_equal(
+    annotation_a: AbstractAnnotation, annotation_b: AbstractAnnotation
+) -> bool:
     # todo check for correctness
-    if annotation_a.target == annotation_b.target and isinstance(annotation_a, type(annotation_b)) and isinstance(annotation_b, type(annotation_a)):
-        if isinstance(annotation_a, BoundaryAnnotation) and isinstance(annotation_b, BoundaryAnnotation):
+    if (
+        annotation_a.target == annotation_b.target
+        and isinstance(annotation_a, type(annotation_b))
+        and isinstance(annotation_b, type(annotation_a))
+    ):
+        if isinstance(annotation_a, BoundaryAnnotation) and isinstance(
+            annotation_b, BoundaryAnnotation
+        ):
             return annotation_a.interval == annotation_b.interval
-        if isinstance(annotation_a, CalledAfterAnnotation) and isinstance(annotation_b, CalledAfterAnnotation):
+        if isinstance(annotation_a, CalledAfterAnnotation) and isinstance(
+            annotation_b, CalledAfterAnnotation
+        ):
             return annotation_a.calledAfterName == annotation_b.calledAfterName
-        if isinstance(annotation_a, DescriptionAnnotation) and isinstance(annotation_b, DescriptionAnnotation):
+        if isinstance(annotation_a, DescriptionAnnotation) and isinstance(
+            annotation_b, DescriptionAnnotation
+        ):
             return annotation_a.newDescription == annotation_b.newDescription
-        if isinstance(annotation_a, EnumAnnotation) and isinstance(annotation_b, EnumAnnotation):
-            if annotation_a.enumName == annotation_b.enumName and len(annotation_a.pairs) == len(annotation_a.pairs):
+        if isinstance(annotation_a, EnumAnnotation) and isinstance(
+            annotation_b, EnumAnnotation
+        ):
+            if annotation_a.enumName == annotation_b.enumName and len(
+                annotation_a.pairs
+            ) == len(annotation_a.pairs):
                 list_a = sorted(list(annotation_a.pairs), key=lambda x: x.stringValue)
                 list_b = sorted(list(annotation_b.pairs), key=lambda x: x.stringValue)
                 for i in range(len(annotation_a.pairs)):
-                    if list_a[i].stringValue != list_b[i].stringValue or list_b[i].instanceName != list_b[i].instanceName:
+                    if (
+                        list_a[i].stringValue != list_b[i].stringValue
+                        or list_b[i].instanceName != list_b[i].instanceName
+                    ):
                         return False
                 return True
-        if isinstance(annotation_a, ExpertAnnotation) and isinstance(annotation_b, ExpertAnnotation):
+        if isinstance(annotation_a, ExpertAnnotation) and isinstance(
+            annotation_b, ExpertAnnotation
+        ):
             return True
-        if isinstance(annotation_a, GroupAnnotation) and isinstance(annotation_b, GroupAnnotation):
-            return annotation_a.groupName == annotation_b.groupName and set(annotation_a.parameters) == set(annotation_b.parameters)
-        if isinstance(annotation_a, MoveAnnotation) and isinstance(annotation_b, MoveAnnotation):
+        if isinstance(annotation_a, GroupAnnotation) and isinstance(
+            annotation_b, GroupAnnotation
+        ):
+            return annotation_a.groupName == annotation_b.groupName and set(
+                annotation_a.parameters
+            ) == set(annotation_b.parameters)
+        if isinstance(annotation_a, MoveAnnotation) and isinstance(
+            annotation_b, MoveAnnotation
+        ):
             return annotation_a.destination == annotation_b.destination
-        if isinstance(annotation_a, RemoveAnnotation) and isinstance(annotation_b, RemoveAnnotation):
+        if isinstance(annotation_a, RemoveAnnotation) and isinstance(
+            annotation_b, RemoveAnnotation
+        ):
             return True
-        if isinstance(annotation_a, RenameAnnotation) and isinstance(annotation_b, RenameAnnotation):
+        if isinstance(annotation_a, RenameAnnotation) and isinstance(
+            annotation_b, RenameAnnotation
+        ):
             return annotation_a.newName == annotation_b.newName
-        if isinstance(annotation_a, TodoAnnotation) and isinstance(annotation_b, TodoAnnotation):
+        if isinstance(annotation_a, TodoAnnotation) and isinstance(
+            annotation_b, TodoAnnotation
+        ):
             return annotation_a.newTodo == annotation_b
-        if isinstance(annotation_a, ValueAnnotation) and isinstance(annotation_b, ValueAnnotation):
+        if isinstance(annotation_a, ValueAnnotation) and isinstance(
+            annotation_b, ValueAnnotation
+        ):
             if annotation_a.variant == annotation_b.variant:
-                if isinstance(annotation_a, ConstantAnnotation) and isinstance(annotation_b, ConstantAnnotation):
-                    return annotation_a.defaultValue == annotation_b.defaultValue and annotation_a.defaultValueType == annotation_b.defaultValueType
-                if isinstance(annotation_a, OptionalAnnotation) and isinstance(annotation_b, OptionalAnnotation):
-                    return annotation_a.defaultValue == annotation_b.defaultValue and annotation_a.defaultValueType == annotation_b.defaultValueType
-                if isinstance(annotation_a, OmittedAnnotation) and isinstance(annotation_b, OmittedAnnotation):
+                if isinstance(annotation_a, ConstantAnnotation) and isinstance(
+                    annotation_b, ConstantAnnotation
+                ):
+                    return (
+                        annotation_a.defaultValue == annotation_b.defaultValue
+                        and annotation_a.defaultValueType
+                        == annotation_b.defaultValueType
+                    )
+                if isinstance(annotation_a, OptionalAnnotation) and isinstance(
+                    annotation_b, OptionalAnnotation
+                ):
+                    return (
+                        annotation_a.defaultValue == annotation_b.defaultValue
+                        and annotation_a.defaultValueType
+                        == annotation_b.defaultValueType
+                    )
+                if isinstance(annotation_a, OmittedAnnotation) and isinstance(
+                    annotation_b, OmittedAnnotation
+                ):
                     return True
-                if isinstance(annotation_a, RequiredAnnotation) and isinstance(annotation_b, RequiredAnnotation):
+                if isinstance(annotation_a, RequiredAnnotation) and isinstance(
+                    annotation_b, RequiredAnnotation
+                ):
                     return True
     return False

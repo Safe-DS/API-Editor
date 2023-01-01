@@ -95,7 +95,6 @@ class Interval:
         )
 
 
-
 @dataclass
 class BoundaryAnnotation(AbstractAnnotation):
     interval: Interval
@@ -136,7 +135,11 @@ class EnumPair:
         return EnumPair(json["stringValue"], json["instanceName"])
 
     def __eq__(self, other: Any) -> bool:
-        return isinstance(other, EnumPair) and self.stringValue == other.stringValue and self.instanceName == other.instanceName
+        return (
+            isinstance(other, EnumPair)
+            and self.stringValue == other.stringValue
+            and self.instanceName == other.instanceName
+        )
 
 
 @dataclass
@@ -327,7 +330,9 @@ class ParameterInfo:
     value: str
     value_type: str
 
-    def __init__(self, parameter_type: ParameterType, value: str = "", value_type: str ="") -> None:
+    def __init__(
+        self, parameter_type: ParameterType, value: str = "", value_type: str = ""
+    ) -> None:
         self.type = parameter_type
         self.value = value
         self.value_type = value_type
