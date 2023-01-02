@@ -195,10 +195,13 @@ class Migration:
             duplicates: list[Tuple[AbstractAnnotation, AbstractAnnotation]] = []
             merged_annotation = [
                 annotation
-                for annotation_store in [self.migrated_annotation_store, self.unsure_migrated_annotation_store]
+                for annotation_store in [
+                    self.migrated_annotation_store,
+                    self.unsure_migrated_annotation_store,
+                ]
                 for annotation_list in getattr(annotation_store, annotation_type)
                 for annotation in annotation_list
-                 ]
+            ]
 
         for annotation_a in merged_annotation:
             for annotation_b in merged_annotation:
@@ -208,12 +211,20 @@ class Migration:
                     duplicates.append((annotation_a, annotation_b))
         for annotation_a, annotation_b in duplicates:
             if annotation_a in getattr(self.migrated_annotation_store, annotation_type):
-                if annotation_b in getattr(self.migrated_annotation_store, annotation_type):
-                    getattr(self.migrated_annotation_store, annotation_type).remove(annotation_b)
+                if annotation_b in getattr(
+                    self.migrated_annotation_store, annotation_type
+                ):
+                    getattr(self.migrated_annotation_store, annotation_type).remove(
+                        annotation_b
+                    )
                 else:
-                    getattr(self.unsure_migrated_annotation_store, annotation_type).remove(annotation_b)
+                    getattr(
+                        self.unsure_migrated_annotation_store, annotation_type
+                    ).remove(annotation_b)
             else:
-                getattr(self.migrated_annotation_store, annotation_type).remove(annotation_a)
+                getattr(self.migrated_annotation_store, annotation_type).remove(
+                    annotation_a
+                )
 
 
 def _are_semantic_equal(
@@ -236,9 +247,12 @@ def _are_semantic_equal(
             annotation_b, DescriptionAnnotation
         ):
             return annotation_a.newDescription == annotation_b.newDescription
-        if isinstance(annotation_a, EnumAnnotation) and isinstance(
-            annotation_b, EnumAnnotation
-        ) and annotation_a.enumName == annotation_b.enumName and len(annotation_a.pairs) == len(annotation_a.pairs):
+        if (
+            isinstance(annotation_a, EnumAnnotation)
+            and isinstance(annotation_b, EnumAnnotation)
+            and annotation_a.enumName == annotation_b.enumName
+            and len(annotation_a.pairs) == len(annotation_a.pairs)
+        ):
             list_a = sorted(list(annotation_a.pairs), key=lambda x: x.stringValue)
             list_b = sorted(list(annotation_b.pairs), key=lambda x: x.stringValue)
             for i in range(len(annotation_a.pairs)):
@@ -274,24 +288,24 @@ def _are_semantic_equal(
             annotation_b, TodoAnnotation
         ):
             return annotation_a.newTodo == annotation_b.newTodo
-        if isinstance(annotation_a, ValueAnnotation) and isinstance(
-            annotation_b, ValueAnnotation
-        ) and annotation_a.variant == annotation_b.variant:
+        if (
+            isinstance(annotation_a, ValueAnnotation)
+            and isinstance(annotation_b, ValueAnnotation)
+            and annotation_a.variant == annotation_b.variant
+        ):
             if isinstance(annotation_a, ConstantAnnotation) and isinstance(
                 annotation_b, ConstantAnnotation
             ):
                 return (
                     annotation_a.defaultValue == annotation_b.defaultValue
-                    and annotation_a.defaultValueType
-                    == annotation_b.defaultValueType
+                    and annotation_a.defaultValueType == annotation_b.defaultValueType
                 )
             if isinstance(annotation_a, OptionalAnnotation) and isinstance(
                 annotation_b, OptionalAnnotation
             ):
                 return (
                     annotation_a.defaultValue == annotation_b.defaultValue
-                    and annotation_a.defaultValueType
-                    == annotation_b.defaultValueType
+                    and annotation_a.defaultValueType == annotation_b.defaultValueType
                 )
             if isinstance(annotation_a, OmittedAnnotation) and isinstance(
                 annotation_b, OmittedAnnotation
