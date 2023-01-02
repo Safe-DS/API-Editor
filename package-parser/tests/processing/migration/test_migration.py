@@ -5,39 +5,43 @@ from package_parser.processing.annotations.model import (
 from package_parser.processing.migration import Migration
 from package_parser.processing.migration.model import Mapping
 from tests.processing.migration.annotations.test_boundary_migration import (
+    migrate_boundary_annotation_data_duplicated,
     migrate_boundary_annotation_data_one_to_many_mapping,
     migrate_boundary_annotation_data_one_to_one_mapping,
     migrate_boundary_annotation_data_one_to_one_mapping_float_to_int,
-    migrate_boundary_annotation_data_one_to_one_mapping_int_to_float, migrate_boundary_annotation_data_duplicated,
+    migrate_boundary_annotation_data_one_to_one_mapping_int_to_float,
 )
 from tests.processing.migration.annotations.test_called_after_migration import (
+    migrate_called_after_annotation_data_duplicated,
     migrate_called_after_annotation_data_one_to_many_mapping,
     migrate_called_after_annotation_data_one_to_many_mapping__two_classes,
     migrate_called_after_annotation_data_one_to_one_mapping,
     migrate_called_after_annotation_data_one_to_one_mapping__before_splits,
     migrate_called_after_annotation_data_one_to_one_mapping__no_mapping_found,
-    migrate_called_after_annotation_data_duplicated,
 )
 from tests.processing.migration.annotations.test_description_migration import (
+    migrate_description_annotation_data_duplicated,
     migrate_description_annotation_data_one_to_many_mapping__class,
     migrate_description_annotation_data_one_to_one_mapping__function,
-    migrate_description_annotation_data_one_to_one_mapping__parameter, migrate_description_annotation_data_duplicated,
+    migrate_description_annotation_data_one_to_one_mapping__parameter,
 )
 from tests.processing.migration.annotations.test_enum_migration import (
+    migrate_enum_annotation_data_duplicated,
     migrate_enum_annotation_data_one_to_many_mapping,
     migrate_enum_annotation_data_one_to_many_mapping__only_one_relevant_mapping,
-    migrate_enum_annotation_data_one_to_one_mapping, migrate_enum_annotation_data_duplicated,
+    migrate_enum_annotation_data_one_to_one_mapping,
 )
 from tests.processing.migration.annotations.test_expert_migration import (
     migrate_expert_annotation_data__class,
     migrate_expert_annotation_data__function,
-    migrate_expert_annotation_data__parameter, migrate_expert_annotation_data_duplicated,
+    migrate_expert_annotation_data__parameter,
+    migrate_expert_annotation_data_duplicated,
 )
 from tests.processing.migration.annotations.test_group_annotation import (
+    migrate_group_annotation_data_duplicated,
     migrate_group_annotation_data_one_to_many_mapping,
     migrate_group_annotation_data_one_to_one_mapping,
     migrate_group_annotation_data_one_to_one_mapping__one_mapping_for_parameters,
-    migrate_group_annotation_data_duplicated,
 )
 from tests.processing.migration.annotations.test_move_migration import (
     migrate_move_annotation_data_one_to_many_mapping,
@@ -46,30 +50,35 @@ from tests.processing.migration.annotations.test_move_migration import (
     migrate_move_annotation_data_one_to_one_mapping_duplicated,
 )
 from tests.processing.migration.annotations.test_remove_migration import (
+    migrate_remove_annotation_data_duplicated,
     migrate_remove_annotation_data_one_to_many_mapping,
-    migrate_remove_annotation_data_one_to_one_mapping, migrate_remove_annotation_data_duplicated,
+    migrate_remove_annotation_data_one_to_one_mapping,
 )
 from tests.processing.migration.annotations.test_rename_migration import (
+    migrate_rename_annotation_data_duplicated,
     migrate_rename_annotation_data_one_to_many_mapping,
     migrate_rename_annotation_data_one_to_many_mapping__with_changed_new_name,
-    migrate_rename_annotation_data_one_to_one_mapping, migrate_rename_annotation_data_duplicated,
+    migrate_rename_annotation_data_one_to_one_mapping,
 )
 from tests.processing.migration.annotations.test_todo_migration import (
+    migrate_todo_annotation_data_duplicated,
     migrate_todo_annotation_data_many_to_many_mapping,
     migrate_todo_annotation_data_one_to_many_mapping,
-    migrate_todo_annotation_data_one_to_one_mapping, migrate_todo_annotation_data_duplicated,
+    migrate_todo_annotation_data_one_to_one_mapping,
 )
 from tests.processing.migration.annotations.test_value_migration import (
+    migrate_constant_annotation_data_duplicated,
     migrate_constant_annotation_data_one_to_many_mapping,
     migrate_constant_annotation_data_one_to_one_mapping,
+    migrate_omitted_annotation_data_duplicated,
     migrate_omitted_annotation_data_one_to_many_mapping,
     migrate_omitted_annotation_data_one_to_one_mapping,
+    migrate_optional_annotation_data_duplicated,
     migrate_optional_annotation_data_one_to_many_mapping,
     migrate_optional_annotation_data_one_to_one_mapping,
+    migrate_required_annotation_data_duplicated,
     migrate_required_annotation_data_one_to_many_mapping,
-    migrate_required_annotation_data_one_to_one_mapping, migrate_omitted_annotation_data_duplicated,
-    migrate_optional_annotation_data_duplicated, migrate_required_annotation_data_duplicated,
-    migrate_constant_annotation_data_duplicated,
+    migrate_required_annotation_data_one_to_one_mapping,
 )
 
 test_data = [

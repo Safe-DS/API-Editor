@@ -18,9 +18,10 @@ from package_parser.processing.api.model import (
     ParameterDocumentation,
 )
 from package_parser.processing.migration import (
+    ManyToOneMapping,
     Mapping,
     OneToManyMapping,
-    OneToOneMapping, ManyToOneMapping,
+    OneToOneMapping,
 )
 from package_parser.processing.migration.annotations import (
     get_migration_text,
@@ -811,7 +812,11 @@ def migrate_omitted_annotation_data_duplicated() -> Tuple[
         comment="",
         reviewResult=EnumReviewResult.NONE,
     )
-    return ManyToOneMapping(1.0, [parameterv1, parameterv1_2], parameterv2), [annotation, annotation_2], [annotationv2]
+    return (
+        ManyToOneMapping(1.0, [parameterv1, parameterv1_2], parameterv2),
+        [annotation, annotation_2],
+        [annotationv2],
+    )
 
 
 def migrate_optional_annotation_data_duplicated() -> Tuple[
@@ -873,7 +878,11 @@ def migrate_optional_annotation_data_duplicated() -> Tuple[
         defaultValueType=ValueAnnotation.DefaultValueType.BOOLEAN,
         defaultValue="True",
     )
-    return ManyToOneMapping(1.0, [parameterv1, parameterv1_2], parameterv2), [annotation, annotation_2], [annotationv2]
+    return (
+        ManyToOneMapping(1.0, [parameterv1, parameterv1_2], parameterv2),
+        [annotation, annotation_2],
+        [annotationv2],
+    )
 
 
 def migrate_required_annotation_data_duplicated() -> Tuple[
@@ -929,4 +938,8 @@ def migrate_required_annotation_data_duplicated() -> Tuple[
         comment="",
         reviewResult=EnumReviewResult.NONE,
     )
-    return ManyToOneMapping(1.0, [parameterv1, parameterv1_2], parameterv2), [annotation, annotation_2], [annotationv2]
+    return (
+        ManyToOneMapping(1.0, [parameterv1, parameterv1_2], parameterv2),
+        [annotation, annotation_2],
+        [annotationv2],
+    )

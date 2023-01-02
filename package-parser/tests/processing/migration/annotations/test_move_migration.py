@@ -13,9 +13,10 @@ from package_parser.processing.api.model import (
     FunctionDocumentation,
 )
 from package_parser.processing.migration import (
+    ManyToOneMapping,
     Mapping,
     OneToManyMapping,
-    OneToOneMapping, ManyToOneMapping,
+    OneToOneMapping,
 )
 from package_parser.processing.migration.annotations import (
     get_migration_text,

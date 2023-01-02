@@ -206,12 +206,21 @@ class Migration:
                 for annotation_b in migrated_annotations:
                     if annotation_a is annotation_b:
                         continue
-                    if _are_semantic_equal(annotation_a, annotation_b) and (annotation_b, annotation_a) not in duplicates:
+                    if (
+                        _are_semantic_equal(annotation_a, annotation_b)
+                        and (annotation_b, annotation_a) not in duplicates
+                    ):
                         duplicates.append((annotation_a, annotation_b))
             for annotation_a, annotation_b in duplicates:
-                b_in_migrated_annotation_store = annotation_b in getattr(self.migrated_annotation_store, annotation_type)
-                b_in_unsure_annotation_store = annotation_b in getattr(self.unsure_migrated_annotation_store, annotation_type)
-                if annotation_a in getattr(self.migrated_annotation_store, annotation_type):
+                b_in_migrated_annotation_store = annotation_b in getattr(
+                    self.migrated_annotation_store, annotation_type
+                )
+                b_in_unsure_annotation_store = annotation_b in getattr(
+                    self.unsure_migrated_annotation_store, annotation_type
+                )
+                if annotation_a in getattr(
+                    self.migrated_annotation_store, annotation_type
+                ):
                     if b_in_migrated_annotation_store:
                         getattr(self.migrated_annotation_store, annotation_type).remove(
                             annotation_b
@@ -220,7 +229,9 @@ class Migration:
                         getattr(
                             self.unsure_migrated_annotation_store, annotation_type
                         ).remove(annotation_b)
-                if annotation_a in getattr(self.unsure_migrated_annotation_store, annotation_type):
+                if annotation_a in getattr(
+                    self.unsure_migrated_annotation_store, annotation_type
+                ):
                     if b_in_migrated_annotation_store:
                         getattr(self.migrated_annotation_store, annotation_type).remove(
                             annotation_b

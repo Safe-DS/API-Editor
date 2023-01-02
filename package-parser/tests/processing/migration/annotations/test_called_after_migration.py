@@ -8,9 +8,10 @@ from package_parser.processing.annotations.model import (
 )
 from package_parser.processing.api.model import Function, FunctionDocumentation
 from package_parser.processing.migration import (
+    ManyToOneMapping,
     Mapping,
     OneToManyMapping,
-    OneToOneMapping, ManyToOneMapping,
+    OneToOneMapping,
 )
 from package_parser.processing.migration.annotations import (
     get_migration_text,
@@ -489,9 +490,7 @@ def migrate_called_after_annotation_data_duplicated() -> Tuple[
     mapping_after = ManyToOneMapping(
         1.0, [functionv1_after, functionv1_after_2], functionv2_after
     )
-    mapping_before = OneToManyMapping(
-        1.0, functionv1_before, [functionv2_before]
-    )
+    mapping_before = OneToManyMapping(1.0, functionv1_before, [functionv2_before])
     annotationv1 = CalledAfterAnnotation(
         target="test/test.called_after.duplicate.test/OldClass/test_after",
         authors=["testauthor"],
@@ -516,4 +515,8 @@ def migrate_called_after_annotation_data_duplicated() -> Tuple[
         reviewResult=EnumReviewResult.NONE,
         calledAfterName="new_test_before",
     )
-    return [mapping_after, mapping_before], [annotationv1, annotationv1_2], [annotationv2]
+    return (
+        [mapping_after, mapping_before],
+        [annotationv1, annotationv1_2],
+        [annotationv2],
+    )

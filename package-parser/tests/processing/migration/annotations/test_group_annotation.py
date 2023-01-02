@@ -17,9 +17,10 @@ from package_parser.processing.api.model import (
 )
 from package_parser.processing.migration import (
     ManyToManyMapping,
+    ManyToOneMapping,
     Mapping,
     OneToManyMapping,
-    OneToOneMapping, ManyToOneMapping,
+    OneToOneMapping,
 )
 from package_parser.processing.migration.annotations import (
     get_migration_text,
@@ -680,7 +681,5 @@ def migrate_group_annotation_data_duplicated() -> Tuple[
             mapping_parameter_c,
         ],
         [annotation, annotation_2],
-        [
-            migrated_annotation_1
-        ],
+        [migrated_annotation_1],
     )

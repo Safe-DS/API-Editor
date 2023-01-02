@@ -16,10 +16,10 @@ from package_parser.processing.migration.annotations import (
     migration_author,
 )
 from package_parser.processing.migration.model import (
+    ManyToOneMapping,
     Mapping,
     OneToManyMapping,
     OneToOneMapping,
-    ManyToOneMapping,
 )
 
 
