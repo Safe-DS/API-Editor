@@ -11,6 +11,7 @@ from package_parser.processing.api.model import (
     ParameterAssignment,
     ParameterDocumentation,
 )
+from package_parser.processing.migration import ManyToOneMapping
 from package_parser.processing.migration.annotations import (
     get_migration_text,
     migration_author,
@@ -180,3 +181,63 @@ def migrate_rename_annotation_data_one_to_many_mapping() -> Tuple[
         annotationv1,
         [annotationv2_a, annotationv2_b],
     )
+
+
+def migrate_rename_annotation_data_duplicated() -> Tuple[
+    Mapping,
+    list[AbstractAnnotation],
+    list[AbstractAnnotation],
+]:
+    parameterv1 = Parameter(
+        id_="test/test.rename.duplicate.Test_",
+        name="Test",
+        qname="test.rename.duplicate.Test_",
+        default_value=None,
+        assigned_by=ParameterAssignment.POSITION_OR_NAME,
+        is_public=True,
+        documentation=ParameterDocumentation("", "", ""),
+    )
+    parameterv1_2 = Parameter(
+        id_="test/test.rename.duplicate.Test_2",
+        name="Test",
+        qname="test.rename.duplicate.Test_2",
+        default_value=None,
+        assigned_by=ParameterAssignment.POSITION_OR_NAME,
+        is_public=True,
+        documentation=ParameterDocumentation("", "", ""),
+    )
+    parameterv2 = Parameter(
+        id_="test/test.rename.duplicate.TestB",
+        name="TestB",
+        qname="test.rename.duplicate.TestB",
+        default_value=None,
+        assigned_by=ParameterAssignment.POSITION_OR_NAME,
+        is_public=True,
+        documentation=ParameterDocumentation("", "", ""),
+    )
+    mappings = ManyToOneMapping(1.0, [parameterv1, parameterv1_2], parameterv2)
+    annotationv1 = RenameAnnotation(
+        target="test/test.rename.duplicate.Test_",
+        authors=["testauthor"],
+        reviewers=[],
+        comment="",
+        reviewResult=EnumReviewResult.NONE,
+        newName="TestE",
+    )
+    annotationv1_2 = RenameAnnotation(
+        target="test/test.rename.duplicate.Test_2",
+        authors=["testauthor"],
+        reviewers=[],
+        comment="",
+        reviewResult=EnumReviewResult.NONE,
+        newName="TestE",
+    )
+    annotationv2 = RenameAnnotation(
+        target="test/test.rename.duplicate.TestB",
+        authors=["testauthor", migration_author],
+        reviewers=[],
+        comment="",
+        reviewResult=EnumReviewResult.NONE,
+        newName="TestE",
+    )
+    return mappings, [annotationv1, annotationv1_2], [annotationv2]

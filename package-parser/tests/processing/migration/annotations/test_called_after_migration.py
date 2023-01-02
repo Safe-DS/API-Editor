@@ -10,7 +10,7 @@ from package_parser.processing.api.model import Function, FunctionDocumentation
 from package_parser.processing.migration import (
     Mapping,
     OneToManyMapping,
-    OneToOneMapping,
+    OneToOneMapping, ManyToOneMapping,
 )
 from package_parser.processing.migration.annotations import (
     get_migration_text,
@@ -424,3 +424,96 @@ def migrate_called_after_annotation_data_one_to_many_mapping__two_classes() -> T
         annotationv1,
         [annotationv2_a, annotationv2_b],
     )
+
+
+def migrate_called_after_annotation_data_duplicated() -> Tuple[
+    list[Mapping],
+    list[AbstractAnnotation],
+    list[AbstractAnnotation],
+]:
+    functionv1_after = Function(
+        id="test/test.called_after.duplicate.test/OldClass/test_after",
+        qname="test.called_after.duplicate.test.OldClass.test_after",
+        decorators=[],
+        parameters=[],
+        results=[],
+        is_public=True,
+        reexported_by=[],
+        documentation=FunctionDocumentation("", ""),
+        code="",
+    )
+    functionv1_after_2 = Function(
+        id="test/test.called_after.duplicate.test/OldClass/test_after_2",
+        qname="test.called_after.duplicate.test.OldClass.test_after_2",
+        decorators=[],
+        parameters=[],
+        results=[],
+        is_public=True,
+        reexported_by=[],
+        documentation=FunctionDocumentation("", ""),
+        code="",
+    )
+    functionv1_before = Function(
+        id="test/test.called_after.duplicate.test/OldClass/test_before",
+        qname="test.called_after.duplicate.test.OldClass.test_before",
+        decorators=[],
+        parameters=[],
+        results=[],
+        is_public=True,
+        reexported_by=[],
+        documentation=FunctionDocumentation("", ""),
+        code="",
+    )
+    functionv2_after = Function(
+        id="test/test.called_after.duplicate.test/NewClass/new_test_after",
+        qname="test.called_after.duplicate.test.NewClass.new_test_after",
+        decorators=[],
+        parameters=[],
+        results=[],
+        is_public=True,
+        reexported_by=[],
+        documentation=FunctionDocumentation("", ""),
+        code="",
+    )
+    functionv2_before = Function(
+        id="test/test.called_after.duplicate.test/NewClass/new_test_before",
+        qname="test.called_after.duplicate.test.NewClass.new_test_before",
+        decorators=[],
+        parameters=[],
+        results=[],
+        is_public=True,
+        reexported_by=[],
+        documentation=FunctionDocumentation("", ""),
+        code="",
+    )
+    mapping_after = ManyToOneMapping(
+        1.0, [functionv1_after, functionv1_after_2], functionv2_after
+    )
+    mapping_before = OneToManyMapping(
+        1.0, functionv1_before, [functionv2_before]
+    )
+    annotationv1 = CalledAfterAnnotation(
+        target="test/test.called_after.duplicate.test/OldClass/test_after",
+        authors=["testauthor"],
+        reviewers=[],
+        comment="",
+        reviewResult=EnumReviewResult.NONE,
+        calledAfterName="test_before",
+    )
+    annotationv1_2 = CalledAfterAnnotation(
+        target="test/test.called_after.duplicate.test/OldClass/test_after_2",
+        authors=["testauthor"],
+        reviewers=[],
+        comment="",
+        reviewResult=EnumReviewResult.NONE,
+        calledAfterName="test_before",
+    )
+    annotationv2 = CalledAfterAnnotation(
+        target="test/test.called_after.duplicate.test/NewClass/new_test_after",
+        authors=["testauthor", migration_author],
+        reviewers=[],
+        comment="",
+        reviewResult=EnumReviewResult.NONE,
+        calledAfterName="new_test_before",
+    )
+    return [mapping_after, mapping_before], [annotationv1, annotationv1_2], [annotationv2]

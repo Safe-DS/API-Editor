@@ -12,7 +12,7 @@ from package_parser.processing.api.model import (
     ParameterAssignment,
     ParameterDocumentation,
 )
-from package_parser.processing.migration import ManyToManyMapping
+from package_parser.processing.migration import ManyToManyMapping, ManyToOneMapping
 from package_parser.processing.migration.annotations import (
     get_migration_text,
     migration_author,
@@ -29,7 +29,7 @@ def migrate_todo_annotation_data_one_to_one_mapping() -> Tuple[
 ]:
     parameterv1 = Parameter(
         id_="test/test.todo.test1.Test",
-        name="Test1",
+        name="Test",
         qname="test.todo.test1.Test",
         default_value=None,
         assigned_by=ParameterAssignment.POSITION_OR_NAME,
@@ -216,3 +216,61 @@ def migrate_todo_annotation_data_many_to_many_mapping() -> Tuple[
         annotationv1,
         [annotationv2_a, annotationv2_b, annotationv2_class],
     )
+
+
+def migrate_todo_annotation_data_duplicated() -> Tuple[
+    Mapping, list[AbstractAnnotation], list[AbstractAnnotation]
+]:
+    parameterv1 = Parameter(
+        id_="test/test.todo.duplicate.Test",
+        name="Test",
+        qname="test.todo.duplicate.Test",
+        default_value=None,
+        assigned_by=ParameterAssignment.POSITION_OR_NAME,
+        is_public=True,
+        documentation=ParameterDocumentation("str", "", ""),
+    )
+    parameterv1_2 = Parameter(
+        id_="test/test.todo.duplicate.Test_2",
+        name="Test_2",
+        qname="test.todo.duplicate.Test_2",
+        default_value=None,
+        assigned_by=ParameterAssignment.POSITION_OR_NAME,
+        is_public=True,
+        documentation=ParameterDocumentation("str", "", ""),
+    )
+    parameterv2 = Parameter(
+        id_="test/test.todo.duplicate.Test",
+        name="Test",
+        qname="test.todo.duplicate.Test",
+        default_value=None,
+        assigned_by=ParameterAssignment.POSITION_OR_NAME,
+        is_public=True,
+        documentation=ParameterDocumentation("str", "", ""),
+    )
+    mappings = ManyToOneMapping(1.0, [parameterv1, parameterv1_2], parameterv2)
+    annotationsv1 = TodoAnnotation(
+        target="test/test.todo.duplicate.Test",
+        authors=["testauthor"],
+        reviewers=[],
+        comment="",
+        reviewResult=EnumReviewResult.NONE,
+        newTodo="todo",
+    )
+    annotationsv1_2 = TodoAnnotation(
+        target="test/test.todo.duplicate.Test_2",
+        authors=["testauthor"],
+        reviewers=[],
+        comment="",
+        reviewResult=EnumReviewResult.NONE,
+        newTodo="todo",
+    )
+    annotationsv2 = TodoAnnotation(
+        target="test/test.todo.duplicate.Test",
+        authors=["testauthor", migration_author],
+        reviewers=[],
+        comment="",
+        reviewResult=EnumReviewResult.NONE,
+        newTodo="todo",
+    )
+    return mappings, [annotationsv1, annotationsv1_2], [annotationsv2]

@@ -20,7 +20,7 @@ from package_parser.processing.api.model import (
 from package_parser.processing.migration import (
     Mapping,
     OneToManyMapping,
-    OneToOneMapping,
+    OneToOneMapping, ManyToOneMapping,
 )
 from package_parser.processing.migration.annotations import (
     get_migration_text,
@@ -693,3 +693,240 @@ def migrate_omitted_annotation_data_one_to_many_mapping() -> Tuple[
             annotationv2_e,
         ],
     )
+
+
+def migrate_constant_annotation_data_duplicated() -> Tuple[
+    Mapping,
+    list[AbstractAnnotation],
+    list[AbstractAnnotation],
+]:
+    parameterv1 = Parameter(
+        id_="test/test.value.duplicate.testA",
+        name="testA",
+        qname="test.value.duplicate.testA",
+        default_value="'this is a string'",
+        assigned_by=ParameterAssignment.POSITION_OR_NAME,
+        is_public=True,
+        documentation=ParameterDocumentation("str", "this is a string", ""),
+    )
+    parameterv1_2 = Parameter(
+        id_="test/test.value.duplicate.testA_2",
+        name="testA_2",
+        qname="test.value.duplicate.testA_2",
+        default_value="'this is a string'",
+        assigned_by=ParameterAssignment.POSITION_OR_NAME,
+        is_public=True,
+        documentation=ParameterDocumentation("str", "this is a string", ""),
+    )
+    parameterv2 = Parameter(
+        id_="test/test.value.duplicate.testB",
+        name="testB",
+        qname="test.value.duplicate.testB",
+        default_value="'test string'",
+        assigned_by=ParameterAssignment.POSITION_OR_NAME,
+        is_public=True,
+        documentation=ParameterDocumentation("str", "'test string'", ""),
+    )
+    mapping = ManyToOneMapping(1.0, [parameterv1, parameterv1_2], parameterv2)
+    annotation = ConstantAnnotation(
+        target="test/test.value.duplicate.testA",
+        authors=["testauthor"],
+        reviewers=[],
+        comment="",
+        reviewResult=EnumReviewResult.NONE,
+        defaultValueType=ValueAnnotation.DefaultValueType.STRING,
+        defaultValue="This is a string",
+    )
+    annotation_2 = ConstantAnnotation(
+        target="test/test.value.duplicate.testA_2",
+        authors=["testauthor"],
+        reviewers=[],
+        comment="",
+        reviewResult=EnumReviewResult.NONE,
+        defaultValueType=ValueAnnotation.DefaultValueType.STRING,
+        defaultValue="This is a string",
+    )
+    annotationv2 = ConstantAnnotation(
+        target="test/test.value.duplicate.testB",
+        authors=["testauthor", migration_author],
+        reviewers=[],
+        comment=get_migration_text(annotation, mapping),
+        reviewResult=EnumReviewResult.UNSURE,
+        defaultValueType=ValueAnnotation.DefaultValueType.STRING,
+        defaultValue="This is a string",
+    )
+    return mapping, [annotation, annotation_2], [annotationv2]
+
+
+def migrate_omitted_annotation_data_duplicated() -> Tuple[
+    Mapping,
+    list[AbstractAnnotation],
+    list[AbstractAnnotation],
+]:
+    parameterv1 = Parameter(
+        id_="test/test.value.duplicate2.testA",
+        name="testA",
+        qname="test.value.duplicate2.testA",
+        default_value="True",
+        assigned_by=ParameterAssignment.POSITION_OR_NAME,
+        is_public=True,
+        documentation=ParameterDocumentation("bool", "True", ""),
+    )
+    parameterv1_2 = Parameter(
+        id_="test/test.value.duplicate2.testA_2",
+        name="testA_2",
+        qname="test.value.duplicate2.testA_2",
+        default_value="True",
+        assigned_by=ParameterAssignment.POSITION_OR_NAME,
+        is_public=True,
+        documentation=ParameterDocumentation("bool", "True", ""),
+    )
+    parameterv2 = Parameter(
+        id_="test/test.value.duplicate2.testB",
+        name="testB",
+        qname="test.value.duplicate2.testB",
+        default_value="True",
+        assigned_by=ParameterAssignment.POSITION_OR_NAME,
+        is_public=True,
+        documentation=ParameterDocumentation("bool", "True", ""),
+    )
+    annotation = OmittedAnnotation(
+        target="test/test.value.duplicate2.testA",
+        authors=["testauthor"],
+        reviewers=[],
+        comment="",
+        reviewResult=EnumReviewResult.NONE,
+    )
+    annotation_2 = OmittedAnnotation(
+        target="test/test.value.duplicate2.testA_2",
+        authors=["testauthor"],
+        reviewers=[],
+        comment="",
+        reviewResult=EnumReviewResult.NONE,
+    )
+    annotationv2 = OmittedAnnotation(
+        target="test/test.value.duplicate2.testB",
+        authors=["testauthor", migration_author],
+        reviewers=[],
+        comment="",
+        reviewResult=EnumReviewResult.NONE,
+    )
+    return ManyToOneMapping(1.0, [parameterv1, parameterv1_2], parameterv2), [annotation, annotation_2], [annotationv2]
+
+
+def migrate_optional_annotation_data_duplicated() -> Tuple[
+    Mapping,
+    list[AbstractAnnotation],
+    list[AbstractAnnotation],
+]:
+    parameterv1 = Parameter(
+        id_="test/test.value.duplicate3.testA",
+        name="testA",
+        qname="test.value.duplicate3.testA",
+        default_value="True",
+        assigned_by=ParameterAssignment.POSITION_OR_NAME,
+        is_public=True,
+        documentation=ParameterDocumentation("bool", "True", ""),
+    )
+    parameterv1_2 = Parameter(
+        id_="test/test.value.duplicate3.testA_2",
+        name="testA_2",
+        qname="test.value.duplicate3.testA_2",
+        default_value="True",
+        assigned_by=ParameterAssignment.POSITION_OR_NAME,
+        is_public=True,
+        documentation=ParameterDocumentation("bool", "True", ""),
+    )
+    parameterv2 = Parameter(
+        id_="test/test.value.duplicate3.testB",
+        name="testB",
+        qname="test.value.duplicate3.testB",
+        default_value="False",
+        assigned_by=ParameterAssignment.POSITION_OR_NAME,
+        is_public=True,
+        documentation=ParameterDocumentation("bool", "False", ""),
+    )
+    annotation = OptionalAnnotation(
+        target="test/test.value.duplicate3.testA",
+        authors=["testauthor"],
+        reviewers=[],
+        comment="",
+        reviewResult=EnumReviewResult.NONE,
+        defaultValueType=ValueAnnotation.DefaultValueType.BOOLEAN,
+        defaultValue="True",
+    )
+    annotation_2 = OptionalAnnotation(
+        target="test/test.value.duplicate3.testA_2",
+        authors=["testauthor"],
+        reviewers=[],
+        comment="",
+        reviewResult=EnumReviewResult.NONE,
+        defaultValueType=ValueAnnotation.DefaultValueType.BOOLEAN,
+        defaultValue="True",
+    )
+    annotationv2 = OptionalAnnotation(
+        target="test/test.value.duplicate3.testB",
+        authors=["testauthor", migration_author],
+        reviewers=[],
+        comment="",
+        reviewResult=EnumReviewResult.NONE,
+        defaultValueType=ValueAnnotation.DefaultValueType.BOOLEAN,
+        defaultValue="True",
+    )
+    return ManyToOneMapping(1.0, [parameterv1, parameterv1_2], parameterv2), [annotation, annotation_2], [annotationv2]
+
+
+def migrate_required_annotation_data_duplicated() -> Tuple[
+    Mapping,
+    list[AbstractAnnotation],
+    list[AbstractAnnotation],
+]:
+    parameterv1 = Parameter(
+        id_="test/test.value.duplicate4.testA",
+        name="testA",
+        qname="test.value.duplicate4.testA",
+        default_value="'test'",
+        assigned_by=ParameterAssignment.POSITION_OR_NAME,
+        is_public=True,
+        documentation=ParameterDocumentation("str", "'test'", ""),
+    )
+    parameterv1_2 = Parameter(
+        id_="test/test.value.duplicate4.testA_2",
+        name="testA_2",
+        qname="test.value.duplicate4.testA_2",
+        default_value="'test'",
+        assigned_by=ParameterAssignment.POSITION_OR_NAME,
+        is_public=True,
+        documentation=ParameterDocumentation("str", "'test'", ""),
+    )
+    parameterv2 = Parameter(
+        id_="test/test.value.duplicate4.testB",
+        name="testB",
+        qname="test.value.duplicate4.testB",
+        default_value="'test_string'",
+        assigned_by=ParameterAssignment.POSITION_OR_NAME,
+        is_public=True,
+        documentation=ParameterDocumentation("str", "'test_string'", ""),
+    )
+    annotation = RequiredAnnotation(
+        target="test/test.value.duplicate4.testA",
+        authors=["testauthor"],
+        reviewers=[],
+        comment="",
+        reviewResult=EnumReviewResult.NONE,
+    )
+    annotation_2 = RequiredAnnotation(
+        target="test/test.value.duplicate4.testA_2",
+        authors=["testauthor"],
+        reviewers=[],
+        comment="",
+        reviewResult=EnumReviewResult.NONE,
+    )
+    annotationv2 = RequiredAnnotation(
+        target="test/test.value.duplicate4.testB",
+        authors=["testauthor", migration_author],
+        reviewers=[],
+        comment="",
+        reviewResult=EnumReviewResult.NONE,
+    )
+    return ManyToOneMapping(1.0, [parameterv1, parameterv1_2], parameterv2), [annotation, annotation_2], [annotationv2]

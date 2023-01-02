@@ -18,7 +18,7 @@ from package_parser.processing.api.model import (
 from package_parser.processing.migration import (
     Mapping,
     OneToManyMapping,
-    OneToOneMapping,
+    OneToOneMapping, ManyToOneMapping,
 )
 from package_parser.processing.migration.annotations import (
     get_migration_text,
@@ -210,3 +210,72 @@ def migrate_description_annotation_data_one_to_one_mapping__parameter() -> Tuple
         newDescription="test description",
     )
     return mapping, annotationv1, [annotationv2]
+
+
+def migrate_description_annotation_data_duplicated() -> Tuple[
+    Mapping,
+    list[AbstractAnnotation],
+    list[AbstractAnnotation],
+]:
+    functionv1 = Function(
+        id="test/test.description.duplicate.test/test",
+        qname="test.description.duplicate.test.test",
+        decorators=[],
+        parameters=[],
+        results=[],
+        is_public=True,
+        reexported_by=[],
+        documentation=FunctionDocumentation("", ""),
+        code="",
+    )
+    functionv1_2 = Function(
+        id="test/test.description.duplicate.test/test_2",
+        qname="test.description.duplicate.test.test_2",
+        decorators=[],
+        parameters=[],
+        results=[],
+        is_public=True,
+        reexported_by=[],
+        documentation=FunctionDocumentation("", ""),
+        code="",
+    )
+
+    functionv2 = Function(
+        id="test/test.description.duplicate.test/new_test",
+        qname="test.description.duplicate.test.new_test",
+        decorators=[],
+        parameters=[],
+        results=[],
+        is_public=True,
+        reexported_by=[],
+        documentation=FunctionDocumentation("", ""),
+        code="",
+    )
+
+    mapping = ManyToOneMapping(1.0, [functionv1, functionv1_2], functionv2)
+
+    annotationv1 = DescriptionAnnotation(
+        target="test/test.description.duplicate.test/test",
+        authors=["testauthor"],
+        reviewers=[],
+        comment="",
+        reviewResult=EnumReviewResult.NONE,
+        newDescription="lightbringer",
+    )
+    annotationv1_2 = DescriptionAnnotation(
+        target="test/test.description.duplicate.test/test_2",
+        authors=["testauthor"],
+        reviewers=[],
+        comment="",
+        reviewResult=EnumReviewResult.NONE,
+        newDescription="lightbringer",
+    )
+    annotationv2 = DescriptionAnnotation(
+        target="test/test.description.duplicate.test/new_test",
+        authors=["testauthor", migration_author],
+        reviewers=[],
+        comment="",
+        reviewResult=EnumReviewResult.NONE,
+        newDescription="lightbringer",
+    )
+    return mapping, [annotationv1, annotationv1_2], [annotationv2]

@@ -15,7 +15,7 @@ from package_parser.processing.api.model import (
 from package_parser.processing.migration import (
     Mapping,
     OneToManyMapping,
-    OneToOneMapping,
+    OneToOneMapping, ManyToOneMapping,
 )
 from package_parser.processing.migration.annotations import (
     get_migration_text,
@@ -211,3 +211,66 @@ def migrate_enum_annotation_data_one_to_many_mapping__only_one_relevant_mapping(
         enum_annotation,
         [migrated_enum_annotation, migrated_todo_annotation],
     )
+
+
+def migrate_enum_annotation_data_duplicated() -> Tuple[
+    Mapping,
+    list[AbstractAnnotation],
+    list[AbstractAnnotation],
+]:
+    parameterv1 = Parameter(
+        id_="test/test.enum.duplicate.TestA",
+        name="TestA",
+        qname="test.enum.duplicate.TestA",
+        default_value="value",
+        assigned_by=ParameterAssignment.POSITION_OR_NAME,
+        is_public=True,
+        documentation=ParameterDocumentation("str", "value", "docstring"),
+    )
+    parameterv1_2 = Parameter(
+        id_="test/test.enum.duplicate.TestA_2",
+        name="TestA_2",
+        qname="test.enum.duplicate.TestA_2",
+        default_value="value",
+        assigned_by=ParameterAssignment.POSITION_OR_NAME,
+        is_public=True,
+        documentation=ParameterDocumentation("str", "value", "docstring"),
+    )
+    parameterv2 = Parameter(
+        id_="test/test.enum.duplicate.TestB",
+        name="TestB",
+        qname="test.enum.duplicate.TestB",
+        default_value="value",
+        assigned_by=ParameterAssignment.POSITION_OR_NAME,
+        is_public=True,
+        documentation=ParameterDocumentation("str", "value", "docstring"),
+    )
+    mapping = ManyToOneMapping(1.0, [parameterv1, parameterv1_2], parameterv2)
+    enum_annotation = EnumAnnotation(
+        target="test/test.enum.duplicate.TestA",
+        authors=["testauthor"],
+        reviewers=[],
+        comment="",
+        reviewResult=EnumReviewResult.NONE,
+        enumName="EnumName",
+        pairs=[EnumPair("value", "name")],
+    )
+    enum_annotation_2 = EnumAnnotation(
+        target="test/test.enum.duplicate.TestA_2",
+        authors=["testauthor"],
+        reviewers=[],
+        comment="",
+        reviewResult=EnumReviewResult.NONE,
+        enumName="EnumName",
+        pairs=[EnumPair("value", "name")],
+    )
+    migrated_enum_annotation = EnumAnnotation(
+        target="test/test.enum.duplicate.TestB",
+        authors=["testauthor", migration_author],
+        reviewers=[],
+        comment="",
+        reviewResult=EnumReviewResult.NONE,
+        enumName="EnumName",
+        pairs=[EnumPair("value", "name")],
+    )
+    return mapping, [enum_annotation, enum_annotation_2], [migrated_enum_annotation]

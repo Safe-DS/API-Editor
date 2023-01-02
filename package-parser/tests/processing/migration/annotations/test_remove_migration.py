@@ -156,3 +156,69 @@ def migrate_remove_annotation_data_one_to_many_mapping() -> Tuple[
         newTodo=get_migration_text(annotationv1, mapping, for_todo_annotation=True),
     )
     return mapping, annotationv1, [annotationv2_a, annotationv2_b, annotationv2_c]
+
+
+def migrate_remove_annotation_data_duplicated() -> Tuple[
+    Mapping,
+    list[AbstractAnnotation],
+    list[AbstractAnnotation],
+]:
+    functionv1 = Function(
+        id="test/test.remove.duplicate.test/test",
+        qname="test.remove.duplicate.test.test",
+        decorators=[],
+        parameters=[],
+        results=[],
+        is_public=True,
+        reexported_by=[],
+        documentation=FunctionDocumentation("", ""),
+        code="",
+    )
+    functionv1_2 = Function(
+        id="test/test.remove.duplicate.test/test_2",
+        qname="test.remove.duplicate.test.test_2",
+        decorators=[],
+        parameters=[],
+        results=[],
+        is_public=True,
+        reexported_by=[],
+        documentation=FunctionDocumentation("", ""),
+        code="",
+    )
+
+    functionv2 = Function(
+        id="test/test.remove.duplicate.test/new_test",
+        qname="test.remove.duplicate.test.new_test",
+        decorators=[],
+        parameters=[],
+        results=[],
+        is_public=True,
+        reexported_by=[],
+        documentation=FunctionDocumentation("", ""),
+        code="",
+    )
+
+    mapping = OneToOneMapping(1.0, functionv1, functionv2)
+
+    annotationv1 = RemoveAnnotation(
+        target="test/test.remove.duplicate.test/test",
+        authors=["testauthor"],
+        reviewers=[],
+        comment="",
+        reviewResult=EnumReviewResult.NONE,
+    )
+    annotationv1_2 = RemoveAnnotation(
+        target="test/test.remove.duplicate.test/test_2",
+        authors=["testauthor"],
+        reviewers=[],
+        comment="",
+        reviewResult=EnumReviewResult.NONE,
+    )
+    annotationv2 = RemoveAnnotation(
+        target="test/test.remove.duplicate.test/new_test",
+        authors=["testauthor", migration_author],
+        reviewers=[],
+        comment="",
+        reviewResult=EnumReviewResult.NONE,
+    )
+    return mapping, [annotationv1, annotationv1_2], [annotationv2]
