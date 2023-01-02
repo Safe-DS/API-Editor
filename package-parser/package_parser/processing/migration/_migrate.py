@@ -193,18 +193,17 @@ class Migration:
             "valueAnnotations",
         ]:
             duplicates: list[Tuple[AbstractAnnotation, AbstractAnnotation]] = []
-            merged_annotation = [
+            migrated_annotations = [
                 annotation
                 for annotation_store in [
                     self.migrated_annotation_store,
                     self.unsure_migrated_annotation_store,
                 ]
-                for annotation_list in getattr(annotation_store, annotation_type)
-                for annotation in annotation_list
+                for annotation in getattr(annotation_store, annotation_type)
             ]
 
-        for annotation_a in merged_annotation:
-            for annotation_b in merged_annotation:
+        for annotation_a in migrated_annotations:
+            for annotation_b in migrated_annotations:
                 if annotation_a is annotation_b:
                     continue
                 if _are_semantic_equal(annotation_a, annotation_b):
