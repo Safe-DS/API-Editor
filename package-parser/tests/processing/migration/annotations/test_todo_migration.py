@@ -12,7 +12,6 @@ from package_parser.processing.api.model import (
     ParameterAssignment,
     ParameterDocumentation,
 )
-from package_parser.processing.migration import ManyToManyMapping, ManyToOneMapping
 from package_parser.processing.migration.annotations import (
     get_migration_text,
     migration_author,
@@ -21,6 +20,7 @@ from package_parser.processing.migration.model import (
     Mapping,
     OneToManyMapping,
     OneToOneMapping,
+    ManyToManyMapping, ManyToOneMapping,
 )
 
 

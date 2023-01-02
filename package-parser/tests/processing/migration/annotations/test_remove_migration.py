@@ -15,7 +15,7 @@ from package_parser.processing.api.model import (
 from package_parser.processing.migration import (
     Mapping,
     OneToManyMapping,
-    OneToOneMapping,
+    OneToOneMapping, ManyToOneMapping,
 )
 from package_parser.processing.migration.annotations import (
     get_migration_text,
@@ -198,7 +198,7 @@ def migrate_remove_annotation_data_duplicated() -> Tuple[
         code="",
     )
 
-    mapping = OneToOneMapping(1.0, functionv1, functionv2)
+    mapping = ManyToOneMapping(1.0, [functionv1, functionv1_2], functionv2)
 
     annotationv1 = RemoveAnnotation(
         target="test/test.remove.duplicate.test/test",
