@@ -9,7 +9,7 @@ plugins {
     kotlin("plugin.serialization") version "1.7.22" apply false
     id("com.github.johnrengelman.shadow") version "7.1.2" apply false
     id("com.github.node-gradle.node") version "3.5.0" apply false
-    id("org.jetbrains.compose") version "1.2.1" apply false
+    id("org.jetbrains.compose") version "1.2.2" apply false
 }
 
 repositories {
