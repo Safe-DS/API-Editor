@@ -6,12 +6,8 @@
         {
             "id": "test/test",
             "name": "test",
-            "classes": [
-                "test/test/TestClass"
-            ],
-            "functions": [
-                "test/test/test_function"
-            ]
+            "classes": ["test/test/TestClass"],
+            "functions": ["test/test/test_function"]
         }
     ],
     "classes": [

@@ -25,7 +25,17 @@ def _run_migrate_command(
     mappings = api_mapping.map_api()
     migration = Migration()
     migration.migrate_annotations(annotationsv1, mappings)
-    migrated_annotations_file = Path(os.path.join(out_dir_path, "migrated_annotationsv" + apiv2.version + ".json"))
-    unsure_migrated_annotations_file = Path(os.path.join(out_dir_path, "unsure_migrated_annotationsv" + apiv2.version + ".json"))
-    _write_annotations_file(migration.migrated_annotation_store, migrated_annotations_file)
-    _write_annotations_file(migration.unsure_migrated_annotation_store, unsure_migrated_annotations_file)
+    migrated_annotations_file = Path(
+        os.path.join(out_dir_path, "migrated_annotationsv" + apiv2.version + ".json")
+    )
+    unsure_migrated_annotations_file = Path(
+        os.path.join(
+            out_dir_path, "unsure_migrated_annotationsv" + apiv2.version + ".json"
+        )
+    )
+    _write_annotations_file(
+        migration.migrated_annotation_store, migrated_annotations_file
+    )
+    _write_annotations_file(
+        migration.unsure_migrated_annotation_store, unsure_migrated_annotations_file
+    )

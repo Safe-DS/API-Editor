@@ -6,12 +6,8 @@
         {
             "id": "test/test",
             "name": "test",
-            "classes": [
-                "test/test/NewTestClass"
-            ],
-            "functions": [
-                ""
-            ]
+            "classes": ["test/test/NewTestClass"],
+            "functions": [""]
         }
     ],
     "classes": [
@@ -90,7 +86,8 @@
             "description": "",
             "docstring": "",
             "code": "def test_function():\n    pass"
-        },{
+        },
+        {
             "id": "test/test/other_test_function",
             "qname": "other_test_function",
             "decorators": [],

@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import Callable, Optional, TypeVar
+
 from Levenshtein import distance
 from package_parser.processing.api.model import (
     AbstractType,

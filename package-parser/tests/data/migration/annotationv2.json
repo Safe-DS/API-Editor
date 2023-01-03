@@ -12,9 +12,7 @@
     "removeAnnotations": {
         "test/test/TestClass": {
             "target": "test/test/TestClass",
-            "authors": [
-                "$autogen$", "migration"
-            ],
+            "authors": ["$autogen$", "migration"],
             "reviewers": [],
             "comment": "I removed this class because it has no known usages.",
             "reviewResult": ""
@@ -22,10 +20,7 @@
     },
     "renameAnnotations": {
         "test/test/test_function": {
-            "authors": [
-                "$autogen$",
-                "migration"
-            ],
+            "authors": ["$autogen$", "migration"],
             "comment": "",
             "newName": "renamed_test_function",
             "reviewResult": "",
@@ -35,10 +30,7 @@
     },
     "todoAnnotations": {
         "test/test/test_function": {
-            "authors": [
-                "$autogen$",
-                "migration"
-            ],
+            "authors": ["$autogen$", "migration"],
             "comment": "",
             "newTodo": "this is a todo annotation",
             "reviewResult": "",
@@ -46,15 +38,13 @@
             "target": "test/test/test_function"
         },
         "test/test/test_function/test_parameter": {
-            "authors": [
-                "$autogen$",
-                "migration"
-            ],
+            "authors": ["$autogen$", "migration"],
             "comment": "",
             "newTodo": "another todo annotation",
             "reviewResult": "unsure",
             "reviewers": [],
-            "target": "test/test/test_function/test_parameter"}
+            "target": "test/test/test_function/test_parameter"
+        }
     },
     "valueAnnotations": {}
 }

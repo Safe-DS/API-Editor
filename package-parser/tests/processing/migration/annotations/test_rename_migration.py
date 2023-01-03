@@ -7,9 +7,11 @@ from package_parser.processing.annotations.model import (
     TodoAnnotation,
 )
 from package_parser.processing.api.model import (
+    Class,
+    ClassDocumentation,
     Parameter,
     ParameterAssignment,
-    ParameterDocumentation, Class, ClassDocumentation,
+    ParameterDocumentation,
 )
 from package_parser.processing.migration.annotations import (
     get_migration_text,
@@ -110,7 +112,9 @@ def migrate_rename_annotation_data_one_to_many_mapping() -> Tuple[
         code="class NewClass:\n    pass",
         instance_attributes=[],
     )
-    mappings = OneToManyMapping(1.0, parameterv1, [parameterv2_a, parameterv2_b, classv2])
+    mappings = OneToManyMapping(
+        1.0, parameterv1, [parameterv2_a, parameterv2_b, classv2]
+    )
     annotationv1 = RenameAnnotation(
         target="test/test.rename.test3.Test",
         authors=["testauthor"],

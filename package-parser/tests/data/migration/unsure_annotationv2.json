@@ -9,16 +9,13 @@
     "groupAnnotations": {},
     "moveAnnotations": {
         "test/test/complete_different_function": {
-            "authors": [
-                "$autogen$",
-                "migration"
-            ],
+            "authors": ["$autogen$", "migration"],
             "comment": "",
             "destination": "test/test.moved.package",
             "reviewResult": "",
             "reviewers": [],
             "target": "test/test/complete_different_function"
-}
+        }
     },
     "pureAnnotations": {},
     "removeAnnotations": {},

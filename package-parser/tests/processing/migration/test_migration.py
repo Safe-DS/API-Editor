@@ -6,7 +6,7 @@ from package_parser.processing.annotations.model import (
     AnnotationStore,
 )
 from package_parser.processing.api.model import API
-from package_parser.processing.migration import Migration, SimpleDiffer, APIMapping
+from package_parser.processing.migration import APIMapping, Migration, SimpleDiffer
 from package_parser.processing.migration.model import Mapping
 from tests.processing.migration.annotations.test_boundary_migration import (
     migrate_boundary_annotation_data_duplicated,
@@ -252,14 +252,21 @@ def test_migrate_command_and_both_annotation_stores() -> None:
     with open(annotationsv2_json_path, "r", encoding="utf-8") as annotationsv2_file:
         expected_annotationsv2_json = json.load(annotationsv2_file)
 
-    with open(unsure_annotationsv2_json_path, "r", encoding="utf-8") as unsure_annotationsv2_file:
+    with open(
+        unsure_annotationsv2_json_path, "r", encoding="utf-8"
+    ) as unsure_annotationsv2_file:
         expected_unsure_annotationsv2_json = json.load(unsure_annotationsv2_file)
 
     differ = SimpleDiffer()
-    api_mapping = APIMapping(apiv1, apiv2, differ, threshold_of_similarity_between_mappings=0.3)
+    api_mapping = APIMapping(
+        apiv1, apiv2, differ, threshold_of_similarity_between_mappings=0.3
+    )
     mappings = api_mapping.map_api()
     migration = Migration(reliable_similarity=0.9, unsure_similarity=0.75)
     migration.migrate_annotations(annotationsv1, mappings)
 
     assert migration.migrated_annotation_store.to_json() == expected_annotationsv2_json
-    assert migration.unsure_migrated_annotation_store.to_json() == expected_unsure_annotationsv2_json
+    assert (
+        migration.unsure_migrated_annotation_store.to_json()
+        == expected_unsure_annotationsv2_json
+    )
