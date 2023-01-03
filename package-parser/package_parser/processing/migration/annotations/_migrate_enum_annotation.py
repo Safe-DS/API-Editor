@@ -127,15 +127,15 @@ def migrate_enum_annotation(
                         )
             elif not isinstance(parameter, (Attribute, Result)):
                 migrated_annotations.append(
-                            TodoAnnotation(
-                                parameter.id,
-                                authors,
-                                enum_annotation.reviewers,
-                                enum_annotation.comment,
-                                EnumReviewResult.NONE,
-                                get_migration_text(
-                                    enum_annotation, mapping, for_todo_annotation=True
-                                ),
-                            )
-                        )
+                    TodoAnnotation(
+                        parameter.id,
+                        authors,
+                        enum_annotation.reviewers,
+                        enum_annotation.comment,
+                        EnumReviewResult.NONE,
+                        get_migration_text(
+                            enum_annotation, mapping, for_todo_annotation=True
+                        ),
+                    )
+                )
     return migrated_annotations
