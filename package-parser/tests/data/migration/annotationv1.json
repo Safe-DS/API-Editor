@@ -1,0 +1,59 @@
+{
+    "schemaVersion": 2,
+    "boundaryAnnotations": {},
+    "calledAfterAnnotations": {},
+    "completeAnnotations": {},
+    "descriptionAnnotations": {
+        "test/test/test_function": {
+            "target": "test/test/test_function",
+            "authors": [
+                "$autogen$"
+            ],
+            "reviewers": [],
+            "comment": "",
+            "reviewResult": "",
+            "newDescription": "new description"
+        }
+    },
+    "enumAnnotations": {},
+    "expertAnnotations": {},
+    "groupAnnotations": {},
+    "moveAnnotations": {},
+    "pureAnnotations": {},
+    "removeAnnotations": {
+        "test/test/UnusedClass": {
+            "target": "test/test/TestClass",
+            "authors": [
+                "$autogen$"
+            ],
+            "reviewers": [],
+            "comment": "I removed this class because it has no known usages.",
+            "reviewResult": ""
+        }
+    },
+    "renameAnnotations": {
+        "test/test/test_function": {
+            "target": "test/test/test_function",
+            "authors": [
+                "$autogen$"
+            ],
+            "reviewers": [],
+            "comment": "",
+            "reviewResult": "",
+            "newName": "renamed_test_function"
+        }
+    },
+    "todoAnnotations": {
+        "test/test/test_function": {
+            "target": "test/test/test_function",
+            "authors": [
+                "$autogen$"
+            ],
+            "reviewers": [],
+            "comment": "",
+            "reviewResult": "",
+            "newTodo": "this is a todo annotation"
+        }
+    },
+    "valueAnnotations": {}
+}

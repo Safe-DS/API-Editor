@@ -97,6 +97,9 @@ jobs:
       - name: Smoke test (all)
         run: poetry run parse-package all -p package_parser -s package_parser -c package_parser -o out
 
+      - name: Smoke test (migration)
+        run: poetry run parse-package migrate -a1 -a2 -a -o out #todo
+
       # Requires installation of pytest and pytest-cov
       - name: Test with pytest
         run: poetry run pytest --doctest-modules

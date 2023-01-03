@@ -1,8 +1,13 @@
+import json
+import os
+
+from package_parser.cli._run_migrate import _run_migrate_command
 from package_parser.processing.annotations.model import (
     AbstractAnnotation,
     AnnotationStore,
 )
-from package_parser.processing.migration import Migration
+from package_parser.processing.api.model import API
+from package_parser.processing.migration import Migration, SimpleDiffer, APIMapping
 from package_parser.processing.migration.model import Mapping
 from tests.processing.migration.annotations.test_boundary_migration import (
     migrate_boundary_annotation_data_duplicated,
@@ -168,7 +173,14 @@ def test_migrate_all_annotations() -> None:
         for expected_annotation in annotationsv2:
             expected_annotation_store.add_annotation(expected_annotation)
 
-    actual_annotations = Migration().migrate_annotations(annotation_store, mappings)
+    migration = Migration()
+    migration.migrate_annotations(annotation_store, mappings)
+
+    for key, value in migration.unsure_migrated_annotation_store.to_json().values():
+        if isinstance(value, list):
+            assert len(value) == 0
+
+    actual_annotations = migration.migrated_annotation_store
 
     def get_key(annotation: AbstractAnnotation) -> str:
         return annotation.target
@@ -209,3 +221,48 @@ def test_migrate_all_annotations() -> None:
     assert sorted(actual_annotations.valueAnnotations, key=get_key) == sorted(
         expected_annotation_store.valueAnnotations, key=get_key
     )
+
+
+def test_migrate_command_and_both_annotation_stores() -> None:
+    apiv1_json_path = os.path.join(
+        os.getcwd(), "tests", "data", "migration", "apiv1_data.json"
+    )
+    apiv2_json_path = os.path.join(
+        os.getcwd(), "tests", "data", "migration", "apiv2_data.json"
+    )
+    annotationsv1_json_path = os.path.join(
+        os.getcwd(), "tests", "data", "migration", "annotationv1.json"
+    )
+    annotationsv2_json_path = os.path.join(
+        os.getcwd(), "tests", "data", "migration", "annotationv2.json"
+    )
+    unsure_annotationsv2_json_path = os.path.join(
+        os.getcwd(), "tests", "data", "migration", "unsure_annotationv2.json"
+    )
+
+    with open(apiv1_json_path, "r") as apiv1_file:
+        apiv1_json = json.load(apiv1_file)
+        apiv1 = API.from_json(apiv1_json)
+
+    with open(apiv2_json_path, "r") as apiv2_file:
+        apiv2_json = json.load(apiv2_file)
+        apiv2 = API.from_json(apiv2_json)
+
+    with open(annotationsv1_json_path, "r") as annotationsv1_file:
+        annotationsv1_json = json.load(annotationsv1_file)
+        annotationsv1 = AnnotationStore.from_json(annotationsv1_json)
+
+    with open(annotationsv2_json_path, "r") as annotationsv2_file:
+        expected_annotationsv2_json = json.load(annotationsv2_file)
+
+    with open(unsure_annotationsv2_json_path, "r") as unsure_annotationsv2_file:
+        expected_unsure_annotationsv2_json = json.load(unsure_annotationsv2_file)
+
+    differ = SimpleDiffer()
+    api_mapping = APIMapping(apiv1, apiv2, differ)
+    mappings = api_mapping.map_api()
+    migration = Migration()
+    migration.migrate_annotations(annotationsv1, mappings)
+
+    assert migration.migrated_annotation_store.to_json() == expected_annotationsv2_json
+    assert migration.unsure_migrated_annotation_store.to_json() == expected_unsure_annotationsv2_json

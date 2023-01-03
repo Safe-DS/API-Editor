@@ -64,7 +64,7 @@ class Migration:
 
     def migrate_annotations(
         self, annotationsv1: AnnotationStore, mappings: list[Mapping]
-    ) -> AnnotationStore:
+    ) -> None:
         for boundary_annotation in annotationsv1.boundaryAnnotations:
             mapping = self._get_mapping_from_annotation(boundary_annotation, mappings)
             if mapping is not None:
@@ -165,7 +165,6 @@ class Migration:
                         annotation, mapping.get_similarity()
                     )
         self._remove_duplicates()
-        return self.migrated_annotation_store
 
     def add_annotations_based_on_similarity(
         self, annotation: AbstractAnnotation, similarity: float

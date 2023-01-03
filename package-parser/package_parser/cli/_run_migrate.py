@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 from package_parser.processing.migration import Migration
@@ -22,5 +23,9 @@ def _run_migrate_command(
     differ = SimpleDiffer()
     api_mapping = APIMapping(apiv1, apiv2, differ)
     mappings = api_mapping.map_api()
-    annotationsv2 = Migration().migrate_annotations(annotationsv1, mappings)
-    _write_annotations_file(annotationsv2, out_dir_path)
+    migration = Migration()
+    migration.migrate_annotations(annotationsv1, mappings)
+    migrated_annotations_file = Path(os.path.join(out_dir_path, "migrated_annotationsv" + apiv2.version + ".json"))
+    unsure_migrated_annotations_file = Path(os.path.join(out_dir_path, "unsure_migrated_annotationsv" + apiv2.version + ".json"))
+    _write_annotations_file(migration.migrated_annotation_store, migrated_annotations_file)
+    _write_annotations_file(migration.unsure_migrated_annotation_store, unsure_migrated_annotations_file)

@@ -1,0 +1,79 @@
+{
+    "distribution": "test",
+    "package": "test",
+    "version": "0.0.1",
+    "modules": [
+        {
+            "id": "test/test",
+            "name": "test",
+            "classes": [
+                "test/test/NewTestClass"
+            ],
+            "functions": [
+                ""
+            ]
+        }
+    ],
+    "classes": [
+        {
+            "id": "test/test/NewTestClass",
+            "name": "NewTestClass",
+            "qname": "test.NewTestClass",
+            "methods": [],
+            "decorators": [],
+            "superclasses": [],
+            "is_public": true,
+            "reexported_by": [],
+            "documentation": "",
+            "code": "class NewTestClass:\n\"\"\"    This is a NewTestClass.\n    It has no common use.\"\"\"\n    pass",
+            "instance_attributes": [
+                {
+                    "name": "a",
+                    "types": {
+                        "kind": "NamedType",
+                        "name": "str"
+                    }
+                },
+                {
+                    "name": "b",
+                    "types": {
+                        "kind": "NamedType",
+                        "name": "str"
+                    }
+                },
+                {
+                    "name": "c",
+                    "types": {
+                        "kind": "NamedType",
+                        "name": "str"
+                    }
+                }
+            ]
+        }
+    ],
+    "functions": [
+        {
+            "id": "test/test/test_function",
+            "qname": "test_function",
+            "decorators": [],
+            "parameters": [],
+            "results": [],
+            "is_public": true,
+            "reexported_by": [],
+            "description": "",
+            "docstring": "",
+            "code": "def test_function():\n    pass"
+        },{
+            "id": "test/test/other_test_function",
+            "qname": "other_test_function",
+            "decorators": [],
+            "parameters": [],
+            "results": [],
+            "is_public": true,
+            "reexported_by": [],
+            "description": "",
+            "docstring": "",
+            "code": "def other_test_function():\n    pass"
+        }
+    ]
+}
