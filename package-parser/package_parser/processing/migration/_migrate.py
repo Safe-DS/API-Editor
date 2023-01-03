@@ -1,4 +1,3 @@
-from dataclasses import dataclass
 from typing import Optional, Tuple
 
 from package_parser.processing.annotations.model import (

@@ -42,7 +42,7 @@ def migrate_rename_annotation(
 
     annotations: list[AbstractAnnotation] = []
     for element in mapping.get_apiv2_elements():
-        if isinstance(element, type(annotated_apiv1_element)):
+        if isinstance(element, type(annotated_apiv1_element)) and not isinstance(element, (Attribute, Result)):
             if element.name not in (
                 new_name,
                 rename_annotation.target.split(".")[-1],

@@ -237,22 +237,22 @@ def test_migrate_command_and_both_annotation_stores() -> None:
         os.getcwd(), "tests", "data", "migration", "unsure_annotationv2.json"
     )
 
-    with open(apiv1_json_path, "r") as apiv1_file:
+    with open(apiv1_json_path, "r", encoding="utf-8") as apiv1_file:
         apiv1_json = json.load(apiv1_file)
         apiv1 = API.from_json(apiv1_json)
 
-    with open(apiv2_json_path, "r") as apiv2_file:
+    with open(apiv2_json_path, "r", encoding="utf-8") as apiv2_file:
         apiv2_json = json.load(apiv2_file)
         apiv2 = API.from_json(apiv2_json)
 
-    with open(annotationsv1_json_path, "r") as annotationsv1_file:
+    with open(annotationsv1_json_path, "r", encoding="utf-8") as annotationsv1_file:
         annotationsv1_json = json.load(annotationsv1_file)
         annotationsv1 = AnnotationStore.from_json(annotationsv1_json)
 
-    with open(annotationsv2_json_path, "r") as annotationsv2_file:
+    with open(annotationsv2_json_path, "r", encoding="utf-8") as annotationsv2_file:
         expected_annotationsv2_json = json.load(annotationsv2_file)
 
-    with open(unsure_annotationsv2_json_path, "r") as unsure_annotationsv2_file:
+    with open(unsure_annotationsv2_json_path, "r", encoding="utf-8") as unsure_annotationsv2_file:
         expected_unsure_annotationsv2_json = json.load(unsure_annotationsv2_file)
 
     differ = SimpleDiffer()
