@@ -1,8 +1,7 @@
 from abc import ABC, abstractmethod
-from typing import Any, Optional, Callable
+from typing import Any, Callable, Optional
 
 from Levenshtein import distance
-
 from package_parser.processing.api.model import (
     AbstractType,
     Attribute,
@@ -46,7 +45,9 @@ class AbstractDiffer(ABC):
 
 
 def distance_elements(
-    list_a: list[Any], list_b: list[Any], are_similar: Callable[[Any, Any], bool] = lambda x, y: x == y
+    list_a: list[Any],
+    list_b: list[Any],
+    are_similar: Callable[[Any, Any], bool] = lambda x, y: x == y,
 ) -> float:
     if len(list_a) == 0:
         return len(list_b)
@@ -175,9 +176,7 @@ class SimpleDiffer(AbstractDiffer):
         return (name_similarity + attributes_similarity + code_similarity) / 3
 
     def _compute_name_similarity(self, name_a: str, name_b: str) -> float:
-        name_similarity = distance(name_a, name_b) / max(
-            len(name_a), len(name_b), 1
-        )
+        name_similarity = distance(name_a, name_b) / max(len(name_a), len(name_b), 1)
         return 1 - name_similarity
 
     def compute_attribute_similarity(
@@ -210,7 +209,9 @@ class SimpleDiffer(AbstractDiffer):
             function_a.name, function_b.name
         )
 
-        def are_parameters_similar(parameter_a: Parameter, parameter_b: Parameter) -> bool:
+        def are_parameters_similar(
+            parameter_a: Parameter, parameter_b: Parameter
+        ) -> bool:
             return self.compute_parameter_similarity(parameter_a, parameter_b) == 1
 
         parameter_similarity = distance_elements(
