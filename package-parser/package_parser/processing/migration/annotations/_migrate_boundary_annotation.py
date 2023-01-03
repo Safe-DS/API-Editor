@@ -100,7 +100,7 @@ def migrate_boundary_annotation(
             if parameter_expects_number:
                 if (
                     parameter_type_is_discrete
-                    is not boundary_annotation.interval.isDiscrete
+                    != boundary_annotation.interval.isDiscrete
                 ):
                     boundary_annotation.reviewResult = EnumReviewResult.UNSURE
                     boundary_annotation.comment = get_migration_text(
@@ -135,7 +135,7 @@ def migrate_boundary_annotation(
                 if (
                     parameter.type is not None
                     and is_number
-                    and is_discrete is boundary_annotation.interval.isDiscrete
+                    and is_discrete == boundary_annotation.interval.isDiscrete
                 ):
                     migrated_annotations.append(
                         BoundaryAnnotation(

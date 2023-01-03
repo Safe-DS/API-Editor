@@ -111,10 +111,22 @@ def migrate_enum_annotation(
                                 enum_annotation.pairs,
                             )
                         )
+                        continue
                     elif isinstance(parameter.type, NamedType):
                         continue
-                else:
-                    migrated_annotations.append(
+                    else:
+                        migrated_annotations.append(
+                            EnumAnnotation(
+                                parameter.id,
+                                authors,
+                                enum_annotation.reviewers,
+                                get_migration_text(enum_annotation, mapping),
+                                EnumReviewResult.UNSURE,
+                                enum_annotation.enumName,
+                                enum_annotation.pairs,
+                            )
+                        )
+            migrated_annotations.append(
                         TodoAnnotation(
                             parameter.id,
                             authors,
