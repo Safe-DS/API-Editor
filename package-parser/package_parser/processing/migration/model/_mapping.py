@@ -119,9 +119,9 @@ class APIMapping:
         apiv1: API,
         apiv2: API,
         differ: AbstractDiffer,
-        threshold_of_similarity_for_creation_of_mappings=0.5,
-        threshold_of_similarity_between_mappings=0.05,
-    ):
+        threshold_of_similarity_for_creation_of_mappings: float = 0.5,
+        threshold_of_similarity_between_mappings: float = 0.05,
+    ) -> None:
         self.apiv1 = apiv1
         self.apiv2 = apiv2
         self.differ = differ
@@ -236,7 +236,7 @@ class APIMapping:
 
     def _merge_mappings_with_same_elements(
         self, mapping_to_be_appended: Mapping, mappings: list[Mapping]
-    ):
+    ) -> None:
         """
         This method prevents that an element in a mapping appears multiple times in a list of mappings
         by merging the affected mappings and include the result in the list. If there is no such element,
