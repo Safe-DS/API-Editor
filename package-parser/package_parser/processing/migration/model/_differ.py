@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import Callable, Optional, TypeVar
-
+from Levenshtein import distance
 from package_parser.processing.api.model import (
     AbstractType,
     Attribute,
@@ -178,9 +178,7 @@ class SimpleDiffer(AbstractDiffer):
         return (name_similarity + attributes_similarity + code_similarity) / 3
 
     def _compute_name_similarity(self, name_a: str, name_b: str) -> float:
-        name_similarity = distance_elements([*name_a], [*name_b]) / max(
-            len(name_a), len(name_b), 1
-        )
+        name_similarity = distance(name_a, name_b) / max(len(name_a), len(name_b), 1)
         return 1 - name_similarity
 
     def compute_attribute_similarity(

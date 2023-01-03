@@ -10,7 +10,7 @@ from ._documentation import ParameterDocumentation
 
 class AbstractType(metaclass=ABCMeta):
     @abstractmethod
-    def to_json(self) -> Any:
+    def to_json(self) -> dict[str, Any]:
         pass
 
     @classmethod
@@ -45,7 +45,7 @@ class NamedType(AbstractType):
     def to_json(self) -> dict[str, str]:
         return {"kind": self.__class__.__name__, "name": self.name}
 
-    def __eq__(self, other: Any) -> bool:
+    def __eq__(self, other: object) -> bool:
         if isinstance(other, self.__class__):
             return self.name == other.name
         return False
