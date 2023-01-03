@@ -190,7 +190,7 @@ def migrate_enum_annotation_data_one_to_many_mapping__only_one_relevant_mapping(
         enumName="EnumName",
         pairs=[EnumPair("value", "name")],
     )
-    migrated_enum_annotation = EnumAnnotation(
+    migrated_enum_annotation_b = EnumAnnotation(
         target="test/test.enum.test3.TestB",
         authors=["testauthor", migration_author],
         reviewers=[],
@@ -199,18 +199,19 @@ def migrate_enum_annotation_data_one_to_many_mapping__only_one_relevant_mapping(
         enumName="EnumName",
         pairs=[EnumPair("value", "name")],
     )
-    migrated_todo_annotation = TodoAnnotation(
+    migrated_enum_annotation_a = EnumAnnotation(
         target="test/test.enum.test3.TestA",
         authors=["testauthor", migration_author],
         reviewers=[],
-        reviewResult=EnumReviewResult.NONE,
-        comment="",
-        newTodo=get_migration_text(enum_annotation, mapping, for_todo_annotation=True),
+        reviewResult=EnumReviewResult.UNSURE,
+        comment=get_migration_text(enum_annotation, mapping),
+        enumName="EnumName",
+        pairs=[EnumPair("value", "name")],
     )
     return (
         mapping,
         enum_annotation,
-        [migrated_enum_annotation, migrated_todo_annotation],
+        [migrated_enum_annotation_b, migrated_enum_annotation_a],
     )
 
 
