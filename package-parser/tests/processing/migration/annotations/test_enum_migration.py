@@ -5,7 +5,6 @@ from package_parser.processing.annotations.model import (
     EnumAnnotation,
     EnumPair,
     EnumReviewResult,
-    TodoAnnotation,
 )
 from package_parser.processing.api.model import (
     Parameter,
