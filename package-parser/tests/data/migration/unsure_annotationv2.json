@@ -3,57 +3,26 @@
     "boundaryAnnotations": {},
     "calledAfterAnnotations": {},
     "completeAnnotations": {},
-    "descriptionAnnotations": {
-        "test/test/test_function": {
-            "target": "test/test/test_function",
-            "authors": [
-                "$autogen$"
-            ],
-            "reviewers": [],
-            "comment": "",
-            "reviewResult": "",
-            "newDescription": "new description"
-        }
-    },
+    "descriptionAnnotations": {},
     "enumAnnotations": {},
     "expertAnnotations": {},
     "groupAnnotations": {},
-    "moveAnnotations": {},
+    "moveAnnotations": {
+        "test/test/complete_different_function": {
+            "authors": [
+                "$autogen$",
+                "migration"
+            ],
+            "comment": "",
+            "destination": "test/test.moved.package",
+            "reviewResult": "",
+            "reviewers": [],
+            "target": "test/test/complete_different_function"
+}
+    },
     "pureAnnotations": {},
-    "removeAnnotations": {
-        "test/test/UnusedClass": {
-            "target": "test/test/TestClass",
-            "authors": [
-                "$autogen$"
-            ],
-            "reviewers": [],
-            "comment": "I removed this class because it has no known usages.",
-            "reviewResult": ""
-        }
-    },
-    "renameAnnotations": {
-        "test/test/test_function": {
-            "target": "test/test/test_function",
-            "authors": [
-                "$autogen$"
-            ],
-            "reviewers": [],
-            "comment": "",
-            "reviewResult": "",
-            "newName": "renamed_test_function"
-        }
-    },
-    "todoAnnotations": {
-        "test/test/test_function": {
-            "target": "test/test/test_function",
-            "authors": [
-                "$autogen$"
-            ],
-            "reviewers": [],
-            "comment": "",
-            "reviewResult": "",
-            "newTodo": "this is a todo annotation"
-        }
-    },
+    "removeAnnotations": {},
+    "renameAnnotations": {},
+    "todoAnnotations": {},
     "valueAnnotations": {}
 }

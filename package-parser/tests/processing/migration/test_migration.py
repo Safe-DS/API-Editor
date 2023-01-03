@@ -1,7 +1,6 @@
 import json
 import os
 
-from package_parser.cli._run_migrate import _run_migrate_command
 from package_parser.processing.annotations.model import (
     AbstractAnnotation,
     AnnotationStore,
@@ -62,7 +61,6 @@ from tests.processing.migration.annotations.test_remove_migration import (
 from tests.processing.migration.annotations.test_rename_migration import (
     migrate_rename_annotation_data_duplicated,
     migrate_rename_annotation_data_one_to_many_mapping,
-    migrate_rename_annotation_data_one_to_many_mapping__with_changed_new_name,
     migrate_rename_annotation_data_one_to_one_mapping,
 )
 from tests.processing.migration.annotations.test_todo_migration import (
@@ -130,7 +128,6 @@ test_data = [
     migrate_remove_annotation_data_one_to_many_mapping(),
     migrate_remove_annotation_data_duplicated(),
     # rename annotation
-    migrate_rename_annotation_data_one_to_many_mapping__with_changed_new_name(),
     migrate_rename_annotation_data_one_to_one_mapping(),
     migrate_rename_annotation_data_one_to_many_mapping(),
     migrate_rename_annotation_data_duplicated(),
@@ -176,8 +173,8 @@ def test_migrate_all_annotations() -> None:
     migration = Migration()
     migration.migrate_annotations(annotation_store, mappings)
 
-    for key, value in migration.unsure_migrated_annotation_store.to_json().values():
-        if isinstance(value, list):
+    for value in migration.unsure_migrated_annotation_store.to_json().values():
+        if isinstance(value, dict):
             assert len(value) == 0
 
     actual_annotations = migration.migrated_annotation_store
@@ -259,9 +256,9 @@ def test_migrate_command_and_both_annotation_stores() -> None:
         expected_unsure_annotationsv2_json = json.load(unsure_annotationsv2_file)
 
     differ = SimpleDiffer()
-    api_mapping = APIMapping(apiv1, apiv2, differ)
+    api_mapping = APIMapping(apiv1, apiv2, differ, threshold_of_similarity_between_mappings=0.3)
     mappings = api_mapping.map_api()
-    migration = Migration()
+    migration = Migration(reliable_similarity=0.9, unsure_similarity=0.75)
     migration.migrate_annotations(annotationsv1, mappings)
 
     assert migration.migrated_annotation_store.to_json() == expected_annotationsv2_json

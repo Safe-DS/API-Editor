@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from typing import Optional, Tuple
 
 from package_parser.processing.annotations.model import (
@@ -40,14 +41,14 @@ from package_parser.processing.migration.model import Mapping
 class Migration:
     reliable_similarity: float
     unsure_similarity: float
-    migrated_annotation_store: AnnotationStore = AnnotationStore()
-    unsure_migrated_annotation_store: AnnotationStore = AnnotationStore()
 
     def __init__(
-        self, reliable_similarity: float = 0.9, unsure_similarity: float = 0.5
+        self, reliable_similarity: float = 0.9, unsure_similarity: float = 0.8
     ) -> None:
         self.reliable_similarity = reliable_similarity
         self.unsure_similarity = unsure_similarity
+        self.migrated_annotation_store: AnnotationStore = AnnotationStore()
+        self.unsure_migrated_annotation_store: AnnotationStore = AnnotationStore()
 
     @staticmethod
     def _get_mapping_from_annotation(

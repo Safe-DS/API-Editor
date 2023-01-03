@@ -4,21 +4,22 @@
     "calledAfterAnnotations": {},
     "completeAnnotations": {},
     "descriptionAnnotations": {
-        "test/test/test_function": {
-            "target": "test/test/test_function",
+    },
+    "enumAnnotations": {},
+    "expertAnnotations": {},
+    "groupAnnotations": {},
+    "moveAnnotations": {
+        "test/test/complete_different_function": {
+            "target": "test/test/complete_different_function",
             "authors": [
                 "$autogen$"
             ],
             "reviewers": [],
             "comment": "",
             "reviewResult": "",
-            "newDescription": "new description"
+            "destination": "test/test.moved.package"
         }
     },
-    "enumAnnotations": {},
-    "expertAnnotations": {},
-    "groupAnnotations": {},
-    "moveAnnotations": {},
     "pureAnnotations": {},
     "removeAnnotations": {
         "test/test/UnusedClass": {
@@ -53,6 +54,16 @@
             "comment": "",
             "reviewResult": "",
             "newTodo": "this is a todo annotation"
+        },
+        "test/test/test_function/test_parameter": {
+            "target": "test/test/test_function/test_parameter",
+            "authors": [
+                "$autogen$"
+            ],
+            "reviewers": [],
+            "comment": "",
+            "reviewResult": "",
+            "newTodo": "another todo annotation"
         }
     },
     "valueAnnotations": {}

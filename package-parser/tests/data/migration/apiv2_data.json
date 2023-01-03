@@ -16,16 +16,16 @@
     ],
     "classes": [
         {
-            "id": "test/test/NewTestClass",
-            "name": "NewTestClass",
-            "qname": "test.NewTestClass",
+            "id": "test/test/TestClass",
+            "name": "TestClass",
+            "qname": "test.TestClass",
             "methods": [],
             "decorators": [],
             "superclasses": [],
             "is_public": true,
             "reexported_by": [],
             "documentation": "",
-            "code": "class NewTestClass:\n\"\"\"    This is a NewTestClass.\n    It has no common use.\"\"\"\n    pass",
+            "code": "class TestClass:\n\"\"\"    This is a TestClass.\n    It has no common use.\"\"\"\n    pass",
             "instance_attributes": [
                 {
                     "name": "a",
@@ -53,6 +53,33 @@
     ],
     "functions": [
         {
+            "id": "test/test/complete_different_function",
+            "qname": "test.complete_different_function",
+            "decorators": [],
+            "parameters": [
+                {
+                    "id": "test/test/test_function/test_parameter",
+                    "name": "test_parameter",
+                    "qname": "test.test_function.test_parameter",
+                    "default_value": "'new_optional_value'",
+                    "assigned_by": "POSITIONAL_VARARG",
+                    "is_public": false,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                }
+            ],
+            "results": [],
+            "is_public": true,
+            "reexported_by": [],
+            "description": "",
+            "docstring": "",
+            "code": "def complete_different_function():\n    \"\"\"This function's only use is to hold a parameter\"\"\"    return None"
+        },
+        {
             "id": "test/test/test_function",
             "qname": "test_function",
             "decorators": [],
@@ -73,7 +100,7 @@
             "reexported_by": [],
             "description": "",
             "docstring": "",
-            "code": "def other_test_function():\n    pass"
+            "code": "def other_test_function():\n    \"\"\"This function is longer than the other function\n but have some attributes in common.\n Therfore, they should be in the unsure annotationstore\"\"\""
         }
     ]
 }

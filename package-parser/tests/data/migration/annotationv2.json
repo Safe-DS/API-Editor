@@ -3,28 +3,17 @@
     "boundaryAnnotations": {},
     "calledAfterAnnotations": {},
     "completeAnnotations": {},
-    "descriptionAnnotations": {
-        "test/test/test_function": {
-            "target": "test/test/test_function",
-            "authors": [
-                "$autogen$"
-            ],
-            "reviewers": [],
-            "comment": "",
-            "reviewResult": "",
-            "newDescription": "new description"
-        }
-    },
+    "descriptionAnnotations": {},
     "enumAnnotations": {},
     "expertAnnotations": {},
     "groupAnnotations": {},
     "moveAnnotations": {},
     "pureAnnotations": {},
     "removeAnnotations": {
-        "test/test/UnusedClass": {
+        "test/test/TestClass": {
             "target": "test/test/TestClass",
             "authors": [
-                "$autogen$"
+                "$autogen$", "migration"
             ],
             "reviewers": [],
             "comment": "I removed this class because it has no known usages.",
@@ -33,27 +22,39 @@
     },
     "renameAnnotations": {
         "test/test/test_function": {
-            "target": "test/test/test_function",
             "authors": [
-                "$autogen$"
+                "$autogen$",
+                "migration"
             ],
-            "reviewers": [],
             "comment": "",
+            "newName": "renamed_test_function",
             "reviewResult": "",
-            "newName": "renamed_test_function"
+            "reviewers": [],
+            "target": "test/test/test_function"
         }
     },
     "todoAnnotations": {
         "test/test/test_function": {
-            "target": "test/test/test_function",
             "authors": [
-                "$autogen$"
+                "$autogen$",
+                "migration"
             ],
-            "reviewers": [],
             "comment": "",
+            "newTodo": "this is a todo annotation",
             "reviewResult": "",
-            "newTodo": "this is a todo annotation"
-        }
+            "reviewers": [],
+            "target": "test/test/test_function"
+        },
+        "test/test/test_function/test_parameter": {
+            "authors": [
+                "$autogen$",
+                "migration"
+            ],
+            "comment": "",
+            "newTodo": "another todo annotation",
+            "reviewResult": "unsure",
+            "reviewers": [],
+            "target": "test/test/test_function/test_parameter"}
     },
     "valueAnnotations": {}
 }

@@ -53,6 +53,33 @@
     ],
     "functions": [
         {
+            "id": "test/test/complete_different_function",
+            "qname": "test.complete_different_function",
+            "decorators": [],
+            "parameters": [
+                {
+                    "id": "test/test/test_function/test_parameter",
+                    "name": "test_parameter",
+                    "qname": "test.test_function.test_parameter",
+                    "default_value": "",
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": false,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                }
+            ],
+            "results": [],
+            "is_public": true,
+            "reexported_by": [],
+            "description": "",
+            "docstring": "",
+            "code": "def complete_different_function():\n    \"\"\"This function's only use is to hold a parameter\"\"\"    return None"
+        },
+        {
             "id": "test/test/test_function",
             "qname": "test_function",
             "decorators": [],

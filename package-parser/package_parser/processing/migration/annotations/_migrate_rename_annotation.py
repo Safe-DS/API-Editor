@@ -14,6 +14,7 @@ from package_parser.processing.migration.model import (
 )
 
 from ._constants import migration_author
+from ._get_annotated_api_element import get_annotated_api_element
 from ._get_migration_text import get_migration_text
 
 
@@ -33,20 +34,40 @@ def migrate_rename_annotation(
         rename_annotation.target = element.id
         return [rename_annotation]
 
-    todo_annotations: list[AbstractAnnotation] = []
+    annotated_apiv1_element = get_annotated_api_element(
+        rename_annotation, mapping.get_apiv1_elements()
+    )
+    if annotated_apiv1_element is None:
+        return []
+
+    annotations: list[AbstractAnnotation] = []
     for element in mapping.get_apiv2_elements():
-        if not isinstance(element, (Attribute, Result)):
-            if element.name in (
+        if isinstance(element, type(annotated_apiv1_element)):
+            if element.name not in (
                 new_name,
                 rename_annotation.target.split(".")[-1],
             ):
-                rename_annotation.reviewResult = EnumReviewResult.UNSURE
-                rename_annotation.comment = get_migration_text(
-                    rename_annotation, mapping
+                annotations.append(RenameAnnotation(
+                    element.id,
+                    authors,
+                    rename_annotation.reviewers,
+                    get_migration_text(rename_annotation, mapping),
+                    EnumReviewResult.UNSURE,
+                    rename_annotation.newName,
                 )
-                rename_annotation.target = element.id
-                return [rename_annotation]
-            todo_annotations.append(
+                )
+            else:
+                annotations.append(RenameAnnotation(
+                    element.id,
+                    authors,
+                    rename_annotation.reviewers,
+                    rename_annotation.comment,
+                    EnumReviewResult.NONE,
+                    rename_annotation.newName,
+                    )
+                )
+        elif not isinstance(element, (Attribute, Result)):
+            annotations.append(
                 TodoAnnotation(
                     element.id,
                     authors,
@@ -58,4 +79,4 @@ def migrate_rename_annotation(
                     ),
                 )
             )
-    return todo_annotations
+    return annotations
