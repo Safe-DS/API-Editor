@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Any, Optional
+from typing import Any, Optional, Callable
 
 from Levenshtein import distance
 
@@ -46,7 +46,7 @@ class AbstractDiffer(ABC):
 
 
 def distance_elements(
-    list_a: list[Any], list_b: list[Any], are_similar=lambda x, y: x == y
+    list_a: list[Any], list_b: list[Any], are_similar: Callable[[Any, Any], bool] = lambda x, y: x == y
 ) -> float:
     if len(list_a) == 0:
         return len(list_b)
@@ -66,7 +66,7 @@ class SimpleDiffer(AbstractDiffer):
         ParameterAssignment, dict[ParameterAssignment, float]
     ]
 
-    def __init__(self):
+    def __init__(self) -> None:
         distance_between_implicit_and_explicit = 0.3
         distance_between_vararg_and_normal = 0.3
         distance_between_position_and_named = 0.3
@@ -210,7 +210,7 @@ class SimpleDiffer(AbstractDiffer):
             function_a.name, function_b.name
         )
 
-        def are_parameters_similar(parameter_a: Parameter, parameter_b: Parameter):
+        def are_parameters_similar(parameter_a: Parameter, parameter_b: Parameter) -> bool:
             return self.compute_parameter_similarity(parameter_a, parameter_b) == 1
 
         parameter_similarity = distance_elements(
@@ -260,7 +260,7 @@ class SimpleDiffer(AbstractDiffer):
 
         def are_types_similar(
             abstract_type_a: AbstractType, abstract_type_b: AbstractType
-        ):
+        ) -> bool:
             return abstract_type_a.to_json() == abstract_type_b.to_json()
 
         type_list_a = self._create_list_from_type(type_a)
@@ -270,7 +270,7 @@ class SimpleDiffer(AbstractDiffer):
         ) / max(len(type_list_a), len(type_list_b), 1)
         return 1 - diff_elements
 
-    def _create_list_from_type(self, abstract_type: AbstractType):
+    def _create_list_from_type(self, abstract_type: AbstractType) -> list[AbstractType]:
         if isinstance(abstract_type, UnionType):
             return abstract_type.types
         return [abstract_type]

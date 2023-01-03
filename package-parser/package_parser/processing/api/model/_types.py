@@ -10,7 +10,7 @@ from ._documentation import ParameterDocumentation
 
 class AbstractType(metaclass=ABCMeta):
     @abstractmethod
-    def to_json(self):
+    def to_json(self) -> dict[str, Any]:
         pass
 
     @classmethod
@@ -45,7 +45,7 @@ class NamedType(AbstractType):
     def to_json(self) -> dict[str, str]:
         return {"kind": self.__class__.__name__, "name": self.name}
 
-    def __eq__(self, other):
+    def __eq__(self, other: object) -> bool:
         if isinstance(other, self.__class__):
             return self.name == other.name
         return False
@@ -64,7 +64,7 @@ class EnumType(AbstractType):
 
     @classmethod
     def from_string(cls, string: str) -> Optional[EnumType]:
-        def remove_backslash(e: str):
+        def remove_backslash(e: str) -> str:
             e = e.replace(r"\"", '"')
             e = e.replace(r"\'", "'")
             return e
@@ -97,7 +97,7 @@ class EnumType(AbstractType):
 
         return None
 
-    def update(self, enum: EnumType):
+    def update(self, enum: EnumType) -> None:
         self.values.update(enum.values)
 
     def to_json(self) -> dict[str, Any]:
