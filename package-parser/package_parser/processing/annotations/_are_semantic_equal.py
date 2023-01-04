@@ -1,7 +1,21 @@
-from package_parser.processing.annotations.model import AbstractAnnotation, BoundaryAnnotation, CalledAfterAnnotation, \
-    DescriptionAnnotation, EnumAnnotation, ExpertAnnotation, GroupAnnotation, MoveAnnotation, RemoveAnnotation, \
-    RenameAnnotation, TodoAnnotation, ValueAnnotation, ConstantAnnotation, OptionalAnnotation, OmittedAnnotation, \
-    RequiredAnnotation
+from package_parser.processing.annotations.model import (
+    AbstractAnnotation,
+    BoundaryAnnotation,
+    CalledAfterAnnotation,
+    ConstantAnnotation,
+    DescriptionAnnotation,
+    EnumAnnotation,
+    ExpertAnnotation,
+    GroupAnnotation,
+    MoveAnnotation,
+    OmittedAnnotation,
+    OptionalAnnotation,
+    RemoveAnnotation,
+    RenameAnnotation,
+    RequiredAnnotation,
+    TodoAnnotation,
+    ValueAnnotation,
+)
 
 
 def are_semantic_equal(

@@ -177,7 +177,9 @@ def test_migrate_all_annotations() -> None:
         if isinstance(value, dict):
             assert len(value) == 0
 
-    _assert_annotation_stores_are_equal(migration.migrated_annotation_store, expected_annotation_store)
+    _assert_annotation_stores_are_equal(
+        migration.migrated_annotation_store, expected_annotation_store
+    )
 
 
 def test_migrate_command_and_both_annotation_stores() -> None:
@@ -196,33 +198,49 @@ def test_migrate_command_and_both_annotation_stores() -> None:
     unsure_annotationsv2_json_path = os.path.join(
         os.getcwd(), "tests", "data", "migration", "unsure_annotationv2.json"
     )
-    with open(apiv1_json_path, "r", encoding="utf-8") as apiv1_file, open(apiv2_json_path, "r", encoding="utf-8") as apiv2_file, open(annotationsv1_json_path, "r", encoding="utf-8") as annotationsv1_file, open(annotationsv2_json_path, "r", encoding="utf-8") as annotationsv2_file, open(
+    with open(apiv1_json_path, "r", encoding="utf-8") as apiv1_file, open(
+        apiv2_json_path, "r", encoding="utf-8"
+    ) as apiv2_file, open(
+        annotationsv1_json_path, "r", encoding="utf-8"
+    ) as annotationsv1_file, open(
+        annotationsv2_json_path, "r", encoding="utf-8"
+    ) as annotationsv2_file, open(
         unsure_annotationsv2_json_path, "r", encoding="utf-8"
     ) as unsure_annotationsv2_file:
-            apiv1_json = json.load(apiv1_file)
-            apiv1 = API.from_json(apiv1_json)
-            apiv2_json = json.load(apiv2_file)
-            apiv2 = API.from_json(apiv2_json)
-            annotationsv1_json = json.load(annotationsv1_file)
-            annotationsv1 = AnnotationStore.from_json(annotationsv1_json)
-            expected_annotationsv2_json = json.load(annotationsv2_file)
-            annotationsv2 = AnnotationStore.from_json(expected_annotationsv2_json)
-            expected_unsure_annotationsv2_json = json.load(unsure_annotationsv2_file)
-            unsure_annotationsv2 = AnnotationStore.from_json(expected_unsure_annotationsv2_json)
+        apiv1_json = json.load(apiv1_file)
+        apiv1 = API.from_json(apiv1_json)
+        apiv2_json = json.load(apiv2_file)
+        apiv2 = API.from_json(apiv2_json)
+        annotationsv1_json = json.load(annotationsv1_file)
+        annotationsv1 = AnnotationStore.from_json(annotationsv1_json)
+        expected_annotationsv2_json = json.load(annotationsv2_file)
+        annotationsv2 = AnnotationStore.from_json(expected_annotationsv2_json)
+        expected_unsure_annotationsv2_json = json.load(unsure_annotationsv2_file)
+        unsure_annotationsv2 = AnnotationStore.from_json(
+            expected_unsure_annotationsv2_json
+        )
 
-            differ = SimpleDiffer()
-            api_mapping = APIMapping(
-                apiv1, apiv2, differ, threshold_of_similarity_between_mappings=0.3
-            )
-            mappings = api_mapping.map_api()
-            migration = Migration(annotationsv1, mappings, reliable_similarity=0.9, unsure_similarity=0.75)
-            migration.migrate_annotations()
+        differ = SimpleDiffer()
+        api_mapping = APIMapping(
+            apiv1, apiv2, differ, threshold_of_similarity_between_mappings=0.3
+        )
+        mappings = api_mapping.map_api()
+        migration = Migration(
+            annotationsv1, mappings, reliable_similarity=0.9, unsure_similarity=0.75
+        )
+        migration.migrate_annotations()
 
-            _assert_annotation_stores_are_equal(migration.migrated_annotation_store, annotationsv2)
-            _assert_annotation_stores_are_equal(migration.unsure_migrated_annotation_store, unsure_annotationsv2)
+        _assert_annotation_stores_are_equal(
+            migration.migrated_annotation_store, annotationsv2
+        )
+        _assert_annotation_stores_are_equal(
+            migration.unsure_migrated_annotation_store, unsure_annotationsv2
+        )
 
 
-def _assert_annotation_stores_are_equal(actual_annotations: AnnotationStore, expected_annotation_store: AnnotationStore) -> None:
+def _assert_annotation_stores_are_equal(
+    actual_annotations: AnnotationStore, expected_annotation_store: AnnotationStore
+) -> None:
     def get_key(annotation: AbstractAnnotation) -> str:
         return annotation.target
 

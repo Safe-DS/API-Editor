@@ -100,13 +100,13 @@ def get_migration_text(
     if issubclass(type(annotation), ValueAnnotation):
         class_name = "Value"
     migrate_text = (
-            "The @" + class_name + " Annotation" + _get_further_information(annotation)
+        "The @" + class_name + " Annotation" + _get_further_information(annotation)
     )
     migrate_text += (
-            " from the previous version was at '"
-            + annotation.target
-            + "' and the possible alternatives in the new version of the api are: "
-            + _list_api_elements(mapping.get_apiv2_elements())
+        " from the previous version was at '"
+        + annotation.target
+        + "' and the possible alternatives in the new version of the api are: "
+        + _list_api_elements(mapping.get_apiv2_elements())
     )
     if additional_information is not None and isinstance(additional_information, list):
         functions = [
@@ -116,7 +116,7 @@ def get_migration_text(
         ]
         if len(functions) > 0:
             migrate_text += (
-                    " and the possible replacements (" + _list_api_elements(functions) + ")"
+                " and the possible replacements (" + _list_api_elements(functions) + ")"
             )
 
         parameters = [
@@ -126,9 +126,9 @@ def get_migration_text(
         ]
         if len(parameters) > 0:
             migrate_text += (
-                    " and the possible replacements ("
-                    + _list_api_elements(parameters)
-                    + ")"
+                " and the possible replacements ("
+                + _list_api_elements(parameters)
+                + ")"
             )
     migration_text = migrate_text
     if for_todo_annotation:

@@ -61,9 +61,7 @@ class Migration:
                     )
 
         for called_after_annotation in self.annotationsv1.calledAfterAnnotations:
-            mapping = self._get_mapping_from_annotation(
-                called_after_annotation
-            )
+            mapping = self._get_mapping_from_annotation(called_after_annotation)
             if mapping is not None:
                 for annotation in migrate_called_after_annotation(
                     called_after_annotation, mapping, self.mappings
@@ -73,9 +71,7 @@ class Migration:
                     )
 
         for description_annotation in self.annotationsv1.descriptionAnnotations:
-            mapping = self._get_mapping_from_annotation(
-                description_annotation
-            )
+            mapping = self._get_mapping_from_annotation(description_annotation)
             if mapping is not None:
                 for annotation in migrate_description_annotation(
                     description_annotation, mapping
@@ -198,7 +194,8 @@ class Migration:
             for annotation_a, annotation_b in duplicates:
                 if (
                     annotation_a.reviewResult != annotation_b.reviewResult
-                    and EnumReviewResult.UNSURE in (annotation_a.reviewResult, annotation_b.reviewResult)
+                    and EnumReviewResult.UNSURE
+                    in (annotation_a.reviewResult, annotation_b.reviewResult)
                 ):
                     annotation_a.reviewResult = EnumReviewResult.UNSURE
                     annotation_b.reviewResult = EnumReviewResult.UNSURE
