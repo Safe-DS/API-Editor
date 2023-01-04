@@ -23,8 +23,8 @@ def _run_migrate_command(
     differ = SimpleDiffer()
     api_mapping = APIMapping(apiv1, apiv2, differ)
     mappings = api_mapping.map_api()
-    migration = Migration()
-    migration.migrate_annotations(annotationsv1, mappings)
+    migration = Migration(annotationsv1, mappings)
+    migration.migrate_annotations()
     migrated_annotations_file = Path(
         os.path.join(out_dir_path, "migrated_annotationsv" + apiv2.version + ".json")
     )

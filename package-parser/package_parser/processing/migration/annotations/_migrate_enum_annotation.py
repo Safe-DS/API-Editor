@@ -111,6 +111,7 @@ def migrate_enum_annotation(
                                 enum_annotation.pairs,
                             )
                         )
+                        continue
                     elif isinstance(parameter.type, NamedType):
                         continue
                 migrated_annotations.append(
