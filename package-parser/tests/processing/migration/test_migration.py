@@ -222,7 +222,7 @@ def test_migrate_command_and_both_annotation_stores() -> None:
             _assert_annotation_stores_are_equal(migration.unsure_migrated_annotation_store, unsure_annotationsv2)
 
 
-def _assert_annotation_stores_are_equal(actual_annotations, expected_annotation_store):
+def _assert_annotation_stores_are_equal(actual_annotations: AnnotationStore, expected_annotation_store: AnnotationStore) -> None:
     def get_key(annotation: AbstractAnnotation) -> str:
         return annotation.target
 
