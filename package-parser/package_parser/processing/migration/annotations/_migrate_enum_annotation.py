@@ -112,7 +112,7 @@ def migrate_enum_annotation(
                             )
                         )
                         continue
-                    elif isinstance(parameter.type, NamedType):
+                    if isinstance(parameter.type, NamedType):
                         continue
                 migrated_annotations.append(
                     EnumAnnotation(

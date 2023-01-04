@@ -1,8 +1,6 @@
 import json
 import os
 
-import pytest
-
 from package_parser.processing.annotations.model import (
     AbstractAnnotation,
     AnnotationStore,
