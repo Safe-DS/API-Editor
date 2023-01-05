@@ -35,7 +35,6 @@ def migrate_remove_annotation(
     authors = remove_annotation.authors
     authors.append(migration_author)
     remove_annotation.authors = authors
-    migrate_text = get_migration_text(remove_annotation, mapping)
 
     if isinstance(mapping, (ManyToOneMapping, OneToOneMapping)):
         element = mapping.get_apiv2_elements()[0]
@@ -49,7 +48,9 @@ def migrate_remove_annotation(
                     remove_annotation.reviewers,
                     remove_annotation.comment,
                     EnumReviewResult.NONE,
-                    migrate_text,
+                    get_migration_text(
+                        remove_annotation, mapping, for_todo_annotation=True
+                    ),
                 )
             ]
         remove_annotation.target = element.id
@@ -85,7 +86,9 @@ def migrate_remove_annotation(
                     remove_annotation.reviewers,
                     remove_annotation.comment,
                     EnumReviewResult.NONE,
-                    migrate_text,
+                    get_migration_text(
+                        remove_annotation, mapping, for_todo_annotation=True
+                    ),
                 )
             )
     return remove_annotations

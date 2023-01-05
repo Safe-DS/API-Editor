@@ -25,7 +25,6 @@ def migrate_description_annotation(
     authors = description_annotation.authors
     authors.append(migration_author)
     description_annotation.authors = authors
-    migrate_text = get_migration_text(description_annotation, mapping)
 
     if isinstance(mapping, (ManyToOneMapping, OneToOneMapping)):
         element = mapping.get_apiv2_elements()[0]
@@ -63,7 +62,9 @@ def migrate_description_annotation(
                     description_annotation.reviewers,
                     description_annotation.comment,
                     EnumReviewResult.NONE,
-                    migrate_text,
+                    get_migration_text(
+                        description_annotation, mapping, for_todo_annotation=True
+                    ),
                 )
             )
     return description_annotations

@@ -25,7 +25,6 @@ def migrate_expert_annotation(
     authors = expert_annotation.authors
     authors.append(migration_author)
     expert_annotation.authors = authors
-    migrate_text = get_migration_text(expert_annotation, mapping)
 
     if isinstance(mapping, (ManyToOneMapping, OneToOneMapping)):
         element = mapping.get_apiv2_elements()[0]
@@ -62,7 +61,9 @@ def migrate_expert_annotation(
                     expert_annotation.reviewers,
                     expert_annotation.comment,
                     EnumReviewResult.NONE,
-                    migrate_text,
+                    get_migration_text(
+                        expert_annotation, mapping, for_todo_annotation=True
+                    ),
                 )
             )
     return expert_annotations

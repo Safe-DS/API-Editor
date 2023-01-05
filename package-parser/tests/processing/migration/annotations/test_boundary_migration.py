@@ -12,6 +12,7 @@ from package_parser.processing.api.model import (
     ParameterDocumentation,
 )
 from package_parser.processing.migration import (
+    ManyToOneMapping,
     Mapping,
     OneToManyMapping,
     OneToOneMapping,
@@ -207,6 +208,7 @@ def migrate_boundary_annotation_data_one_to_one_mapping_float_to_int() -> Tuple[
     )
 
 
+# pylint: disable=duplicate-code
 def migrate_boundary_annotation_data_one_to_many_mapping() -> Tuple[
     Mapping,
     AbstractAnnotation,
@@ -245,7 +247,7 @@ def migrate_boundary_annotation_data_one_to_many_mapping() -> Tuple[
         id_="test/test.boundary.test4.testC",
         name="testC",
         qname="test.boundary.test4.testC",
-        default_value="",
+        default_value=None,
         assigned_by=ParameterAssignment.POSITION_OR_NAME,
         is_public=True,
         documentation=ParameterDocumentation("", "", ""),
@@ -319,4 +321,85 @@ def migrate_boundary_annotation_data_one_to_many_mapping() -> Tuple[
             migrated_boundary_annotation_b,
             migrated_boundary_annotation_c,
         ],
+    )
+
+
+def migrate_boundary_annotation_data_duplicated() -> Tuple[
+    Mapping,
+    list[AbstractAnnotation],
+    list[AbstractAnnotation],
+]:
+    parameterv1 = Parameter(
+        id_="test/test.boundary.duplicate.testA",
+        name="testA",
+        qname="test.boundary.duplicate.testA",
+        default_value="1",
+        assigned_by=ParameterAssignment.POSITION_OR_NAME,
+        is_public=True,
+        documentation=ParameterDocumentation("int", "1", ""),
+    )
+    parameterv1_2 = Parameter(
+        id_="test/test.boundary.duplicate.testA_2",
+        name="testA_2",
+        qname="test.boundary.duplicate.testA_2",
+        default_value="1",
+        assigned_by=ParameterAssignment.POSITION_OR_NAME,
+        is_public=True,
+        documentation=ParameterDocumentation("int", "1", ""),
+    )
+    parameterv2 = Parameter(
+        id_="test/test.boundary.duplicate.testB",
+        name="testB",
+        qname="test.boundary.duplicate.testB",
+        default_value="1",
+        assigned_by=ParameterAssignment.POSITION_OR_NAME,
+        is_public=True,
+        documentation=ParameterDocumentation("int", "1", ""),
+    )
+    boundary_annotation = BoundaryAnnotation(
+        target="test/test.boundary.duplicate.testA",
+        authors=["testauthor"],
+        reviewers=[],
+        comment="",
+        reviewResult=EnumReviewResult.NONE,
+        interval=Interval(
+            isDiscrete=True,
+            lowerIntervalLimit=0,
+            lowerLimitType=1,
+            upperIntervalLimit=10,
+            upperLimitType=1,
+        ),
+    )
+    boundary_annotation_2 = BoundaryAnnotation(
+        target="test/test.boundary.duplicate.testA_2",
+        authors=["testauthor"],
+        reviewers=[],
+        comment="",
+        reviewResult=EnumReviewResult.NONE,
+        interval=Interval(
+            isDiscrete=True,
+            lowerIntervalLimit=0,
+            lowerLimitType=1,
+            upperIntervalLimit=10,
+            upperLimitType=1,
+        ),
+    )
+    migrated_boundary_annotation = BoundaryAnnotation(
+        target="test/test.boundary.duplicate.testB",
+        authors=["testauthor", migration_author],
+        reviewers=[],
+        comment="",
+        reviewResult=EnumReviewResult.NONE,
+        interval=Interval(
+            isDiscrete=True,
+            lowerIntervalLimit=0,
+            lowerLimitType=1,
+            upperIntervalLimit=10,
+            upperLimitType=1,
+        ),
+    )
+    return (
+        ManyToOneMapping(1.0, [parameterv1, parameterv1_2], parameterv2),
+        [boundary_annotation, boundary_annotation_2],
+        [migrated_boundary_annotation],
     )

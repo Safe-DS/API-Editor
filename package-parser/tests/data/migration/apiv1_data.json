@@ -1,0 +1,91 @@
+{
+    "distribution": "test",
+    "package": "test",
+    "version": "0.0.1",
+    "modules": [
+        {
+            "id": "test/test",
+            "name": "test",
+            "classes": ["test/test/TestClass"],
+            "functions": ["test/test/test_function"]
+        }
+    ],
+    "classes": [
+        {
+            "id": "test/test/TestClass",
+            "name": "TestClass",
+            "qname": "test.TestClass",
+            "methods": [],
+            "decorators": [],
+            "superclasses": [],
+            "is_public": true,
+            "reexported_by": [],
+            "documentation": "",
+            "code": "class TestClass:\n\"\"\"    This is a TestClass.\n    It has no common use.\"\"\"\n    pass",
+            "instance_attributes": [
+                {
+                    "name": "a",
+                    "types": {
+                        "kind": "NamedType",
+                        "name": "str"
+                    }
+                },
+                {
+                    "name": "b",
+                    "types": {
+                        "kind": "NamedType",
+                        "name": "str"
+                    }
+                },
+                {
+                    "name": "c",
+                    "types": {
+                        "kind": "NamedType",
+                        "name": "str"
+                    }
+                }
+            ]
+        }
+    ],
+    "functions": [
+        {
+            "id": "test/test/complete_different_function",
+            "qname": "test.complete_different_function",
+            "decorators": [],
+            "parameters": [
+                {
+                    "id": "test/test/test_function/test_parameter",
+                    "name": "test_parameter",
+                    "qname": "test.test_function.test_parameter",
+                    "default_value": "",
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": false,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                }
+            ],
+            "results": [],
+            "is_public": true,
+            "reexported_by": [],
+            "description": "",
+            "docstring": "",
+            "code": "def complete_different_function():\n    \"\"\"This function's only use is to hold a parameter\"\"\"    return None"
+        },
+        {
+            "id": "test/test/test_function",
+            "qname": "test_function",
+            "decorators": [],
+            "parameters": [],
+            "results": [],
+            "is_public": true,
+            "reexported_by": [],
+            "description": "",
+            "docstring": "",
+            "code": "def test_function():\n    pass"
+        }
+    ]
+}

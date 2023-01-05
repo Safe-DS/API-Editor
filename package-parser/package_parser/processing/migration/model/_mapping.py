@@ -83,11 +83,11 @@ class ManyToManyMapping(Mapping):
 
 def merge_mappings(mapping_a: Mapping, mapping_b: Mapping) -> Mapping:
     similarity = (mapping_a.similarity + mapping_b.similarity) / 2
-    codomain: list[api_element] = list(
-        set(mapping_a.get_apiv2_elements()) | set(mapping_b.get_apiv2_elements())
+    codomain = merge_api_elements_and_remove_duplicates(
+        mapping_a.get_apiv2_elements(), mapping_b.get_apiv2_elements()
     )
-    domain: list[api_element] = list(
-        set(mapping_a.get_apiv1_elements()) | set(mapping_b.get_apiv1_elements())
+    domain: list[api_element] = merge_api_elements_and_remove_duplicates(
+        mapping_a.get_apiv1_elements(), mapping_b.get_apiv1_elements()
     )
     if len(domain) == 1 and len(codomain) == 1:
         return OneToOneMapping(similarity, domain[0], codomain[0])
@@ -96,6 +96,19 @@ def merge_mappings(mapping_a: Mapping, mapping_b: Mapping) -> Mapping:
     if len(codomain) == 1:
         return ManyToOneMapping(similarity, domain, codomain[0])
     return ManyToManyMapping(similarity, domain, codomain)
+
+
+def merge_api_elements_and_remove_duplicates(
+    list_a: list[api_element], list_b: list[api_element]
+) -> list[api_element]:
+    api_elements: list[api_element] = []
+    api_elements.extend(list_a)
+    api_elements.extend(list_b)
+    api_elements_tmp: list[api_element] = [
+        i for n, i in enumerate(api_elements) if i not in api_elements[:n]
+    ]
+    api_elements = api_elements_tmp
+    return api_elements
 
 
 class APIMapping:
@@ -110,9 +123,9 @@ class APIMapping:
         apiv1: API,
         apiv2: API,
         differ: AbstractDiffer,
-        threshold_of_similarity_for_creation_of_mappings=0.5,
-        threshold_of_similarity_between_mappings=0.05,
-    ):
+        threshold_of_similarity_for_creation_of_mappings: float = 0.5,
+        threshold_of_similarity_between_mappings: float = 0.05,
+    ) -> None:
         self.apiv1 = apiv1
         self.apiv2 = apiv2
         self.differ = differ
@@ -227,7 +240,7 @@ class APIMapping:
 
     def _merge_mappings_with_same_elements(
         self, mapping_to_be_appended: Mapping, mappings: list[Mapping]
-    ):
+    ) -> None:
         """
         This method prevents that an element in a mapping appears multiple times in a list of mappings
         by merging the affected mappings and include the result in the list. If there is no such element,

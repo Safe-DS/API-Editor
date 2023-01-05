@@ -25,6 +25,7 @@ from package_parser.processing.migration.model import (
 )
 
 from ._constants import migration_author
+from ._get_annotated_api_element import get_annotated_api_element
 from ._get_migration_text import get_migration_text
 
 
@@ -81,42 +82,50 @@ def migrate_boundary_annotation(
     authors.append(migration_author)
     boundary_annotation.authors = authors
 
-    migrate_text = get_migration_text(boundary_annotation, mapping)
+    annotated_apiv1_element = get_annotated_api_element(
+        boundary_annotation, mapping.get_apiv1_elements()
+    )
+    if annotated_apiv1_element is None or not isinstance(
+        annotated_apiv1_element, Parameter
+    ):
+        return []
 
     if isinstance(mapping, (OneToOneMapping, ManyToOneMapping)):
         parameter = mapping.get_apiv2_elements()[0]
         if isinstance(parameter, (Attribute, Result)):
             return []
         if isinstance(parameter, Parameter):
-            boundary_annotation.target = parameter.id
             (
                 parameter_expects_number,
                 parameter_type_is_discrete,
             ) = _contains_number_and_is_discrete(parameter.type)
-            if parameter.type is None:
+            if parameter.type is None and annotated_apiv1_element.type is not None:
                 boundary_annotation.reviewResult = EnumReviewResult.UNSURE
-                boundary_annotation.comment = (
-                    migrate_text
-                    if len(boundary_annotation.comment) == 0
-                    else boundary_annotation.comment + "\n" + migrate_text
+                boundary_annotation.comment = get_migration_text(
+                    boundary_annotation, mapping
                 )
+                boundary_annotation.target = parameter.id
                 return [boundary_annotation]
-            if parameter_expects_number:
+            if parameter_expects_number or (
+                parameter.type is None and annotated_apiv1_element.type is None
+            ):
                 if (
                     parameter_type_is_discrete
-                    is not boundary_annotation.interval.isDiscrete
+                    != boundary_annotation.interval.isDiscrete
+                ) and not (
+                    parameter.type is None and annotated_apiv1_element.type is None
                 ):
                     boundary_annotation.reviewResult = EnumReviewResult.UNSURE
-                    boundary_annotation.comment = (
-                        migrate_text
-                        if len(boundary_annotation.comment) == 0
-                        else boundary_annotation.comment + "\n" + migrate_text
+                    boundary_annotation.comment = get_migration_text(
+                        boundary_annotation, mapping
                     )
-                    boundary_annotation.interval = (
-                        migrate_interval_to_fit_parameter_type(
-                            boundary_annotation.interval, parameter_type_is_discrete
+                    if parameter_expects_number:
+                        boundary_annotation.interval = (
+                            migrate_interval_to_fit_parameter_type(
+                                boundary_annotation.interval, parameter_type_is_discrete
+                            )
                         )
-                    )
+                boundary_annotation.target = parameter.id
                 return [boundary_annotation]
         return [
             TodoAnnotation(
@@ -125,7 +134,9 @@ def migrate_boundary_annotation(
                 boundary_annotation.reviewers,
                 boundary_annotation.comment,
                 EnumReviewResult.NONE,
-                migrate_text,
+                get_migration_text(
+                    boundary_annotation, mapping, for_todo_annotation=True
+                ),
             )
         ]
     migrated_annotations: list[AbstractAnnotation] = []
@@ -138,8 +149,8 @@ def migrate_boundary_annotation(
                 if (
                     parameter.type is not None
                     and is_number
-                    and is_discrete is boundary_annotation.interval.isDiscrete
-                ):
+                    and is_discrete == boundary_annotation.interval.isDiscrete
+                ) or (parameter.type is None and annotated_apiv1_element.type is None):
                     migrated_annotations.append(
                         BoundaryAnnotation(
                             parameter.id,
@@ -156,9 +167,7 @@ def migrate_boundary_annotation(
                             parameter.id,
                             authors,
                             boundary_annotation.reviewers,
-                            migrate_text
-                            if len(boundary_annotation.comment) == 0
-                            else boundary_annotation.comment + "\n" + migrate_text,
+                            get_migration_text(boundary_annotation, mapping),
                             EnumReviewResult.UNSURE,
                             migrate_interval_to_fit_parameter_type(
                                 boundary_annotation.interval,
@@ -172,9 +181,7 @@ def migrate_boundary_annotation(
                             parameter.id,
                             authors,
                             boundary_annotation.reviewers,
-                            migrate_text
-                            if len(boundary_annotation.comment) == 0
-                            else boundary_annotation.comment + "\n" + migrate_text,
+                            get_migration_text(boundary_annotation, mapping),
                             EnumReviewResult.UNSURE,
                             boundary_annotation.interval,
                         )
@@ -187,8 +194,10 @@ def migrate_boundary_annotation(
                         authors,
                         boundary_annotation.reviewers,
                         boundary_annotation.comment,
-                        EnumReviewResult.UNSURE,
-                        migrate_text,
+                        EnumReviewResult.NONE,
+                        get_migration_text(
+                            boundary_annotation, mapping, for_todo_annotation=True
+                        ),
                     )
                 )
     return migrated_annotations
