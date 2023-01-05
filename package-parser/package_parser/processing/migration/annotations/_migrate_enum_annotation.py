@@ -25,6 +25,7 @@ from package_parser.processing.migration.model import (
 )
 
 from ._constants import migration_author
+from ._get_annotated_api_element import get_annotated_api_element
 from ._get_migration_text import get_migration_text
 
 
@@ -57,20 +58,23 @@ def migrate_enum_annotation(
     authors.append(migration_author)
     enum_annotation.authors = authors
 
+    annotated_apiv1_element = get_annotated_api_element(enum_annotation, mapping.get_apiv1_elements())
+    if annotated_apiv1_element is None:
+        return []
+
     if isinstance(mapping, (OneToOneMapping, ManyToOneMapping)):
         parameter = mapping.get_apiv2_elements()[0]
         if isinstance(parameter, (Attribute, Result)):
             return []
         if isinstance(parameter, Parameter):
-            if parameter.type is not None:
-                if _contains_string(
-                    parameter.type
-                ) and _default_value_is_in_instance_values_or_is_empty(
-                    parameter.default_value, enum_annotation.pairs
-                ):
-                    enum_annotation.target = parameter.id
-                    return [enum_annotation]
-                if isinstance(parameter.type, NamedType):
+            if (parameter.type is not None and _contains_string(
+                parameter.type
+            ) and _default_value_is_in_instance_values_or_is_empty(
+                parameter.default_value, enum_annotation.pairs
+            )) or (parameter.type is None and annotated_apiv1_element.type is None):
+                enum_annotation.target = parameter.id
+                return [enum_annotation]
+            if isinstance(parameter.type, NamedType):
                     # assuming api has been chanced to an enum type:
                     # do not migrate annotation
                     return []
@@ -94,26 +98,25 @@ def migrate_enum_annotation(
     if isinstance(mapping, (OneToManyMapping, ManyToManyMapping)):
         for parameter in mapping.get_apiv2_elements():
             if isinstance(parameter, Parameter):
-                if parameter.type is not None:
-                    if _contains_string(
-                        parameter.type
-                    ) and _default_value_is_in_instance_values_or_is_empty(
-                        parameter.default_value, enum_annotation.pairs
-                    ):
-                        migrated_annotations.append(
-                            EnumAnnotation(
-                                parameter.id,
-                                authors,
-                                enum_annotation.reviewers,
-                                enum_annotation.comment,
-                                EnumReviewResult.NONE,
-                                enum_annotation.enumName,
-                                enum_annotation.pairs,
-                            )
+                if (parameter.type is not None and _contains_string(
+                    parameter.type
+                ) and _default_value_is_in_instance_values_or_is_empty(
+                    parameter.default_value, enum_annotation.pairs
+                )) or (parameter.type is None and annotated_apiv1_element.type is None):
+                    migrated_annotations.append(
+                        EnumAnnotation(
+                            parameter.id,
+                            authors,
+                            enum_annotation.reviewers,
+                            enum_annotation.comment,
+                            EnumReviewResult.NONE,
+                            enum_annotation.enumName,
+                            enum_annotation.pairs,
                         )
-                        continue
-                    if isinstance(parameter.type, NamedType):
-                        continue
+                    )
+                    continue
+                if isinstance(parameter.type, NamedType):
+                    continue
                 migrated_annotations.append(
                     EnumAnnotation(
                         parameter.id,
