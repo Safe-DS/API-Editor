@@ -59,7 +59,7 @@ def migrate_enum_annotation(
     enum_annotation.authors = authors
 
     annotated_apiv1_element = get_annotated_api_element(enum_annotation, mapping.get_apiv1_elements())
-    if annotated_apiv1_element is None:
+    if annotated_apiv1_element is None or not isinstance(annotated_apiv1_element, Parameter):
         return []
 
     if isinstance(mapping, (OneToOneMapping, ManyToOneMapping)):
@@ -78,11 +78,10 @@ def migrate_enum_annotation(
                     # assuming api has been chanced to an enum type:
                     # do not migrate annotation
                     return []
-            else:
-                enum_annotation.reviewResult = EnumReviewResult.UNSURE
-                enum_annotation.comment = get_migration_text(enum_annotation, mapping)
-                enum_annotation.target = parameter.id
-                return [enum_annotation]
+            enum_annotation.reviewResult = EnumReviewResult.UNSURE
+            enum_annotation.comment = get_migration_text(enum_annotation, mapping)
+            enum_annotation.target = parameter.id
+            return [enum_annotation]
         return [
             TodoAnnotation(
                 parameter.id,

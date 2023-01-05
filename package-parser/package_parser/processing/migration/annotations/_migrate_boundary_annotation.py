@@ -83,7 +83,7 @@ def migrate_boundary_annotation(
     boundary_annotation.authors = authors
 
     annotated_apiv1_element = get_annotated_api_element(boundary_annotation, mapping.get_apiv1_elements())
-    if annotated_apiv1_element is None:
+    if annotated_apiv1_element is None or not isinstance(annotated_apiv1_element, Parameter):
         return []
 
     if isinstance(mapping, (OneToOneMapping, ManyToOneMapping)):
