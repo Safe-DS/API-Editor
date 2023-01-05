@@ -2,7 +2,7 @@ import dataclasses
 from datetime import datetime, timedelta
 
 from .book import Book
-from .persons import LibraryUser, Employee
+from .persons import Employee, LibraryUser
 
 
 @dataclasses.dataclass
@@ -21,10 +21,16 @@ class Library:
         self.is_open = False
 
     def return_book(self, book: Book, user: LibraryUser) -> None:
-        if book.borrow_by is not None and book.borrow_until is not None and book.borrow_by == user:  # apiv2: check if book is in borrowed book list
+        if (
+            book.borrow_by is not None
+            and book.borrow_until is not None
+            and book.borrow_by == user
+        ):  # apiv2: check if book is in borrowed book list
             late_fee = 0.0
             today = datetime.today().date()
-            if book.borrow_until > today or (book.borrow_by == today and not self.is_open):
+            if book.borrow_until > today or (
+                book.borrow_by == today and not self.is_open
+            ):
                 late_fee = (today - book.borrow_until).days * book.FEE_PER_DAY
                 if not self.is_open:
                     late_fee += 1.0
@@ -33,10 +39,14 @@ class Library:
             book.borrow_until = None
             self.borrowed_books.remove(book)
 
-    def borrow(self, book: Book, user: LibraryUser) -> None:  # apiv2: check if pending_fees are not above 5
+    def borrow(
+        self, book: Book, user: LibraryUser
+    ) -> None:  # apiv2: check if pending_fees are not above 5
         if book in self.books and book not in self.borrowed_books:
             book.borrow_by = user
             book.borrow_until = datetime.today() + timedelta(days=1)
 
-    def add_new_book(self, book: Book) -> None:  # apiv2: check is ISBN is not duplicated
+    def add_new_book(
+        self, book: Book
+    ) -> None:  # apiv2: check is ISBN is not duplicated
         self.books.append(book)

@@ -14,7 +14,9 @@ class LibraryUser:
         self.pending_fees = self.pending_fees + late_fee
 
     def extend_membership(self) -> None:
-        self.member_until = self.member_until + datetime.timedelta(days=365)  # apiv2: change to relativedelta(years=1)
+        self.member_until = self.member_until + datetime.timedelta(
+            days=365
+        )  # apiv2: change to relativedelta(years=1)
 
 
 @dataclass
