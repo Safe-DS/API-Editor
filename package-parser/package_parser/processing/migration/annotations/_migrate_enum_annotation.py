@@ -58,8 +58,12 @@ def migrate_enum_annotation(
     authors.append(migration_author)
     enum_annotation.authors = authors
 
-    annotated_apiv1_element = get_annotated_api_element(enum_annotation, mapping.get_apiv1_elements())
-    if annotated_apiv1_element is None or not isinstance(annotated_apiv1_element, Parameter):
+    annotated_apiv1_element = get_annotated_api_element(
+        enum_annotation, mapping.get_apiv1_elements()
+    )
+    if annotated_apiv1_element is None or not isinstance(
+        annotated_apiv1_element, Parameter
+    ):
         return []
 
     if isinstance(mapping, (OneToOneMapping, ManyToOneMapping)):
@@ -67,17 +71,19 @@ def migrate_enum_annotation(
         if isinstance(parameter, (Attribute, Result)):
             return []
         if isinstance(parameter, Parameter):
-            if (parameter.type is not None and _contains_string(
-                parameter.type
-            ) and _default_value_is_in_instance_values_or_is_empty(
-                parameter.default_value, enum_annotation.pairs
-            )) or (parameter.type is None and annotated_apiv1_element.type is None):
+            if (
+                parameter.type is not None
+                and _contains_string(parameter.type)
+                and _default_value_is_in_instance_values_or_is_empty(
+                    parameter.default_value, enum_annotation.pairs
+                )
+            ) or (parameter.type is None and annotated_apiv1_element.type is None):
                 enum_annotation.target = parameter.id
                 return [enum_annotation]
             if isinstance(parameter.type, NamedType):
-                    # assuming api has been chanced to an enum type:
-                    # do not migrate annotation
-                    return []
+                # assuming api has been chanced to an enum type:
+                # do not migrate annotation
+                return []
             enum_annotation.reviewResult = EnumReviewResult.UNSURE
             enum_annotation.comment = get_migration_text(enum_annotation, mapping)
             enum_annotation.target = parameter.id
@@ -97,11 +103,13 @@ def migrate_enum_annotation(
     if isinstance(mapping, (OneToManyMapping, ManyToManyMapping)):
         for parameter in mapping.get_apiv2_elements():
             if isinstance(parameter, Parameter):
-                if (parameter.type is not None and _contains_string(
-                    parameter.type
-                ) and _default_value_is_in_instance_values_or_is_empty(
-                    parameter.default_value, enum_annotation.pairs
-                )) or (parameter.type is None and annotated_apiv1_element.type is None):
+                if (
+                    parameter.type is not None
+                    and _contains_string(parameter.type)
+                    and _default_value_is_in_instance_values_or_is_empty(
+                        parameter.default_value, enum_annotation.pairs
+                    )
+                ) or (parameter.type is None and annotated_apiv1_element.type is None):
                     migrated_annotations.append(
                         EnumAnnotation(
                             parameter.id,

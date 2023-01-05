@@ -82,8 +82,12 @@ def migrate_boundary_annotation(
     authors.append(migration_author)
     boundary_annotation.authors = authors
 
-    annotated_apiv1_element = get_annotated_api_element(boundary_annotation, mapping.get_apiv1_elements())
-    if annotated_apiv1_element is None or not isinstance(annotated_apiv1_element, Parameter):
+    annotated_apiv1_element = get_annotated_api_element(
+        boundary_annotation, mapping.get_apiv1_elements()
+    )
+    if annotated_apiv1_element is None or not isinstance(
+        annotated_apiv1_element, Parameter
+    ):
         return []
 
     if isinstance(mapping, (OneToOneMapping, ManyToOneMapping)):
@@ -102,11 +106,14 @@ def migrate_boundary_annotation(
                 )
                 boundary_annotation.target = parameter.id
                 return [boundary_annotation]
-            if parameter_expects_number or (parameter.type is None and annotated_apiv1_element.type is None):
+            if parameter_expects_number or (
+                parameter.type is None and annotated_apiv1_element.type is None
+            ):
                 if (
-                    (parameter_type_is_discrete
-                    != boundary_annotation.interval.isDiscrete)
-                    and not (parameter.type is None and annotated_apiv1_element.type is None)
+                    parameter_type_is_discrete
+                    != boundary_annotation.interval.isDiscrete
+                ) and not (
+                    parameter.type is None and annotated_apiv1_element.type is None
                 ):
                     boundary_annotation.reviewResult = EnumReviewResult.UNSURE
                     boundary_annotation.comment = get_migration_text(
@@ -140,11 +147,10 @@ def migrate_boundary_annotation(
                     parameter.type
                 )
                 if (
-                    (parameter.type is not None
+                    parameter.type is not None
                     and is_number
-                    and is_discrete == boundary_annotation.interval.isDiscrete)
-                    or (parameter.type is None and annotated_apiv1_element.type is None)
-                ):
+                    and is_discrete == boundary_annotation.interval.isDiscrete
+                ) or (parameter.type is None and annotated_apiv1_element.type is None):
                     migrated_annotations.append(
                         BoundaryAnnotation(
                             parameter.id,
