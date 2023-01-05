@@ -33,8 +33,6 @@ def migrate_todo_annotation(
         todo_annotation.target = element.id
         return [todo_annotation]
 
-    migrate_text = get_migration_text(todo_annotation, mapping)
-
     annotated_apiv1_element = get_annotated_api_element(
         todo_annotation, mapping.get_apiv1_elements()
     )
@@ -63,8 +61,10 @@ def migrate_todo_annotation(
                     authors,
                     todo_annotation.reviewers,
                     todo_annotation.comment,
-                    EnumReviewResult.UNSURE,
-                    migrate_text,
+                    EnumReviewResult.NONE,
+                    get_migration_text(
+                        todo_annotation, mapping, for_todo_annotation=True
+                    ),
                 )
             )
     return todo_annotations

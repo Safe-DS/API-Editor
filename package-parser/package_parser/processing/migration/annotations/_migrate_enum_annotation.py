@@ -25,6 +25,7 @@ from package_parser.processing.migration.model import (
 )
 
 from ._constants import migration_author
+from ._get_annotated_api_element import get_annotated_api_element
 from ._get_migration_text import get_migration_text
 
 
@@ -57,34 +58,36 @@ def migrate_enum_annotation(
     authors.append(migration_author)
     enum_annotation.authors = authors
 
-    migrate_text = get_migration_text(enum_annotation, mapping)
+    annotated_apiv1_element = get_annotated_api_element(
+        enum_annotation, mapping.get_apiv1_elements()
+    )
+    if annotated_apiv1_element is None or not isinstance(
+        annotated_apiv1_element, Parameter
+    ):
+        return []
 
     if isinstance(mapping, (OneToOneMapping, ManyToOneMapping)):
         parameter = mapping.get_apiv2_elements()[0]
         if isinstance(parameter, (Attribute, Result)):
             return []
         if isinstance(parameter, Parameter):
-            if parameter.type is not None:
-                if _contains_string(
-                    parameter.type
-                ) and _default_value_is_in_instance_values_or_is_empty(
+            if (
+                parameter.type is not None
+                and _contains_string(parameter.type)
+                and _default_value_is_in_instance_values_or_is_empty(
                     parameter.default_value, enum_annotation.pairs
-                ):
-                    enum_annotation.target = parameter.id
-                    return [enum_annotation]
-                if isinstance(parameter.type, NamedType):
-                    # assuming api has been chanced to an enum type:
-                    # do not migrate annotation
-                    return []
-            else:
-                enum_annotation.reviewResult = EnumReviewResult.UNSURE
-                enum_annotation.comment = (
-                    migrate_text
-                    if len(enum_annotation.comment) == 0
-                    else enum_annotation.comment + "\n" + migrate_text
                 )
+            ) or (parameter.type is None and annotated_apiv1_element.type is None):
                 enum_annotation.target = parameter.id
                 return [enum_annotation]
+            if isinstance(parameter.type, NamedType):
+                # assuming api has been chanced to an enum type:
+                # do not migrate annotation
+                return []
+            enum_annotation.reviewResult = EnumReviewResult.UNSURE
+            enum_annotation.comment = get_migration_text(enum_annotation, mapping)
+            enum_annotation.target = parameter.id
+            return [enum_annotation]
         return [
             TodoAnnotation(
                 parameter.id,
@@ -92,7 +95,7 @@ def migrate_enum_annotation(
                 enum_annotation.reviewers,
                 enum_annotation.comment,
                 EnumReviewResult.NONE,
-                migrate_text,
+                get_migration_text(enum_annotation, mapping, for_todo_annotation=True),
             )
         ]
 
@@ -100,34 +103,49 @@ def migrate_enum_annotation(
     if isinstance(mapping, (OneToManyMapping, ManyToManyMapping)):
         for parameter in mapping.get_apiv2_elements():
             if isinstance(parameter, Parameter):
-                if parameter.type is not None:
-                    if _contains_string(
-                        parameter.type
-                    ) and _default_value_is_in_instance_values_or_is_empty(
+                if (
+                    parameter.type is not None
+                    and _contains_string(parameter.type)
+                    and _default_value_is_in_instance_values_or_is_empty(
                         parameter.default_value, enum_annotation.pairs
-                    ):
-                        migrated_annotations.append(
-                            EnumAnnotation(
-                                parameter.id,
-                                authors,
-                                enum_annotation.reviewers,
-                                enum_annotation.comment,
-                                EnumReviewResult.NONE,
-                                enum_annotation.enumName,
-                                enum_annotation.pairs,
-                            )
-                        )
-                    elif isinstance(parameter.type, NamedType):
-                        continue
-                else:
+                    )
+                ) or (parameter.type is None and annotated_apiv1_element.type is None):
                     migrated_annotations.append(
-                        TodoAnnotation(
+                        EnumAnnotation(
                             parameter.id,
                             authors,
                             enum_annotation.reviewers,
                             enum_annotation.comment,
-                            EnumReviewResult.UNSURE,
-                            migrate_text,
+                            EnumReviewResult.NONE,
+                            enum_annotation.enumName,
+                            enum_annotation.pairs,
                         )
                     )
+                    continue
+                if isinstance(parameter.type, NamedType):
+                    continue
+                migrated_annotations.append(
+                    EnumAnnotation(
+                        parameter.id,
+                        authors,
+                        enum_annotation.reviewers,
+                        get_migration_text(enum_annotation, mapping),
+                        EnumReviewResult.UNSURE,
+                        enum_annotation.enumName,
+                        enum_annotation.pairs,
+                    )
+                )
+            elif not isinstance(parameter, (Attribute, Result)):
+                migrated_annotations.append(
+                    TodoAnnotation(
+                        parameter.id,
+                        authors,
+                        enum_annotation.reviewers,
+                        enum_annotation.comment,
+                        EnumReviewResult.NONE,
+                        get_migration_text(
+                            enum_annotation, mapping, for_todo_annotation=True
+                        ),
+                    )
+                )
     return migrated_annotations

@@ -1,0 +1,25 @@
+{
+    "schemaVersion": 2,
+    "boundaryAnnotations": {},
+    "calledAfterAnnotations": {},
+    "completeAnnotations": {},
+    "descriptionAnnotations": {},
+    "enumAnnotations": {},
+    "expertAnnotations": {},
+    "groupAnnotations": {},
+    "moveAnnotations": {
+        "test/test/complete_different_function": {
+            "authors": ["$autogen$", "migration"],
+            "comment": "",
+            "destination": "test/test.moved.package",
+            "reviewResult": "",
+            "reviewers": [],
+            "target": "test/test/complete_different_function"
+        }
+    },
+    "pureAnnotations": {},
+    "removeAnnotations": {},
+    "renameAnnotations": {},
+    "todoAnnotations": {},
+    "valueAnnotations": {}
+}

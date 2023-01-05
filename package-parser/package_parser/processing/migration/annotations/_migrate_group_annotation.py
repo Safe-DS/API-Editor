@@ -33,8 +33,10 @@ def migrate_group_annotation(
                     authors=authors,
                     reviewers=group_annotation.reviewers,
                     comment=group_annotation.comment,
-                    reviewResult=group_annotation.reviewResult,
-                    newTodo=get_migration_text(group_annotation, mapping),
+                    reviewResult=EnumReviewResult.NONE,
+                    newTodo=get_migration_text(
+                        group_annotation, mapping, for_todo_annotation=True
+                    ),
                 )
             )
         else:
@@ -61,10 +63,6 @@ def migrate_group_annotation(
             ]
             grouped_parameters = remove_duplicates_and_preserve_order
 
-            group_name = group_annotation.groupName
-            review_result = EnumReviewResult.NONE
-            migrate_text = get_migration_text(group_annotation, mapping)
-
             if len(grouped_parameters) < 2 < len(group_annotation.parameters):
                 migrated_annotations.append(
                     TodoAnnotation(
@@ -72,10 +70,11 @@ def migrate_group_annotation(
                         authors=authors,
                         reviewers=group_annotation.reviewers,
                         comment=group_annotation.comment,
-                        reviewResult=group_annotation.reviewResult,
+                        reviewResult=EnumReviewResult.NONE,
                         newTodo=get_migration_text(
                             group_annotation,
                             mapping,
+                            for_todo_annotation=True,
                             additional_information=grouped_parameters,
                         ),
                     )
@@ -83,26 +82,36 @@ def migrate_group_annotation(
                 continue
 
             if len(grouped_parameters) != len(group_annotation.parameters):
-                group_name += str(int(name_modifier, base=2))
-                review_result = EnumReviewResult.UNSURE
-                if len(group_annotation.comment) != 0:
-                    migrate_text = group_annotation.comment + "\n" + migrate_text
-
-            migrated_annotations.append(
-                GroupAnnotation(
-                    target=functionv2.id,
-                    authors=authors,
-                    reviewers=group_annotation.reviewers,
-                    comment=(
-                        migrate_text
-                        if review_result is EnumReviewResult.UNSURE
-                        else group_annotation.comment
-                    ),
-                    reviewResult=review_result,
-                    groupName=group_name,
-                    parameters=[parameter.name for parameter in grouped_parameters],
+                group_name = group_annotation.groupName + str(
+                    int(name_modifier, base=2)
                 )
-            )
+                migrated_annotations.append(
+                    GroupAnnotation(
+                        target=functionv2.id,
+                        authors=authors,
+                        reviewers=group_annotation.reviewers,
+                        comment=get_migration_text(
+                            group_annotation,
+                            mapping,
+                            additional_information=grouped_parameters,
+                        ),
+                        reviewResult=EnumReviewResult.UNSURE,
+                        groupName=group_name,
+                        parameters=[parameter.name for parameter in grouped_parameters],
+                    )
+                )
+            else:
+                migrated_annotations.append(
+                    GroupAnnotation(
+                        target=functionv2.id,
+                        authors=authors,
+                        reviewers=group_annotation.reviewers,
+                        comment=group_annotation.comment,
+                        reviewResult=EnumReviewResult.NONE,
+                        groupName=group_annotation.groupName,
+                        parameters=[parameter.name for parameter in grouped_parameters],
+                    )
+                )
 
     return migrated_annotations
 

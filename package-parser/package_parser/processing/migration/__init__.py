@@ -9,4 +9,4 @@ from package_parser.processing.migration.model import (
     SimpleDiffer,
 )
 
-from ._migrate import migrate_annotations
+from ._migrate import Migration

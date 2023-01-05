@@ -89,14 +89,16 @@ def _get_further_information(annotation: AbstractAnnotation) -> str:
 
 
 def get_migration_text(
-    annotation: AbstractAnnotation, mapping: Mapping, additional_information: Any = None
+    annotation: AbstractAnnotation,
+    mapping: Mapping,
+    for_todo_annotation: bool = False,
+    additional_information: Any = None,
 ) -> str:
     class_name = str(annotation.__class__.__name__)
     if class_name.endswith("Annotation"):
         class_name = class_name[:-10]
     if issubclass(type(annotation), ValueAnnotation):
         class_name = "Value"
-
     migrate_text = (
         "The @" + class_name + " Annotation" + _get_further_information(annotation)
     )
@@ -128,8 +130,12 @@ def get_migration_text(
                 + _list_api_elements(parameters)
                 + ")"
             )
-
-    return migrate_text
+    migration_text = migrate_text
+    if for_todo_annotation:
+        return migration_text
+    if len(annotation.comment) == 0:
+        return migration_text
+    return annotation.comment + "\n" + migration_text
 
 
 def _list_api_elements(

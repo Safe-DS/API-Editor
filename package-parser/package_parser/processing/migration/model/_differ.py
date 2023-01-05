@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Any, Callable, Optional
+from typing import Callable, Optional, TypeVar
 
 from Levenshtein import distance
 from package_parser.processing.api.model import (
@@ -44,10 +44,13 @@ class AbstractDiffer(ABC):
         pass
 
 
+X = TypeVar("X")
+
+
 def distance_elements(
-    list_a: list[Any],
-    list_b: list[Any],
-    are_similar: Callable[[Any, Any], bool] = lambda x, y: x == y,
+    list_a: list[X],
+    list_b: list[X],
+    are_similar: Callable[[X, X], bool] = lambda x, y: x == y,
 ) -> float:
     if len(list_a) == 0:
         return len(list_b)

@@ -1,1 +1,2 @@
+from ._are_semantic_equal import are_semantic_equal
 from ._generate_annotations import generate_annotations
