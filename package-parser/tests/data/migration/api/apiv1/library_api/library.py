@@ -1,8 +1,8 @@
 import dataclasses
 from datetime import datetime, timedelta
 
-from library_api.book import Book
-from library_api.persons import LibraryUser, Employee
+from .books.book import Book
+from .persons.persons import LibraryUser, Employee
 
 
 @dataclasses.dataclass
