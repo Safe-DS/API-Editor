@@ -1,9 +1,9 @@
 {
-  "schemaVersion": 1,
-  "distribution": "",
-  "package": "library_api",
-  "version": "0.7.12",
-  "modules": [],
-  "classes": [],
-  "functions": []
+    "schemaVersion": 1,
+    "distribution": "",
+    "package": "library_api",
+    "version": "0.7.12",
+    "modules": [],
+    "classes": [],
+    "functions": []
 }
