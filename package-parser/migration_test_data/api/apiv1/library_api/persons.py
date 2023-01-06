@@ -35,6 +35,7 @@ class LibraryUser:
         self.pending_fees = self.pending_fees - money
         return 0.0
 
+
 class Employee:
     first_name: str
     last_name: str
@@ -49,4 +50,3 @@ class Employee:
 
     def get_name(self) -> str:
         return self.first_name + " " + self.last_name
-

@@ -13,7 +13,7 @@ class Library:
     name: str
     is_open: bool = False
 
-    def __init__(self, books: list[Book], borrowed_books: list[Book], users: list[LibraryUser], staff: list[Employee], name: str, is_open: bool=False) -> None:
+    def __init__(self, books: list[Book], borrowed_books: list[Book], users: list[LibraryUser], staff: list[Employee], name: str, is_open: bool = False) -> None:
         self.books = books
         self.borrowed_books = borrowed_books
         self.users = users
