@@ -229,7 +229,7 @@ class SimpleDiffer(AbstractDiffer):
     def _compute_code_similarity(self, code_a: str, code_b: str) -> float:
         split_a = code_a.split("\n")
         split_b = code_b.split("\n")
-        diff_code = distance_elements(split_a, split_b) / max(
+        diff_code = distance(split_a, split_b) / max(
             len(split_a), len(split_b), 1
         )
         return 1 - diff_code

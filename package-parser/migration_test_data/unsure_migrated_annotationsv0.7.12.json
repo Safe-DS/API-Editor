@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 2,
+  "boundaryAnnotations": {},
+  "calledAfterAnnotations": {},
+  "completeAnnotations": {},
+  "descriptionAnnotations": {},
+  "enumAnnotations": {},
+  "expertAnnotations": {},
+  "groupAnnotations": {},
+  "moveAnnotations": {},
+  "pureAnnotations": {},
+  "renameAnnotations": {
+    "library_api/library_api.library/Library/borrow": {
+      "target": "library_api/library_api.library/Library/borrow",
+      "authors": [
+        "aclrian",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "newName": "borrow_a_book",
+      "reviewResult": ""
+    },
+    "library_api/library_api.persons/LibraryUser/extend_membership": {
+      "target": "library_api/library_api.persons/LibraryUser/extend_membership",
+      "authors": [
+        "aclrian",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "newName": "extend_membership_by_one_year",
+      "reviewResult": ""
+    },
+    "library_api/library_api.persons/Employee": {
+      "target": "library_api/library_api.persons/Employee",
+      "authors": [
+        "aclrian",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "newName": "Worker",
+      "reviewResult": ""
+    }
+  },
+  "removeAnnotations": {},
+  "todoAnnotations": {},
+  "valueAnnotations": {}
+}

@@ -1,11 +1,10 @@
-import dataclasses
 from datetime import datetime, timedelta
 
+from .send_message_to_person import send_message_to_person
 from .book import Book
 from .persons import Employee, LibraryUser
 
 
-@dataclasses.dataclass
 class Library:
     books: list[Book]  # apiv2: add other media -> change genre
     borrowed_books: list[Book]
@@ -13,6 +12,14 @@ class Library:
     staff: list[Employee]  # apiv2: add Person subclass to User and Personal and Author
     name: str
     is_open: bool = False
+
+    def __init__(self, books: list[Book], borrowed_books: list[Book], users: list[LibraryUser], staff: list[Employee], name: str, is_open: bool=False) -> None:
+        self.books = books
+        self.borrowed_books = borrowed_books
+        self.users = users
+        self.staff = staff
+        self.name = name
+        self.is_open = is_open
 
     def open_library(self) -> None:
         self.is_open = True
@@ -35,6 +42,7 @@ class Library:
                 if not self.is_open:
                     late_fee += 1.0
             user.give_back(late_fee)  # apiv2: rename function
+            send_message_to_person(user.get_name(), user.address, "You need to pay your late fee.")
             book.borrow_by = None
             book.borrow_until = None
             self.borrowed_books.remove(book)
