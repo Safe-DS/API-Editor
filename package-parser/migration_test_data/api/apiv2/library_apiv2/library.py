@@ -1,9 +1,9 @@
 # pylint: disable=duplicate-code
 from datetime import datetime, timedelta
 
-from .send_message_to_person import send_message_to_person
-from .media import Media, Book
+from .media import Book, Media
 from .persons import Employee, LibraryUser
+from .send_message_to_person import send_message_to_person
 
 
 class Library:
@@ -14,7 +14,15 @@ class Library:
     name: str
     is_open: bool = False
 
-    def __init__(self, media: list[Media], borrowed_media: list[Media], users: list[LibraryUser], staff: list[Employee], name: str, is_open: bool = False) -> None:
+    def __init__(
+        self,
+        media: list[Media],
+        borrowed_media: list[Media],
+        users: list[LibraryUser],
+        staff: list[Employee],
+        name: str,
+        is_open: bool = False,
+    ) -> None:
         self.media = media
         self.borrowed_media = borrowed_media
         self.users = users
@@ -51,13 +59,15 @@ class Library:
     def borrow(
         self, media: Media, user: LibraryUser
     ) -> None:  # apiv2: check if pending_fees are not above 5
-        if media in self.media and media not in self.borrowed_media and user.pending_fees <= 5.0:
+        if (
+            media in self.media
+            and media not in self.borrowed_media
+            and user.pending_fees <= 5.0
+        ):
             media.borrow_by = user
             media.borrow_until = datetime.today() + timedelta(days=1)
 
-    def add_new_media(
-        self, media: Media
-    ) -> None:
+    def add_new_media(self, media: Media) -> None:
         if isinstance(media, Book):
             for element in self.media:
                 if isinstance(element, Book) and element.isbn == media.isbn:

@@ -9,7 +9,15 @@ class LibraryUser:
     pending_fees: float
     member_until: datetime.date
 
-    def __init__(self, first_name: str, last_name: str, id_number: str, address: str, pending_fees: float, member_until: datetime.date) -> None:
+    def __init__(
+        self,
+        first_name: str,
+        last_name: str,
+        id_number: str,
+        address: str,
+        pending_fees: float,
+        member_until: datetime.date,
+    ) -> None:
         self.first_name = first_name
         self.last_name = last_name
         self.id_number = id_number
@@ -42,7 +50,9 @@ class Employee:
     address: str
     wage: float
 
-    def __init__(self, first_name: str, last_name: str, address: str, wage: float) -> None:
+    def __init__(
+        self, first_name: str, last_name: str, address: str, wage: float
+    ) -> None:
         self.first_name = first_name
         self.last_name = last_name
         self.address = address

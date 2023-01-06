@@ -1,8 +1,8 @@
 from datetime import datetime, timedelta
 
-from .send_message_to_person import send_message_to_person
 from .book import Book
 from .persons import Employee, LibraryUser
+from .send_message_to_person import send_message_to_person
 
 
 class Library:
@@ -13,7 +13,15 @@ class Library:
     name: str
     is_open: bool = False
 
-    def __init__(self, books: list[Book], borrowed_books: list[Book], users: list[LibraryUser], staff: list[Employee], name: str, is_open: bool = False) -> None:
+    def __init__(
+        self,
+        books: list[Book],
+        borrowed_books: list[Book],
+        users: list[LibraryUser],
+        staff: list[Employee],
+        name: str,
+        is_open: bool = False,
+    ) -> None:
         self.books = books
         self.borrowed_books = borrowed_books
         self.users = users
@@ -42,7 +50,9 @@ class Library:
                 if not self.is_open:
                     late_fee += 1.0
             user.give_back(late_fee)  # apiv2: rename function
-            send_message_to_person(user.get_name(), user.address, "You need to pay your late fee.")
+            send_message_to_person(
+                user.get_name(), user.address, "You need to pay your late fee."
+            )
             book.borrow_by = None
             book.borrow_until = None
             self.borrowed_books.remove(book)

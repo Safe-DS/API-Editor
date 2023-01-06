@@ -6,28 +6,90 @@ from .persons import LibraryUser
 
 
 class Media:
-    def __init__(self, borrow_until: Optional[date], borrow_by: Optional[LibraryUser], author: str, release_date: date, number_of_times_this_book_was_borrowed: int = 0, fee_per_day: float = 1.0) -> None:
+    def __init__(
+        self,
+        borrow_until: Optional[date],
+        borrow_by: Optional[LibraryUser],
+        author: str,
+        release_date: date,
+        number_of_times_this_book_was_borrowed: int = 0,
+        fee_per_day: float = 1.0,
+    ) -> None:
         self.borrow_until = borrow_until
         self.borrow_by = borrow_by
         self.author = author
         self.release_date = release_date
-        self.number_of_times_this_book_was_borrowed = number_of_times_this_book_was_borrowed
+        self.number_of_times_this_book_was_borrowed = (
+            number_of_times_this_book_was_borrowed
+        )
         self.FEE_PER_DAY = fee_per_day
 
 
 class Book(Media):
-    def __init__(self, borrow_until: Optional[date], borrow_by: Optional[LibraryUser], genre: str, isbn: str, author: str, release_date: date, number_of_times_this_book_was_borrowed: int = 0) -> None:
-        fee_for_each_genre: dict[str, float] = {'fiction': 1.0, 'nonfiction': 2.0, 'poetry': 1.5, 'drama': 5.0, 'high_demand': 10.0, 'low_demand': 0.5, 'other': 2.5}
-        fee_per_day = fee_for_each_genre.get(genre, fee_for_each_genre['other'])
-        super().__init__(borrow_until, borrow_by, author, release_date, number_of_times_this_book_was_borrowed, fee_per_day=fee_per_day)
+    def __init__(
+        self,
+        borrow_until: Optional[date],
+        borrow_by: Optional[LibraryUser],
+        genre: str,
+        isbn: str,
+        author: str,
+        release_date: date,
+        number_of_times_this_book_was_borrowed: int = 0,
+    ) -> None:
+        fee_for_each_genre: dict[str, float] = {
+            "fiction": 1.0,
+            "nonfiction": 2.0,
+            "poetry": 1.5,
+            "drama": 5.0,
+            "high_demand": 10.0,
+            "low_demand": 0.5,
+            "other": 2.5,
+        }
+        fee_per_day = fee_for_each_genre.get(genre, fee_for_each_genre["other"])
+        super().__init__(
+            borrow_until,
+            borrow_by,
+            author,
+            release_date,
+            number_of_times_this_book_was_borrowed,
+            fee_per_day=fee_per_day,
+        )
         self.isbn = isbn
 
 
 class CD(Media):
-    def __init__(self, borrow_until: Optional[date], borrow_by: Optional[LibraryUser], author: str, release_date: date, number_of_times_this_book_was_borrowed: int = 0) -> None:
-        super().__init__(borrow_until, borrow_by, author, release_date, number_of_times_this_book_was_borrowed, fee_per_day=2.0)
+    def __init__(
+        self,
+        borrow_until: Optional[date],
+        borrow_by: Optional[LibraryUser],
+        author: str,
+        release_date: date,
+        number_of_times_this_book_was_borrowed: int = 0,
+    ) -> None:
+        super().__init__(
+            borrow_until,
+            borrow_by,
+            author,
+            release_date,
+            number_of_times_this_book_was_borrowed,
+            fee_per_day=2.0,
+        )
 
 
 class DVD(Media):
-    def __init__(self, borrow_until: Optional[date], borrow_by: Optional[LibraryUser], author: str, release_date: date, number_of_times_this_book_was_borrowed: int = 0) -> None:
-        super().__init__(borrow_until, borrow_by, author, release_date, number_of_times_this_book_was_borrowed, fee_per_day=3.0)
+    def __init__(
+        self,
+        borrow_until: Optional[date],
+        borrow_by: Optional[LibraryUser],
+        author: str,
+        release_date: date,
+        number_of_times_this_book_was_borrowed: int = 0,
+    ) -> None:
+        super().__init__(
+            borrow_until,
+            borrow_by,
+            author,
+            release_date,
+            number_of_times_this_book_was_borrowed,
+            fee_per_day=3.0,
+        )

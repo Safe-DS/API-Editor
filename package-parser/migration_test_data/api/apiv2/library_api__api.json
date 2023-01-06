@@ -1,1528 +1,1504 @@
 {
-  "schemaVersion": 1,
-  "distribution": "",
-  "package": "library_api",
-  "version": "0.7.12",
-  "modules": [
-    {
-      "id": "library_api/library_api",
-      "name": "library_api",
-      "imports": [],
-      "from_imports": [
+    "schemaVersion": 1,
+    "distribution": "",
+    "package": "library_api",
+    "version": "0.7.12",
+    "modules": [
         {
-          "module": "library_api.book",
-          "declaration": "Book",
-          "alias": null
+            "id": "library_api/library_api",
+            "name": "library_api",
+            "imports": [],
+            "from_imports": [
+                {
+                    "module": "library_api.book",
+                    "declaration": "Book",
+                    "alias": null
+                },
+                {
+                    "module": "library_api.library",
+                    "declaration": "Library",
+                    "alias": null
+                },
+                {
+                    "module": "library_api.persons",
+                    "declaration": "Employee",
+                    "alias": null
+                },
+                {
+                    "module": "library_api.persons",
+                    "declaration": "LibraryUser",
+                    "alias": null
+                },
+                {
+                    "module": "library_api.send_message_to_person",
+                    "declaration": "send_message_to_person",
+                    "alias": null
+                }
+            ],
+            "classes": [],
+            "functions": []
         },
         {
-          "module": "library_api.library",
-          "declaration": "Library",
-          "alias": null
+            "id": "library_api/library_api.book",
+            "name": "library_api.book",
+            "imports": [],
+            "from_imports": [
+                {
+                    "module": "datetime",
+                    "declaration": "date",
+                    "alias": null
+                },
+                {
+                    "module": "typing",
+                    "declaration": "Optional",
+                    "alias": null
+                },
+                {
+                    "module": "library_api.persons",
+                    "declaration": "LibraryUser",
+                    "alias": null
+                }
+            ],
+            "classes": [
+                "library_api/library_api.book/Media",
+                "library_api/library_api.book/Book",
+                "library_api/library_api.book/CD",
+                "library_api/library_api.book/DVD"
+            ],
+            "functions": []
         },
         {
-          "module": "library_api.persons",
-          "declaration": "Employee",
-          "alias": null
+            "id": "library_api/library_api.library",
+            "name": "library_api.library",
+            "imports": [],
+            "from_imports": [
+                {
+                    "module": "datetime",
+                    "declaration": "datetime",
+                    "alias": null
+                },
+                {
+                    "module": "datetime",
+                    "declaration": "timedelta",
+                    "alias": null
+                },
+                {
+                    "module": "library_api.send_message_to_person",
+                    "declaration": "send_message_to_person",
+                    "alias": null
+                },
+                {
+                    "module": "library_api.book",
+                    "declaration": "Media",
+                    "alias": null
+                },
+                {
+                    "module": "library_api.book",
+                    "declaration": "Book",
+                    "alias": null
+                },
+                {
+                    "module": "library_api.persons",
+                    "declaration": "Employee",
+                    "alias": null
+                },
+                {
+                    "module": "library_api.persons",
+                    "declaration": "LibraryUser",
+                    "alias": null
+                }
+            ],
+            "classes": ["library_api/library_api.library/Library"],
+            "functions": []
         },
         {
-          "module": "library_api.persons",
-          "declaration": "LibraryUser",
-          "alias": null
+            "id": "library_api/library_api.persons",
+            "name": "library_api.persons",
+            "imports": [
+                {
+                    "module": "datetime",
+                    "alias": null
+                }
+            ],
+            "from_imports": [],
+            "classes": [
+                "library_api/library_api.persons/Person",
+                "library_api/library_api.persons/LibraryUser",
+                "library_api/library_api.persons/Employee"
+            ],
+            "functions": []
         },
         {
-          "module": "library_api.send_message_to_person",
-          "declaration": "send_message_to_person",
-          "alias": null
+            "id": "library_api/library_api.send_message_to_person",
+            "name": "library_api.send_message_to_person",
+            "imports": [],
+            "from_imports": [
+                {
+                    "module": "migration_test_data.api.apiv2.library_api.persons",
+                    "declaration": "Person",
+                    "alias": null
+                }
+            ],
+            "classes": [],
+            "functions": ["library_api/library_api.send_message_to_person/send_message_to_person"]
         }
-      ],
-      "classes": [],
-      "functions": []
-    },
-    {
-      "id": "library_api/library_api.book",
-      "name": "library_api.book",
-      "imports": [],
-      "from_imports": [
+    ],
+    "classes": [
         {
-          "module": "datetime",
-          "declaration": "date",
-          "alias": null
+            "id": "library_api/library_api.book/Book",
+            "name": "Book",
+            "qname": "library_api.book.Book",
+            "decorators": [],
+            "superclasses": ["Media"],
+            "methods": ["library_api/library_api.book/Book/__init__"],
+            "is_public": true,
+            "reexported_by": [],
+            "description": "",
+            "docstring": "",
+            "code": "class Book(Media):\n    def __init__(self, borrow_until: Optional[date], borrow_by: Optional[LibraryUser], genre: str, isbn: str, author: str, release_date: date, number_of_times_this_book_was_borrowed: int = 0) -> None:\n        fee_for_each_genre: dict[str, float] = {'fiction': 1.0, 'nonfiction': 2.0, 'poetry': 1.5, 'drama': 5.0, 'high_demand': 10.0, 'low_demand': 0.5, 'other': 2.5}\n        if genre in fee_for_each_genre:\n            fee_per_day = fee_for_each_genre[genre]\n        else:\n            fee_per_day = fee_for_each_genre['other']\n        super().__init__(borrow_until, borrow_by, author, release_date, number_of_times_this_book_was_borrowed, fee_per_day=fee_per_day)\n        self.isbn = isbn",
+            "instance_attributes": []
         },
         {
-          "module": "typing",
-          "declaration": "Optional",
-          "alias": null
+            "id": "library_api/library_api.book/CD",
+            "name": "CD",
+            "qname": "library_api.book.CD",
+            "decorators": [],
+            "superclasses": ["Media"],
+            "methods": ["library_api/library_api.book/CD/__init__"],
+            "is_public": true,
+            "reexported_by": [],
+            "description": "",
+            "docstring": "",
+            "code": "class CD(Media):\n    def __init__(self, borrow_until: Optional[date], borrow_by: Optional[LibraryUser], author: str, release_date: date, number_of_times_this_book_was_borrowed: int = 0) -> None:\n        super().__init__(borrow_until, borrow_by, author, release_date, number_of_times_this_book_was_borrowed, fee_per_day=2.0)",
+            "instance_attributes": []
         },
         {
-          "module": "library_api.persons",
-          "declaration": "LibraryUser",
-          "alias": null
+            "id": "library_api/library_api.book/DVD",
+            "name": "DVD",
+            "qname": "library_api.book.DVD",
+            "decorators": [],
+            "superclasses": ["Media"],
+            "methods": ["library_api/library_api.book/DVD/__init__"],
+            "is_public": true,
+            "reexported_by": [],
+            "description": "",
+            "docstring": "",
+            "code": "class DVD(Media):\n    def __init__(self, borrow_until: Optional[date], borrow_by: Optional[LibraryUser], author: str, release_date: date, number_of_times_this_book_was_borrowed: int = 0) -> None:\n        super().__init__(borrow_until, borrow_by, author, release_date, number_of_times_this_book_was_borrowed, fee_per_day=3.0)",
+            "instance_attributes": []
+        },
+        {
+            "id": "library_api/library_api.book/Media",
+            "name": "Media",
+            "qname": "library_api.book.Media",
+            "decorators": [],
+            "superclasses": [],
+            "methods": ["library_api/library_api.book/Media/__init__"],
+            "is_public": true,
+            "reexported_by": [],
+            "description": "",
+            "docstring": "",
+            "code": "class Media:\n    def __init__(self, borrow_until: Optional[date], borrow_by: Optional[LibraryUser], author: str, release_date: date, number_of_times_this_book_was_borrowed: int = 0, fee_per_day: float = 1.0) -> None:\n        self.borrow_until = borrow_until\n        self.borrow_by = borrow_by\n        self.author = author\n        self.release_date = release_date\n        self.number_of_times_this_book_was_borrowed = number_of_times_this_book_was_borrowed\n        self.FEE_PER_DAY = fee_per_day",
+            "instance_attributes": [
+                {
+                    "name": "number_of_times_this_book_was_borrowed",
+                    "types": {
+                        "kind": "NamedType",
+                        "name": "int"
+                    }
+                },
+                {
+                    "name": "FEE_PER_DAY",
+                    "types": {
+                        "kind": "NamedType",
+                        "name": "float"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "library_api/library_api.library/Library",
+            "name": "Library",
+            "qname": "library_api.library.Library",
+            "decorators": [],
+            "superclasses": [],
+            "methods": [
+                "library_api/library_api.library/Library/__init__",
+                "library_api/library_api.library/Library/open_library",
+                "library_api/library_api.library/Library/close_library",
+                "library_api/library_api.library/Library/return_media",
+                "library_api/library_api.library/Library/borrow",
+                "library_api/library_api.library/Library/add_new_media"
+            ],
+            "is_public": true,
+            "reexported_by": [],
+            "description": "",
+            "docstring": "",
+            "code": "class Library:\n    media: list[Media]  # apiv2: add other media -> change genre\n    borrowed_media: list[Media]\n    users: list[LibraryUser]\n    staff: list[Employee]  # apiv2: add Person subclass to User and Personal and Author\n    name: str\n    is_open: bool = False\n\n    def __init__(self, media: list[Media], borrowed_media: list[Media], users: list[LibraryUser], staff: list[Employee], name: str, is_open: bool=False) -> None:\n        self.media = media\n        self.borrowed_media = borrowed_media\n        self.users = users\n        self.staff = staff\n        self.name = name\n        self.is_open = is_open\n\n    def open_library(self) -> None:\n        self.is_open = True\n\n    def close_library(self) -> None:\n        self.is_open = False\n\n    def return_media(self, media: Media, user: LibraryUser) -> None:\n        if (\n            media.borrow_by is not None\n            and Media.borrow_until is not None\n            and Media.borrow_by == user\n        ):  # apiv2: check if Media is in borrowed Media list\n            late_fee = 0.0\n            today = datetime.today().date()\n            if Media.borrow_until > today or (\n                Media.borrow_by == today and not self.is_open\n            ):\n                late_fee = (today - Media.borrow_until).days * Media.FEE_PER_DAY\n                if not self.is_open:\n                    late_fee += 1.0\n            user.give_back(late_fee)  # apiv2: rename function\n            send_message_to_person(user, \"You need to pay your late fee.\")\n            Media.borrow_by = None\n            Media.borrow_until = None\n            self.borrowed_media.remove(Media)\n\n    def borrow(\n        self, media: Media, user: LibraryUser\n    ) -> None:  # apiv2: check if pending_fees are not above 5\n        if media in self.media and media not in self.borrowed_media and user.pending_fees <= 5.0:\n            media.borrow_by = user\n            media.borrow_until = datetime.today() + timedelta(days=1)\n\n    def add_new_media(\n        self, media: Media\n    ) -> None:\n        if isinstance(media, Book):\n            for element in self.media:\n                if isinstance(element, Book) and element.isbn == media.isbn:\n                    self.Medias.append(Media)\n        else:\n            self.Medias.append(Media)",
+            "instance_attributes": [
+                {
+                    "name": "is_open",
+                    "types": {
+                        "kind": "NamedType",
+                        "name": "bool"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "library_api/library_api.persons/Employee",
+            "name": "Employee",
+            "qname": "library_api.persons.Employee",
+            "decorators": [],
+            "superclasses": ["Person"],
+            "methods": ["library_api/library_api.persons/Employee/__init__"],
+            "is_public": true,
+            "reexported_by": [],
+            "description": "",
+            "docstring": "",
+            "code": "class Employee(Person):\n    wage: float\n\n    def __init__(self, first_name: str, last_name: str, address: str, wage: float) -> None:\n        super().__init__(first_name, last_name, address)\n        self.wage = wage",
+            "instance_attributes": []
+        },
+        {
+            "id": "library_api/library_api.persons/LibraryUser",
+            "name": "LibraryUser",
+            "qname": "library_api.persons.LibraryUser",
+            "decorators": [],
+            "superclasses": ["Person"],
+            "methods": [
+                "library_api/library_api.persons/LibraryUser/__init__",
+                "library_api/library_api.persons/LibraryUser/give_back",
+                "library_api/library_api.persons/LibraryUser/extend_membership",
+                "library_api/library_api.persons/LibraryUser/pay"
+            ],
+            "is_public": true,
+            "reexported_by": [],
+            "description": "",
+            "docstring": "",
+            "code": "class LibraryUser(Person):\n    id_number: str\n    pending_fees: float\n    member_until: datetime.date\n\n    def __init__(self, first_name: str, last_name: str, id_number: str, address: str, pending_fees: float, member_until: datetime.date) -> None:\n        super().__init__(first_name, last_name, address)\n        self.id_number = id_number\n        self.pending_fees = pending_fees\n        self.member_until = member_until\n\n    def give_back(self, late_fee: float) -> None:\n        self.pending_fees = self.pending_fees + late_fee\n\n    def extend_membership(self) -> None:\n        self.member_until = self.member_until.replace(year=self.member_until.year+1)\n\n    def pay(self, money: float) -> float:\n        if money > self.pending_fees:\n            self.pending_fees = 0\n            return money - self.pending_fees\n        self.pending_fees = self.pending_fees - money\n        return 0.0",
+            "instance_attributes": []
+        },
+        {
+            "id": "library_api/library_api.persons/Person",
+            "name": "Person",
+            "qname": "library_api.persons.Person",
+            "decorators": [],
+            "superclasses": [],
+            "methods": [
+                "library_api/library_api.persons/Person/__init__",
+                "library_api/library_api.persons/Person/get_name"
+            ],
+            "is_public": true,
+            "reexported_by": [],
+            "description": "",
+            "docstring": "",
+            "code": "class Person:\n    first_name: str\n    last_name: str\n    address: str\n\n    def __init__(self, first_name: str, last_name: str, address: str) -> None:\n        self.first_name = first_name\n        self.last_name = last_name\n        self.address = address\n\n    def get_name(self) -> str:\n        return self.first_name + \" \" + self.last_name",
+            "instance_attributes": []
         }
-      ],
-      "classes": [
-        "library_api/library_api.book/Media",
-        "library_api/library_api.book/Book",
-        "library_api/library_api.book/CD",
-        "library_api/library_api.book/DVD"
-      ],
-      "functions": []
-    },
-    {
-      "id": "library_api/library_api.library",
-      "name": "library_api.library",
-      "imports": [],
-      "from_imports": [
+    ],
+    "functions": [
         {
-          "module": "datetime",
-          "declaration": "datetime",
-          "alias": null
+            "id": "library_api/library_api.book/Book/__init__",
+            "name": "__init__",
+            "qname": "library_api.book.Book.__init__",
+            "decorators": [],
+            "parameters": [
+                {
+                    "id": "library_api/library_api.book/Book/__init__/self",
+                    "name": "self",
+                    "qname": "library_api.book.Book.__init__.self",
+                    "default_value": null,
+                    "assigned_by": "IMPLICIT",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.book/Book/__init__/borrow_until",
+                    "name": "borrow_until",
+                    "qname": "library_api.book.Book.__init__.borrow_until",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.book/Book/__init__/borrow_by",
+                    "name": "borrow_by",
+                    "qname": "library_api.book.Book.__init__.borrow_by",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.book/Book/__init__/genre",
+                    "name": "genre",
+                    "qname": "library_api.book.Book.__init__.genre",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.book/Book/__init__/isbn",
+                    "name": "isbn",
+                    "qname": "library_api.book.Book.__init__.isbn",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.book/Book/__init__/author",
+                    "name": "author",
+                    "qname": "library_api.book.Book.__init__.author",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.book/Book/__init__/release_date",
+                    "name": "release_date",
+                    "qname": "library_api.book.Book.__init__.release_date",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.book/Book/__init__/number_of_times_this_book_was_borrowed",
+                    "name": "number_of_times_this_book_was_borrowed",
+                    "qname": "library_api.book.Book.__init__.number_of_times_this_book_was_borrowed",
+                    "default_value": "0",
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                }
+            ],
+            "results": [],
+            "is_public": true,
+            "reexported_by": [],
+            "description": "",
+            "docstring": "",
+            "code": "    def __init__(self, borrow_until: Optional[date], borrow_by: Optional[LibraryUser], genre: str, isbn: str, author: str, release_date: date, number_of_times_this_book_was_borrowed: int = 0) -> None:\n        fee_for_each_genre: dict[str, float] = {'fiction': 1.0, 'nonfiction': 2.0, 'poetry': 1.5, 'drama': 5.0, 'high_demand': 10.0, 'low_demand': 0.5, 'other': 2.5}\n        if genre in fee_for_each_genre:\n            fee_per_day = fee_for_each_genre[genre]\n        else:\n            fee_per_day = fee_for_each_genre['other']\n        super().__init__(borrow_until, borrow_by, author, release_date, number_of_times_this_book_was_borrowed, fee_per_day=fee_per_day)\n        self.isbn = isbn"
         },
         {
-          "module": "datetime",
-          "declaration": "timedelta",
-          "alias": null
+            "id": "library_api/library_api.book/CD/__init__",
+            "name": "__init__",
+            "qname": "library_api.book.CD.__init__",
+            "decorators": [],
+            "parameters": [
+                {
+                    "id": "library_api/library_api.book/CD/__init__/self",
+                    "name": "self",
+                    "qname": "library_api.book.CD.__init__.self",
+                    "default_value": null,
+                    "assigned_by": "IMPLICIT",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.book/CD/__init__/borrow_until",
+                    "name": "borrow_until",
+                    "qname": "library_api.book.CD.__init__.borrow_until",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.book/CD/__init__/borrow_by",
+                    "name": "borrow_by",
+                    "qname": "library_api.book.CD.__init__.borrow_by",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.book/CD/__init__/author",
+                    "name": "author",
+                    "qname": "library_api.book.CD.__init__.author",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.book/CD/__init__/release_date",
+                    "name": "release_date",
+                    "qname": "library_api.book.CD.__init__.release_date",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.book/CD/__init__/number_of_times_this_book_was_borrowed",
+                    "name": "number_of_times_this_book_was_borrowed",
+                    "qname": "library_api.book.CD.__init__.number_of_times_this_book_was_borrowed",
+                    "default_value": "0",
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                }
+            ],
+            "results": [],
+            "is_public": true,
+            "reexported_by": [],
+            "description": "",
+            "docstring": "",
+            "code": "    def __init__(self, borrow_until: Optional[date], borrow_by: Optional[LibraryUser], author: str, release_date: date, number_of_times_this_book_was_borrowed: int = 0) -> None:\n        super().__init__(borrow_until, borrow_by, author, release_date, number_of_times_this_book_was_borrowed, fee_per_day=2.0)"
         },
         {
-          "module": "library_api.send_message_to_person",
-          "declaration": "send_message_to_person",
-          "alias": null
+            "id": "library_api/library_api.book/DVD/__init__",
+            "name": "__init__",
+            "qname": "library_api.book.DVD.__init__",
+            "decorators": [],
+            "parameters": [
+                {
+                    "id": "library_api/library_api.book/DVD/__init__/self",
+                    "name": "self",
+                    "qname": "library_api.book.DVD.__init__.self",
+                    "default_value": null,
+                    "assigned_by": "IMPLICIT",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.book/DVD/__init__/borrow_until",
+                    "name": "borrow_until",
+                    "qname": "library_api.book.DVD.__init__.borrow_until",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.book/DVD/__init__/borrow_by",
+                    "name": "borrow_by",
+                    "qname": "library_api.book.DVD.__init__.borrow_by",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.book/DVD/__init__/author",
+                    "name": "author",
+                    "qname": "library_api.book.DVD.__init__.author",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.book/DVD/__init__/release_date",
+                    "name": "release_date",
+                    "qname": "library_api.book.DVD.__init__.release_date",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.book/DVD/__init__/number_of_times_this_book_was_borrowed",
+                    "name": "number_of_times_this_book_was_borrowed",
+                    "qname": "library_api.book.DVD.__init__.number_of_times_this_book_was_borrowed",
+                    "default_value": "0",
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                }
+            ],
+            "results": [],
+            "is_public": true,
+            "reexported_by": [],
+            "description": "",
+            "docstring": "",
+            "code": "    def __init__(self, borrow_until: Optional[date], borrow_by: Optional[LibraryUser], author: str, release_date: date, number_of_times_this_book_was_borrowed: int = 0) -> None:\n        super().__init__(borrow_until, borrow_by, author, release_date, number_of_times_this_book_was_borrowed, fee_per_day=3.0)"
         },
         {
-          "module": "library_api.book",
-          "declaration": "Media",
-          "alias": null
+            "id": "library_api/library_api.book/Media/__init__",
+            "name": "__init__",
+            "qname": "library_api.book.Media.__init__",
+            "decorators": [],
+            "parameters": [
+                {
+                    "id": "library_api/library_api.book/Media/__init__/self",
+                    "name": "self",
+                    "qname": "library_api.book.Media.__init__.self",
+                    "default_value": null,
+                    "assigned_by": "IMPLICIT",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.book/Media/__init__/borrow_until",
+                    "name": "borrow_until",
+                    "qname": "library_api.book.Media.__init__.borrow_until",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.book/Media/__init__/borrow_by",
+                    "name": "borrow_by",
+                    "qname": "library_api.book.Media.__init__.borrow_by",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.book/Media/__init__/author",
+                    "name": "author",
+                    "qname": "library_api.book.Media.__init__.author",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.book/Media/__init__/release_date",
+                    "name": "release_date",
+                    "qname": "library_api.book.Media.__init__.release_date",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.book/Media/__init__/number_of_times_this_book_was_borrowed",
+                    "name": "number_of_times_this_book_was_borrowed",
+                    "qname": "library_api.book.Media.__init__.number_of_times_this_book_was_borrowed",
+                    "default_value": "0",
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.book/Media/__init__/fee_per_day",
+                    "name": "fee_per_day",
+                    "qname": "library_api.book.Media.__init__.fee_per_day",
+                    "default_value": "1.0",
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                }
+            ],
+            "results": [],
+            "is_public": true,
+            "reexported_by": [],
+            "description": "",
+            "docstring": "",
+            "code": "    def __init__(self, borrow_until: Optional[date], borrow_by: Optional[LibraryUser], author: str, release_date: date, number_of_times_this_book_was_borrowed: int = 0, fee_per_day: float = 1.0) -> None:\n        self.borrow_until = borrow_until\n        self.borrow_by = borrow_by\n        self.author = author\n        self.release_date = release_date\n        self.number_of_times_this_book_was_borrowed = number_of_times_this_book_was_borrowed\n        self.FEE_PER_DAY = fee_per_day"
         },
         {
-          "module": "library_api.book",
-          "declaration": "Book",
-          "alias": null
+            "id": "library_api/library_api.library/Library/__init__",
+            "name": "__init__",
+            "qname": "library_api.library.Library.__init__",
+            "decorators": [],
+            "parameters": [
+                {
+                    "id": "library_api/library_api.library/Library/__init__/self",
+                    "name": "self",
+                    "qname": "library_api.library.Library.__init__.self",
+                    "default_value": null,
+                    "assigned_by": "IMPLICIT",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.library/Library/__init__/media",
+                    "name": "media",
+                    "qname": "library_api.library.Library.__init__.media",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.library/Library/__init__/borrowed_media",
+                    "name": "borrowed_media",
+                    "qname": "library_api.library.Library.__init__.borrowed_media",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.library/Library/__init__/users",
+                    "name": "users",
+                    "qname": "library_api.library.Library.__init__.users",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.library/Library/__init__/staff",
+                    "name": "staff",
+                    "qname": "library_api.library.Library.__init__.staff",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.library/Library/__init__/name",
+                    "name": "name",
+                    "qname": "library_api.library.Library.__init__.name",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.library/Library/__init__/is_open",
+                    "name": "is_open",
+                    "qname": "library_api.library.Library.__init__.is_open",
+                    "default_value": "False",
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                }
+            ],
+            "results": [],
+            "is_public": true,
+            "reexported_by": [],
+            "description": "",
+            "docstring": "",
+            "code": "    def __init__(self, media: list[Media], borrowed_media: list[Media], users: list[LibraryUser], staff: list[Employee], name: str, is_open: bool=False) -> None:\n        self.media = media\n        self.borrowed_media = borrowed_media\n        self.users = users\n        self.staff = staff\n        self.name = name\n        self.is_open = is_open"
         },
         {
-          "module": "library_api.persons",
-          "declaration": "Employee",
-          "alias": null
+            "id": "library_api/library_api.library/Library/add_new_media",
+            "name": "add_new_media",
+            "qname": "library_api.library.Library.add_new_media",
+            "decorators": [],
+            "parameters": [
+                {
+                    "id": "library_api/library_api.library/Library/add_new_media/self",
+                    "name": "self",
+                    "qname": "library_api.library.Library.add_new_media.self",
+                    "default_value": null,
+                    "assigned_by": "IMPLICIT",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.library/Library/add_new_media/media",
+                    "name": "media",
+                    "qname": "library_api.library.Library.add_new_media.media",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                }
+            ],
+            "results": [],
+            "is_public": true,
+            "reexported_by": [],
+            "description": "",
+            "docstring": "",
+            "code": "    def add_new_media(\n        self, media: Media\n    ) -> None:\n        if isinstance(media, Book):\n            for element in self.media:\n                if isinstance(element, Book) and element.isbn == media.isbn:\n                    self.Medias.append(Media)\n        else:\n            self.Medias.append(Media)"
         },
         {
-          "module": "library_api.persons",
-          "declaration": "LibraryUser",
-          "alias": null
+            "id": "library_api/library_api.library/Library/borrow",
+            "name": "borrow",
+            "qname": "library_api.library.Library.borrow",
+            "decorators": [],
+            "parameters": [
+                {
+                    "id": "library_api/library_api.library/Library/borrow/self",
+                    "name": "self",
+                    "qname": "library_api.library.Library.borrow.self",
+                    "default_value": null,
+                    "assigned_by": "IMPLICIT",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.library/Library/borrow/media",
+                    "name": "media",
+                    "qname": "library_api.library.Library.borrow.media",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.library/Library/borrow/user",
+                    "name": "user",
+                    "qname": "library_api.library.Library.borrow.user",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                }
+            ],
+            "results": [],
+            "is_public": true,
+            "reexported_by": [],
+            "description": "",
+            "docstring": "",
+            "code": "    def borrow(\n        self, media: Media, user: LibraryUser\n    ) -> None:  # apiv2: check if pending_fees are not above 5\n        if media in self.media and media not in self.borrowed_media and user.pending_fees <= 5.0:\n            media.borrow_by = user\n            media.borrow_until = datetime.today() + timedelta(days=1)"
+        },
+        {
+            "id": "library_api/library_api.library/Library/close_library",
+            "name": "close_library",
+            "qname": "library_api.library.Library.close_library",
+            "decorators": [],
+            "parameters": [
+                {
+                    "id": "library_api/library_api.library/Library/close_library/self",
+                    "name": "self",
+                    "qname": "library_api.library.Library.close_library.self",
+                    "default_value": null,
+                    "assigned_by": "IMPLICIT",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                }
+            ],
+            "results": [],
+            "is_public": true,
+            "reexported_by": [],
+            "description": "",
+            "docstring": "",
+            "code": "    def close_library(self) -> None:\n        self.is_open = False"
+        },
+        {
+            "id": "library_api/library_api.library/Library/open_library",
+            "name": "open_library",
+            "qname": "library_api.library.Library.open_library",
+            "decorators": [],
+            "parameters": [
+                {
+                    "id": "library_api/library_api.library/Library/open_library/self",
+                    "name": "self",
+                    "qname": "library_api.library.Library.open_library.self",
+                    "default_value": null,
+                    "assigned_by": "IMPLICIT",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                }
+            ],
+            "results": [],
+            "is_public": true,
+            "reexported_by": [],
+            "description": "",
+            "docstring": "",
+            "code": "    def open_library(self) -> None:\n        self.is_open = True"
+        },
+        {
+            "id": "library_api/library_api.library/Library/return_media",
+            "name": "return_media",
+            "qname": "library_api.library.Library.return_media",
+            "decorators": [],
+            "parameters": [
+                {
+                    "id": "library_api/library_api.library/Library/return_media/self",
+                    "name": "self",
+                    "qname": "library_api.library.Library.return_media.self",
+                    "default_value": null,
+                    "assigned_by": "IMPLICIT",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.library/Library/return_media/media",
+                    "name": "media",
+                    "qname": "library_api.library.Library.return_media.media",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.library/Library/return_media/user",
+                    "name": "user",
+                    "qname": "library_api.library.Library.return_media.user",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                }
+            ],
+            "results": [],
+            "is_public": true,
+            "reexported_by": [],
+            "description": "",
+            "docstring": "",
+            "code": "    def return_media(self, media: Media, user: LibraryUser) -> None:\n        if (\n            media.borrow_by is not None\n            and Media.borrow_until is not None\n            and Media.borrow_by == user\n        ):  # apiv2: check if Media is in borrowed Media list\n            late_fee = 0.0\n            today = datetime.today().date()\n            if Media.borrow_until > today or (\n                Media.borrow_by == today and not self.is_open\n            ):\n                late_fee = (today - Media.borrow_until).days * Media.FEE_PER_DAY\n                if not self.is_open:\n                    late_fee += 1.0\n            user.give_back(late_fee)  # apiv2: rename function\n            send_message_to_person(user, \"You need to pay your late fee.\")\n            Media.borrow_by = None\n            Media.borrow_until = None\n            self.borrowed_media.remove(Media)"
+        },
+        {
+            "id": "library_api/library_api.persons/Employee/__init__",
+            "name": "__init__",
+            "qname": "library_api.persons.Employee.__init__",
+            "decorators": [],
+            "parameters": [
+                {
+                    "id": "library_api/library_api.persons/Employee/__init__/self",
+                    "name": "self",
+                    "qname": "library_api.persons.Employee.__init__.self",
+                    "default_value": null,
+                    "assigned_by": "IMPLICIT",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.persons/Employee/__init__/first_name",
+                    "name": "first_name",
+                    "qname": "library_api.persons.Employee.__init__.first_name",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.persons/Employee/__init__/last_name",
+                    "name": "last_name",
+                    "qname": "library_api.persons.Employee.__init__.last_name",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.persons/Employee/__init__/address",
+                    "name": "address",
+                    "qname": "library_api.persons.Employee.__init__.address",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.persons/Employee/__init__/wage",
+                    "name": "wage",
+                    "qname": "library_api.persons.Employee.__init__.wage",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                }
+            ],
+            "results": [],
+            "is_public": true,
+            "reexported_by": [],
+            "description": "",
+            "docstring": "",
+            "code": "    def __init__(self, first_name: str, last_name: str, address: str, wage: float) -> None:\n        super().__init__(first_name, last_name, address)\n        self.wage = wage"
+        },
+        {
+            "id": "library_api/library_api.persons/LibraryUser/__init__",
+            "name": "__init__",
+            "qname": "library_api.persons.LibraryUser.__init__",
+            "decorators": [],
+            "parameters": [
+                {
+                    "id": "library_api/library_api.persons/LibraryUser/__init__/self",
+                    "name": "self",
+                    "qname": "library_api.persons.LibraryUser.__init__.self",
+                    "default_value": null,
+                    "assigned_by": "IMPLICIT",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.persons/LibraryUser/__init__/first_name",
+                    "name": "first_name",
+                    "qname": "library_api.persons.LibraryUser.__init__.first_name",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.persons/LibraryUser/__init__/last_name",
+                    "name": "last_name",
+                    "qname": "library_api.persons.LibraryUser.__init__.last_name",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.persons/LibraryUser/__init__/id_number",
+                    "name": "id_number",
+                    "qname": "library_api.persons.LibraryUser.__init__.id_number",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.persons/LibraryUser/__init__/address",
+                    "name": "address",
+                    "qname": "library_api.persons.LibraryUser.__init__.address",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.persons/LibraryUser/__init__/pending_fees",
+                    "name": "pending_fees",
+                    "qname": "library_api.persons.LibraryUser.__init__.pending_fees",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.persons/LibraryUser/__init__/member_until",
+                    "name": "member_until",
+                    "qname": "library_api.persons.LibraryUser.__init__.member_until",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                }
+            ],
+            "results": [],
+            "is_public": true,
+            "reexported_by": [],
+            "description": "",
+            "docstring": "",
+            "code": "    def __init__(self, first_name: str, last_name: str, id_number: str, address: str, pending_fees: float, member_until: datetime.date) -> None:\n        super().__init__(first_name, last_name, address)\n        self.id_number = id_number\n        self.pending_fees = pending_fees\n        self.member_until = member_until"
+        },
+        {
+            "id": "library_api/library_api.persons/LibraryUser/extend_membership",
+            "name": "extend_membership",
+            "qname": "library_api.persons.LibraryUser.extend_membership",
+            "decorators": [],
+            "parameters": [
+                {
+                    "id": "library_api/library_api.persons/LibraryUser/extend_membership/self",
+                    "name": "self",
+                    "qname": "library_api.persons.LibraryUser.extend_membership.self",
+                    "default_value": null,
+                    "assigned_by": "IMPLICIT",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                }
+            ],
+            "results": [],
+            "is_public": true,
+            "reexported_by": [],
+            "description": "",
+            "docstring": "",
+            "code": "    def extend_membership(self) -> None:\n        self.member_until = self.member_until.replace(year=self.member_until.year+1)"
+        },
+        {
+            "id": "library_api/library_api.persons/LibraryUser/give_back",
+            "name": "give_back",
+            "qname": "library_api.persons.LibraryUser.give_back",
+            "decorators": [],
+            "parameters": [
+                {
+                    "id": "library_api/library_api.persons/LibraryUser/give_back/self",
+                    "name": "self",
+                    "qname": "library_api.persons.LibraryUser.give_back.self",
+                    "default_value": null,
+                    "assigned_by": "IMPLICIT",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.persons/LibraryUser/give_back/late_fee",
+                    "name": "late_fee",
+                    "qname": "library_api.persons.LibraryUser.give_back.late_fee",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                }
+            ],
+            "results": [],
+            "is_public": true,
+            "reexported_by": [],
+            "description": "",
+            "docstring": "",
+            "code": "    def give_back(self, late_fee: float) -> None:\n        self.pending_fees = self.pending_fees + late_fee"
+        },
+        {
+            "id": "library_api/library_api.persons/LibraryUser/pay",
+            "name": "pay",
+            "qname": "library_api.persons.LibraryUser.pay",
+            "decorators": [],
+            "parameters": [
+                {
+                    "id": "library_api/library_api.persons/LibraryUser/pay/self",
+                    "name": "self",
+                    "qname": "library_api.persons.LibraryUser.pay.self",
+                    "default_value": null,
+                    "assigned_by": "IMPLICIT",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.persons/LibraryUser/pay/money",
+                    "name": "money",
+                    "qname": "library_api.persons.LibraryUser.pay.money",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                }
+            ],
+            "results": [],
+            "is_public": true,
+            "reexported_by": [],
+            "description": "",
+            "docstring": "",
+            "code": "    def pay(self, money: float) -> float:\n        if money > self.pending_fees:\n            self.pending_fees = 0\n            return money - self.pending_fees\n        self.pending_fees = self.pending_fees - money\n        return 0.0"
+        },
+        {
+            "id": "library_api/library_api.persons/Person/__init__",
+            "name": "__init__",
+            "qname": "library_api.persons.Person.__init__",
+            "decorators": [],
+            "parameters": [
+                {
+                    "id": "library_api/library_api.persons/Person/__init__/self",
+                    "name": "self",
+                    "qname": "library_api.persons.Person.__init__.self",
+                    "default_value": null,
+                    "assigned_by": "IMPLICIT",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.persons/Person/__init__/first_name",
+                    "name": "first_name",
+                    "qname": "library_api.persons.Person.__init__.first_name",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.persons/Person/__init__/last_name",
+                    "name": "last_name",
+                    "qname": "library_api.persons.Person.__init__.last_name",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.persons/Person/__init__/address",
+                    "name": "address",
+                    "qname": "library_api.persons.Person.__init__.address",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                }
+            ],
+            "results": [],
+            "is_public": true,
+            "reexported_by": [],
+            "description": "",
+            "docstring": "",
+            "code": "    def __init__(self, first_name: str, last_name: str, address: str) -> None:\n        self.first_name = first_name\n        self.last_name = last_name\n        self.address = address"
+        },
+        {
+            "id": "library_api/library_api.persons/Person/get_name",
+            "name": "get_name",
+            "qname": "library_api.persons.Person.get_name",
+            "decorators": [],
+            "parameters": [
+                {
+                    "id": "library_api/library_api.persons/Person/get_name/self",
+                    "name": "self",
+                    "qname": "library_api.persons.Person.get_name.self",
+                    "default_value": null,
+                    "assigned_by": "IMPLICIT",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                }
+            ],
+            "results": [],
+            "is_public": true,
+            "reexported_by": [],
+            "description": "",
+            "docstring": "",
+            "code": "    def get_name(self) -> str:\n        return self.first_name + \" \" + self.last_name"
+        },
+        {
+            "id": "library_api/library_api.send_message_to_person/send_message_to_person",
+            "name": "send_message_to_person",
+            "qname": "library_api.send_message_to_person.send_message_to_person",
+            "decorators": [],
+            "parameters": [
+                {
+                    "id": "library_api/library_api.send_message_to_person/send_message_to_person/person",
+                    "name": "person",
+                    "qname": "library_api.send_message_to_person.send_message_to_person.person",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.send_message_to_person/send_message_to_person/message",
+                    "name": "message",
+                    "qname": "library_api.send_message_to_person.send_message_to_person.message",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                }
+            ],
+            "results": [],
+            "is_public": true,
+            "reexported_by": [],
+            "description": "",
+            "docstring": "",
+            "code": "def send_message_to_person(person: Person, message: str) -> None:\n    print(\"To: \" + person.get_name() + \"\\n\" + person.address + \"\\n\" + message)"
         }
-      ],
-      "classes": [
-        "library_api/library_api.library/Library"
-      ],
-      "functions": []
-    },
-    {
-      "id": "library_api/library_api.persons",
-      "name": "library_api.persons",
-      "imports": [
-        {
-          "module": "datetime",
-          "alias": null
-        }
-      ],
-      "from_imports": [],
-      "classes": [
-        "library_api/library_api.persons/Person",
-        "library_api/library_api.persons/LibraryUser",
-        "library_api/library_api.persons/Employee"
-      ],
-      "functions": []
-    },
-    {
-      "id": "library_api/library_api.send_message_to_person",
-      "name": "library_api.send_message_to_person",
-      "imports": [],
-      "from_imports": [
-        {
-          "module": "migration_test_data.api.apiv2.library_api.persons",
-          "declaration": "Person",
-          "alias": null
-        }
-      ],
-      "classes": [],
-      "functions": [
-        "library_api/library_api.send_message_to_person/send_message_to_person"
-      ]
-    }
-  ],
-  "classes": [
-    {
-      "id": "library_api/library_api.book/Book",
-      "name": "Book",
-      "qname": "library_api.book.Book",
-      "decorators": [],
-      "superclasses": [
-        "Media"
-      ],
-      "methods": [
-        "library_api/library_api.book/Book/__init__"
-      ],
-      "is_public": true,
-      "reexported_by": [],
-      "description": "",
-      "docstring": "",
-      "code": "class Book(Media):\n    def __init__(self, borrow_until: Optional[date], borrow_by: Optional[LibraryUser], genre: str, isbn: str, author: str, release_date: date, number_of_times_this_book_was_borrowed: int = 0) -> None:\n        fee_for_each_genre: dict[str, float] = {'fiction': 1.0, 'nonfiction': 2.0, 'poetry': 1.5, 'drama': 5.0, 'high_demand': 10.0, 'low_demand': 0.5, 'other': 2.5}\n        if genre in fee_for_each_genre:\n            fee_per_day = fee_for_each_genre[genre]\n        else:\n            fee_per_day = fee_for_each_genre['other']\n        super().__init__(borrow_until, borrow_by, author, release_date, number_of_times_this_book_was_borrowed, fee_per_day=fee_per_day)\n        self.isbn = isbn",
-      "instance_attributes": []
-    },
-    {
-      "id": "library_api/library_api.book/CD",
-      "name": "CD",
-      "qname": "library_api.book.CD",
-      "decorators": [],
-      "superclasses": [
-        "Media"
-      ],
-      "methods": [
-        "library_api/library_api.book/CD/__init__"
-      ],
-      "is_public": true,
-      "reexported_by": [],
-      "description": "",
-      "docstring": "",
-      "code": "class CD(Media):\n    def __init__(self, borrow_until: Optional[date], borrow_by: Optional[LibraryUser], author: str, release_date: date, number_of_times_this_book_was_borrowed: int = 0) -> None:\n        super().__init__(borrow_until, borrow_by, author, release_date, number_of_times_this_book_was_borrowed, fee_per_day=2.0)",
-      "instance_attributes": []
-    },
-    {
-      "id": "library_api/library_api.book/DVD",
-      "name": "DVD",
-      "qname": "library_api.book.DVD",
-      "decorators": [],
-      "superclasses": [
-        "Media"
-      ],
-      "methods": [
-        "library_api/library_api.book/DVD/__init__"
-      ],
-      "is_public": true,
-      "reexported_by": [],
-      "description": "",
-      "docstring": "",
-      "code": "class DVD(Media):\n    def __init__(self, borrow_until: Optional[date], borrow_by: Optional[LibraryUser], author: str, release_date: date, number_of_times_this_book_was_borrowed: int = 0) -> None:\n        super().__init__(borrow_until, borrow_by, author, release_date, number_of_times_this_book_was_borrowed, fee_per_day=3.0)",
-      "instance_attributes": []
-    },
-    {
-      "id": "library_api/library_api.book/Media",
-      "name": "Media",
-      "qname": "library_api.book.Media",
-      "decorators": [],
-      "superclasses": [],
-      "methods": [
-        "library_api/library_api.book/Media/__init__"
-      ],
-      "is_public": true,
-      "reexported_by": [],
-      "description": "",
-      "docstring": "",
-      "code": "class Media:\n    def __init__(self, borrow_until: Optional[date], borrow_by: Optional[LibraryUser], author: str, release_date: date, number_of_times_this_book_was_borrowed: int = 0, fee_per_day: float = 1.0) -> None:\n        self.borrow_until = borrow_until\n        self.borrow_by = borrow_by\n        self.author = author\n        self.release_date = release_date\n        self.number_of_times_this_book_was_borrowed = number_of_times_this_book_was_borrowed\n        self.FEE_PER_DAY = fee_per_day",
-      "instance_attributes": [
-        {
-          "name": "number_of_times_this_book_was_borrowed",
-          "types": {
-            "kind": "NamedType",
-            "name": "int"
-          }
-        },
-        {
-          "name": "FEE_PER_DAY",
-          "types": {
-            "kind": "NamedType",
-            "name": "float"
-          }
-        }
-      ]
-    },
-    {
-      "id": "library_api/library_api.library/Library",
-      "name": "Library",
-      "qname": "library_api.library.Library",
-      "decorators": [],
-      "superclasses": [],
-      "methods": [
-        "library_api/library_api.library/Library/__init__",
-        "library_api/library_api.library/Library/open_library",
-        "library_api/library_api.library/Library/close_library",
-        "library_api/library_api.library/Library/return_media",
-        "library_api/library_api.library/Library/borrow",
-        "library_api/library_api.library/Library/add_new_media"
-      ],
-      "is_public": true,
-      "reexported_by": [],
-      "description": "",
-      "docstring": "",
-      "code": "class Library:\n    media: list[Media]  # apiv2: add other media -> change genre\n    borrowed_media: list[Media]\n    users: list[LibraryUser]\n    staff: list[Employee]  # apiv2: add Person subclass to User and Personal and Author\n    name: str\n    is_open: bool = False\n\n    def __init__(self, media: list[Media], borrowed_media: list[Media], users: list[LibraryUser], staff: list[Employee], name: str, is_open: bool=False) -> None:\n        self.media = media\n        self.borrowed_media = borrowed_media\n        self.users = users\n        self.staff = staff\n        self.name = name\n        self.is_open = is_open\n\n    def open_library(self) -> None:\n        self.is_open = True\n\n    def close_library(self) -> None:\n        self.is_open = False\n\n    def return_media(self, media: Media, user: LibraryUser) -> None:\n        if (\n            media.borrow_by is not None\n            and Media.borrow_until is not None\n            and Media.borrow_by == user\n        ):  # apiv2: check if Media is in borrowed Media list\n            late_fee = 0.0\n            today = datetime.today().date()\n            if Media.borrow_until > today or (\n                Media.borrow_by == today and not self.is_open\n            ):\n                late_fee = (today - Media.borrow_until).days * Media.FEE_PER_DAY\n                if not self.is_open:\n                    late_fee += 1.0\n            user.give_back(late_fee)  # apiv2: rename function\n            send_message_to_person(user, \"You need to pay your late fee.\")\n            Media.borrow_by = None\n            Media.borrow_until = None\n            self.borrowed_media.remove(Media)\n\n    def borrow(\n        self, media: Media, user: LibraryUser\n    ) -> None:  # apiv2: check if pending_fees are not above 5\n        if media in self.media and media not in self.borrowed_media and user.pending_fees <= 5.0:\n            media.borrow_by = user\n            media.borrow_until = datetime.today() + timedelta(days=1)\n\n    def add_new_media(\n        self, media: Media\n    ) -> None:\n        if isinstance(media, Book):\n            for element in self.media:\n                if isinstance(element, Book) and element.isbn == media.isbn:\n                    self.Medias.append(Media)\n        else:\n            self.Medias.append(Media)",
-      "instance_attributes": [
-        {
-          "name": "is_open",
-          "types": {
-            "kind": "NamedType",
-            "name": "bool"
-          }
-        }
-      ]
-    },
-    {
-      "id": "library_api/library_api.persons/Employee",
-      "name": "Employee",
-      "qname": "library_api.persons.Employee",
-      "decorators": [],
-      "superclasses": [
-        "Person"
-      ],
-      "methods": [
-        "library_api/library_api.persons/Employee/__init__"
-      ],
-      "is_public": true,
-      "reexported_by": [],
-      "description": "",
-      "docstring": "",
-      "code": "class Employee(Person):\n    wage: float\n\n    def __init__(self, first_name: str, last_name: str, address: str, wage: float) -> None:\n        super().__init__(first_name, last_name, address)\n        self.wage = wage",
-      "instance_attributes": []
-    },
-    {
-      "id": "library_api/library_api.persons/LibraryUser",
-      "name": "LibraryUser",
-      "qname": "library_api.persons.LibraryUser",
-      "decorators": [],
-      "superclasses": [
-        "Person"
-      ],
-      "methods": [
-        "library_api/library_api.persons/LibraryUser/__init__",
-        "library_api/library_api.persons/LibraryUser/give_back",
-        "library_api/library_api.persons/LibraryUser/extend_membership",
-        "library_api/library_api.persons/LibraryUser/pay"
-      ],
-      "is_public": true,
-      "reexported_by": [],
-      "description": "",
-      "docstring": "",
-      "code": "class LibraryUser(Person):\n    id_number: str\n    pending_fees: float\n    member_until: datetime.date\n\n    def __init__(self, first_name: str, last_name: str, id_number: str, address: str, pending_fees: float, member_until: datetime.date) -> None:\n        super().__init__(first_name, last_name, address)\n        self.id_number = id_number\n        self.pending_fees = pending_fees\n        self.member_until = member_until\n\n    def give_back(self, late_fee: float) -> None:\n        self.pending_fees = self.pending_fees + late_fee\n\n    def extend_membership(self) -> None:\n        self.member_until = self.member_until.replace(year=self.member_until.year+1)\n\n    def pay(self, money: float) -> float:\n        if money > self.pending_fees:\n            self.pending_fees = 0\n            return money - self.pending_fees\n        self.pending_fees = self.pending_fees - money\n        return 0.0",
-      "instance_attributes": []
-    },
-    {
-      "id": "library_api/library_api.persons/Person",
-      "name": "Person",
-      "qname": "library_api.persons.Person",
-      "decorators": [],
-      "superclasses": [],
-      "methods": [
-        "library_api/library_api.persons/Person/__init__",
-        "library_api/library_api.persons/Person/get_name"
-      ],
-      "is_public": true,
-      "reexported_by": [],
-      "description": "",
-      "docstring": "",
-      "code": "class Person:\n    first_name: str\n    last_name: str\n    address: str\n\n    def __init__(self, first_name: str, last_name: str, address: str) -> None:\n        self.first_name = first_name\n        self.last_name = last_name\n        self.address = address\n\n    def get_name(self) -> str:\n        return self.first_name + \" \" + self.last_name",
-      "instance_attributes": []
-    }
-  ],
-  "functions": [
-    {
-      "id": "library_api/library_api.book/Book/__init__",
-      "name": "__init__",
-      "qname": "library_api.book.Book.__init__",
-      "decorators": [],
-      "parameters": [
-        {
-          "id": "library_api/library_api.book/Book/__init__/self",
-          "name": "self",
-          "qname": "library_api.book.Book.__init__.self",
-          "default_value": null,
-          "assigned_by": "IMPLICIT",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        },
-        {
-          "id": "library_api/library_api.book/Book/__init__/borrow_until",
-          "name": "borrow_until",
-          "qname": "library_api.book.Book.__init__.borrow_until",
-          "default_value": null,
-          "assigned_by": "POSITION_OR_NAME",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        },
-        {
-          "id": "library_api/library_api.book/Book/__init__/borrow_by",
-          "name": "borrow_by",
-          "qname": "library_api.book.Book.__init__.borrow_by",
-          "default_value": null,
-          "assigned_by": "POSITION_OR_NAME",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        },
-        {
-          "id": "library_api/library_api.book/Book/__init__/genre",
-          "name": "genre",
-          "qname": "library_api.book.Book.__init__.genre",
-          "default_value": null,
-          "assigned_by": "POSITION_OR_NAME",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        },
-        {
-          "id": "library_api/library_api.book/Book/__init__/isbn",
-          "name": "isbn",
-          "qname": "library_api.book.Book.__init__.isbn",
-          "default_value": null,
-          "assigned_by": "POSITION_OR_NAME",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        },
-        {
-          "id": "library_api/library_api.book/Book/__init__/author",
-          "name": "author",
-          "qname": "library_api.book.Book.__init__.author",
-          "default_value": null,
-          "assigned_by": "POSITION_OR_NAME",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        },
-        {
-          "id": "library_api/library_api.book/Book/__init__/release_date",
-          "name": "release_date",
-          "qname": "library_api.book.Book.__init__.release_date",
-          "default_value": null,
-          "assigned_by": "POSITION_OR_NAME",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        },
-        {
-          "id": "library_api/library_api.book/Book/__init__/number_of_times_this_book_was_borrowed",
-          "name": "number_of_times_this_book_was_borrowed",
-          "qname": "library_api.book.Book.__init__.number_of_times_this_book_was_borrowed",
-          "default_value": "0",
-          "assigned_by": "POSITION_OR_NAME",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        }
-      ],
-      "results": [],
-      "is_public": true,
-      "reexported_by": [],
-      "description": "",
-      "docstring": "",
-      "code": "    def __init__(self, borrow_until: Optional[date], borrow_by: Optional[LibraryUser], genre: str, isbn: str, author: str, release_date: date, number_of_times_this_book_was_borrowed: int = 0) -> None:\n        fee_for_each_genre: dict[str, float] = {'fiction': 1.0, 'nonfiction': 2.0, 'poetry': 1.5, 'drama': 5.0, 'high_demand': 10.0, 'low_demand': 0.5, 'other': 2.5}\n        if genre in fee_for_each_genre:\n            fee_per_day = fee_for_each_genre[genre]\n        else:\n            fee_per_day = fee_for_each_genre['other']\n        super().__init__(borrow_until, borrow_by, author, release_date, number_of_times_this_book_was_borrowed, fee_per_day=fee_per_day)\n        self.isbn = isbn"
-    },
-    {
-      "id": "library_api/library_api.book/CD/__init__",
-      "name": "__init__",
-      "qname": "library_api.book.CD.__init__",
-      "decorators": [],
-      "parameters": [
-        {
-          "id": "library_api/library_api.book/CD/__init__/self",
-          "name": "self",
-          "qname": "library_api.book.CD.__init__.self",
-          "default_value": null,
-          "assigned_by": "IMPLICIT",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        },
-        {
-          "id": "library_api/library_api.book/CD/__init__/borrow_until",
-          "name": "borrow_until",
-          "qname": "library_api.book.CD.__init__.borrow_until",
-          "default_value": null,
-          "assigned_by": "POSITION_OR_NAME",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        },
-        {
-          "id": "library_api/library_api.book/CD/__init__/borrow_by",
-          "name": "borrow_by",
-          "qname": "library_api.book.CD.__init__.borrow_by",
-          "default_value": null,
-          "assigned_by": "POSITION_OR_NAME",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        },
-        {
-          "id": "library_api/library_api.book/CD/__init__/author",
-          "name": "author",
-          "qname": "library_api.book.CD.__init__.author",
-          "default_value": null,
-          "assigned_by": "POSITION_OR_NAME",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        },
-        {
-          "id": "library_api/library_api.book/CD/__init__/release_date",
-          "name": "release_date",
-          "qname": "library_api.book.CD.__init__.release_date",
-          "default_value": null,
-          "assigned_by": "POSITION_OR_NAME",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        },
-        {
-          "id": "library_api/library_api.book/CD/__init__/number_of_times_this_book_was_borrowed",
-          "name": "number_of_times_this_book_was_borrowed",
-          "qname": "library_api.book.CD.__init__.number_of_times_this_book_was_borrowed",
-          "default_value": "0",
-          "assigned_by": "POSITION_OR_NAME",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        }
-      ],
-      "results": [],
-      "is_public": true,
-      "reexported_by": [],
-      "description": "",
-      "docstring": "",
-      "code": "    def __init__(self, borrow_until: Optional[date], borrow_by: Optional[LibraryUser], author: str, release_date: date, number_of_times_this_book_was_borrowed: int = 0) -> None:\n        super().__init__(borrow_until, borrow_by, author, release_date, number_of_times_this_book_was_borrowed, fee_per_day=2.0)"
-    },
-    {
-      "id": "library_api/library_api.book/DVD/__init__",
-      "name": "__init__",
-      "qname": "library_api.book.DVD.__init__",
-      "decorators": [],
-      "parameters": [
-        {
-          "id": "library_api/library_api.book/DVD/__init__/self",
-          "name": "self",
-          "qname": "library_api.book.DVD.__init__.self",
-          "default_value": null,
-          "assigned_by": "IMPLICIT",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        },
-        {
-          "id": "library_api/library_api.book/DVD/__init__/borrow_until",
-          "name": "borrow_until",
-          "qname": "library_api.book.DVD.__init__.borrow_until",
-          "default_value": null,
-          "assigned_by": "POSITION_OR_NAME",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        },
-        {
-          "id": "library_api/library_api.book/DVD/__init__/borrow_by",
-          "name": "borrow_by",
-          "qname": "library_api.book.DVD.__init__.borrow_by",
-          "default_value": null,
-          "assigned_by": "POSITION_OR_NAME",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        },
-        {
-          "id": "library_api/library_api.book/DVD/__init__/author",
-          "name": "author",
-          "qname": "library_api.book.DVD.__init__.author",
-          "default_value": null,
-          "assigned_by": "POSITION_OR_NAME",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        },
-        {
-          "id": "library_api/library_api.book/DVD/__init__/release_date",
-          "name": "release_date",
-          "qname": "library_api.book.DVD.__init__.release_date",
-          "default_value": null,
-          "assigned_by": "POSITION_OR_NAME",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        },
-        {
-          "id": "library_api/library_api.book/DVD/__init__/number_of_times_this_book_was_borrowed",
-          "name": "number_of_times_this_book_was_borrowed",
-          "qname": "library_api.book.DVD.__init__.number_of_times_this_book_was_borrowed",
-          "default_value": "0",
-          "assigned_by": "POSITION_OR_NAME",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        }
-      ],
-      "results": [],
-      "is_public": true,
-      "reexported_by": [],
-      "description": "",
-      "docstring": "",
-      "code": "    def __init__(self, borrow_until: Optional[date], borrow_by: Optional[LibraryUser], author: str, release_date: date, number_of_times_this_book_was_borrowed: int = 0) -> None:\n        super().__init__(borrow_until, borrow_by, author, release_date, number_of_times_this_book_was_borrowed, fee_per_day=3.0)"
-    },
-    {
-      "id": "library_api/library_api.book/Media/__init__",
-      "name": "__init__",
-      "qname": "library_api.book.Media.__init__",
-      "decorators": [],
-      "parameters": [
-        {
-          "id": "library_api/library_api.book/Media/__init__/self",
-          "name": "self",
-          "qname": "library_api.book.Media.__init__.self",
-          "default_value": null,
-          "assigned_by": "IMPLICIT",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        },
-        {
-          "id": "library_api/library_api.book/Media/__init__/borrow_until",
-          "name": "borrow_until",
-          "qname": "library_api.book.Media.__init__.borrow_until",
-          "default_value": null,
-          "assigned_by": "POSITION_OR_NAME",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        },
-        {
-          "id": "library_api/library_api.book/Media/__init__/borrow_by",
-          "name": "borrow_by",
-          "qname": "library_api.book.Media.__init__.borrow_by",
-          "default_value": null,
-          "assigned_by": "POSITION_OR_NAME",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        },
-        {
-          "id": "library_api/library_api.book/Media/__init__/author",
-          "name": "author",
-          "qname": "library_api.book.Media.__init__.author",
-          "default_value": null,
-          "assigned_by": "POSITION_OR_NAME",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        },
-        {
-          "id": "library_api/library_api.book/Media/__init__/release_date",
-          "name": "release_date",
-          "qname": "library_api.book.Media.__init__.release_date",
-          "default_value": null,
-          "assigned_by": "POSITION_OR_NAME",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        },
-        {
-          "id": "library_api/library_api.book/Media/__init__/number_of_times_this_book_was_borrowed",
-          "name": "number_of_times_this_book_was_borrowed",
-          "qname": "library_api.book.Media.__init__.number_of_times_this_book_was_borrowed",
-          "default_value": "0",
-          "assigned_by": "POSITION_OR_NAME",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        },
-        {
-          "id": "library_api/library_api.book/Media/__init__/fee_per_day",
-          "name": "fee_per_day",
-          "qname": "library_api.book.Media.__init__.fee_per_day",
-          "default_value": "1.0",
-          "assigned_by": "POSITION_OR_NAME",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        }
-      ],
-      "results": [],
-      "is_public": true,
-      "reexported_by": [],
-      "description": "",
-      "docstring": "",
-      "code": "    def __init__(self, borrow_until: Optional[date], borrow_by: Optional[LibraryUser], author: str, release_date: date, number_of_times_this_book_was_borrowed: int = 0, fee_per_day: float = 1.0) -> None:\n        self.borrow_until = borrow_until\n        self.borrow_by = borrow_by\n        self.author = author\n        self.release_date = release_date\n        self.number_of_times_this_book_was_borrowed = number_of_times_this_book_was_borrowed\n        self.FEE_PER_DAY = fee_per_day"
-    },
-    {
-      "id": "library_api/library_api.library/Library/__init__",
-      "name": "__init__",
-      "qname": "library_api.library.Library.__init__",
-      "decorators": [],
-      "parameters": [
-        {
-          "id": "library_api/library_api.library/Library/__init__/self",
-          "name": "self",
-          "qname": "library_api.library.Library.__init__.self",
-          "default_value": null,
-          "assigned_by": "IMPLICIT",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        },
-        {
-          "id": "library_api/library_api.library/Library/__init__/media",
-          "name": "media",
-          "qname": "library_api.library.Library.__init__.media",
-          "default_value": null,
-          "assigned_by": "POSITION_OR_NAME",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        },
-        {
-          "id": "library_api/library_api.library/Library/__init__/borrowed_media",
-          "name": "borrowed_media",
-          "qname": "library_api.library.Library.__init__.borrowed_media",
-          "default_value": null,
-          "assigned_by": "POSITION_OR_NAME",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        },
-        {
-          "id": "library_api/library_api.library/Library/__init__/users",
-          "name": "users",
-          "qname": "library_api.library.Library.__init__.users",
-          "default_value": null,
-          "assigned_by": "POSITION_OR_NAME",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        },
-        {
-          "id": "library_api/library_api.library/Library/__init__/staff",
-          "name": "staff",
-          "qname": "library_api.library.Library.__init__.staff",
-          "default_value": null,
-          "assigned_by": "POSITION_OR_NAME",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        },
-        {
-          "id": "library_api/library_api.library/Library/__init__/name",
-          "name": "name",
-          "qname": "library_api.library.Library.__init__.name",
-          "default_value": null,
-          "assigned_by": "POSITION_OR_NAME",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        },
-        {
-          "id": "library_api/library_api.library/Library/__init__/is_open",
-          "name": "is_open",
-          "qname": "library_api.library.Library.__init__.is_open",
-          "default_value": "False",
-          "assigned_by": "POSITION_OR_NAME",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        }
-      ],
-      "results": [],
-      "is_public": true,
-      "reexported_by": [],
-      "description": "",
-      "docstring": "",
-      "code": "    def __init__(self, media: list[Media], borrowed_media: list[Media], users: list[LibraryUser], staff: list[Employee], name: str, is_open: bool=False) -> None:\n        self.media = media\n        self.borrowed_media = borrowed_media\n        self.users = users\n        self.staff = staff\n        self.name = name\n        self.is_open = is_open"
-    },
-    {
-      "id": "library_api/library_api.library/Library/add_new_media",
-      "name": "add_new_media",
-      "qname": "library_api.library.Library.add_new_media",
-      "decorators": [],
-      "parameters": [
-        {
-          "id": "library_api/library_api.library/Library/add_new_media/self",
-          "name": "self",
-          "qname": "library_api.library.Library.add_new_media.self",
-          "default_value": null,
-          "assigned_by": "IMPLICIT",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        },
-        {
-          "id": "library_api/library_api.library/Library/add_new_media/media",
-          "name": "media",
-          "qname": "library_api.library.Library.add_new_media.media",
-          "default_value": null,
-          "assigned_by": "POSITION_OR_NAME",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        }
-      ],
-      "results": [],
-      "is_public": true,
-      "reexported_by": [],
-      "description": "",
-      "docstring": "",
-      "code": "    def add_new_media(\n        self, media: Media\n    ) -> None:\n        if isinstance(media, Book):\n            for element in self.media:\n                if isinstance(element, Book) and element.isbn == media.isbn:\n                    self.Medias.append(Media)\n        else:\n            self.Medias.append(Media)"
-    },
-    {
-      "id": "library_api/library_api.library/Library/borrow",
-      "name": "borrow",
-      "qname": "library_api.library.Library.borrow",
-      "decorators": [],
-      "parameters": [
-        {
-          "id": "library_api/library_api.library/Library/borrow/self",
-          "name": "self",
-          "qname": "library_api.library.Library.borrow.self",
-          "default_value": null,
-          "assigned_by": "IMPLICIT",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        },
-        {
-          "id": "library_api/library_api.library/Library/borrow/media",
-          "name": "media",
-          "qname": "library_api.library.Library.borrow.media",
-          "default_value": null,
-          "assigned_by": "POSITION_OR_NAME",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        },
-        {
-          "id": "library_api/library_api.library/Library/borrow/user",
-          "name": "user",
-          "qname": "library_api.library.Library.borrow.user",
-          "default_value": null,
-          "assigned_by": "POSITION_OR_NAME",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        }
-      ],
-      "results": [],
-      "is_public": true,
-      "reexported_by": [],
-      "description": "",
-      "docstring": "",
-      "code": "    def borrow(\n        self, media: Media, user: LibraryUser\n    ) -> None:  # apiv2: check if pending_fees are not above 5\n        if media in self.media and media not in self.borrowed_media and user.pending_fees <= 5.0:\n            media.borrow_by = user\n            media.borrow_until = datetime.today() + timedelta(days=1)"
-    },
-    {
-      "id": "library_api/library_api.library/Library/close_library",
-      "name": "close_library",
-      "qname": "library_api.library.Library.close_library",
-      "decorators": [],
-      "parameters": [
-        {
-          "id": "library_api/library_api.library/Library/close_library/self",
-          "name": "self",
-          "qname": "library_api.library.Library.close_library.self",
-          "default_value": null,
-          "assigned_by": "IMPLICIT",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        }
-      ],
-      "results": [],
-      "is_public": true,
-      "reexported_by": [],
-      "description": "",
-      "docstring": "",
-      "code": "    def close_library(self) -> None:\n        self.is_open = False"
-    },
-    {
-      "id": "library_api/library_api.library/Library/open_library",
-      "name": "open_library",
-      "qname": "library_api.library.Library.open_library",
-      "decorators": [],
-      "parameters": [
-        {
-          "id": "library_api/library_api.library/Library/open_library/self",
-          "name": "self",
-          "qname": "library_api.library.Library.open_library.self",
-          "default_value": null,
-          "assigned_by": "IMPLICIT",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        }
-      ],
-      "results": [],
-      "is_public": true,
-      "reexported_by": [],
-      "description": "",
-      "docstring": "",
-      "code": "    def open_library(self) -> None:\n        self.is_open = True"
-    },
-    {
-      "id": "library_api/library_api.library/Library/return_media",
-      "name": "return_media",
-      "qname": "library_api.library.Library.return_media",
-      "decorators": [],
-      "parameters": [
-        {
-          "id": "library_api/library_api.library/Library/return_media/self",
-          "name": "self",
-          "qname": "library_api.library.Library.return_media.self",
-          "default_value": null,
-          "assigned_by": "IMPLICIT",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        },
-        {
-          "id": "library_api/library_api.library/Library/return_media/media",
-          "name": "media",
-          "qname": "library_api.library.Library.return_media.media",
-          "default_value": null,
-          "assigned_by": "POSITION_OR_NAME",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        },
-        {
-          "id": "library_api/library_api.library/Library/return_media/user",
-          "name": "user",
-          "qname": "library_api.library.Library.return_media.user",
-          "default_value": null,
-          "assigned_by": "POSITION_OR_NAME",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        }
-      ],
-      "results": [],
-      "is_public": true,
-      "reexported_by": [],
-      "description": "",
-      "docstring": "",
-      "code": "    def return_media(self, media: Media, user: LibraryUser) -> None:\n        if (\n            media.borrow_by is not None\n            and Media.borrow_until is not None\n            and Media.borrow_by == user\n        ):  # apiv2: check if Media is in borrowed Media list\n            late_fee = 0.0\n            today = datetime.today().date()\n            if Media.borrow_until > today or (\n                Media.borrow_by == today and not self.is_open\n            ):\n                late_fee = (today - Media.borrow_until).days * Media.FEE_PER_DAY\n                if not self.is_open:\n                    late_fee += 1.0\n            user.give_back(late_fee)  # apiv2: rename function\n            send_message_to_person(user, \"You need to pay your late fee.\")\n            Media.borrow_by = None\n            Media.borrow_until = None\n            self.borrowed_media.remove(Media)"
-    },
-    {
-      "id": "library_api/library_api.persons/Employee/__init__",
-      "name": "__init__",
-      "qname": "library_api.persons.Employee.__init__",
-      "decorators": [],
-      "parameters": [
-        {
-          "id": "library_api/library_api.persons/Employee/__init__/self",
-          "name": "self",
-          "qname": "library_api.persons.Employee.__init__.self",
-          "default_value": null,
-          "assigned_by": "IMPLICIT",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        },
-        {
-          "id": "library_api/library_api.persons/Employee/__init__/first_name",
-          "name": "first_name",
-          "qname": "library_api.persons.Employee.__init__.first_name",
-          "default_value": null,
-          "assigned_by": "POSITION_OR_NAME",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        },
-        {
-          "id": "library_api/library_api.persons/Employee/__init__/last_name",
-          "name": "last_name",
-          "qname": "library_api.persons.Employee.__init__.last_name",
-          "default_value": null,
-          "assigned_by": "POSITION_OR_NAME",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        },
-        {
-          "id": "library_api/library_api.persons/Employee/__init__/address",
-          "name": "address",
-          "qname": "library_api.persons.Employee.__init__.address",
-          "default_value": null,
-          "assigned_by": "POSITION_OR_NAME",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        },
-        {
-          "id": "library_api/library_api.persons/Employee/__init__/wage",
-          "name": "wage",
-          "qname": "library_api.persons.Employee.__init__.wage",
-          "default_value": null,
-          "assigned_by": "POSITION_OR_NAME",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        }
-      ],
-      "results": [],
-      "is_public": true,
-      "reexported_by": [],
-      "description": "",
-      "docstring": "",
-      "code": "    def __init__(self, first_name: str, last_name: str, address: str, wage: float) -> None:\n        super().__init__(first_name, last_name, address)\n        self.wage = wage"
-    },
-    {
-      "id": "library_api/library_api.persons/LibraryUser/__init__",
-      "name": "__init__",
-      "qname": "library_api.persons.LibraryUser.__init__",
-      "decorators": [],
-      "parameters": [
-        {
-          "id": "library_api/library_api.persons/LibraryUser/__init__/self",
-          "name": "self",
-          "qname": "library_api.persons.LibraryUser.__init__.self",
-          "default_value": null,
-          "assigned_by": "IMPLICIT",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        },
-        {
-          "id": "library_api/library_api.persons/LibraryUser/__init__/first_name",
-          "name": "first_name",
-          "qname": "library_api.persons.LibraryUser.__init__.first_name",
-          "default_value": null,
-          "assigned_by": "POSITION_OR_NAME",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        },
-        {
-          "id": "library_api/library_api.persons/LibraryUser/__init__/last_name",
-          "name": "last_name",
-          "qname": "library_api.persons.LibraryUser.__init__.last_name",
-          "default_value": null,
-          "assigned_by": "POSITION_OR_NAME",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        },
-        {
-          "id": "library_api/library_api.persons/LibraryUser/__init__/id_number",
-          "name": "id_number",
-          "qname": "library_api.persons.LibraryUser.__init__.id_number",
-          "default_value": null,
-          "assigned_by": "POSITION_OR_NAME",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        },
-        {
-          "id": "library_api/library_api.persons/LibraryUser/__init__/address",
-          "name": "address",
-          "qname": "library_api.persons.LibraryUser.__init__.address",
-          "default_value": null,
-          "assigned_by": "POSITION_OR_NAME",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        },
-        {
-          "id": "library_api/library_api.persons/LibraryUser/__init__/pending_fees",
-          "name": "pending_fees",
-          "qname": "library_api.persons.LibraryUser.__init__.pending_fees",
-          "default_value": null,
-          "assigned_by": "POSITION_OR_NAME",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        },
-        {
-          "id": "library_api/library_api.persons/LibraryUser/__init__/member_until",
-          "name": "member_until",
-          "qname": "library_api.persons.LibraryUser.__init__.member_until",
-          "default_value": null,
-          "assigned_by": "POSITION_OR_NAME",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        }
-      ],
-      "results": [],
-      "is_public": true,
-      "reexported_by": [],
-      "description": "",
-      "docstring": "",
-      "code": "    def __init__(self, first_name: str, last_name: str, id_number: str, address: str, pending_fees: float, member_until: datetime.date) -> None:\n        super().__init__(first_name, last_name, address)\n        self.id_number = id_number\n        self.pending_fees = pending_fees\n        self.member_until = member_until"
-    },
-    {
-      "id": "library_api/library_api.persons/LibraryUser/extend_membership",
-      "name": "extend_membership",
-      "qname": "library_api.persons.LibraryUser.extend_membership",
-      "decorators": [],
-      "parameters": [
-        {
-          "id": "library_api/library_api.persons/LibraryUser/extend_membership/self",
-          "name": "self",
-          "qname": "library_api.persons.LibraryUser.extend_membership.self",
-          "default_value": null,
-          "assigned_by": "IMPLICIT",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        }
-      ],
-      "results": [],
-      "is_public": true,
-      "reexported_by": [],
-      "description": "",
-      "docstring": "",
-      "code": "    def extend_membership(self) -> None:\n        self.member_until = self.member_until.replace(year=self.member_until.year+1)"
-    },
-    {
-      "id": "library_api/library_api.persons/LibraryUser/give_back",
-      "name": "give_back",
-      "qname": "library_api.persons.LibraryUser.give_back",
-      "decorators": [],
-      "parameters": [
-        {
-          "id": "library_api/library_api.persons/LibraryUser/give_back/self",
-          "name": "self",
-          "qname": "library_api.persons.LibraryUser.give_back.self",
-          "default_value": null,
-          "assigned_by": "IMPLICIT",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        },
-        {
-          "id": "library_api/library_api.persons/LibraryUser/give_back/late_fee",
-          "name": "late_fee",
-          "qname": "library_api.persons.LibraryUser.give_back.late_fee",
-          "default_value": null,
-          "assigned_by": "POSITION_OR_NAME",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        }
-      ],
-      "results": [],
-      "is_public": true,
-      "reexported_by": [],
-      "description": "",
-      "docstring": "",
-      "code": "    def give_back(self, late_fee: float) -> None:\n        self.pending_fees = self.pending_fees + late_fee"
-    },
-    {
-      "id": "library_api/library_api.persons/LibraryUser/pay",
-      "name": "pay",
-      "qname": "library_api.persons.LibraryUser.pay",
-      "decorators": [],
-      "parameters": [
-        {
-          "id": "library_api/library_api.persons/LibraryUser/pay/self",
-          "name": "self",
-          "qname": "library_api.persons.LibraryUser.pay.self",
-          "default_value": null,
-          "assigned_by": "IMPLICIT",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        },
-        {
-          "id": "library_api/library_api.persons/LibraryUser/pay/money",
-          "name": "money",
-          "qname": "library_api.persons.LibraryUser.pay.money",
-          "default_value": null,
-          "assigned_by": "POSITION_OR_NAME",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        }
-      ],
-      "results": [],
-      "is_public": true,
-      "reexported_by": [],
-      "description": "",
-      "docstring": "",
-      "code": "    def pay(self, money: float) -> float:\n        if money > self.pending_fees:\n            self.pending_fees = 0\n            return money - self.pending_fees\n        self.pending_fees = self.pending_fees - money\n        return 0.0"
-    },
-    {
-      "id": "library_api/library_api.persons/Person/__init__",
-      "name": "__init__",
-      "qname": "library_api.persons.Person.__init__",
-      "decorators": [],
-      "parameters": [
-        {
-          "id": "library_api/library_api.persons/Person/__init__/self",
-          "name": "self",
-          "qname": "library_api.persons.Person.__init__.self",
-          "default_value": null,
-          "assigned_by": "IMPLICIT",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        },
-        {
-          "id": "library_api/library_api.persons/Person/__init__/first_name",
-          "name": "first_name",
-          "qname": "library_api.persons.Person.__init__.first_name",
-          "default_value": null,
-          "assigned_by": "POSITION_OR_NAME",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        },
-        {
-          "id": "library_api/library_api.persons/Person/__init__/last_name",
-          "name": "last_name",
-          "qname": "library_api.persons.Person.__init__.last_name",
-          "default_value": null,
-          "assigned_by": "POSITION_OR_NAME",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        },
-        {
-          "id": "library_api/library_api.persons/Person/__init__/address",
-          "name": "address",
-          "qname": "library_api.persons.Person.__init__.address",
-          "default_value": null,
-          "assigned_by": "POSITION_OR_NAME",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        }
-      ],
-      "results": [],
-      "is_public": true,
-      "reexported_by": [],
-      "description": "",
-      "docstring": "",
-      "code": "    def __init__(self, first_name: str, last_name: str, address: str) -> None:\n        self.first_name = first_name\n        self.last_name = last_name\n        self.address = address"
-    },
-    {
-      "id": "library_api/library_api.persons/Person/get_name",
-      "name": "get_name",
-      "qname": "library_api.persons.Person.get_name",
-      "decorators": [],
-      "parameters": [
-        {
-          "id": "library_api/library_api.persons/Person/get_name/self",
-          "name": "self",
-          "qname": "library_api.persons.Person.get_name.self",
-          "default_value": null,
-          "assigned_by": "IMPLICIT",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        }
-      ],
-      "results": [],
-      "is_public": true,
-      "reexported_by": [],
-      "description": "",
-      "docstring": "",
-      "code": "    def get_name(self) -> str:\n        return self.first_name + \" \" + self.last_name"
-    },
-    {
-      "id": "library_api/library_api.send_message_to_person/send_message_to_person",
-      "name": "send_message_to_person",
-      "qname": "library_api.send_message_to_person.send_message_to_person",
-      "decorators": [],
-      "parameters": [
-        {
-          "id": "library_api/library_api.send_message_to_person/send_message_to_person/person",
-          "name": "person",
-          "qname": "library_api.send_message_to_person.send_message_to_person.person",
-          "default_value": null,
-          "assigned_by": "POSITION_OR_NAME",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        },
-        {
-          "id": "library_api/library_api.send_message_to_person/send_message_to_person/message",
-          "name": "message",
-          "qname": "library_api.send_message_to_person.send_message_to_person.message",
-          "default_value": null,
-          "assigned_by": "POSITION_OR_NAME",
-          "is_public": true,
-          "docstring": {
-            "type": "",
-            "default_value": "",
-            "description": ""
-          },
-          "type": {}
-        }
-      ],
-      "results": [],
-      "is_public": true,
-      "reexported_by": [],
-      "description": "",
-      "docstring": "",
-      "code": "def send_message_to_person(person: Person, message: str) -> None:\n    print(\"To: \" + person.get_name() + \"\\n\" + person.address + \"\\n\" + message)"
-    }
-  ]
+    ]
 }

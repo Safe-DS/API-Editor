@@ -21,7 +21,15 @@ class LibraryUser(Person):
     pending_fees: float
     member_until: datetime.date
 
-    def __init__(self, first_name: str, last_name: str, id_number: str, address: str, pending_fees: float, member_until: datetime.date) -> None:
+    def __init__(
+        self,
+        first_name: str,
+        last_name: str,
+        id_number: str,
+        address: str,
+        pending_fees: float,
+        member_until: datetime.date,
+    ) -> None:
         super().__init__(first_name, last_name, address)
         self.id_number = id_number
         self.pending_fees = pending_fees
@@ -31,7 +39,7 @@ class LibraryUser(Person):
         self.pending_fees = self.pending_fees + late_fee
 
     def extend_membership(self) -> None:
-        self.member_until = self.member_until.replace(year=self.member_until.year+1)
+        self.member_until = self.member_until.replace(year=self.member_until.year + 1)
 
     def pay(self, money: float) -> float:
         if money > self.pending_fees:
@@ -44,6 +52,8 @@ class LibraryUser(Person):
 class Employee(Person):
     wage: float
 
-    def __init__(self, first_name: str, last_name: str, address: str, wage: float) -> None:
+    def __init__(
+        self, first_name: str, last_name: str, address: str, wage: float
+    ) -> None:
         super().__init__(first_name, last_name, address)
         self.wage = wage
