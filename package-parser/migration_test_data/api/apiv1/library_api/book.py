@@ -5,6 +5,20 @@ from .persons import LibraryUser
 
 
 class Book:
+    """A Class for Books
+
+    Parameters
+    ----------
+    borrow_until : Optional[date]
+        if it is borrowed: date else None
+    borrow_by : Optional[LibraryUser]
+    genre : str
+    isbn :  str
+    author : str
+    release_date : date
+    number_of_times_this_book_was_borrowed : int, default=0
+        number of borrows
+    """
     def __init__(
         self,
         borrow_until: Optional[date],

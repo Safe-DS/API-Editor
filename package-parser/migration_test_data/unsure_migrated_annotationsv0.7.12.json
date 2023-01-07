@@ -1,16 +1,52 @@
 {
-    "schemaVersion": 2,
-    "boundaryAnnotations": {},
-    "calledAfterAnnotations": {},
-    "completeAnnotations": {},
-    "descriptionAnnotations": {},
-    "enumAnnotations": {},
-    "expertAnnotations": {},
-    "groupAnnotations": {},
-    "moveAnnotations": {},
-    "pureAnnotations": {},
-    "renameAnnotations": {},
-    "removeAnnotations": {},
-    "todoAnnotations": {},
-    "valueAnnotations": {}
+  "schemaVersion": 2,
+  "boundaryAnnotations": {},
+  "calledAfterAnnotations": {},
+  "completeAnnotations": {},
+  "descriptionAnnotations": {
+    "library_api/library_apiv2.media/Media": {
+      "target": "library_api/library_apiv2.media/Media",
+      "authors": [
+        "aclrian",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "newDescription": "This is a book class",
+      "reviewResult": ""
+    }
+  },
+  "enumAnnotations": {},
+  "expertAnnotations": {},
+  "groupAnnotations": {},
+  "moveAnnotations": {
+    "library_api/library_apiv2.send_message_to_person/send_message_to_person": {
+      "target": "library_api/library_apiv2.send_message_to_person/send_message_to_person",
+      "authors": [
+        "aclrian",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "destination": "library_api.message",
+      "reviewResult": ""
+    }
+  },
+  "pureAnnotations": {},
+  "renameAnnotations": {
+    "library_api/library_apiv2.library/Library/borrow": {
+      "target": "library_api/library_apiv2.library/Library/borrow",
+      "authors": [
+        "aclrian",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "newName": "borrow_a_book",
+      "reviewResult": ""
+    }
+  },
+  "removeAnnotations": {},
+  "todoAnnotations": {},
+  "valueAnnotations": {}
 }

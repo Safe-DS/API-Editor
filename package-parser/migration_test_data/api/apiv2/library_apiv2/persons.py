@@ -3,6 +3,14 @@ import datetime
 
 
 class Person:
+    """A Class for Persons
+
+    Parameters
+    ----------
+    first_name : str
+    last_name : str
+    address : str
+    """
     first_name: str
     last_name: str
     address: str
@@ -15,8 +23,22 @@ class Person:
     def get_name(self) -> str:
         return self.first_name + " " + self.last_name
 
+    def participate(self) -> None:
+        pass
+
 
 class LibraryUser(Person):
+    """An Employee of the Library extends a Person
+
+    Parameters
+    ----------
+    first_name : str
+    last_name : str
+    address : str
+    id_number : str
+    pending_fees : float
+    member_until : date
+    """
     id_number: str
     pending_fees: float
     member_until: datetime.date
@@ -36,12 +58,27 @@ class LibraryUser(Person):
         self.member_until = member_until
 
     def give_back(self, late_fee: float) -> None:
+        """Gives book back and add late_fee is it is too late
+
+        Parameters
+        ----------
+        late_fee : float
+            money to be paid by user
+        """
         self.pending_fees = self.pending_fees + late_fee
 
     def extend_membership(self) -> None:
+        """Extend membership by one year
+        """
         self.member_until = self.member_until.replace(year=self.member_until.year + 1)
 
     def pay(self, money: float) -> float:
+        """pay the library
+
+        Parameters
+        ----------
+        money : float
+        """
         if money > self.pending_fees:
             self.pending_fees = 0
             return money - self.pending_fees
@@ -50,6 +87,15 @@ class LibraryUser(Person):
 
 
 class Employee(Person):
+    """An Employee of the Library extends a Person
+
+    Parameters
+    ----------
+    first_name : str
+    last_name : str
+    address : str
+    wage : float
+    """
     wage: float
 
     def __init__(

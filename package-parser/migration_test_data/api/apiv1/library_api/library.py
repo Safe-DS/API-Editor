@@ -6,12 +6,22 @@ from .send_message_to_person import send_message_to_person
 
 
 class Library:
+    """The Library
+
+    Parameters
+    ----------
+    books : list[Book]
+    borrowed_books : list[Book]
+    users : list[LiberyUser]
+    staff : list[Emplyee]
+    name : str
+    is_open : bool"""
     books: list[Book]  # apiv2: add other media -> change genre
     borrowed_books: list[Book]
     users: list[LibraryUser]
     staff: list[Employee]  # apiv2: add Person subclass to User and Personal and Author
     name: str
-    is_open: bool = False
+    is_open: bool = False  # apiv2: remove attribute
 
     def __init__(
         self,
@@ -36,6 +46,13 @@ class Library:
         self.is_open = False
 
     def return_book(self, book: Book, user: LibraryUser) -> None:
+        """Return a book
+
+         Parameters
+         ----------
+         book : Book
+         user : LibraryUser
+        """
         if (
             book.borrow_by is not None
             and book.borrow_until is not None
@@ -60,6 +77,13 @@ class Library:
     def borrow(
         self, book: Book, user: LibraryUser
     ) -> None:  # apiv2: check if pending_fees are not above 5
+        """borrow
+
+        Parameters
+        ----------
+        book : Book
+        user : LibraryUser
+        """
         if book in self.books and book not in self.borrowed_books:
             book.borrow_by = user
             book.borrow_until = datetime.today() + timedelta(days=1)
@@ -67,4 +91,10 @@ class Library:
     def add_new_book(
         self, book: Book
     ) -> None:  # apiv2: check is ISBN is not duplicated
+        """add a new book
+
+        Parameters
+        ----------
+        book : Book
+        """
         self.books.append(book)

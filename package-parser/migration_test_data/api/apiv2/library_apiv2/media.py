@@ -6,6 +6,19 @@ from .persons import LibraryUser
 
 
 class Media:
+    """A Class for all types of Media
+
+    Parameters
+    ----------
+    borrow_until : Optional[date]
+        if it is borrowed: date else None
+    borrow_by : Optional[LibraryUser]
+    author : str
+    release_date : date
+    number_of_times_this_book_was_borrowed : int, default=0
+        number of borrows
+    fee_per_day : float
+    """
     def __init__(
         self,
         borrow_until: Optional[date],
@@ -26,14 +39,28 @@ class Media:
 
 
 class Book(Media):
+    """A Class for Books
+
+    Parameters
+    ----------
+    borrow_until : Optional[date]
+        if it is borrowed: date else None
+    borrow_by : Optional[LibraryUser]
+    genre : str
+    author : str
+    release_date : date
+    isbn :  str
+    number_of_times_this_book_was_borrowed : int, default=0
+        number of borrows
+    """
     def __init__(
         self,
         borrow_until: Optional[date],
         borrow_by: Optional[LibraryUser],
         genre: str,
-        isbn: str,
         author: str,
         release_date: date,
+        isbn: str,
         number_of_times_this_book_was_borrowed: int = 0,
     ) -> None:
         fee_for_each_genre: dict[str, float] = {
@@ -58,6 +85,18 @@ class Book(Media):
 
 
 class CD(Media):
+    """A Class for CD
+
+    Parameters
+    ----------
+    borrow_until : Optional[date]
+        if it is borrowed: date else None
+    borrow_by : Optional[LibraryUser]
+    author : str
+    release_date : date
+    number_of_times_this_book_was_borrowed : int, default=0
+        number of borrows
+    """
     def __init__(
         self,
         borrow_until: Optional[date],
@@ -77,6 +116,18 @@ class CD(Media):
 
 
 class DVD(Media):
+    """A Class for all types of Media
+
+    Parameters
+    ----------
+    borrow_until : Optional[date]
+        if it is borrowed: date else None
+    borrow_by : Optional[LibraryUser]
+    author : str
+    release_date : date
+    number_of_times_this_book_was_borrowed : int, default=0
+        number of borrows
+    """
     def __init__(
         self,
         borrow_until: Optional[date],
