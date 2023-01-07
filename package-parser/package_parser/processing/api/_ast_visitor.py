@@ -21,12 +21,12 @@ from package_parser.utils import parent_qualified_name
 from ._file_filters import _is_init_file
 from ._get_parameter_list import get_parameter_list
 from .documentation_parsing import AbstractDocumentationParser
-from .model._api import Attribute
+from .model import Attribute
 
 
-def trim_code(code, from_line_no, to_line_no, encoding) -> str:
+def trim_code(code: Optional[str], from_line_no: int, to_line_no: int, encoding: str) -> str:
     if code is None:
-        return None
+        return ""
     if isinstance(code, bytes):
         code = code.decode(encoding)
     lines = code.split("\n")
