@@ -17,6 +17,7 @@ class Library:
     staff : list[Emplyee]
     name : str
     """
+
     media: list[Media]  # apiv2: add other media -> change genre
     borrowed_media: list[Media]
     users: list[LibraryUser]
@@ -41,10 +42,10 @@ class Library:
     def return_media(self, media: Media, user: LibraryUser) -> None:
         """Return media
 
-         Parameters
-         ----------
-         media : Media
-         user : LibraryUser
+        Parameters
+        ----------
+        media : Media
+        user : LibraryUser
         """
         if (
             media.borrow_by is not None

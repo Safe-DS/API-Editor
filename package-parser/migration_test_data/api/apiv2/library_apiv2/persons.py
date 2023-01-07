@@ -11,6 +11,7 @@ class Person:
     last_name : str
     address : str
     """
+
     first_name: str
     last_name: str
     address: str
@@ -39,6 +40,7 @@ class LibraryUser(Person):
     pending_fees : float
     member_until : date
     """
+
     id_number: str
     pending_fees: float
     member_until: datetime.date
@@ -68,8 +70,7 @@ class LibraryUser(Person):
         self.pending_fees = self.pending_fees + late_fee
 
     def extend_membership(self) -> None:
-        """Extend membership by one year
-        """
+        """Extend membership by one year"""
         self.member_until = self.member_until.replace(year=self.member_until.year + 1)
 
     def pay(self, money: float) -> float:
@@ -96,6 +97,7 @@ class Employee(Person):
     address : str
     wage : float
     """
+
     wage: float
 
     def __init__(

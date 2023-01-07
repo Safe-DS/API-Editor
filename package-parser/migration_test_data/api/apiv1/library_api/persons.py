@@ -14,6 +14,7 @@ class LibraryUser:
     pending_fees : float
     member_until : date
     """
+
     first_name: str
     last_name: str
     id_number: str
@@ -48,8 +49,7 @@ class LibraryUser:
         self.pending_fees = self.pending_fees + late_fee
 
     def extend_membership(self) -> None:
-        """Extend membership by one year
-        """
+        """Extend membership by one year"""
         self.member_until = self.member_until + datetime.timedelta(
             days=365
         )  # apiv2: change to self.member_until.replace(year=self.member_until.year+1)
@@ -87,6 +87,7 @@ class Employee:
     address : str
     wage : float
     """
+
     first_name: str
     last_name: str
     address: str

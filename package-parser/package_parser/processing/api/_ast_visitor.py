@@ -24,13 +24,15 @@ from .documentation_parsing import AbstractDocumentationParser
 from .model import Attribute
 
 
-def trim_code(code: Optional[str], from_line_no: int, to_line_no: int, encoding: str) -> str:
+def trim_code(
+    code: Optional[str], from_line_no: int, to_line_no: int, encoding: str
+) -> str:
     if code is None:
         return ""
     if isinstance(code, bytes):
         code = code.decode(encoding)
     lines = code.split("\n")
-    return "\n".join(lines[from_line_no - 1: to_line_no])
+    return "\n".join(lines[from_line_no - 1 : to_line_no])
 
 
 class _AstVisitor:
@@ -268,7 +270,9 @@ class _AstVisitor:
         )
         self.__declaration_stack.append(function)
 
-    def get_code(self, function_node: Union[astroid.FunctionDef, astroid.ClassDef]) -> str:
+    def get_code(
+        self, function_node: Union[astroid.FunctionDef, astroid.ClassDef]
+    ) -> str:
         code = ""
         node: NodeNG = function_node
         while node.parent is not None:

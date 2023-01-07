@@ -19,6 +19,7 @@ class Media:
         number of borrows
     fee_per_day : float
     """
+
     def __init__(
         self,
         borrow_until: Optional[date],
@@ -53,6 +54,7 @@ class Book(Media):
     number_of_times_this_book_was_borrowed : int, default=0
         number of borrows
     """
+
     def __init__(
         self,
         borrow_until: Optional[date],
@@ -97,6 +99,7 @@ class CD(Media):
     number_of_times_this_book_was_borrowed : int, default=0
         number of borrows
     """
+
     def __init__(
         self,
         borrow_until: Optional[date],
@@ -128,6 +131,7 @@ class DVD(Media):
     number_of_times_this_book_was_borrowed : int, default=0
         number of borrows
     """
+
     def __init__(
         self,
         borrow_until: Optional[date],

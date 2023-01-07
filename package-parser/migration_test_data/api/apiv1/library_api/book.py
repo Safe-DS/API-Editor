@@ -19,6 +19,7 @@ class Book:
     number_of_times_this_book_was_borrowed : int, default=0
         number of borrows
     """
+
     def __init__(
         self,
         borrow_until: Optional[date],

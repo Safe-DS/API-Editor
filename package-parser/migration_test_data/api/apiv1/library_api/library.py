@@ -16,6 +16,7 @@ class Library:
     staff : list[Emplyee]
     name : str
     is_open : bool"""
+
     books: list[Book]  # apiv2: add other media -> change genre
     borrowed_books: list[Book]
     users: list[LibraryUser]
@@ -48,10 +49,10 @@ class Library:
     def return_book(self, book: Book, user: LibraryUser) -> None:
         """Return a book
 
-         Parameters
-         ----------
-         book : Book
-         user : LibraryUser
+        Parameters
+        ----------
+        book : Book
+        user : LibraryUser
         """
         if (
             book.borrow_by is not None
