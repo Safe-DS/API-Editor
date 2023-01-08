@@ -2,7 +2,6 @@ from typing import Any, Optional
 
 import astroid
 from astroid.context import InferenceContext
-
 from package_parser.processing.api.model import Attribute, NamedType, UnionType
 
 
