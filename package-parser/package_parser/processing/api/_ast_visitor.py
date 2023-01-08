@@ -1,6 +1,6 @@
 import logging
 import re
-from typing import Any, Optional, Union
+from typing import Optional, Union
 
 import astroid
 from astroid import NodeNG
@@ -13,20 +13,20 @@ from package_parser.processing.api.model import (
     Function,
     Import,
     Module,
-    NamedType,
-    UnionType,
 )
 from package_parser.utils import parent_qualified_name
 
 from ._file_filters import _is_init_file
+from ._get_instance_attributes import get_instance_attributes
 from ._get_parameter_list import get_parameter_list
 from .documentation_parsing import AbstractDocumentationParser
-from .model._api import Attribute
 
 
-def trim_code(code, from_line_no, to_line_no, encoding):
+def trim_code(
+    code: Optional[str], from_line_no: int, to_line_no: int, encoding: str
+) -> str:
     if code is None:
-        return None
+        return ""
     if isinstance(code, bytes):
         code = code.decode(encoding)
     lines = code.split("\n")
@@ -78,7 +78,7 @@ class _AstVisitor:
 
         return result
 
-    def enter_module(self, module_node: astroid.Module):
+    def enter_module(self, module_node: astroid.Module) -> None:
         imports: list[Import] = []
         from_imports: list[FromImport] = []
         visited_global_nodes: set[astroid.NodeNG] = set()
@@ -144,53 +144,9 @@ class _AstVisitor:
 
         self.api.add_module(module)
 
-    @staticmethod
-    def get_type_of_attribute(infered_value: Any) -> Optional[str]:
-        if infered_value == astroid.Uninferable:
-            return None
-        if isinstance(infered_value, astroid.Const) and infered_value.value is None:
-            return None
-        if isinstance(infered_value, astroid.List):
-            return "list"
-        if isinstance(infered_value, astroid.Dict):
-            return "dict"
-        if isinstance(infered_value, astroid.ClassDef):
-            return "type"
-        if isinstance(infered_value, astroid.Tuple):
-            return "tuple"
-        if isinstance(infered_value, (astroid.FunctionDef, astroid.Lambda)):
-            return "Callable"
-        if isinstance(infered_value, astroid.Const):
-            return infered_value.value.__class__.__name__
-        if isinstance(infered_value, astroid.Instance):
-            return infered_value.name
-        return None
-
-    @staticmethod
-    def get_instance_attributes(instance_attributes: dict[str, Any]) -> list[Attribute]:
-        attributes = []
-        for name, assignments in instance_attributes.items():
-            types = set()
-            for assignment in assignments:
-                if isinstance(assignment, astroid.AssignAttr) and isinstance(
-                    assignment.parent, astroid.Assign
-                ):
-                    attribute_type = _AstVisitor.get_type_of_attribute(
-                        next(astroid.inference.infer_attribute(self=assignment))
-                    )
-                    if attribute_type is not None:
-                        types.add(attribute_type)
-            if len(types) == 1:
-                attributes.append(Attribute(name, NamedType(types.pop())))
-            if len(types) > 1:
-                attributes.append(
-                    Attribute(name, UnionType([NamedType(type_) for type_ in types]))
-                )
-        return attributes
-
     def enter_classdef(self, class_node: astroid.ClassDef) -> None:
         qname = class_node.qname()
-        instance_attributes = self.get_instance_attributes(class_node.instance_attrs)
+        instance_attributes = get_instance_attributes(class_node)
 
         decorators: Optional[astroid.Decorators] = class_node.decorators
         if decorators is not None:
@@ -261,7 +217,9 @@ class _AstVisitor:
         )
         self.__declaration_stack.append(function)
 
-    def get_code(self, function_node: Union[astroid.FunctionDef, astroid.ClassDef]):
+    def get_code(
+        self, function_node: Union[astroid.FunctionDef, astroid.ClassDef]
+    ) -> str:
         code = ""
         node: NodeNG = function_node
         while node.parent is not None:
