@@ -1,6 +1,6 @@
 import logging
 import re
-from typing import Any, Optional, Union
+from typing import Optional, Union
 
 import astroid
 from astroid import NodeNG
@@ -13,15 +13,13 @@ from package_parser.processing.api.model import (
     Function,
     Import,
     Module,
-    NamedType,
-    UnionType,
 )
 from package_parser.utils import parent_qualified_name
 
 from ._file_filters import _is_init_file
+from ._get_instance_attributes import get_instance_attributes
 from ._get_parameter_list import get_parameter_list
 from .documentation_parsing import AbstractDocumentationParser
-from .model import Attribute
 
 
 def trim_code(
@@ -146,60 +144,9 @@ class _AstVisitor:
 
         self.api.add_module(module)
 
-    def _get_type_of_attribute(self, infered_value: Any) -> Optional[str]:
-        if infered_value == astroid.Uninferable:
-            return None
-        if isinstance(infered_value, astroid.Const) and infered_value.value is None:
-            return None
-        if isinstance(infered_value, astroid.List):
-            return "list"
-        if isinstance(infered_value, astroid.Dict):
-            return "dict"
-        if isinstance(infered_value, astroid.ClassDef):
-            return "type"
-        if isinstance(infered_value, astroid.Tuple):
-            return "tuple"
-        if isinstance(infered_value, (astroid.FunctionDef, astroid.Lambda)):
-            return "Callable"
-        if isinstance(infered_value, astroid.Const):
-            return infered_value.value.__class__.__name__
-        if isinstance(infered_value, astroid.Instance):
-            return infered_value.name
-        return None
-
-    def _get_instance_attributes(self, class_node: astroid.ClassDef) -> list[Attribute]:
-        attributes = []
-        for name, assignments in class_node.instance_attrs.items():
-            types = set()
-            i = InferenceContext()
-            i.lookupname = name
-            i.extra_context = class_node.instance_attrs
-            for assignment in assignments:
-                inferred_nodes = assignment.infer(context=i)
-                for inferred_node in inferred_nodes:
-                    attribute_type = self._get_type_of_attribute(inferred_node)
-                    if attribute_type is not None:
-                        types.add(attribute_type)
-
-                if isinstance(assignment, astroid.AssignAttr) and isinstance(
-                    assignment.parent, astroid.Assign
-                ):
-                    attribute_type = self._get_type_of_attribute(
-                        next(astroid.inference.infer_attribute(self=assignment))
-                    )
-                    if attribute_type is not None:
-                        types.add(attribute_type)
-            if len(types) == 1:
-                attributes.append(Attribute(name, NamedType(types.pop())))
-            if len(types) > 1:
-                attributes.append(
-                    Attribute(name, UnionType([NamedType(type_) for type_ in types]))
-                )
-        return attributes
-
     def enter_classdef(self, class_node: astroid.ClassDef) -> None:
         qname = class_node.qname()
-        instance_attributes = self._get_instance_attributes(class_node)
+        instance_attributes = get_instance_attributes(class_node)
 
         decorators: Optional[astroid.Decorators] = class_node.decorators
         if decorators is not None:
