@@ -27,7 +27,6 @@ htmlcov/
 
 # Test __init__.py files
 tests/**/__init__.py
-!tests/data/migration/api/**/__init__.py
 
 # Output of this tool
 out/
