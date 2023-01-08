@@ -21,12 +21,14 @@ from package_parser.utils import parent_qualified_name
 from ._file_filters import _is_init_file
 from ._get_parameter_list import get_parameter_list
 from .documentation_parsing import AbstractDocumentationParser
-from .model._api import Attribute
+from .model import Attribute
 
 
-def trim_code(code, from_line_no, to_line_no, encoding):
+def trim_code(
+    code: Optional[str], from_line_no: int, to_line_no: int, encoding: str
+) -> str:
     if code is None:
-        return None
+        return ""
     if isinstance(code, bytes):
         code = code.decode(encoding)
     lines = code.split("\n")
@@ -78,7 +80,7 @@ class _AstVisitor:
 
         return result
 
-    def enter_module(self, module_node: astroid.Module):
+    def enter_module(self, module_node: astroid.Module) -> None:
         imports: list[Import] = []
         from_imports: list[FromImport] = []
         visited_global_nodes: set[astroid.NodeNG] = set()
@@ -144,8 +146,7 @@ class _AstVisitor:
 
         self.api.add_module(module)
 
-    @staticmethod
-    def get_type_of_attribute(infered_value: Any) -> Optional[str]:
+    def _get_type_of_attribute(self, infered_value: Any) -> Optional[str]:
         if infered_value == astroid.Uninferable:
             return None
         if isinstance(infered_value, astroid.Const) and infered_value.value is None:
@@ -164,18 +165,31 @@ class _AstVisitor:
             return infered_value.value.__class__.__name__
         if isinstance(infered_value, astroid.Instance):
             return infered_value.name
+        else:
+            print(str(type(infered_value)))
         return None
 
-    @staticmethod
-    def get_instance_attributes(instance_attributes: dict[str, Any]) -> list[Attribute]:
+    def _get_instance_attributes(self, class_node: astroid.ClassDef) -> list[Attribute]:
         attributes = []
-        for name, assignments in instance_attributes.items():
+        for name, assignments in class_node.instance_attrs.items():
             types = set()
+            i = InferenceContext()
+            i.lookupname = name
+            i.extra_context = class_node.instance_attrs
             for assignment in assignments:
+                inferred_nodes = assignment.infer(context=i)
+                try:
+                    for inferred_node in inferred_nodes:
+                        attribute_type = self._get_type_of_attribute(inferred_node)
+                        if attribute_type is not None:
+                            types.add(attribute_type)
+                except astroid.InferenceError:
+                    pass
+
                 if isinstance(assignment, astroid.AssignAttr) and isinstance(
                     assignment.parent, astroid.Assign
                 ):
-                    attribute_type = _AstVisitor.get_type_of_attribute(
+                    attribute_type = self._get_type_of_attribute(
                         next(astroid.inference.infer_attribute(self=assignment))
                     )
                     if attribute_type is not None:
@@ -190,7 +204,7 @@ class _AstVisitor:
 
     def enter_classdef(self, class_node: astroid.ClassDef) -> None:
         qname = class_node.qname()
-        instance_attributes = self.get_instance_attributes(class_node.instance_attrs)
+        instance_attributes = self._get_instance_attributes(class_node)
 
         decorators: Optional[astroid.Decorators] = class_node.decorators
         if decorators is not None:
@@ -261,7 +275,9 @@ class _AstVisitor:
         )
         self.__declaration_stack.append(function)
 
-    def get_code(self, function_node: Union[astroid.FunctionDef, astroid.ClassDef]):
+    def get_code(
+        self, function_node: Union[astroid.FunctionDef, astroid.ClassDef]
+    ) -> str:
         code = ""
         node: NodeNG = function_node
         while node.parent is not None:
