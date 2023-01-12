@@ -1,6 +1,6 @@
 import re
 from abc import ABC, abstractmethod
-from typing import Callable, Optional, TypeVar
+from typing import Callable, Optional, TypeVar, Tuple
 
 from black import FileMode, format_str
 from black.linegen import CannotSplit
@@ -61,11 +61,11 @@ def distance_elements(
     if len(list_b) == 0:
         return len(list_a)
     if are_similar(list_a[0], list_b[0]):
-        return distance_elements(list_a[1:], list_b[1:])
+        return distance_elements(list_a[1:], list_b[1:], are_similar)
     return 1 + min(
-        distance_elements(list_a[1:], list_b),
-        distance_elements(list_a, list_b[1:]),
-        distance_elements(list_a[1:], list_b[1:]),
+        distance_elements(list_a[1:], list_b, are_similar),
+        distance_elements(list_a, list_b[1:], are_similar),
+        distance_elements(list_a[1:], list_b[1:], are_similar),
     )
 
 
@@ -183,7 +183,10 @@ class SimpleDiffer(AbstractDiffer):
         attributes_similarity = 1 - attributes_similarity
 
         code_similarity = self._compute_code_similarity(class_a.code, class_b.code)
-        return (name_similarity + attributes_similarity + code_similarity) / 3
+
+        id_similarity = self._compute_id_similarity(class_a.id, class_b.id)
+
+        return (name_similarity + attributes_similarity + code_similarity + id_similarity) / 4
 
     def _compute_name_similarity(self, name_a: str, name_b: str) -> float:
         name_similarity = distance(name_a, name_b) / max(len(name_a), len(name_b), 1)
@@ -372,3 +375,45 @@ class SimpleDiffer(AbstractDiffer):
             distance_elements(description_a, description_b)
             / max(len(description_a), len(description_b))
         )
+
+    def _compute_id_similarity(self, id_a: str, id_b: str) -> float:
+        module_path_a = [*id_a.split("/")[2], id_a.split("/")[3:-1]]
+        module_path_b = [*id_b.split("/")[2], id_b.split("/")[3:-1]]
+
+        def cost_function(iteration: int, max_iteration: int) -> float:
+            return iteration/max_iteration
+        total_costs, max_iterations = distance_elements_with_cost_function(module_path_a, module_path_b, cost_function, iteration=0)
+        return total_costs / sum(range(1, max_iterations+1))
+
+
+def distance_elements_with_cost_function(
+    list_a: list[X],
+    list_b: list[X],
+    cost_function: Callable[[int, int], float],
+    are_similar: Callable[[X, X], bool] = lambda x, y: x == y,
+    iteration: int = 0,
+) -> Tuple[float, int]:
+    if len(list_a) == 0:
+        total_costs = 0.0
+        max_iterations = iteration + len(list_b)
+        for i in range(0, len(list_b)):
+            total_costs += cost_function(iteration + i, max_iterations)
+        return total_costs, max_iterations
+    if len(list_b) == 0:
+        total_costs = 0.0
+        max_iterations = iteration + len(list_a)
+        for i in range(0, len(list_a)):
+            total_costs += cost_function(iteration + i, max_iterations)
+        return total_costs, max_iterations
+    if are_similar(list_a[0], list_b[0]):
+        total_costs, max_iterations = distance_elements_with_cost_function(list_a[1:], list_b[1:], cost_function,  are_similar, iteration+1)
+        return total_costs, max_iterations
+    recursive_results = [
+        distance_elements_with_cost_function(list_a[1:], list_b, cost_function,  are_similar, iteration+1),
+        distance_elements_with_cost_function(list_a, list_b[1:], cost_function,  are_similar, iteration+1),
+        distance_elements_with_cost_function(list_a[1:], list_b[1:], cost_function,  are_similar, iteration+1),
+    ]
+    total_costs, max_iterations = sorted(recursive_results, key=lambda tuple_: tuple_[0])[0]
+    total_costs += cost_function(iteration, max_iterations)
+    return total_costs, max_iterations
+
