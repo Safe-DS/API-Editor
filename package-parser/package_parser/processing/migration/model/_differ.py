@@ -2,9 +2,8 @@ from abc import ABC, abstractmethod
 from typing import Callable, Optional, TypeVar
 
 from black import FileMode, format_str
-from Levenshtein import distance
 from black.linegen import CannotSplit
-
+from Levenshtein import distance
 from package_parser.processing.api.model import (
     AbstractType,
     Attribute,

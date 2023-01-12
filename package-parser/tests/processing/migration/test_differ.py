@@ -163,7 +163,7 @@ def test_function_similarity(differ: AbstractDiffer) -> None:
     "differ",
     differ_list,
 )  # type: ignore
-def test_parameter_similarity(differ: AbstractDiffer)  -> None:
+def test_parameter_similarity(differ: AbstractDiffer) -> None:
     parameter_a = Parameter(
         "test/test.Test/test_method/test_parameter",
         "test_parameter",
