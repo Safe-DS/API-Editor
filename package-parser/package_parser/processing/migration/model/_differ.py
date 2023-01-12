@@ -1,6 +1,6 @@
 import re
 from abc import ABC, abstractmethod
-from typing import Callable, Optional, TypeVar, Tuple
+from typing import Callable, Optional, Tuple, TypeVar
 
 from black import FileMode, format_str
 from black.linegen import CannotSplit
@@ -186,7 +186,9 @@ class SimpleDiffer(AbstractDiffer):
 
         id_similarity = self._compute_id_similarity(class_a.id, class_b.id)
 
-        return (name_similarity + attributes_similarity + code_similarity + id_similarity) / 4
+        return (
+            name_similarity + attributes_similarity + code_similarity + id_similarity
+        ) / 4
 
     def _compute_name_similarity(self, name_a: str, name_b: str) -> float:
         name_similarity = distance(name_a, name_b) / max(len(name_a), len(name_b), 1)
@@ -381,9 +383,12 @@ class SimpleDiffer(AbstractDiffer):
         module_path_b = [*id_b.split("/")[2], id_b.split("/")[3:-1]]
 
         def cost_function(iteration: int, max_iteration: int) -> float:
-            return iteration/max_iteration
-        total_costs, max_iterations = distance_elements_with_cost_function(module_path_a, module_path_b, cost_function, iteration=0)
-        return total_costs / sum(range(1, max_iterations+1))
+            return iteration / max_iteration
+
+        total_costs, max_iterations = distance_elements_with_cost_function(
+            module_path_a, module_path_b, cost_function, iteration=0
+        )
+        return total_costs / sum(range(1, max_iterations + 1))
 
 
 def distance_elements_with_cost_function(
@@ -406,14 +411,23 @@ def distance_elements_with_cost_function(
             total_costs += cost_function(iteration + i, max_iterations)
         return total_costs, max_iterations
     if are_similar(list_a[0], list_b[0]):
-        total_costs, max_iterations = distance_elements_with_cost_function(list_a[1:], list_b[1:], cost_function,  are_similar, iteration+1)
+        total_costs, max_iterations = distance_elements_with_cost_function(
+            list_a[1:], list_b[1:], cost_function, are_similar, iteration + 1
+        )
         return total_costs, max_iterations
     recursive_results = [
-        distance_elements_with_cost_function(list_a[1:], list_b, cost_function,  are_similar, iteration+1),
-        distance_elements_with_cost_function(list_a, list_b[1:], cost_function,  are_similar, iteration+1),
-        distance_elements_with_cost_function(list_a[1:], list_b[1:], cost_function,  are_similar, iteration+1),
+        distance_elements_with_cost_function(
+            list_a[1:], list_b, cost_function, are_similar, iteration + 1
+        ),
+        distance_elements_with_cost_function(
+            list_a, list_b[1:], cost_function, are_similar, iteration + 1
+        ),
+        distance_elements_with_cost_function(
+            list_a[1:], list_b[1:], cost_function, are_similar, iteration + 1
+        ),
     ]
-    total_costs, max_iterations = sorted(recursive_results, key=lambda tuple_: tuple_[0])[0]
+    total_costs, max_iterations = sorted(
+        recursive_results, key=lambda tuple_: tuple_[0]
+    )[0]
     total_costs += cost_function(iteration, max_iterations)
     return total_costs, max_iterations
-
