@@ -57,7 +57,7 @@
                     "id": "test/test/test_function/test_parameter",
                     "name": "test_parameter",
                     "qname": "test.test_function.test_parameter",
-                    "default_value": "",
+                    "default_value": "''",
                     "assigned_by": "POSITION_OR_NAME",
                     "is_public": false,
                     "docstring": {

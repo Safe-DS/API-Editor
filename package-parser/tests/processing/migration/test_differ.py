@@ -90,10 +90,10 @@ def test_function_similarity(differ: AbstractDiffer) -> None:
             "test/test.Test/test/test_parameter",
             "test_parameter",
             "test.Test.test.test_parameter",
-            "str",
+            "'test_str'",
             ParameterAssignment.POSITION_OR_NAME,
             True,
-            ParameterDocumentation("str", "", ""),
+            ParameterDocumentation("'test_str'", "", ""),
         )
     ]
     results: list[Result] = []
@@ -136,10 +136,10 @@ def test_function_similarity(differ: AbstractDiffer) -> None:
             "test/test.Test/test_method/test_parameter",
             "test_parameter",
             "test.Test.test_method.test_parameter",
-            "str",
+            "'test_str'",
             ParameterAssignment.POSITION_OR_NAME,
             True,
-            ParameterDocumentation("str", "", ""),
+            ParameterDocumentation("'test_str'", "", ""),
         )
     ]
     function_b = Function(
@@ -168,16 +168,16 @@ def test_parameter_similarity(differ: AbstractDiffer) -> None:
         "test/test.Test/test_method/test_parameter",
         "test_parameter",
         "test.Test.test_method.test_parameter",
-        "str",
+        "'str'",
         ParameterAssignment.POSITION_OR_NAME,
         True,
-        ParameterDocumentation("str", "", ""),
+        ParameterDocumentation("'str'", "", ""),
     )
     parameter_b = Parameter(
         "test/test.Test/test_method/test_parameter",
         "test_parameter",
         "test.Test.test_method.test_parameter",
-        "int",
+        "5",
         ParameterAssignment.POSITION_OR_NAME,
         True,
         ParameterDocumentation("int", "", ""),
@@ -188,7 +188,7 @@ def test_parameter_similarity(differ: AbstractDiffer) -> None:
         "test/test.Test/test_method/test_parameter_new_name",
         "test_parameter_new_name",
         "test.Test.test_method.test_parameter_new_name",
-        "int",
+        "9",
         ParameterAssignment.POSITION_OR_NAME,
         True,
         ParameterDocumentation("int", "", ""),
