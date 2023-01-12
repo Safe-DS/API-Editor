@@ -3,6 +3,8 @@ from typing import Callable, Optional, TypeVar
 
 from black import FileMode, format_str
 from Levenshtein import distance
+from black.linegen import CannotSplit
+
 from package_parser.processing.api.model import (
     AbstractType,
     Attribute,
@@ -228,8 +230,12 @@ class SimpleDiffer(AbstractDiffer):
         return (code_similarity + name_similarity + parameter_similarity) / 3
 
     def _compute_code_similarity(self, code_a: str, code_b: str) -> float:
-        code_a = format_str(code_a, mode=FileMode())
-        code_b = format_str(code_b, mode=FileMode())
+        mode = FileMode()
+        try:
+            code_a = format_str(code_a, mode=mode)
+            code_b = format_str(code_b, mode=mode)
+        except CannotSplit:
+            pass
         split_a = code_a.split("\n")
         split_b = code_b.split("\n")
         diff_code = distance_elements(split_a, split_b) / max(
