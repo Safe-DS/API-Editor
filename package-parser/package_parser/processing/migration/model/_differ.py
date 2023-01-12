@@ -315,8 +315,7 @@ class SimpleDiffer(AbstractDiffer):
             intv2_value = int(default_value_b)
             if intv1_value == intv2_value:
                 return 1.0
-            else:
-                return 0.5
+            return 0.5
         except ValueError:
             try:
                 floatv1_value = float(default_value_a)
@@ -339,8 +338,7 @@ class SimpleDiffer(AbstractDiffer):
         ) and default_value_b in ("True", "False"):
             if bool(default_value_a) == bool(default_value_b):
                 return 1.0
-            else:
-                return 0.5
+            return 0.5
         valuev1_is_in_quotation_marks = (
                                             default_value_a.startswith("'")
                                             and default_value_a.endswith("'")
@@ -358,11 +356,10 @@ class SimpleDiffer(AbstractDiffer):
         if valuev1_is_in_quotation_marks and valuev2_is_in_quotation_marks:
             if default_value_a[1:-1] == default_value_b[1:-1]:
                 return 1.0
-            else:
-                return 0.5
+            return 0.5
         return 0.0
 
-    def _compute_parameter_documentation_similarity(self, documentation_a: ParameterDocumentation, documentation_b: ParameterDocumentation):
+    def _compute_parameter_documentation_similarity(self, documentation_a: ParameterDocumentation, documentation_b: ParameterDocumentation) -> float:
         description_a = re.split("[\n ]", documentation_a.description)
         description_b = re.split("[\n ]", documentation_b.description)
         return 1 - (distance_elements(description_a, description_b) / max(len(description_a), len(description_b)))
