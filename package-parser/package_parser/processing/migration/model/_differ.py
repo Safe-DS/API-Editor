@@ -12,8 +12,9 @@ from package_parser.processing.api.model import (
     Function,
     Parameter,
     ParameterAssignment,
+    ParameterDocumentation,
     Result,
-    UnionType, ParameterDocumentation,
+    UnionType,
 )
 
 
@@ -149,7 +150,8 @@ class SimpleDiffer(AbstractDiffer):
                 ParameterAssignment.POSITIONAL_VARARG: 1.0
                 - distance_between_vararg_and_normal
                 - distance_between_position_and_named,
-                ParameterAssignment.POSITION_OR_NAME: 1.0 - distance_between_one_to_both,
+                ParameterAssignment.POSITION_OR_NAME: 1.0
+                - distance_between_one_to_both,
                 ParameterAssignment.NAME_ONLY: 1.0,
                 ParameterAssignment.POSITION_ONLY: 1.0
                 - distance_between_position_and_named,
@@ -162,8 +164,10 @@ class SimpleDiffer(AbstractDiffer):
                 - distance_between_position_and_named,
                 ParameterAssignment.POSITIONAL_VARARG: 1.0
                 - distance_between_vararg_and_normal,
-                ParameterAssignment.POSITION_OR_NAME: 1.0 - distance_between_one_to_both,
-                ParameterAssignment.NAME_ONLY: 1.0 - distance_between_position_and_named,
+                ParameterAssignment.POSITION_OR_NAME: 1.0
+                - distance_between_one_to_both,
+                ParameterAssignment.NAME_ONLY: 1.0
+                - distance_between_position_and_named,
                 ParameterAssignment.POSITION_ONLY: 1.0,
             },
         }
@@ -258,7 +262,11 @@ class SimpleDiffer(AbstractDiffer):
         parameter_default_value_similarity = self._compute_default_value_similarity(
             parameter_a.default_value, parameter_b.default_value
         )
-        parameter_documentation_similarity = self._compute_parameter_documentation_similarity(parameter_a.documentation, parameter_b.documentation)
+        parameter_documentation_similarity = (
+            self._compute_parameter_documentation_similarity(
+                parameter_a.documentation, parameter_b.documentation
+            )
+        )
 
         return (
             parameter_name_similarity
@@ -303,7 +311,9 @@ class SimpleDiffer(AbstractDiffer):
     def compute_result_similarity(self, result_a: Result, result_b: Result) -> float:
         return self._compute_name_similarity(result_a.name, result_b.name)
 
-    def _compute_default_value_similarity(self, default_value_a: Optional[str], default_value_b: Optional[str]) -> float:
+    def _compute_default_value_similarity(
+        self, default_value_a: Optional[str], default_value_b: Optional[str]
+    ) -> float:
         if default_value_a is None and default_value_b is None:
             return 1.0
         if default_value_a is None or default_value_b is None:
@@ -340,26 +350,25 @@ class SimpleDiffer(AbstractDiffer):
                 return 1.0
             return 0.5
         valuev1_is_in_quotation_marks = (
-                                            default_value_a.startswith("'")
-                                            and default_value_a.endswith("'")
-                                        ) or (
-                                            default_value_a.startswith('"')
-                                            and default_value_a.endswith('"')
-                                        )
+            default_value_a.startswith("'") and default_value_a.endswith("'")
+        ) or (default_value_a.startswith('"') and default_value_a.endswith('"'))
         valuev2_is_in_quotation_marks = (
-                                            default_value_b.startswith("'")
-                                            and default_value_b.endswith("'")
-                                        ) or (
-                                            default_value_b.startswith('"')
-                                            and default_value_b.endswith('"')
-                                        )
+            default_value_b.startswith("'") and default_value_b.endswith("'")
+        ) or (default_value_b.startswith('"') and default_value_b.endswith('"'))
         if valuev1_is_in_quotation_marks and valuev2_is_in_quotation_marks:
             if default_value_a[1:-1] == default_value_b[1:-1]:
                 return 1.0
             return 0.5
         return 0.0
 
-    def _compute_parameter_documentation_similarity(self, documentation_a: ParameterDocumentation, documentation_b: ParameterDocumentation) -> float:
+    def _compute_parameter_documentation_similarity(
+        self,
+        documentation_a: ParameterDocumentation,
+        documentation_b: ParameterDocumentation,
+    ) -> float:
         description_a = re.split("[\n ]", documentation_a.description)
         description_b = re.split("[\n ]", documentation_b.description)
-        return 1 - (distance_elements(description_a, description_b) / max(len(description_a), len(description_b)))
+        return 1 - (
+            distance_elements(description_a, description_b)
+            / max(len(description_a), len(description_b))
+        )
