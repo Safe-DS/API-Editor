@@ -6,7 +6,7 @@
         {
             "id": "test/test",
             "name": "test",
-            "classes": ["test/test/NewTestClass"],
+            "classes": ["test/test/TestClass"],
             "functions": [""]
         }
     ],

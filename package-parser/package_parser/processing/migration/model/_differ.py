@@ -379,8 +379,14 @@ class SimpleDiffer(AbstractDiffer):
         )
 
     def _compute_id_similarity(self, id_a: str, id_b: str) -> float:
-        module_path_a = [*id_a.split("/")[2], id_a.split("/")[3:-1]]
-        module_path_b = [*id_b.split("/")[2], id_b.split("/")[3:-1]]
+        module_path_a = id_a.split("/")[1].split(".")
+        additional_module_path_a = id_a.split("/")[2:-1]
+        if len(additional_module_path_a) > 0:
+            module_path_a.extend(additional_module_path_a)
+        module_path_b = id_b.split("/")[1].split(".")
+        additional_module_path_b = id_b.split("/")[2:-1]
+        if len(additional_module_path_b) > 0:
+            module_path_b.extend(additional_module_path_b)
 
         def cost_function(iteration: int, max_iteration: int) -> float:
             return iteration / max_iteration
@@ -388,7 +394,7 @@ class SimpleDiffer(AbstractDiffer):
         total_costs, max_iterations = distance_elements_with_cost_function(
             module_path_a, module_path_b, cost_function, iteration=0
         )
-        return total_costs / sum(range(1, max_iterations + 1))
+        return 1 - (total_costs / sum(range(1, max_iterations + 1)))
 
 
 def distance_elements_with_cost_function(
