@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
-from black import format_str, FileMode
 from typing import Callable, Optional, TypeVar
 
+from black import FileMode, format_str
 from Levenshtein import distance
 from package_parser.processing.api.model import (
     AbstractType,
