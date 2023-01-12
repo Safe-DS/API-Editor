@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from black import format_str, FileMode
 from typing import Callable, Optional, TypeVar
 
 from Levenshtein import distance
@@ -227,6 +228,8 @@ class SimpleDiffer(AbstractDiffer):
         return (code_similarity + name_similarity + parameter_similarity) / 3
 
     def _compute_code_similarity(self, code_a: str, code_b: str) -> float:
+        code_a = format_str(code_a, mode=FileMode())
+        code_b = format_str(code_b, mode=FileMode())
         split_a = code_a.split("\n")
         split_b = code_b.split("\n")
         diff_code = distance_elements(split_a, split_b) / max(
