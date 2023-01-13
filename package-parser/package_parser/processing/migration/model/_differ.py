@@ -238,7 +238,9 @@ class SimpleDiffer(AbstractDiffer):
 
         id_similarity = self._compute_id_similarity(function_a.id, function_b.id)
 
-        return (code_similarity + name_similarity + parameter_similarity + id_similarity) / 4
+        return (
+            code_similarity + name_similarity + parameter_similarity + id_similarity
+        ) / 4
 
     def _compute_code_similarity(self, code_a: str, code_b: str) -> float:
         mode = FileMode()
