@@ -236,7 +236,9 @@ class SimpleDiffer(AbstractDiffer):
         ) / max(len(function_a.parameters), len(function_b.parameters), 1)
         parameter_similarity = 1 - parameter_similarity
 
-        return (code_similarity + name_similarity + parameter_similarity) / 3
+        id_similarity = self._compute_id_similarity(function_a.id, function_b.id)
+
+        return (code_similarity + name_similarity + parameter_similarity + id_similarity) / 4
 
     def _compute_code_similarity(self, code_a: str, code_b: str) -> float:
         mode = FileMode()
@@ -273,13 +275,16 @@ class SimpleDiffer(AbstractDiffer):
             )
         )
 
+        id_similarity = self._compute_id_similarity(parameter_a.id, parameter_b.id)
+
         return (
             parameter_name_similarity
             + parameter_type_similarity
             + parameter_assignment_similarity
             + parameter_default_value_similarity
             + parameter_documentation_similarity
-        ) / 5
+            + id_similarity
+        ) / 6
 
     def _compute_type_similarity(
         self, type_a: Optional[AbstractType], type_b: Optional[AbstractType]
