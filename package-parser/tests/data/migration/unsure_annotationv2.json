@@ -8,13 +8,13 @@
     "expertAnnotations": {},
     "groupAnnotations": {},
     "moveAnnotations": {
-        "test/test/complete_different_function": {
+        "test/test.other_package/complete_different_function": {
             "authors": ["$autogen$", "migration"],
             "comment": "",
             "destination": "test/test.moved.package",
             "reviewResult": "",
             "reviewers": [],
-            "target": "test/test/complete_different_function"
+            "target": "test/test.other_package/complete_different_function"
         }
     },
     "pureAnnotations": {},

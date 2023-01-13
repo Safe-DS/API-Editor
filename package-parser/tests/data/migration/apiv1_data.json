@@ -85,7 +85,7 @@
             "reexported_by": [],
             "description": "",
             "docstring": "",
-            "code": "def test_function():\n    pass"
+            "code": "def test_function():\n    i=0\n    pass"
         }
     ]
 }

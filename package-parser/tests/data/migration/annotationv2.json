@@ -37,13 +37,13 @@
             "reviewers": [],
             "target": "test/test/test_function"
         },
-        "test/test/test_function/test_parameter": {
+        "test/test.other_package/complete_different_function/test_parameter": {
             "authors": ["$autogen$", "migration"],
             "comment": "",
             "newTodo": "another todo annotation",
             "reviewResult": "unsure",
             "reviewers": [],
-            "target": "test/test/test_function/test_parameter"
+            "target": "test/test.other_package/complete_different_function/test_parameter"
         }
     },
     "valueAnnotations": {}
