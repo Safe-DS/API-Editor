@@ -21,7 +21,7 @@
             "is_public": true,
             "reexported_by": [],
             "documentation": "",
-            "code": "class TestClass:\n\"\"\"    This is a TestClass.\n    It has no common use.\"\"\"\n    pass",
+            "code": "class TestClass:\n    \"\"\"This is a TestClass.\n    It has no common use.\"\"\"\n    pass",
             "instance_attributes": [
                 {
                     "name": "a",
@@ -57,7 +57,7 @@
                     "id": "test/test/test_function/test_parameter",
                     "name": "test_parameter",
                     "qname": "test.test_function.test_parameter",
-                    "default_value": "",
+                    "default_value": "''",
                     "assigned_by": "POSITION_OR_NAME",
                     "is_public": false,
                     "docstring": {
@@ -73,7 +73,7 @@
             "reexported_by": [],
             "description": "",
             "docstring": "",
-            "code": "def complete_different_function():\n    \"\"\"This function's only use is to hold a parameter\"\"\"    return None"
+            "code": "def complete_different_function():\n    \"\"\"This function's only use is to hold a parameter\"\"\"\n    return None"
         },
         {
             "id": "test/test/test_function",
@@ -85,7 +85,7 @@
             "reexported_by": [],
             "description": "",
             "docstring": "",
-            "code": "def test_function():\n    pass"
+            "code": "def test_function():\n    i=0\n    pass"
         }
     ]
 }

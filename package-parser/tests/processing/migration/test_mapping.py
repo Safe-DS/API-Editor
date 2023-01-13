@@ -16,8 +16,8 @@ from test_differ import differ_list
 @pytest.mark.parametrize(
     "differ",
     differ_list,
-)
-def test_one_to_one_mapping(differ: AbstractDiffer):
+)  # type: ignore
+def test_one_to_one_mapping(differ: AbstractDiffer) -> None:
     apiv1 = API("test", "test", "1.0")
     apiv2 = API("test", "test", "2.0")
     class_1 = Class(
@@ -44,8 +44,8 @@ def test_one_to_one_mapping(differ: AbstractDiffer):
 @pytest.mark.parametrize(
     "differ",
     differ_list,
-)
-def test_one_to_many_and_many_to_one_mappings(differ: AbstractDiffer):
+)  # type: ignore
+def test_one_to_many_and_many_to_one_mappings(differ: AbstractDiffer) -> None:
     apiv1, apiv2, class_1, class_2, class_3 = create_apis()
 
     mappings = APIMapping(apiv1, apiv2, differ).map_api()
@@ -67,8 +67,8 @@ def test_one_to_many_and_many_to_one_mappings(differ: AbstractDiffer):
 @pytest.mark.parametrize(
     "differ",
     differ_list,
-)
-def test_many_to_many_mapping(differ: AbstractDiffer):
+)  # type: ignore
+def test_many_to_many_mapping(differ: AbstractDiffer) -> None:
     apiv1, apiv2, class_1, class_2, class_3 = create_apis()
     class_4 = Class(
         "test/test.TestC",
@@ -94,11 +94,11 @@ def test_many_to_many_mapping(differ: AbstractDiffer):
 @pytest.mark.parametrize(
     "differ",
     differ_list,
-)
-def test_too_different_mapping(differ: AbstractDiffer):
+)  # type: ignore
+def test_too_different_mapping(differ: AbstractDiffer) -> None:
     apiv1 = API("test", "test", "1.0")
     class_1 = Class(
-        "test/test.Test",
+        "test/test/Test",
         "Test",
         [],
         [],
@@ -111,8 +111,8 @@ def test_too_different_mapping(differ: AbstractDiffer):
     apiv1.add_class(class_1)
     apiv2 = API("test", "test", "2.0")
     class_2 = Class(
-        "test/test.NotSimilarClass",
-        "NotSimilarClass",
+        "test/test.test/NotSimilarClass_",
+        "NotSimilarClass_",
         [],
         [],
         True,
@@ -122,8 +122,18 @@ def test_too_different_mapping(differ: AbstractDiffer):
         ),
         cleandoc(
             """
-        class NotSimilar:
+
+        class NotSimilarClass:
+            self.i = 5
+
+            self.d = 12.01
+
+            self.x = "s"
+
+            self.f = ""
+
             pass
+
         """
         ),
         [],
@@ -138,7 +148,7 @@ def test_too_different_mapping(differ: AbstractDiffer):
     assert len(mappings) == 0
 
 
-def create_apis():
+def create_apis() -> tuple[API, API, Class, Class, Class]:
     class_1 = Class(
         "test/test.Test",
         "Test",
