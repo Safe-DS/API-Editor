@@ -257,6 +257,7 @@ class SimpleDiffer(AbstractDiffer):
     def compute_parameter_similarity(
         self, parameter_a: Parameter, parameter_b: Parameter
     ) -> float:
+        normalize_similarity = 6
         parameter_name_similarity = self._compute_name_similarity(
             parameter_a.name, parameter_b.name
         )
@@ -274,6 +275,9 @@ class SimpleDiffer(AbstractDiffer):
                 parameter_a.documentation, parameter_b.documentation
             )
         )
+        if parameter_documentation_similarity < 0:
+            parameter_documentation_similarity = 0
+            normalize_similarity -= 1
 
         id_similarity = self._compute_id_similarity(parameter_a.id, parameter_b.id)
 
@@ -284,7 +288,7 @@ class SimpleDiffer(AbstractDiffer):
             + parameter_default_value_similarity
             + parameter_documentation_similarity
             + id_similarity
-        ) / 6
+        ) / normalize_similarity
 
     def _compute_type_similarity(
         self, type_a: Optional[AbstractType], type_b: Optional[AbstractType]
@@ -376,12 +380,15 @@ class SimpleDiffer(AbstractDiffer):
         documentation_a: ParameterDocumentation,
         documentation_b: ParameterDocumentation,
     ) -> float:
+        if len(documentation_a.description) == len(documentation_b.description) == 0:
+            return -1.0
         description_a = re.split("[\n ]", documentation_a.description)
         description_b = re.split("[\n ]", documentation_b.description)
-        return 1 - (
-            distance_elements(description_a, description_b)
-            / max(len(description_a), len(description_b))
-        )
+
+        documentation_similarity = distance_elements(
+            description_a, description_b
+        ) / max(len(description_a), len(description_b))
+        return 1 - documentation_similarity
 
     def _compute_id_similarity(self, id_a: str, id_b: str) -> float:
         module_path_a = id_a.split("/")[1].split(".")
