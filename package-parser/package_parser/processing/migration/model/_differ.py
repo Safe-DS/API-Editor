@@ -70,6 +70,7 @@ def distance_elements(
 
 
 class SimpleDiffer(AbstractDiffer):
+    SPEED_UP: bool = False
     assigned_by_look_up_similarity: dict[
         ParameterAssignment, dict[ParameterAssignment, float]
     ]
@@ -227,7 +228,15 @@ class SimpleDiffer(AbstractDiffer):
         def are_parameters_similar(
             parameter_a: Parameter, parameter_b: Parameter
         ) -> bool:
-            return self.compute_parameter_similarity(parameter_a, parameter_b) == 1
+            if not self.SPEED_UP:
+                return self.compute_parameter_similarity(parameter_a, parameter_b) == 1
+            parameter_name_similarity = self._compute_name_similarity(
+                parameter_a.name, parameter_b.name
+            )
+            parameter_type_similarity = self._compute_type_similarity(
+                parameter_a.type, parameter_b.type
+            )
+            return (parameter_name_similarity + parameter_type_similarity) == 2.0
 
         parameter_similarity = distance_elements(
             function_a.parameters,
@@ -245,10 +254,13 @@ class SimpleDiffer(AbstractDiffer):
     def _compute_code_similarity(self, code_a: str, code_b: str) -> float:
         mode = FileMode()
         try:
-            code_a = format_str(code_a, mode=mode)
-            code_b = format_str(code_b, mode=mode)
+            code_a_tmp = format_str(code_a, mode=mode)
+            code_b_tmp = format_str(code_b, mode=mode)
         except CannotSplit:
             pass
+        else:
+            code_a = code_a_tmp
+            code_b = code_b_tmp
         split_a = code_a.split("\n")
         split_b = code_b.split("\n")
         diff_code = distance(split_a, split_b) / max(len(split_a), len(split_b), 1)
