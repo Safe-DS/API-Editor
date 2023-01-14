@@ -378,12 +378,17 @@ class SimpleDiffer(AbstractDiffer):
         documentation_a: ParameterDocumentation,
         documentation_b: ParameterDocumentation,
     ) -> float:
+        if len(documentation_a.description) == len(documentation_b.description) == 0:
+            return 0.5
         description_a = re.split("[\n ]", documentation_a.description)
         description_b = re.split("[\n ]", documentation_b.description)
-        return 1 - (
+
+
+        documentation_similarity = (
             distance_elements(description_a, description_b)
             / max(len(description_a), len(description_b))
         )
+        return 1 - documentation_similarity
 
     def _compute_id_similarity(self, id_a: str, id_b: str) -> float:
         module_path_a = id_a.split("/")[1].split(".")
