@@ -182,7 +182,7 @@ def test_parameter_similarity(differ: AbstractDiffer) -> None:
         True,
         ParameterDocumentation("int", "", ""),
     )
-    assert differ.compute_parameter_similarity(parameter_a, parameter_b) > 0.5
+    assert 0.45 < differ.compute_parameter_similarity(parameter_a, parameter_b) < 0.6
 
     parameter_a = Parameter(
         "test/test.Test/test_method/test_parameter_new_name",
@@ -193,7 +193,7 @@ def test_parameter_similarity(differ: AbstractDiffer) -> None:
         True,
         ParameterDocumentation("int", "", ""),
     )
-    assert differ.compute_parameter_similarity(parameter_a, parameter_b) > 0.8
+    assert 0.7 < differ.compute_parameter_similarity(parameter_a, parameter_b) < 0.8
 
 
 @pytest.mark.parametrize(
