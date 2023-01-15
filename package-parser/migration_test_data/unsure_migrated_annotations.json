@@ -1,86 +1,68 @@
 {
-  "schemaVersion": 2,
-  "boundaryAnnotations": {},
-  "calledAfterAnnotations": {},
-  "completeAnnotations": {},
-  "descriptionAnnotations": {
-    "library_api/library_api.media/Media": {
-      "target": "library_api/library_api.media/Media",
-      "authors": [
-        "aclrian",
-        "migration"
-      ],
-      "reviewers": [],
-      "comment": "",
-      "newDescription": "This is a book class",
-      "reviewResult": ""
+    "schemaVersion": 2,
+    "boundaryAnnotations": {},
+    "calledAfterAnnotations": {},
+    "completeAnnotations": {},
+    "descriptionAnnotations": {
+        "library_api/library_api.media/Media": {
+            "target": "library_api/library_api.media/Media",
+            "authors": ["aclrian", "migration"],
+            "reviewers": [],
+            "comment": "",
+            "newDescription": "This is a book class",
+            "reviewResult": ""
+        },
+        "library_api/library_api.media/Book": {
+            "target": "library_api/library_api.media/Book",
+            "authors": ["aclrian", "migration"],
+            "reviewers": [],
+            "comment": "",
+            "newDescription": "This is a book class",
+            "reviewResult": ""
+        }
     },
-    "library_api/library_api.media/Book": {
-      "target": "library_api/library_api.media/Book",
-      "authors": [
-        "aclrian",
-        "migration"
-      ],
-      "reviewers": [],
-      "comment": "",
-      "newDescription": "This is a book class",
-      "reviewResult": ""
-    }
-  },
-  "enumAnnotations": {},
-  "expertAnnotations": {},
-  "groupAnnotations": {},
-  "moveAnnotations": {
-    "library_api/library_api.send_message_to_person/send_message_to_person": {
-      "target": "library_api/library_api.send_message_to_person/send_message_to_person",
-      "authors": [
-        "aclrian",
-        "migration"
-      ],
-      "reviewers": [],
-      "comment": "",
-      "destination": "library_api.message",
-      "reviewResult": ""
-    }
-  },
-  "pureAnnotations": {},
-  "renameAnnotations": {
-    "library_api/library_api.library/Library/borrow": {
-      "target": "library_api/library_api.library/Library/borrow",
-      "authors": [
-        "aclrian",
-        "migration"
-      ],
-      "reviewers": [],
-      "comment": "",
-      "newName": "borrow_a_book",
-      "reviewResult": ""
+    "enumAnnotations": {},
+    "expertAnnotations": {},
+    "groupAnnotations": {},
+    "moveAnnotations": {
+        "library_api/library_api.send_message_to_person/send_message_to_person": {
+            "target": "library_api/library_api.send_message_to_person/send_message_to_person",
+            "authors": ["aclrian", "migration"],
+            "reviewers": [],
+            "comment": "",
+            "destination": "library_api.message",
+            "reviewResult": ""
+        }
     },
-    "library_api/library_api.library/Library": {
-      "target": "library_api/library_api.library/Library",
-      "authors": [
-        "aclrian",
-        "migration"
-      ],
-      "reviewers": [],
-      "comment": "",
-      "newName": "OurLibrary",
-      "reviewResult": ""
-    }
-  },
-  "removeAnnotations": {},
-  "todoAnnotations": {
-    "library_api/library_api.library/Library/__init__/borrowed_media": {
-      "target": "library_api/library_api.library/Library/__init__/borrowed_media",
-      "authors": [
-        "aclrian",
-        "migration"
-      ],
-      "reviewers": [],
-      "comment": "",
-      "newTodo": "library_api.library.Library.return_book.user",
-      "reviewResult": ""
-    }
-  },
-  "valueAnnotations": {}
+    "pureAnnotations": {},
+    "renameAnnotations": {
+        "library_api/library_api.library/Library/borrow": {
+            "target": "library_api/library_api.library/Library/borrow",
+            "authors": ["aclrian", "migration"],
+            "reviewers": [],
+            "comment": "",
+            "newName": "borrow_a_book",
+            "reviewResult": ""
+        },
+        "library_api/library_api.library/Library": {
+            "target": "library_api/library_api.library/Library",
+            "authors": ["aclrian", "migration"],
+            "reviewers": [],
+            "comment": "",
+            "newName": "OurLibrary",
+            "reviewResult": ""
+        }
+    },
+    "removeAnnotations": {},
+    "todoAnnotations": {
+        "library_api/library_api.library/Library/__init__/borrowed_media": {
+            "target": "library_api/library_api.library/Library/__init__/borrowed_media",
+            "authors": ["aclrian", "migration"],
+            "reviewers": [],
+            "comment": "",
+            "newTodo": "library_api.library.Library.return_book.user",
+            "reviewResult": ""
+        }
+    },
+    "valueAnnotations": {}
 }
