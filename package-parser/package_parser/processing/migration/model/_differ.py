@@ -138,7 +138,7 @@ class SimpleDiffer(AbstractDiffer):
                 ParameterAssignment.POSITIONAL_VARARG: 1.0
                 - distance_between_vararg_and_normal
                 - distance_between_both_to_one,
-                ParameterAssignment.POSITION_OR_NAME: 1.0,
+                ParameterAssignment.POSITION_OR_NAME: -1.0,
                 ParameterAssignment.NAME_ONLY: 1.0 - distance_between_both_to_one,
                 ParameterAssignment.POSITION_ONLY: 1.0 - distance_between_both_to_one,
             },
@@ -269,9 +269,15 @@ class SimpleDiffer(AbstractDiffer):
         parameter_assignment_similarity = self._compute_assignment_similarity(
             parameter_a.assigned_by, parameter_b.assigned_by
         )
+        if parameter_assignment_similarity < 0:
+            parameter_assignment_similarity = 0
+            normalize_similarity -= 1
         parameter_default_value_similarity = self._compute_default_value_similarity(
             parameter_a.default_value, parameter_b.default_value
         )
+        if parameter_default_value_similarity < 0:
+            parameter_default_value_similarity = 0
+            normalize_similarity -= 1
         parameter_documentation_similarity = (
             self._compute_parameter_documentation_similarity(
                 parameter_a.documentation, parameter_b.documentation
@@ -331,7 +337,7 @@ class SimpleDiffer(AbstractDiffer):
         self, default_value_a: Optional[str], default_value_b: Optional[str]
     ) -> float:
         if default_value_a is None and default_value_b is None:
-            return 1.0
+            return -1.0
         if default_value_a is None or default_value_b is None:
             return 0.0
         if default_value_a == "None" and default_value_b == "None":
