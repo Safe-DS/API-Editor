@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import Optional, Tuple
+from typing import Optional, Tuple, Union
 
 from package_parser.processing.annotations import are_semantic_equal
 from package_parser.processing.annotations.model import (
@@ -7,7 +7,13 @@ from package_parser.processing.annotations.model import (
     AnnotationStore,
     EnumReviewResult,
 )
-from package_parser.processing.api.model import Attribute, Result
+from package_parser.processing.api.model import (
+    Attribute,
+    Class,
+    Function,
+    Parameter,
+    Result,
+)
 from package_parser.processing.migration.annotations import (
     migrate_boundary_annotation,
     migrate_called_after_annotation,
@@ -53,17 +59,13 @@ class Migration:
 
     def migrate_annotations(self) -> None:
         if self.PRINT_ANNOTATION_MOVEMENT:
-            self.print_annotation_movement(None, None, None)
+            self.print_mappings()
         for boundary_annotation in self.annotationsv1.boundaryAnnotations:
             mapping = self._get_mapping_from_annotation(boundary_annotation)
             if mapping is not None:
                 for annotation in migrate_boundary_annotation(
                     boundary_annotation, mapping
                 ):
-                    if self.PRINT_ANNOTATION_MOVEMENT:
-                        self.print_annotation_movement(
-                            mapping, boundary_annotation, annotation
-                        )
                     self.add_annotations_based_on_similarity(
                         annotation, mapping.get_similarity()
                     )
@@ -74,10 +76,6 @@ class Migration:
                 for annotation in migrate_called_after_annotation(
                     called_after_annotation, mapping, self.mappings
                 ):
-                    if self.PRINT_ANNOTATION_MOVEMENT:
-                        self.print_annotation_movement(
-                            mapping, called_after_annotation, annotation
-                        )
                     self.add_annotations_based_on_similarity(
                         annotation, mapping.get_similarity()
                     )
@@ -88,10 +86,6 @@ class Migration:
                 for annotation in migrate_description_annotation(
                     description_annotation, mapping
                 ):
-                    if self.PRINT_ANNOTATION_MOVEMENT:
-                        self.print_annotation_movement(
-                            mapping, description_annotation, annotation
-                        )
                     self.add_annotations_based_on_similarity(
                         annotation, mapping.get_similarity()
                     )
@@ -100,10 +94,6 @@ class Migration:
             mapping = self._get_mapping_from_annotation(enum_annotation)
             if mapping is not None:
                 for annotation in migrate_enum_annotation(enum_annotation, mapping):
-                    if self.PRINT_ANNOTATION_MOVEMENT:
-                        self.print_annotation_movement(
-                            mapping, enum_annotation, annotation
-                        )
                     self.add_annotations_based_on_similarity(
                         annotation, mapping.get_similarity()
                     )
@@ -112,10 +102,6 @@ class Migration:
             mapping = self._get_mapping_from_annotation(expert_annotation)
             if mapping is not None:
                 for annotation in migrate_expert_annotation(expert_annotation, mapping):
-                    if self.PRINT_ANNOTATION_MOVEMENT:
-                        self.print_annotation_movement(
-                            mapping, expert_annotation, annotation
-                        )
                     self.add_annotations_based_on_similarity(
                         annotation, mapping.get_similarity()
                     )
@@ -126,10 +112,6 @@ class Migration:
                 for annotation in migrate_group_annotation(
                     group_annotation, mapping, self.mappings
                 ):
-                    if self.PRINT_ANNOTATION_MOVEMENT:
-                        self.print_annotation_movement(
-                            mapping, group_annotation, annotation
-                        )
                     self.add_annotations_based_on_similarity(
                         annotation, mapping.get_similarity()
                     )
@@ -138,10 +120,6 @@ class Migration:
             mapping = self._get_mapping_from_annotation(move_annotation)
             if mapping is not None:
                 for annotation in migrate_move_annotation(move_annotation, mapping):
-                    if self.PRINT_ANNOTATION_MOVEMENT:
-                        self.print_annotation_movement(
-                            mapping, move_annotation, annotation
-                        )
                     self.add_annotations_based_on_similarity(
                         annotation, mapping.get_similarity()
                     )
@@ -150,10 +128,6 @@ class Migration:
             mapping = self._get_mapping_from_annotation(rename_annotation)
             if mapping is not None:
                 for annotation in migrate_rename_annotation(rename_annotation, mapping):
-                    if self.PRINT_ANNOTATION_MOVEMENT:
-                        self.print_annotation_movement(
-                            mapping, rename_annotation, annotation
-                        )
                     self.add_annotations_based_on_similarity(
                         annotation, mapping.get_similarity()
                     )
@@ -162,10 +136,6 @@ class Migration:
             mapping = self._get_mapping_from_annotation(remove_annotation)
             if mapping is not None:
                 for annotation in migrate_remove_annotation(remove_annotation, mapping):
-                    if self.PRINT_ANNOTATION_MOVEMENT:
-                        self.print_annotation_movement(
-                            mapping, remove_annotation, annotation
-                        )
                     self.add_annotations_based_on_similarity(
                         annotation, mapping.get_similarity()
                     )
@@ -174,10 +144,6 @@ class Migration:
             mapping = self._get_mapping_from_annotation(todo_annotation)
             if mapping is not None:
                 for annotation in migrate_todo_annotation(todo_annotation, mapping):
-                    if self.PRINT_ANNOTATION_MOVEMENT:
-                        self.print_annotation_movement(
-                            mapping, todo_annotation, annotation
-                        )
                     self.add_annotations_based_on_similarity(
                         annotation, mapping.get_similarity()
                     )
@@ -186,10 +152,6 @@ class Migration:
             mapping = self._get_mapping_from_annotation(value_annotation)
             if mapping is not None:
                 for annotation in migrate_value_annotation(value_annotation, mapping):
-                    if self.PRINT_ANNOTATION_MOVEMENT:
-                        self.print_annotation_movement(
-                            mapping, value_annotation, annotation
-                        )
                     self.add_annotations_based_on_similarity(
                         annotation, mapping.get_similarity()
                     )
@@ -206,21 +168,36 @@ class Migration:
         else:
             self.unsure_migrated_annotation_store.add_annotation(annotation)
 
-    def print_annotation_movement(
-        self,
-        mapping: Optional[Mapping],
-        annotationv1: Optional[AbstractAnnotation],
-        annotationv2: Optional[AbstractAnnotation],
-    ) -> None:
-        if mapping is None or annotationv1 is None or annotationv2 is None:
-            print("**Similarity**|**APIV1**|**APIV2**|**comment**")
-            print(":-----:|:-----:|:-----:|:----:|")
-        elif mapping.similarity < 1.0 or (
-            mapping.similarity == 1.0 and self.PRINT_ALL_ANNOTATION_MOVEMENT
-        ):
-            annotationv1_id = "/".join(annotationv1.target.split("/")[1:])
-            annotationv2_id = "/".join(annotationv2.target.split("/")[1:])
-            print(f"{mapping.similarity:.4}|{annotationv1_id}|{annotationv2_id}|")
+    def print_mappings(self) -> None:
+        print("**Similarity**|**APIV1**|**APIV2**|**comment**")
+        print(":-----:|:-----:|:-----:|:----:|")
+        for mapping in self.mappings:
+            if mapping.similarity < 1.0 or (
+                mapping.similarity == 1.0 and self.PRINT_ALL_ANNOTATION_MOVEMENT
+            ):
+
+                def print_api_element(
+                    api_element: Union[Attribute, Class, Function, Parameter, Result]
+                ) -> str:
+                    if isinstance(api_element, (Attribute, Result)):
+                        return api_element.name
+                    return "/".join(api_element.id.split("/")[1:])
+
+                apiv1_elements = ", ".join(
+                    [
+                        print_api_element(api_element)
+                        for api_element in mapping.get_apiv1_elements()
+                    ]
+                )
+                apiv2_elements = ", ".join(
+                    [
+                        print_api_element(api_element)
+                        for api_element in mapping.get_apiv2_elements()
+                    ]
+                )
+                apiv1_elements = "`" + apiv1_elements + "`"
+                apiv2_elements = "`" + apiv2_elements + "`"
+                print(f"{mapping.similarity:.4}|{apiv1_elements}|{apiv2_elements}|")
 
     def _remove_duplicates(self) -> None:
         for annotation_type in [
