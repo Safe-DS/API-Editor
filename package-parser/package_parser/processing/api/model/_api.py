@@ -356,7 +356,7 @@ class ResultDocstring:
     description: str
 
     @staticmethod
-    def from_json(json: Any):
+    def from_json(json: Any) -> ResultDocstring:
         return ResultDocstring(
             json.get("type", ""),
             json.get("description", ""),
