@@ -274,12 +274,12 @@ class Attribute:
     types: Optional[AbstractType]
 
     def to_json(self) -> dict[str, Any]:
-        types_json = self.types.to_json() if self.types is not None else ""
+        types_json = self.types.to_json() if self.types is not None else None
         return {"name": self.name, "types": types_json}
 
     @staticmethod
     def from_json(json: Any) -> Attribute:
-        return Attribute(json["name"], AbstractType.from_json(json["types"]))
+        return Attribute(json["name"], AbstractType.from_json(json.get("types", {})))
 
 
 @dataclass
