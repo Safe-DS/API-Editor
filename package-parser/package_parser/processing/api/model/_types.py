@@ -15,6 +15,8 @@ class AbstractType(metaclass=ABCMeta):
 
     @classmethod
     def from_json(cls, json: Any) -> Optional[AbstractType]:
+        if json is None:
+            return None
         value: Optional[AbstractType] = NamedType.from_json(json)
         if value is not None:
             return value
@@ -34,7 +36,7 @@ class NamedType(AbstractType):
 
     @classmethod
     def from_json(cls, json: Any) -> Optional[NamedType]:
-        if json["kind"] == cls.__class__.__name__:
+        if json.get("kind", "") == cls.__class__.__name__:
             return NamedType(json["name"])
         return None
 
