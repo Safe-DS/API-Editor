@@ -32,10 +32,12 @@ def get_instance_attributes(class_node: astroid.ClassDef) -> list[Attribute]:
                     types.add(attribute_type)
         if len(types) == 1:
             attributes.append(Attribute(name, NamedType(types.pop())))
-        if len(types) > 1:
+        elif len(types) > 1:
             attributes.append(
                 Attribute(name, UnionType([NamedType(type_) for type_ in types]))
             )
+        else:
+            attributes.append(Attribute(name, None))
     return attributes
 
 
