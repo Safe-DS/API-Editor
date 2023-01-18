@@ -1,5 +1,6 @@
 # apiv2: merge Bookshelf and Room to one class
 
+
 class Bookshelf:
     """A Bookshelf holds multiple books and is used to point to where a book should be placed
 
@@ -8,6 +9,7 @@ class Bookshelf:
     name_of_bookshelf : str
     max_number_of_items : int
     """
+
     name_of_bookshelf: str
     max_number_of_items: int
 
@@ -24,6 +26,7 @@ class Room:
     room_number: int
     floor: int
     """
+
     room_number: int
     floor: int
 

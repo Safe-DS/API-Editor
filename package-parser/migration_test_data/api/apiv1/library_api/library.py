@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta, date
+from datetime import date, datetime, timedelta
 
 from .book import Book
 from .persons import Employee, LibraryUser
@@ -101,7 +101,14 @@ class Library:
         """
         self.books.append(book)
 
-    def let_seminar_room(self, money: float, name: str, address: str, start_of_renting: date, end_of_renting: date) -> float:  # apiv2: remove rented_date
+    def let_seminar_room(
+        self,
+        money: float,
+        name: str,
+        address: str,
+        start_of_renting: date,
+        end_of_renting: date,
+    ) -> float:  # apiv2: remove rented_date
         """rent the seminar room of the library after it closed
 
         Parameters
@@ -116,9 +123,16 @@ class Library:
         -------
         exchanged_money_or_money_to_be_paid : float
         """
-        if money >= 50*(end_of_renting-start_of_renting).days:
-            send_message_to_person(name, address, f"You rented our seminar room for {money:.2f} € from " + str(start_of_renting) + " to " + str(end_of_renting))
-        return money-50
+        if money >= 50 * (end_of_renting - start_of_renting).days:
+            send_message_to_person(
+                name,
+                address,
+                f"You rented our seminar room for {money:.2f} € from "
+                + str(start_of_renting)
+                + " to "
+                + str(end_of_renting),
+            )
+        return money - 50
 
 
 class City:  # apiv2: remove this class
@@ -130,11 +144,14 @@ class City:  # apiv2: remove this class
     number_of_inhabitants : int
     libraries : list[Library]
     """
+
     name: str
     number_of_inhabitants: int
     libraries: list[Library]
 
-    def __init__(self, name: str, number_of_inhabitants: int, libraries: list[Library]) -> None:
+    def __init__(
+        self, name: str, number_of_inhabitants: int, libraries: list[Library]
+    ) -> None:
         self.name = name
         self.number_of_inhabitants = number_of_inhabitants
         self.libraries = libraries

@@ -1,9 +1,9 @@
 # pylint: disable=duplicate-code
-from datetime import datetime, timedelta, date
+from datetime import date, datetime, timedelta
 
 from .media import Book, Media
-from .persons import Employee, LibraryMember, Person
 from .notificate import notificate
+from .persons import Employee, LibraryMember, Person
 
 
 class Library:
@@ -116,6 +116,7 @@ class OurLibrary(Library):
     staff : list[Employee]
     name : str
     """
+
     owner: Person
     address: str
 
@@ -133,7 +134,9 @@ class OurLibrary(Library):
         self.owner = owner
         self.address = address
 
-    def let_seminar_room(self, money: float, person: Person, renting_date: date) -> float:  # apiv2: remove rented_date
+    def let_seminar_room(
+        self, money: float, person: Person, renting_date: date
+    ) -> float:  # apiv2: remove rented_date
         """rent the seminar room of the library after it closed
 
         Parameters
@@ -148,5 +151,9 @@ class OurLibrary(Library):
         exchanged_money_or_money_to_be_paid : float
         """
         if money >= 50:
-            notificate(person, f"You rented our seminar room for {money:.2f} € at " + str(renting_date))
-        return money-50
+            notificate(
+                person,
+                f"You rented our seminar room for {money:.2f} € at "
+                + str(renting_date),
+            )
+        return money - 50

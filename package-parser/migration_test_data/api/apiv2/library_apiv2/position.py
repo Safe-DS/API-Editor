@@ -1,6 +1,7 @@
 # pylint: disable=duplicate-code
 # apiv2: merge Bookshelf and Room to one class
 
+
 class Position:
     """The position is used to point to where a book should be placed
 
@@ -12,6 +13,7 @@ class Position:
     room_number : int
     floor : int
     """
+
     name_of_bookshelf: str
     room_number: int
     floor: int
