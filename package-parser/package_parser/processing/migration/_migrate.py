@@ -206,7 +206,9 @@ class Migration:
         not_mapped_apiv1_elements = self.get_not_mapped_api_elements_as_string(apiv1)
         for element_id in not_mapped_apiv1_elements:
             print(f"\u200B|{element_id}||")
-        not_mapped_apiv2_elements = self.get_not_mapped_api_elements_as_string(apiv2, print_for_apiv2=True)
+        not_mapped_apiv2_elements = self.get_not_mapped_api_elements_as_string(
+            apiv2, print_for_apiv2=True
+        )
         for element_id in not_mapped_apiv2_elements:
             print(f"\u200B||{element_id}|")
 
@@ -221,25 +223,45 @@ class Migration:
             if not print_for_apiv2:
                 for mapping in self.mappings:
                     for element in mapping.get_apiv1_elements():
-                        if isinstance(api_element, Attribute) and isinstance(element, Attribute):
-                            if element.name == api_element.name and isinstance(element.types, type(api_element.types)):
+                        if isinstance(api_element, Attribute) and isinstance(
+                            element, Attribute
+                        ):
+                            if element.name == api_element.name and isinstance(
+                                element.types, type(api_element.types)
+                            ):
                                 return True
-                        if isinstance(api_element, Result) and isinstance(element, Result):
-                            if element.name == api_element.name and element.docstring == api_element.docstring:
+                        if isinstance(api_element, Result) and isinstance(
+                            element, Result
+                        ):
+                            if (
+                                element.name == api_element.name
+                                and element.docstring == api_element.docstring
+                            ):
                                 return True
-                        if not isinstance(api_element, (Attribute, Result)) and not isinstance(element, (Attribute, Result)):
+                        if not isinstance(
+                            api_element, (Attribute, Result)
+                        ) and not isinstance(element, (Attribute, Result)):
                             if element.id == api_element.id:
                                 return True
                 return False
             for mapping in self.mappings:
                 for element in mapping.get_apiv2_elements():
-                    if isinstance(api_element, Attribute) and isinstance(element, Attribute):
-                        if element.name == api_element.name and isinstance(element.types, type(api_element.types)):
+                    if isinstance(api_element, Attribute) and isinstance(
+                        element, Attribute
+                    ):
+                        if element.name == api_element.name and isinstance(
+                            element.types, type(api_element.types)
+                        ):
                             return True
                     if isinstance(api_element, Result) and isinstance(element, Result):
-                        if element.name == api_element.name and element.docstring == api_element.docstring:
+                        if (
+                            element.name == api_element.name
+                            and element.docstring == api_element.docstring
+                        ):
                             return True
-                    if not isinstance(api_element, (Attribute, Result)) and not isinstance(element, (Attribute, Result)):
+                    if not isinstance(
+                        api_element, (Attribute, Result)
+                    ) and not isinstance(element, (Attribute, Result)):
                         if element.id == api_element.id:
                             return True
             return False
