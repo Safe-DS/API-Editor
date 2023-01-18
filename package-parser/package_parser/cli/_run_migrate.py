@@ -25,6 +25,7 @@ def _run_migrate_command(
     mappings = api_mapping.map_api()
     migration = Migration(annotationsv1, mappings)
     migration.migrate_annotations()
+    migration.print_not_mapped_api_elements(apiv1, apiv2)
     migrated_annotations_file = Path(
         os.path.join(out_dir_path, "migrated_annotationsv" + apiv2.version + ".json")
     )

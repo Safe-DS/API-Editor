@@ -8,6 +8,7 @@ from package_parser.processing.annotations.model import (
     EnumReviewResult,
 )
 from package_parser.processing.api.model import (
+    API,
     Attribute,
     Class,
     Function,
@@ -32,8 +33,8 @@ from package_parser.processing.migration.model import Mapping
 
 @dataclass
 class Migration:
-    PRINT_ANNOTATION_MOVEMENT = True
-    PRINT_ALL_ANNOTATION_MOVEMENT = False
+    PRINT_MAPPINGS = True
+    PRINT_ALL_MAPPINGS = False
     annotationsv1: AnnotationStore
     mappings: list[Mapping]
     reliable_similarity: float = 0.9
@@ -58,7 +59,7 @@ class Migration:
         return None
 
     def migrate_annotations(self) -> None:
-        if self.PRINT_ANNOTATION_MOVEMENT:
+        if self.PRINT_MAPPINGS:
             self.print_mappings()
         for boundary_annotation in self.annotationsv1.boundaryAnnotations:
             mapping = self._get_mapping_from_annotation(boundary_annotation)
@@ -173,7 +174,7 @@ class Migration:
         print(":-----:|:-----:|:-----:|:----:|")
         for mapping in self.mappings:
             if mapping.similarity < 1.0 or (
-                mapping.similarity == 1.0 and self.PRINT_ALL_ANNOTATION_MOVEMENT
+                mapping.similarity == 1.0 and self.PRINT_ALL_MAPPINGS
             ):
 
                 def print_api_element(
@@ -198,6 +199,75 @@ class Migration:
                 apiv1_elements = "`" + apiv1_elements + "`"
                 apiv2_elements = "`" + apiv2_elements + "`"
                 print(f"{mapping.similarity:.4}|{apiv1_elements}|{apiv2_elements}|")
+
+    def print_not_mapped_api_elements(self, apiv1: API, apiv2: API) -> None:
+        if not self.PRINT_MAPPINGS:
+            return
+        not_mapped_apiv1_elements = self.get_not_mapped_api_elements_as_string(apiv1)
+        for element_id in not_mapped_apiv1_elements:
+            print(f"\u200B|{element_id}||")
+        not_mapped_apiv2_elements = self.get_not_mapped_api_elements_as_string(apiv2, print_for_apiv2=True)
+        for element_id in not_mapped_apiv2_elements:
+            print(f"\u200B||{element_id}|")
+
+    def get_not_mapped_api_elements_as_string(
+        self, api: API, print_for_apiv2: bool = False
+    ) -> list[str]:
+        return_list: list[str] = []
+
+        def is_included(
+            api_element: Union[Attribute, Class, Function, Parameter, Result]
+        ) -> bool:
+            if not print_for_apiv2:
+                for mapping in self.mappings:
+                    for element in mapping.get_apiv1_elements():
+                        if isinstance(api_element, Attribute) and isinstance(element, Attribute):
+                            if element.name == api_element.name and isinstance(element.types, type(api_element.types)):
+                                return True
+                        if isinstance(api_element, Result) and isinstance(element, Result):
+                            if element.name == api_element.name and element.docstring == api_element.docstring:
+                                return True
+                        if not isinstance(api_element, (Attribute, Result)) and not isinstance(element, (Attribute, Result)):
+                            if element.id == api_element.id:
+                                return True
+                return False
+            for mapping in self.mappings:
+                for element in mapping.get_apiv2_elements():
+                    if isinstance(api_element, Attribute) and isinstance(element, Attribute):
+                        if element.name == api_element.name and isinstance(element.types, type(api_element.types)):
+                            return True
+                    if isinstance(api_element, Result) and isinstance(element, Result):
+                        if element.name == api_element.name and element.docstring == api_element.docstring:
+                            return True
+                    if not isinstance(api_element, (Attribute, Result)) and not isinstance(element, (Attribute, Result)):
+                        if element.id == api_element.id:
+                            return True
+            return False
+
+        for class_ in api.classes.values():
+            if not is_included(class_):
+                return_list.append(class_.id)
+        for function in api.functions.values():
+            if not is_included(function):
+                return_list.append(function.id)
+        for parameter in api.parameters().values():
+            if not is_included(parameter):
+                return_list.append(parameter.id)
+        for attribute, class_ in [
+            (attribute, class_)
+            for class_ in api.classes.values()
+            for attribute in class_.instance_attributes
+        ]:
+            if not is_included(attribute):
+                return_list.append(class_.id + "/" + attribute.name)
+        for result, function in [
+            (result, function)
+            for function in api.functions.values()
+            for result in function.results
+        ]:
+            if not is_included(result):
+                return_list.append(function.id + "/" + result.name)
+        return return_list
 
     def _remove_duplicates(self) -> None:
         for annotation_type in [
