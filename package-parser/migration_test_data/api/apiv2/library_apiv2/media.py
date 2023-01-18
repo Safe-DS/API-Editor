@@ -2,7 +2,8 @@
 from datetime import date
 from typing import Optional
 
-from .persons import LibraryUser
+from .persons import LibraryMember
+from .position import Position
 
 
 class Media:
@@ -12,20 +13,22 @@ class Media:
     ----------
     borrow_until : Optional[date]
         if it is borrowed: date else None
-    borrow_by : Optional[LibraryUser]
+    borrow_by : Optional[LibraryMember]
     author : str
     release_date : date
     number_of_times_this_book_was_borrowed : int, default=0
         number of borrows
     fee_per_day : float
+    position : Position
     """
 
     def __init__(
         self,
         borrow_until: Optional[date],
-        borrow_by: Optional[LibraryUser],
+        borrow_by: Optional[LibraryMember],
         author: str,
         release_date: date,
+        position: Position,
         number_of_times_this_book_was_borrowed: int = 0,
         fee_per_day: float = 1.0,
     ) -> None:
@@ -37,6 +40,7 @@ class Media:
             number_of_times_this_book_was_borrowed
         )
         self.FEE_PER_DAY = fee_per_day
+        self.position = position
 
 
 class Book(Media):
@@ -46,7 +50,7 @@ class Book(Media):
     ----------
     borrow_until : Optional[date]
         if it is borrowed: date else None
-    borrow_by : Optional[LibraryUser]
+    borrow_by : Optional[LibraryMember]
     genre : str
     author : str
     release_date : date
@@ -58,11 +62,12 @@ class Book(Media):
     def __init__(
         self,
         borrow_until: Optional[date],
-        borrow_by: Optional[LibraryUser],
+        borrow_by: Optional[LibraryMember],
         genre: str,
         author: str,
         release_date: date,
         isbn: str,
+        position: Position,
         number_of_times_this_book_was_borrowed: int = 0,
     ) -> None:
         fee_for_each_genre: dict[str, float] = {
@@ -80,6 +85,7 @@ class Book(Media):
             borrow_by,
             author,
             release_date,
+            position,
             number_of_times_this_book_was_borrowed,
             fee_per_day=fee_per_day,
         )
@@ -93,7 +99,7 @@ class CD(Media):
     ----------
     borrow_until : Optional[date]
         if it is borrowed: date else None
-    borrow_by : Optional[LibraryUser]
+    borrow_by : Optional[LibraryMember]
     author : str
     release_date : date
     number_of_times_this_book_was_borrowed : int, default=0
@@ -103,9 +109,10 @@ class CD(Media):
     def __init__(
         self,
         borrow_until: Optional[date],
-        borrow_by: Optional[LibraryUser],
+        borrow_by: Optional[LibraryMember],
         author: str,
         release_date: date,
+        position: Position,
         number_of_times_this_book_was_borrowed: int = 0,
     ) -> None:
         super().__init__(
@@ -113,6 +120,7 @@ class CD(Media):
             borrow_by,
             author,
             release_date,
+            position,
             number_of_times_this_book_was_borrowed,
             fee_per_day=2.0,
         )
@@ -125,7 +133,7 @@ class DVD(Media):
     ----------
     borrow_until : Optional[date]
         if it is borrowed: date else None
-    borrow_by : Optional[LibraryUser]
+    borrow_by : Optional[LibraryMember]
     author : str
     release_date : date
     number_of_times_this_book_was_borrowed : int, default=0
@@ -135,9 +143,10 @@ class DVD(Media):
     def __init__(
         self,
         borrow_until: Optional[date],
-        borrow_by: Optional[LibraryUser],
+        borrow_by: Optional[LibraryMember],
         author: str,
         release_date: date,
+        position: Position,
         number_of_times_this_book_was_borrowed: int = 0,
     ) -> None:
         super().__init__(
@@ -145,6 +154,7 @@ class DVD(Media):
             borrow_by,
             author,
             release_date,
+            position,
             number_of_times_this_book_was_borrowed,
             fee_per_day=3.0,
         )

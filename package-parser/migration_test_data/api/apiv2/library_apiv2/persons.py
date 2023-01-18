@@ -28,8 +28,8 @@ class Person:
         pass
 
 
-class LibraryUser(Person):
-    """An Employee of the Library extends a Person
+class LibraryMember(Person):
+    """A Member of the Library extends a Person
 
     Parameters
     ----------

@@ -1,9 +1,9 @@
 # pylint: disable=duplicate-code
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 
 from .media import Book, Media
-from .persons import Employee, LibraryUser, Person
-from .send_message_to_person import send_message_to_person
+from .persons import Employee, LibraryMember, Person
+from .notificate import notificate
 
 
 class Library:
@@ -13,14 +13,14 @@ class Library:
     ----------
     media : list[Media]
     borrowed_media : list[Media]
-    users : list[LiberyUser]
-    staff : list[Emplyee]
+    users : list[LibraryMember]
+    staff : list[Employee]
     name : str
     """
 
     media: list[Media]  # apiv2: add other media -> change genre
     borrowed_media: list[Media]
-    users: list[LibraryUser]
+    users: list[LibraryMember]
     staff: list[Employee]  # apiv2: add Person subclass to User and Personal and Author
     name: str
     # is_open: bool = False  # apiv2: remove attribute
@@ -29,7 +29,7 @@ class Library:
         self,
         media: list[Media],
         borrowed_media: list[Media],
-        users: list[LibraryUser],
+        users: list[LibraryMember],
         staff: list[Employee],
         name: str,
     ) -> None:
@@ -39,13 +39,13 @@ class Library:
         self.staff = staff
         self.name = name
 
-    def return_media(self, media: Media, user: LibraryUser) -> None:
+    def return_media(self, media: Media, user: LibraryMember) -> None:
         """Return media
 
         Parameters
         ----------
         media : Media
-        user : LibraryUser
+        user : LibraryMember
         """
         if (
             media.borrow_by is not None
@@ -57,20 +57,20 @@ class Library:
             if media.borrow_until > today:
                 late_fee = (today - media.borrow_until).days * media.FEE_PER_DAY
             user.give_back(late_fee)  # apiv2: rename function
-            send_message_to_person(user, "You need to pay your late fee.")
+            notificate(user, "You need to pay your late fee.")
             media.borrow_by = None
             media.borrow_until = None
             self.borrowed_media.remove(media)
 
     def borrow(
-        self, media: Media, user: LibraryUser
+        self, media: Media, user: LibraryMember
     ) -> None:  # apiv2: check if pending_fees are not above 5
         """borrow
 
         Parameters
         ----------
         media : Media
-        user : LibraryUser
+        user : LibraryMember
         """
         if (
             media in self.media
@@ -103,3 +103,50 @@ class Library:
         """
         for person in persons:
             person.participate()
+
+
+class OurLibrary(Library):
+    """Our Library
+
+    Parameters
+    ----------
+    media : list[Media]
+    borrowed_media : list[Media]
+    users : list[LibraryMember]
+    staff : list[Employee]
+    name : str
+    """
+    owner: Person
+    address: str
+
+    def __init__(
+        self,
+        media: list[Media],
+        borrowed_media: list[Media],
+        users: list[LibraryMember],
+        staff: list[Employee],
+        name: str,
+        owner: Person,
+        address: str,
+    ) -> None:
+        super().__init__(media, borrowed_media, users, staff, name)
+        self.owner = owner
+        self.address = address
+
+    def let_seminar_room(self, money: float, person: Person, renting_date: date) -> float:  # apiv2: remove rented_date
+        """rent the seminar room of the library after it closed
+
+        Parameters
+        ----------
+        money : float
+        name : str
+        address : str
+        renting_date : datetime
+
+        Returns
+        -------
+        exchanged_money_or_money_to_be_paid : float
+        """
+        if money >= 50:
+            notificate(person, f"You rented our seminar room for {money:.2f} € at " + str(renting_date))
+        return money-50

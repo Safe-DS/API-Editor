@@ -2,6 +2,7 @@ from datetime import date
 from typing import Optional
 
 from .persons import LibraryUser
+from .position import Bookshelf, Room
 
 
 class Book:
@@ -9,7 +10,7 @@ class Book:
 
     Parameters
     ----------
-    borrow_until : Optional[date]
+    borrow_until : typing.Optional[datetime.date]
         if it is borrowed: date else None
     borrow_by : Optional[LibraryUser]
     genre : str
@@ -18,6 +19,10 @@ class Book:
     release_date : date
     number_of_times_this_book_was_borrowed : int, default=0
         number of borrows
+    bookshelf: Bookshelf
+        the bookshelf where the book should be placed
+    room: Room
+        the location where the bookshelf can be found
     """
 
     def __init__(
@@ -28,6 +33,8 @@ class Book:
         isbn: str,
         author: str,
         release_date: date,
+        bookshelf: Bookshelf,
+        room: Room,
         number_of_times_this_book_was_borrowed: int = 0,
     ) -> None:
         self.borrow_until = borrow_until
@@ -52,3 +59,5 @@ class Book:
             self.FEE_PER_DAY = fee_for_each_genre[self.genre]
         else:
             self.FEE_PER_DAY = fee_for_each_genre["other"]
+        self.bookshelf = bookshelf
+        self.room = room
