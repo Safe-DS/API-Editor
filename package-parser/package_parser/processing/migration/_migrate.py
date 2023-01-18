@@ -33,8 +33,6 @@ from package_parser.processing.migration.model import Mapping
 
 @dataclass
 class Migration:
-    PRINT_MAPPINGS = True
-    PRINT_ALL_MAPPINGS = False
     annotationsv1: AnnotationStore
     mappings: list[Mapping]
     reliable_similarity: float = 0.9
@@ -59,8 +57,6 @@ class Migration:
         return None
 
     def migrate_annotations(self) -> None:
-        if self.PRINT_MAPPINGS:
-            self.print_mappings()
         for boundary_annotation in self.annotationsv1.boundaryAnnotations:
             mapping = self._get_mapping_from_annotation(boundary_annotation)
             if mapping is not None:
@@ -169,12 +165,11 @@ class Migration:
         else:
             self.unsure_migrated_annotation_store.add_annotation(annotation)
 
-    def print_mappings(self) -> None:
-        print("**Similarity**|**APIV1**|**APIV2**|**comment**")
-        print(":-----:|:-----:|:-----:|:----:|")
+    def _get_mappings_for_table(self, print_all_mappings: bool) -> list[str]:
+        table_rows: list[str] = []
         for mapping in self.mappings:
             if mapping.similarity < 1.0 or (
-                mapping.similarity == 1.0 and self.PRINT_ALL_MAPPINGS
+                mapping.similarity == 1.0 and print_all_mappings
             ):
 
                 def print_api_element(
@@ -198,24 +193,29 @@ class Migration:
                 )
                 apiv1_elements = "`" + apiv1_elements + "`"
                 apiv2_elements = "`" + apiv2_elements + "`"
-                print(f"{mapping.similarity:.4}|{apiv1_elements}|{apiv2_elements}|")
+                table_rows.append(
+                    f"{mapping.similarity:.4}|{apiv1_elements}|{apiv2_elements}|"
+                )
+        return table_rows
 
-    def print_not_mapped_api_elements(self, apiv1: API, apiv2: API) -> None:
-        if not self.PRINT_MAPPINGS:
-            return
-        not_mapped_apiv1_elements = self.get_not_mapped_api_elements_as_string(apiv1)
+    def _get_not_mapped_api_elements_for_table(
+        self, apiv1: API, apiv2: API
+    ) -> list[str]:
+        not_mapped_api_elements: list[str] = []
+        not_mapped_apiv1_elements = self._get_not_mapped_api_elements_as_string(apiv1)
         for element_id in not_mapped_apiv1_elements:
-            print(f"\u200B|{element_id}||")
-        not_mapped_apiv2_elements = self.get_not_mapped_api_elements_as_string(
+            not_mapped_api_elements.append(f"\u200B|{element_id}||")
+        not_mapped_apiv2_elements = self._get_not_mapped_api_elements_as_string(
             apiv2, print_for_apiv2=True
         )
         for element_id in not_mapped_apiv2_elements:
-            print(f"\u200B||{element_id}|")
+            not_mapped_api_elements.append(f"\u200B||{element_id}|")
+        return not_mapped_api_elements
 
-    def get_not_mapped_api_elements_as_string(
+    def _get_not_mapped_api_elements_as_string(
         self, api: API, print_for_apiv2: bool = False
     ) -> list[str]:
-        return_list: list[str] = []
+        not_mapped_api_elements: list[str] = []
 
         def is_included(
             api_element: Union[Attribute, Class, Function, Parameter, Result]
@@ -268,28 +268,39 @@ class Migration:
 
         for class_ in api.classes.values():
             if not is_included(class_):
-                return_list.append(class_.id)
+                not_mapped_api_elements.append(class_.id)
         for function in api.functions.values():
             if not is_included(function):
-                return_list.append(function.id)
+                not_mapped_api_elements.append(function.id)
         for parameter in api.parameters().values():
             if not is_included(parameter):
-                return_list.append(parameter.id)
+                not_mapped_api_elements.append(parameter.id)
         for attribute, class_ in [
             (attribute, class_)
             for class_ in api.classes.values()
             for attribute in class_.instance_attributes
         ]:
             if not is_included(attribute):
-                return_list.append(class_.id + "/" + attribute.name)
+                not_mapped_api_elements.append(class_.id + "/" + attribute.name)
         for result, function in [
             (result, function)
             for function in api.functions.values()
             for result in function.results
         ]:
             if not is_included(result):
-                return_list.append(function.id + "/" + result.name)
-        return return_list
+                not_mapped_api_elements.append(function.id + "/" + result.name)
+        return not_mapped_api_elements
+
+    def print(self, apiv1: API, apiv2: API, print_all_mappings: bool) -> None:
+        print("**Similarity**|**APIV1**|**APIV2**|**comment**")
+        print(":-----:|:-----:|:-----:|:----:|")
+        table_body = self._get_mappings_for_table(print_all_mappings)
+        table_body.extend(self._get_not_mapped_api_elements_for_table(apiv1, apiv2))
+        table_body.sort(
+            key=lambda row: max(len(cell.split("/")) for cell in row.split("|")[:-1])
+        )
+        for row in table_body:
+            print(row)
 
     def _remove_duplicates(self) -> None:
         for annotation_type in [
