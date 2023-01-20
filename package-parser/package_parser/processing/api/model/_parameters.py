@@ -9,7 +9,7 @@ from ._types import AbstractType, create_type
 
 class Parameter:
     @staticmethod
-    def from_json(json: Any):
+    def from_json(json: Any) -> Parameter:
         return Parameter(
             json["id"],
             json["name"],
@@ -56,6 +56,9 @@ class Parameter:
             "docstring": self.documentation.to_dict(),
             "type": self.type.to_json() if self.type is not None else {},
         }
+
+    def __repr__(self) -> str:
+        return "Parameter(id=" + self.id + ")"
 
 
 class ParameterAssignment(Enum):
