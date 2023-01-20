@@ -19,9 +19,9 @@ class Book:
     release_date : date
     number_of_times_this_book_was_borrowed : int, default=0
         number of borrows
-    bookshelf: Bookshelf
+    bookshelf : Bookshelf
         the bookshelf where the book should be placed
-    room: Room
+    room : Room
         the location where the bookshelf can be found
     """
 

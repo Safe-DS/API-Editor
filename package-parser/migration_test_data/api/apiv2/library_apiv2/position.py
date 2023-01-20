@@ -8,8 +8,6 @@ class Position:
     Parameters
     ----------
     name_of_bookshelf : str
-    room_number: int
-    floor: int
     room_number : int
     floor : int
     """

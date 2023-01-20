@@ -209,7 +209,7 @@ class Migration:
             apiv2, print_for_apiv2=True
         )
         for element_id in not_mapped_apiv2_elements:
-            not_mapped_api_elements.append(f"\u200B||{element_id}|")
+            not_mapped_api_elements.append(f"\u200B||`{element_id}`|")
         return not_mapped_api_elements
 
     def _get_not_mapped_api_elements_as_string(

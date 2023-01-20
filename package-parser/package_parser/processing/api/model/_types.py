@@ -26,8 +26,7 @@ class AbstractType(metaclass=ABCMeta):
         value = BoundaryType.from_json(json)
         if value is not None:
             return value
-        value = UnionType.from_json(json)
-        return value
+        return UnionType.from_json(json)
 
 
 @dataclass
@@ -36,7 +35,7 @@ class NamedType(AbstractType):
 
     @classmethod
     def from_json(cls, json: Any) -> Optional[NamedType]:
-        if json.get("kind", "") == cls.__class__.__name__:
+        if json.get("kind", "") == cls.__name__:
             return NamedType(json["name"])
         return None
 
@@ -60,7 +59,7 @@ class EnumType(AbstractType):
 
     @classmethod
     def from_json(cls, json: Any) -> Optional[EnumType]:
-        if json["kind"] == cls.__class__.__name__:
+        if json["kind"] == cls.__name__:
             return EnumType(json["values"])
         return None
 
@@ -129,7 +128,7 @@ class BoundaryType(AbstractType):
 
     @classmethod
     def from_json(cls, json: Any) -> Optional[BoundaryType]:
-        if json["kind"] == cls.__class__.__name__:
+        if json["kind"] == cls.__name__:
             return BoundaryType(
                 json["base_type"],
                 json["min"],
@@ -218,7 +217,7 @@ class UnionType(AbstractType):
 
     @classmethod
     def from_json(cls, json: Any) -> Optional[UnionType]:
-        if json["kind"] == cls.__class__.__name__:
+        if json["kind"] == cls.__name__:
             types = []
             for element in json["types"]:
                 type_ = AbstractType.from_json(element)
