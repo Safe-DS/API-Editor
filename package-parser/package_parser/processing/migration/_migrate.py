@@ -175,8 +175,10 @@ class Migration:
                 def print_api_element(
                     api_element: Union[Attribute, Class, Function, Parameter, Result]
                 ) -> str:
-                    if isinstance(api_element, (Attribute, Result)):
+                    if isinstance(api_element, Result):
                         return api_element.name
+                    if isinstance(api_element, Attribute):
+                        return str(api_element.class_id) + "/" + api_element.name
                     return "/".join(api_element.id.split("/")[1:])
 
                 apiv1_elements = ", ".join(
