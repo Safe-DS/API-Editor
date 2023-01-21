@@ -288,7 +288,8 @@ class Attribute:
         )
 
     def __repr__(self) -> str:
-        return "Attribute(class_id=" + str(self.class_id) + ", name=" + self.name + ",type="+str(self.types.to_json())+")"
+        type_str = ",type_str=" + str(self.types.to_json()) if self.types is not None else ""
+        return "Attribute(class_id=" + str(self.class_id) + ", name=" + self.name + type_str + ")"
 
 
 @dataclass
