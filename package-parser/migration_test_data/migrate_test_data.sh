@@ -1,3 +1,5 @@
+#!/bin/bash
+
 cd ./migration_test_data/api/apiv2/ || exit
 mv library_apiv2 library_api
 cd ../../..
