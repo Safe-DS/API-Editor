@@ -7,3 +7,4 @@ from ._mapping import (
     OneToManyMapping,
     OneToOneMapping,
 )
+from ._strict_differ import StrictDiffer

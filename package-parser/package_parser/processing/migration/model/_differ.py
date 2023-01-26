@@ -1,6 +1,6 @@
 import re
 from abc import ABC, abstractmethod
-from typing import Callable, Optional, Tuple, TypeVar
+from typing import Callable, Optional, Tuple, TypeVar, Union
 
 from black import FileMode, format_str
 from black.linegen import CannotSplit
@@ -16,6 +16,8 @@ from package_parser.processing.api.model import (
     Result,
     UnionType,
 )
+
+api_element = Union[Attribute, Class, Function, Parameter, Result]
 
 
 class AbstractDiffer(ABC):
@@ -47,6 +49,10 @@ class AbstractDiffer(ABC):
     def compute_result_similarity(self, result_a: Result, result_b: Result) -> float:
         pass
 
+    @abstractmethod
+    def relevant_comparisons(self) -> Optional[list[tuple[api_element, api_element]]]:
+        pass
+
 
 X = TypeVar("X")
 
@@ -70,9 +76,13 @@ def distance_elements(
 
 
 class SimpleDiffer(AbstractDiffer):
+    SPEED_UP: bool = False
     assigned_by_look_up_similarity: dict[
         ParameterAssignment, dict[ParameterAssignment, float]
     ]
+
+    def relevant_comparisons(self) -> Optional[list[tuple[api_element, api_element]]]:
+        return None
 
     def __init__(self) -> None:
         distance_between_implicit_and_explicit = 0.3
@@ -227,7 +237,15 @@ class SimpleDiffer(AbstractDiffer):
         def are_parameters_similar(
             parameter_a: Parameter, parameter_b: Parameter
         ) -> bool:
-            return self.compute_parameter_similarity(parameter_a, parameter_b) == 1
+            if not self.SPEED_UP:
+                return self.compute_parameter_similarity(parameter_a, parameter_b) == 1
+            parameter_name_similarity = self._compute_name_similarity(
+                parameter_a.name, parameter_b.name
+            )
+            parameter_type_similarity = self._compute_type_similarity(
+                parameter_a.type, parameter_b.type
+            )
+            return (parameter_name_similarity + parameter_type_similarity) == 2.0
 
         parameter_similarity = distance_elements(
             function_a.parameters,
@@ -245,15 +263,16 @@ class SimpleDiffer(AbstractDiffer):
     def _compute_code_similarity(self, code_a: str, code_b: str) -> float:
         mode = FileMode()
         try:
-            code_a = format_str(code_a, mode=mode)
-            code_b = format_str(code_b, mode=mode)
+            code_a_tmp = format_str(code_a, mode=mode)
+            code_b_tmp = format_str(code_b, mode=mode)
         except CannotSplit:
             pass
+        else:
+            code_a = code_a_tmp
+            code_b = code_b_tmp
         split_a = code_a.split("\n")
         split_b = code_b.split("\n")
-        diff_code = distance_elements(split_a, split_b) / max(
-            len(split_a), len(split_b), 1
-        )
+        diff_code = distance(split_a, split_b) / max(len(split_a), len(split_b), 1)
         return 1 - diff_code
 
     def compute_parameter_similarity(
