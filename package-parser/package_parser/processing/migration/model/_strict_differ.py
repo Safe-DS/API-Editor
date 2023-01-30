@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from typing import Union, TypeVar, Optional
 
 from package_parser.processing.api.model import Attribute, Result, Parameter, Function, Class
-from package_parser.processing.migration import Mapping, AbstractDiffer
+from . import Mapping, AbstractDiffer
 
 DEPENDENT_API_ELEMENTS = TypeVar("DEPENDENT_API_ELEMENTS", Attribute, Parameter, Result)
 api_element = Union[Attribute, Class, Function, Parameter, Result]
