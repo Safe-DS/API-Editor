@@ -268,7 +268,7 @@ class Class:
         }
 
     def __repr__(self) -> str:
-        return "Class(id="+self.id+")"
+        return "Class(id=" + self.id + ")"
 
 
 @dataclass
@@ -283,10 +283,12 @@ class Attribute:
 
     @staticmethod
     def from_json(json: Any, class_id: Optional[str] = None) -> Attribute:
-        return Attribute(json["name"], AbstractType.from_json(json.get("types", {})), class_id)
+        return Attribute(
+            json["name"], AbstractType.from_json(json.get("types", {})), class_id
+        )
 
     def __repr__(self) -> str:
-        return "Attribute(class_id="+str(self.class_id)+",name="+self.name+")"
+        return "Attribute(class_id=" + str(self.class_id) + ",name=" + self.name + ")"
 
 
 @dataclass
@@ -341,7 +343,7 @@ class Function:
         }
 
     def __repr__(self) -> str:
-        return "Function(id="+self.id+")"
+        return "Function(id=" + self.id + ")"
 
 
 @dataclass
@@ -355,14 +357,16 @@ class Result:
         return Result(
             json["name"],
             ResultDocstring.from_json(json.get("docstring", {})),
-            function_id
+            function_id,
         )
 
     def to_json(self) -> Any:
         return {"name": self.name, "docstring": self.docstring.to_json()}
 
     def __repr__(self) -> str:
-        return "Result(function_id="+str(self.function_id)+",name="+self.name+")"
+        return (
+            "Result(function_id=" + str(self.function_id) + ",name=" + self.name + ")"
+        )
 
 
 @dataclass

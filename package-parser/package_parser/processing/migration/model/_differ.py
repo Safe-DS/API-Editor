@@ -50,7 +50,9 @@ class AbstractDiffer(ABC):
         pass
 
     @abstractmethod
-    def relevant_comparisons(self) -> Optional[list[tuple[list[api_element], list[api_element]]]]:
+    def relevant_comparisons(
+        self,
+    ) -> Optional[list[tuple[list[api_element], list[api_element]]]]:
         pass
 
 
@@ -81,7 +83,9 @@ class SimpleDiffer(AbstractDiffer):
         ParameterAssignment, dict[ParameterAssignment, float]
     ]
 
-    def relevant_comparisons(self) -> Optional[list[tuple[list[api_element], list[api_element]]]]:
+    def relevant_comparisons(
+        self,
+    ) -> Optional[list[tuple[list[api_element], list[api_element]]]]:
         return None
 
     def __init__(self) -> None:
