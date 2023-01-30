@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Callable, List, Optional, TypeVar, Union
 
 from package_parser.processing.api.model import (
@@ -117,7 +117,7 @@ class APIMapping:
     apiv1: API
     apiv2: API
     differ: AbstractDiffer
-    relevant_comparisons: Optional[list[tuple[api_element, api_element]]] = None
+    relevant_comparisons: Optional[list[tuple[list[api_element], list[api_element]]]] = None
 
     def __init__(
         self,
@@ -165,8 +165,28 @@ class APIMapping:
         mappings: List[Mapping] = []
         if self.relevant_comparisons is not None:
             for relevant_comparison in self.relevant_comparisons:
-                element1, element2 = relevant_comparison
-                mappings.extend()
+                elementsv1, elementsv2 = relevant_comparison
+                compute_similarity = None
+                if len(elementsv1) > 0 and len(elementsv2) > 0:
+                    if isinstance(elementsv1[0], Attribute) and isinstance(elementsv2[0], Attribute):
+                        compute_similarity = self.differ.compute_attribute_similarity
+                    elif isinstance(elementsv1[0], Class) and isinstance(elementsv2[0], Class):
+                        compute_similarity = self.differ.compute_class_similarity
+                    elif isinstance(elementsv1[0], Function) and isinstance(elementsv2[0], Function):
+                        compute_similarity = self.differ.compute_function_similarity
+                    elif isinstance(elementsv1[0], Parameter) and isinstance(elementsv2[0], Parameter):
+                        compute_similarity = self.differ.compute_parameter_similarity
+                    elif isinstance(elementsv1[0], Result) and isinstance(elementsv2[0], Result):
+                        compute_similarity = self.differ.compute_result_similarity
+
+                if compute_similarity is not None:
+                    mappings.extend(
+                        self._get_mappings_for_api_elements(
+                            elementsv1,
+                            elementsv2,
+                            compute_similarity
+                        )
+                    )
         else:
             mappings.extend(
                 self._get_mappings_for_api_elements(

@@ -3,24 +3,22 @@ from typing import Union, TypeVar, Optional
 
 from package_parser.processing.api.model import Attribute, Result, Parameter, Function, Class
 from package_parser.processing.migration import Mapping, AbstractDiffer
-from package_parser.processing.migration.model._differ import api_element
 
-API_ELEMENTS = TypeVar("API_ELEMENTS", Attribute, Parameter, Result)
+DEPENDENT_API_ELEMENTS = TypeVar("DEPENDENT_API_ELEMENTS", Attribute, Parameter, Result)
+api_element = Union[Attribute, Class, Function, Parameter, Result]
 
 
 @dataclass
 class StrictDiffer(AbstractDiffer):
-    def relevant_comparisons(self) -> Optional[list[tuple[api_element, api_element]]]:
-        relevant_comparisons = []
-        for mapping in self.previous_mappings:
-            for api_element in mapping.get_apiv1_elements():
-                for api_elementv2 in mapping.get_apiv2_elements():
-                    relevant_comparisons.append((api_element, api_elementv2))
-        return relevant_comparisons
-
     previous_mappings: list[Mapping]
 
-    def _is_parent(self, possible_parent: Union[Class, Function, Attribute, Parameter, Result], child: API_ELEMENTS) -> bool:
+    def relevant_comparisons(self) -> Optional[list[tuple[list[api_element], list[api_element]]]]:
+        relevant_comparisons = []
+        for mapping in self.previous_mappings:
+            relevant_comparisons.append((mapping.get_apiv1_elements(), mapping.get_apiv2_elements()))
+        return relevant_comparisons
+
+    def _is_parent(self, possible_parent: Union[Class, Function, Attribute, Parameter, Result], child: DEPENDENT_API_ELEMENTS) -> bool:
         if isinstance(child, Attribute) and isinstance(possible_parent, Class):
             return child.class_id == possible_parent.id
         if isinstance(child, Result) and isinstance(possible_parent, Function):
@@ -29,7 +27,7 @@ class StrictDiffer(AbstractDiffer):
             return child.id.split("/")[:-1] == possible_parent.id
         return False
 
-    def _get_mapping_for_elements(self, apiv1_element: API_ELEMENTS, apiv2_element: API_ELEMENTS) -> tuple[list[Mapping], list[Mapping]]:
+    def _get_mapping_for_elements(self, apiv1_element: DEPENDENT_API_ELEMENTS, apiv2_element: DEPENDENT_API_ELEMENTS) -> tuple[list[Mapping], list[Mapping]]:
         mapping_for_apiv1_elements = []
         mapping_for_apiv2_elements = []
         for mapping in self.previous_mappings:
@@ -43,7 +41,13 @@ class StrictDiffer(AbstractDiffer):
         return mapping_for_apiv1_elements, mapping_for_apiv2_elements
 
     def compute_class_similarity(self, class_a: Class, class_b: Class) -> float:
-        return 1.0
+        classv1 = class_a
+        classv2 = class_b
+
+        for mapping in self.previous_mappings:
+            if classv1 in mapping.get_apiv1_elements() and classv2 in mapping.get_apiv2_elements():
+                return mapping.similarity
+        return 0
 
     def compute_function_similarity(self, function_a: Function, function_b: Function) -> float:
         return 1.0
