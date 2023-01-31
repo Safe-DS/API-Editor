@@ -20,7 +20,9 @@ api_element = Union[Attribute, Class, Function, Parameter, Result]
 class StrictDiffer(AbstractDiffer):
     previous_mappings: list[Mapping]
     differ: AbstractDiffer
-    relevant_comparisons: Optional[list[tuple[list[api_element], list[api_element]]]] = field(init=False)
+    relevant_comparisons: Optional[
+        list[tuple[list[api_element], list[api_element]]]
+    ] = field(init=False)
 
     def __post_init__(self) -> None:
         self.relevant_comparisons = self.get_relevant_comparisons()
@@ -28,7 +30,10 @@ class StrictDiffer(AbstractDiffer):
     def get_relevant_comparisons(
         self,
     ) -> Optional[list[tuple[list[api_element], list[api_element]]]]:
-        if hasattr(self, "relevant_comparisons") and self.relevant_comparisons is not None:
+        if (
+            hasattr(self, "relevant_comparisons")
+            and self.relevant_comparisons is not None
+        ):
             return self.relevant_comparisons
         relevant_comparisons = []
         for mapping in self.previous_mappings:
@@ -133,7 +138,9 @@ class StrictDiffer(AbstractDiffer):
             relevant_apiv2_mappings_include_parameterv1
             or relevant_apiv2_mappings_include_parameterv2
         ):
-            return self.differ.compute_parameter_similarity(parameterv1, parameterv2) / 2
+            return (
+                self.differ.compute_parameter_similarity(parameterv1, parameterv2) / 2
+            )
         return 0.0
 
     def compute_result_similarity(self, result_a: Result, result_b: Result) -> float:
@@ -217,5 +224,7 @@ class StrictDiffer(AbstractDiffer):
             relevant_apiv2_mappings_include_attributev1
             or relevant_apiv2_mappings_include_attributev2
         ):
-            return self.differ.compute_attribute_similarity(attributev1, attributev2) / 2
+            return (
+                self.differ.compute_attribute_similarity(attributev1, attributev2) / 2
+            )
         return 0.0
