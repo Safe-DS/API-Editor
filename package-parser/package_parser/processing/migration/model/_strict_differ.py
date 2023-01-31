@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Optional, TypeVar, Union
 
 from package_parser.processing.api.model import (
@@ -19,10 +19,17 @@ api_element = Union[Attribute, Class, Function, Parameter, Result]
 @dataclass
 class StrictDiffer(AbstractDiffer):
     previous_mappings: list[Mapping]
+    differ: AbstractDiffer
+    relevant_comparisons: list[tuple[list[api_element], list[api_element]]] = field(init=False)
+
+    def __post_init__(self) -> None:
+        self.relevant_comparisons = self.relevant_comparisons()
 
     def relevant_comparisons(
         self,
     ) -> Optional[list[tuple[list[api_element], list[api_element]]]]:
+        if self.relevant_comparisons is None:
+            return self.relevant_comparisons
         relevant_comparisons = []
         for mapping in self.previous_mappings:
             relevant_comparisons.append(
@@ -40,7 +47,7 @@ class StrictDiffer(AbstractDiffer):
         if isinstance(child, Result) and isinstance(possible_parent, Function):
             return child.function_id == possible_parent.id
         if isinstance(child, Parameter) and isinstance(possible_parent, Function):
-            return child.id.split("/")[:-1] == possible_parent.id
+            return "/".join(child.id.split("/")[:-1]) == possible_parent.id
         return False
 
     def _get_mapping_for_elements(
@@ -69,13 +76,22 @@ class StrictDiffer(AbstractDiffer):
                 classv1 in mapping.get_apiv1_elements()
                 and classv2 in mapping.get_apiv2_elements()
             ):
-                return mapping.similarity
+                return self.differ.compute_class_similarity(classv1, classv2)
         return 0
 
     def compute_function_similarity(
         self, function_a: Function, function_b: Function
     ) -> float:
-        return 1.0
+        functionv1 = function_a
+        functionv2 = function_a
+
+        for mapping in self.previous_mappings:
+            if (
+                functionv1 in mapping.get_apiv1_elements()
+                and functionv2 in mapping.get_apiv2_elements()
+            ):
+                return self.differ.compute_function_similarity(functionv1, functionv2)
+        return 0
 
     def compute_parameter_similarity(
         self, parameter_a: Parameter, parameter_b: Parameter
@@ -112,12 +128,12 @@ class StrictDiffer(AbstractDiffer):
             relevant_apiv2_mappings_include_parameterv1
             and relevant_apiv2_mappings_include_parameterv2
         ):
-            return 1.0
+            return self.differ.compute_parameter_similarity(parameterv1, parameterv2)
         if (
             relevant_apiv2_mappings_include_parameterv1
             or relevant_apiv2_mappings_include_parameterv2
         ):
-            return 0.5
+            return self.differ.compute_parameter_similarity(parameterv1, parameterv2) / 2
         return 0.0
 
     def compute_result_similarity(self, result_a: Result, result_b: Result) -> float:
@@ -153,7 +169,7 @@ class StrictDiffer(AbstractDiffer):
             relevant_apiv2_mappings_include_resultv1
             and relevant_apiv2_mappings_include_resultv2
         ):
-            return 1.0
+            return self.differ.compute_result_similarity(resultv1, resultv2)
         if (
             relevant_apiv2_mappings_include_resultv1
             or relevant_apiv2_mappings_include_resultv2
@@ -196,10 +212,10 @@ class StrictDiffer(AbstractDiffer):
             relevant_apiv2_mappings_include_attributev1
             and relevant_apiv2_mappings_include_attributev2
         ):
-            return 1.0
+            return self.differ.compute_attribute_similarity(attributev1, attributev2)
         if (
             relevant_apiv2_mappings_include_attributev1
             or relevant_apiv2_mappings_include_attributev2
         ):
-            return 0.5
+            return self.differ.compute_attribute_similarity(attributev1, attributev2) / 2
         return 0.0
