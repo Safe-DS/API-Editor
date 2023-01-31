@@ -20,15 +20,15 @@ api_element = Union[Attribute, Class, Function, Parameter, Result]
 class StrictDiffer(AbstractDiffer):
     previous_mappings: list[Mapping]
     differ: AbstractDiffer
-    relevant_comparisons: list[tuple[list[api_element], list[api_element]]] = field(init=False)
+    relevant_comparisons: Optional[list[tuple[list[api_element], list[api_element]]]] = field(init=False)
 
     def __post_init__(self) -> None:
-        self.relevant_comparisons = self.relevant_comparisons()
+        self.relevant_comparisons = self.get_relevant_comparisons()
 
-    def relevant_comparisons(
+    def get_relevant_comparisons(
         self,
     ) -> Optional[list[tuple[list[api_element], list[api_element]]]]:
-        if self.relevant_comparisons is None:
+        if hasattr(self, "relevant_comparisons") and self.relevant_comparisons is not None:
             return self.relevant_comparisons
         relevant_comparisons = []
         for mapping in self.previous_mappings:

@@ -138,7 +138,7 @@ class APIMapping:
         self.threshold_of_similarity_between_mappings = (
             threshold_of_similarity_between_mappings
         )
-        self.relevant_comparisons = self.differ.relevant_comparisons()
+        self.relevant_comparisons = self.differ.get_relevant_comparisons()
 
     def _get_mappings_for_api_elements(
         self,
