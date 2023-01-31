@@ -1,6 +1,6 @@
 import re
 from abc import ABC, abstractmethod
-from typing import Callable, Optional, Tuple, TypeVar
+from typing import Callable, Optional, Tuple, TypeVar, Union
 
 from black import FileMode, format_str
 from black.linegen import CannotSplit
@@ -16,6 +16,8 @@ from package_parser.processing.api.model import (
     Result,
     UnionType,
 )
+
+api_element = Union[Attribute, Class, Function, Parameter, Result]
 
 
 class AbstractDiffer(ABC):
@@ -47,6 +49,12 @@ class AbstractDiffer(ABC):
     def compute_result_similarity(self, result_a: Result, result_b: Result) -> float:
         pass
 
+    @abstractmethod
+    def relevant_comparisons(
+        self,
+    ) -> Optional[list[tuple[list[api_element], list[api_element]]]]:
+        pass
+
 
 X = TypeVar("X")
 
@@ -74,6 +82,11 @@ class SimpleDiffer(AbstractDiffer):
     assigned_by_look_up_similarity: dict[
         ParameterAssignment, dict[ParameterAssignment, float]
     ]
+
+    def relevant_comparisons(
+        self,
+    ) -> Optional[list[tuple[list[api_element], list[api_element]]]]:
+        return None
 
     def __init__(self) -> None:
         distance_between_implicit_and_explicit = 0.3

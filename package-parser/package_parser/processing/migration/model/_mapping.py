@@ -117,6 +117,9 @@ class APIMapping:
     apiv1: API
     apiv2: API
     differ: AbstractDiffer
+    relevant_comparisons: Optional[
+        list[tuple[list[api_element], list[api_element]]]
+    ] = None
 
     def __init__(
         self,
@@ -135,6 +138,9 @@ class APIMapping:
         self.threshold_of_similarity_between_mappings = (
             threshold_of_similarity_between_mappings
         )
+
+    def __post_init__(self) -> None:
+        self.relevant_comparisons = self.differ.relevant_comparisons()
 
     def _get_mappings_for_api_elements(
         self,
@@ -159,59 +165,154 @@ class APIMapping:
 
     def map_api(self) -> List[Mapping]:
         mappings: List[Mapping] = []
-        mappings.extend(
-            self._get_mappings_for_api_elements(
-                list(self.apiv1.classes.values()),
-                list(self.apiv2.classes.values()),
-                self.differ.compute_class_similarity,
+        if self.relevant_comparisons is not None:
+            for relevant_comparison in self.relevant_comparisons:
+                elementsv1, elementsv2 = relevant_comparison
+                if len(elementsv1) > 0 and len(elementsv2) > 0:
+                    if isinstance(elementsv1[0], Attribute) and isinstance(
+                        elementsv2[0], Attribute
+                    ):
+                        mappings.extend(
+                            self._get_mappings_for_api_elements(
+                                [
+                                    element
+                                    for element in elementsv1
+                                    if isinstance(element, Attribute)
+                                ],
+                                [
+                                    element
+                                    for element in elementsv2
+                                    if isinstance(element, Attribute)
+                                ],
+                                self.differ.compute_attribute_similarity,
+                            )
+                        )
+                    elif isinstance(elementsv1[0], Class) and isinstance(
+                        elementsv2[0], Class
+                    ):
+                        mappings.extend(
+                            self._get_mappings_for_api_elements(
+                                [
+                                    element
+                                    for element in elementsv1
+                                    if isinstance(element, Class)
+                                ],
+                                [
+                                    element
+                                    for element in elementsv2
+                                    if isinstance(element, Class)
+                                ],
+                                self.differ.compute_class_similarity,
+                            )
+                        )
+                    elif isinstance(elementsv1[0], Function) and isinstance(
+                        elementsv2[0], Function
+                    ):
+                        mappings.extend(
+                            self._get_mappings_for_api_elements(
+                                [
+                                    element
+                                    for element in elementsv1
+                                    if isinstance(element, Function)
+                                ],
+                                [
+                                    element
+                                    for element in elementsv2
+                                    if isinstance(element, Function)
+                                ],
+                                self.differ.compute_function_similarity,
+                            )
+                        )
+                    elif isinstance(elementsv1[0], Parameter) and isinstance(
+                        elementsv2[0], Parameter
+                    ):
+                        mappings.extend(
+                            self._get_mappings_for_api_elements(
+                                [
+                                    element
+                                    for element in elementsv1
+                                    if isinstance(element, Parameter)
+                                ],
+                                [
+                                    element
+                                    for element in elementsv2
+                                    if isinstance(element, Parameter)
+                                ],
+                                self.differ.compute_parameter_similarity,
+                            )
+                        )
+                    elif isinstance(elementsv1[0], Result) and isinstance(
+                        elementsv2[0], Result
+                    ):
+                        mappings.extend(
+                            self._get_mappings_for_api_elements(
+                                [
+                                    element
+                                    for element in elementsv1
+                                    if isinstance(element, Result)
+                                ],
+                                [
+                                    element
+                                    for element in elementsv2
+                                    if isinstance(element, Result)
+                                ],
+                                self.differ.compute_result_similarity,
+                            )
+                        )
+        else:
+            mappings.extend(
+                self._get_mappings_for_api_elements(
+                    list(self.apiv1.classes.values()),
+                    list(self.apiv2.classes.values()),
+                    self.differ.compute_class_similarity,
+                )
             )
-        )
-        mappings.extend(
-            self._get_mappings_for_api_elements(
-                list(self.apiv1.functions.values()),
-                list(self.apiv2.functions.values()),
-                self.differ.compute_function_similarity,
+            mappings.extend(
+                self._get_mappings_for_api_elements(
+                    list(self.apiv1.functions.values()),
+                    list(self.apiv2.functions.values()),
+                    self.differ.compute_function_similarity,
+                )
             )
-        )
-        mappings.extend(
-            self._get_mappings_for_api_elements(
-                list(self.apiv1.parameters().values()),
-                list(self.apiv2.parameters().values()),
-                self.differ.compute_parameter_similarity,
+            mappings.extend(
+                self._get_mappings_for_api_elements(
+                    list(self.apiv1.parameters().values()),
+                    list(self.apiv2.parameters().values()),
+                    self.differ.compute_parameter_similarity,
+                )
             )
-        )
 
-        mappings.extend(
-            self._get_mappings_for_api_elements(
-                [
-                    attribute
-                    for class_ in self.apiv1.classes.values()
-                    for attribute in class_.instance_attributes
-                ],
-                [
-                    attribute
-                    for class_ in self.apiv2.classes.values()
-                    for attribute in class_.instance_attributes
-                ],
-                self.differ.compute_attribute_similarity,
+            mappings.extend(
+                self._get_mappings_for_api_elements(
+                    [
+                        attribute
+                        for class_ in self.apiv1.classes.values()
+                        for attribute in class_.instance_attributes
+                    ],
+                    [
+                        attribute
+                        for class_ in self.apiv2.classes.values()
+                        for attribute in class_.instance_attributes
+                    ],
+                    self.differ.compute_attribute_similarity,
+                )
             )
-        )
 
-        mappings.extend(
-            self._get_mappings_for_api_elements(
-                [
-                    result
-                    for function in self.apiv1.functions.values()
-                    for result in function.results
-                ],
-                [
-                    result
-                    for function in self.apiv2.functions.values()
-                    for result in function.results
-                ],
-                self.differ.compute_result_similarity,
+            mappings.extend(
+                self._get_mappings_for_api_elements(
+                    [
+                        result
+                        for function in self.apiv1.functions.values()
+                        for result in function.results
+                    ],
+                    [
+                        result
+                        for function in self.apiv2.functions.values()
+                        for result in function.results
+                    ],
+                    self.differ.compute_result_similarity,
+                )
             )
-        )
 
         mappings.sort(key=Mapping.get_similarity, reverse=True)
         return mappings
