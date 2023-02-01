@@ -12,7 +12,9 @@ from package_parser.processing.api.model import (
 from ._differ import AbstractDiffer
 from ._mapping import Mapping
 
-DEPENDENT_API_ELEMENTS = TypeVar("DEPENDENT_API_ELEMENTS", Function, Attribute, Parameter, Result)
+DEPENDENT_API_ELEMENTS = TypeVar(
+    "DEPENDENT_API_ELEMENTS", Function, Attribute, Parameter, Result
+)
 api_element = Union[Attribute, Class, Function, Parameter, Result]
 
 
@@ -126,9 +128,7 @@ class StrictDiffer(AbstractDiffer):
             relevant_apiv2_mappings_include_functionv1
             or relevant_apiv2_mappings_include_functionv2
         ):
-            return (
-                self.differ.compute_function_similarity(functionv1, functionv2) / 2
-            )
+            return self.differ.compute_function_similarity(functionv1, functionv2) / 2
         return 0.0
 
     def compute_parameter_similarity(
