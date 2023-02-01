@@ -27,6 +27,11 @@ def _run_migrate_command(
     differ = SimpleDiffer()
     api_mapping = APIMapping(apiv1, apiv2, differ)
     mappings = api_mapping.map_api()
+
+    print_only_migration = Migration(annotationsv1, mappings)
+    print_only_migration.migrate_annotations()
+    print_only_migration.print(apiv1, apiv2, True)
+
     enhanced_api_mapping = APIMapping(apiv1, apiv2, StrictDiffer(mappings, differ))
     enhanced_mappings = enhanced_api_mapping.map_api()
 
