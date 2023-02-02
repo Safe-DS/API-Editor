@@ -55,7 +55,7 @@
         "@types/react-router-dom": "^5.3.3",
         "@types/react-syntax-highlighter": "^15.5.5",
         "@types/react-window": "^1.8.4",
-        "@types/uuid": "^8.3.4",
+        "@types/uuid": "^9.0.0",
         "@vitejs/plugin-react": "^2.2.0",
         "jest": "^28.1.3",
         "node-fetch": "^2.6.7",
