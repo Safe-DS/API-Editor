@@ -338,7 +338,7 @@ class SimpleDiffer(AbstractDiffer):
         :return: value between 0 and 1, where 1 means that the elements are equal
         """
         if parameterv1.id in self.previous_parameter_similarity and parameterv2.id in self.previous_parameter_similarity[parameterv1.id]:
-            return self.previous_parameter_similarity.get(parameterv1.id).get(parameterv2.id)
+            return self.previous_parameter_similarity[parameterv1.id][parameterv2.id]
 
         normalize_similarity = 6
         parameter_name_similarity = self._compute_name_similarity(
