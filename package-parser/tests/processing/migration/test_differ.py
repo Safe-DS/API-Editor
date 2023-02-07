@@ -25,7 +25,7 @@ differ_list = [
 @pytest.mark.parametrize(
     "differ",
     differ_list,
-)
+)  # type: ignore
 def test_attribute_similarity(differ: AbstractDiffer):
     attribute_a = Attribute("test_string", NamedType("str"))
     assert differ.compute_attribute_similarity(attribute_a, attribute_a) == 1
@@ -41,8 +41,8 @@ def test_attribute_similarity(differ: AbstractDiffer):
 @pytest.mark.parametrize(
     "differ",
     differ_list,
-)
-def test_class_similarity(differ: AbstractDiffer):
+)  # type: ignore
+def test_class_similarity(differ: AbstractDiffer) -> None:
     code_a = cleandoc(
         """
     class Test:
@@ -83,23 +83,23 @@ def test_class_similarity(differ: AbstractDiffer):
 @pytest.mark.parametrize(
     "differ",
     differ_list,
-)
-def test_function_similarity(differ: AbstractDiffer):
+)  # type: ignore
+def test_function_similarity(differ: AbstractDiffer) -> None:
     parameters = [
         Parameter(
             "test/test.Test/test/test_parameter",
             "test_parameter",
             "test.Test.test.test_parameter",
-            "str",
+            "'test_str'",
             ParameterAssignment.POSITION_OR_NAME,
             True,
-            ParameterDocumentation("str", "", ""),
+            ParameterDocumentation("'test_str'", "", ""),
         )
     ]
     results: list[Result] = []
     code_a = cleandoc(
         """
-    det test(test_parameter: str):
+    def test(test_parameter: str):
         \"\"\"
         This test function is a work
         \"\"\"
@@ -124,7 +124,7 @@ def test_function_similarity(differ: AbstractDiffer):
 
     code_b = cleandoc(
         """
-    det test_method(test_parameter: str):
+    def test_method(test_parameter: str):
         \"\"\"
         This test function is a concept.
         \"\"\"
@@ -136,10 +136,10 @@ def test_function_similarity(differ: AbstractDiffer):
             "test/test.Test/test_method/test_parameter",
             "test_parameter",
             "test.Test.test_method.test_parameter",
-            "str",
+            "'test_str'",
             ParameterAssignment.POSITION_OR_NAME,
             True,
-            ParameterDocumentation("str", "", ""),
+            ParameterDocumentation("'test_str'", "", ""),
         )
     ]
     function_b = Function(
@@ -162,45 +162,45 @@ def test_function_similarity(differ: AbstractDiffer):
 @pytest.mark.parametrize(
     "differ",
     differ_list,
-)
-def test_parameter_similarity(differ: AbstractDiffer):
+)  # type: ignore
+def test_parameter_similarity(differ: AbstractDiffer) -> None:
     parameter_a = Parameter(
         "test/test.Test/test_method/test_parameter",
         "test_parameter",
         "test.Test.test_method.test_parameter",
-        "str",
+        "'str'",
         ParameterAssignment.POSITION_OR_NAME,
         True,
-        ParameterDocumentation("str", "", ""),
+        ParameterDocumentation("'str'", "", ""),
     )
     parameter_b = Parameter(
         "test/test.Test/test_method/test_parameter",
         "test_parameter",
         "test.Test.test_method.test_parameter",
-        "int",
+        "5",
         ParameterAssignment.POSITION_OR_NAME,
         True,
         ParameterDocumentation("int", "", ""),
     )
-    assert differ.compute_parameter_similarity(parameter_a, parameter_b) > 0.5
+    assert 0.45 < differ.compute_parameter_similarity(parameter_a, parameter_b) < 0.6
 
     parameter_a = Parameter(
         "test/test.Test/test_method/test_parameter_new_name",
         "test_parameter_new_name",
         "test.Test.test_method.test_parameter_new_name",
-        "int",
+        "9",
         ParameterAssignment.POSITION_OR_NAME,
         True,
         ParameterDocumentation("int", "", ""),
     )
-    assert differ.compute_parameter_similarity(parameter_a, parameter_b) > 0.8
+    assert 0.7 < differ.compute_parameter_similarity(parameter_a, parameter_b) < 0.8
 
 
 @pytest.mark.parametrize(
     "differ",
     differ_list,
-)
-def test_result_similarity(differ: AbstractDiffer):
+)  # type: ignore
+def test_result_similarity(differ: AbstractDiffer) -> None:
     result_a = Result("config", ResultDocstring("dict", ""))
     assert differ.compute_result_similarity(result_a, result_a) == 1
 
