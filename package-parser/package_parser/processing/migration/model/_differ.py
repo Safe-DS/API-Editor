@@ -467,10 +467,10 @@ class SimpleDiffer(AbstractDiffer):
                 return 1.0
             return 0.5
         valuev1_is_in_quotation_marks = (
-                                            default_valuev1.startswith("'") and default_valuev1.endswith("'")
+            default_valuev1.startswith("'") and default_valuev1.endswith("'")
         ) or (default_valuev1.startswith('"') and default_valuev1.endswith('"'))
         valuev2_is_in_quotation_marks = (
-                                            default_valuev2.startswith("'") and default_valuev2.endswith("'")
+            default_valuev2.startswith("'") and default_valuev2.endswith("'")
         ) or (default_valuev2.startswith('"') and default_valuev2.endswith('"'))
         if valuev1_is_in_quotation_marks and valuev2_is_in_quotation_marks:
             if default_valuev1[1:-1] == default_valuev2[1:-1]:
