@@ -112,7 +112,6 @@ class SimpleDiffer(AbstractDiffer):
     assigned_by_look_up_similarity: dict[
         ParameterAssignment, dict[ParameterAssignment, float]
     ]
-    previous_id_similarity: dict[str, dict[str, float]] = {}
     previous_parameter_similarity: dict[str, dict[str, float]] = {}
 
     def get_relevant_comparisons(
@@ -338,11 +337,8 @@ class SimpleDiffer(AbstractDiffer):
         :param parameterv2: attribute from apiv2
         :return: value between 0 and 1, where 1 means that the elements are equal
         """
-        stored_result = self.previous_id_similarity.get(parameterv1.id, {}).get(
-            parameterv2.id, -1
-        )
-        if stored_result >= 0:
-            return stored_result
+        if parameterv1.id in self.previous_parameter_similarity and parameterv2.id in self.previous_parameter_similarity[parameterv1.id]:
+            return self.previous_parameter_similarity.get(parameterv1.id).get(parameterv2.id)
 
         normalize_similarity = 6
         parameter_name_similarity = self._compute_name_similarity(
@@ -382,7 +378,7 @@ class SimpleDiffer(AbstractDiffer):
             + parameter_documentation_similarity
             + id_similarity
         ) / normalize_similarity
-        if self.previous_parameter_similarity.get(parameterv1.id, None) is None:
+        if parameterv1.id not in self.previous_parameter_similarity:
             self.previous_parameter_similarity[parameterv1.id] = {}
         self.previous_parameter_similarity[parameterv1.id][parameterv2.id] = result
         return result
@@ -494,9 +490,6 @@ class SimpleDiffer(AbstractDiffer):
         return 1 - documentation_similarity
 
     def _compute_id_similarity(self, idv1: str, idv2: str) -> float:
-        stored_result = self.previous_id_similarity.get(idv1, {}).get(idv2, -1)
-        if stored_result >= 0:
-            return stored_result
         module_pathv1 = idv1.split("/")[1].split(".")
         additional_module_pathv1 = idv1.split("/")[2:-1]
         if len(additional_module_pathv1) > 0:
@@ -513,9 +506,6 @@ class SimpleDiffer(AbstractDiffer):
             module_pathv1, module_pathv2, cost_function, iteration=0
         )
         result = 1 - (total_costs / sum(range(1, max_iterations + 1)))
-        if self.previous_id_similarity.get(idv1, None) is None:
-            self.previous_id_similarity[idv1] = {}
-        self.previous_id_similarity[idv1][idv2] = stored_result
         return result
 
 
