@@ -30,7 +30,7 @@
         "react-chartjs-2": "^4.3.1",
         "react-dom": "^18.2.0",
         "react-dropzone": "^14.2.3",
-        "react-hook-form": "^7.41.3",
+        "react-hook-form": "^7.43.1",
         "react-icons": "^4.7.1",
         "react-markdown": "^8.0.5",
         "react-redux": "^8.0.5",
