@@ -1,7 +1,6 @@
 import re
 from abc import ABC, abstractmethod
 from typing import Callable, Optional, Tuple, TypeVar, Union
-from typing import Callable, Optional, Tuple, TypeVar
 
 from black import FileMode, format_str
 from black.linegen import CannotSplit
