@@ -1,4 +1,4 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Optional, TypeVar, Union
 
 from package_parser.processing.api.model import (
@@ -22,27 +22,11 @@ api_element = Union[Attribute, Class, Function, Parameter, Result]
 class StrictDiffer(AbstractDiffer):
     previous_mappings: list[Mapping]
     differ: AbstractDiffer
-    relevant_comparisons: Optional[
-        list[tuple[list[api_element], list[api_element]]]
-    ] = field(init=False)
-
-    def __post_init__(self) -> None:
-        self.relevant_comparisons = self.get_relevant_comparisons()
 
     def get_relevant_comparisons(
         self,
-    ) -> Optional[list[tuple[list[api_element], list[api_element]]]]:
-        if (
-            hasattr(self, "relevant_comparisons")
-            and self.relevant_comparisons is not None
-        ):
-            return self.relevant_comparisons
-        relevant_comparisons = []
-        for mapping in self.previous_mappings:
-            relevant_comparisons.append(
-                (mapping.get_apiv1_elements(), mapping.get_apiv2_elements())
-            )
-        return relevant_comparisons
+    ) -> Optional[list[Mapping]]:
+        return self.previous_mappings
 
     def _is_parent(
         self,
@@ -58,6 +42,42 @@ class StrictDiffer(AbstractDiffer):
         if isinstance(child, Function) and isinstance(possible_parent, Class):
             return "/".join(child.id.split("/")[:-1]) == possible_parent.id
         return False
+
+    def _api_elements_are_mapped_to_each_other(
+        self,
+        api_elementv1: DEPENDENT_API_ELEMENTS,
+        api_elementv2: DEPENDENT_API_ELEMENTS,
+    ) -> bool:
+        (
+            relevant_apiv1_mappings,
+            relevant_apiv2_mappings,
+        ) = self._get_mapping_for_elements(api_elementv1, api_elementv2)
+        relevant_apiv2_mappings_include_functionv1 = (
+            len(
+                [
+                    parent
+                    for mapping in relevant_apiv2_mappings
+                    for parent in mapping.get_apiv1_elements()
+                    if self._is_parent(parent, api_elementv1)
+                ]
+            )
+            == 1
+        )
+        relevant_apiv2_mappings_include_functionv2 = (
+            len(
+                [
+                    parent
+                    for mapping in relevant_apiv1_mappings
+                    for parent in mapping.get_apiv2_elements()
+                    if self._is_parent(parent, api_elementv2)
+                ]
+            )
+            == 1
+        )
+        return (
+            relevant_apiv2_mappings_include_functionv1
+            and relevant_apiv2_mappings_include_functionv2
+        )
 
     def _get_mapping_for_elements(
         self,
@@ -76,10 +96,13 @@ class StrictDiffer(AbstractDiffer):
                         mapping_for_apiv2_elements.append(mapping)
         return mapping_for_apiv1_elements, mapping_for_apiv2_elements
 
-    def compute_class_similarity(self, class_a: Class, class_b: Class) -> float:
-        classv1 = class_a
-        classv2 = class_b
-
+    def compute_class_similarity(self, classv1: Class, classv2: Class) -> float:
+        """
+        Computes similarity between classes from apiv1 and apiv2
+        :param classv1: attribute from apiv1
+        :param classv2: attribute from apiv2
+        :return: if the classes are mapped together, the similarity of the previous differ, or else 0.
+        """
         for mapping in self.previous_mappings:
             if (
                 classv1 in mapping.get_apiv1_elements()
@@ -89,175 +112,45 @@ class StrictDiffer(AbstractDiffer):
         return 0
 
     def compute_function_similarity(
-        self, function_a: Function, function_b: Function
+        self, functionv1: Function, functionv2: Function
     ) -> float:
-        functionv1 = function_a
-        functionv2 = function_b
-        (
-            relevant_apiv1_mappings,
-            relevant_apiv2_mappings,
-        ) = self._get_mapping_for_elements(functionv1, functionv2)
-        relevant_apiv2_mappings_include_functionv1 = (
-            len(
-                [
-                    class_
-                    for mapping in relevant_apiv2_mappings
-                    for class_ in mapping.get_apiv1_elements()
-                    if self._is_parent(class_, functionv1)
-                ]
-            )
-            == 1
-        )
-        relevant_apiv2_mappings_include_functionv2 = (
-            len(
-                [
-                    class_
-                    for mapping in relevant_apiv1_mappings
-                    for class_ in mapping.get_apiv2_elements()
-                    if self._is_parent(class_, functionv2)
-                ]
-            )
-            == 1
-        )
-        if (
-            relevant_apiv2_mappings_include_functionv1
-            and relevant_apiv2_mappings_include_functionv2
-        ):
+        """
+        Computes similarity between functions from apiv1 and apiv2.
+        :param functionv1: attribute from apiv1
+        :param functionv2: attribute from apiv2
+        :return: if the functions are mapped together, the similarity of the previous differ, or else 0.
+        """
+        if self._api_elements_are_mapped_to_each_other(functionv1, functionv2):
             return self.differ.compute_function_similarity(functionv1, functionv2)
-        if (
-            relevant_apiv2_mappings_include_functionv1
-            or relevant_apiv2_mappings_include_functionv2
-        ):
-            return self.differ.compute_function_similarity(functionv1, functionv2) / 2
         return 0.0
 
     def compute_parameter_similarity(
-        self, parameter_a: Parameter, parameter_b: Parameter
+        self, parameterv1: Parameter, parameterv2: Parameter
     ) -> float:
-        parameterv1 = parameter_a
-        parameterv2 = parameter_b
-        (
-            relevant_apiv1_mappings,
-            relevant_apiv2_mappings,
-        ) = self._get_mapping_for_elements(parameterv1, parameterv2)
-        relevant_apiv2_mappings_include_parameterv1 = (
-            len(
-                [
-                    function
-                    for mapping in relevant_apiv2_mappings
-                    for function in mapping.get_apiv1_elements()
-                    if self._is_parent(function, parameterv1)
-                ]
-            )
-            == 1
-        )
-        relevant_apiv2_mappings_include_parameterv2 = (
-            len(
-                [
-                    function
-                    for mapping in relevant_apiv1_mappings
-                    for function in mapping.get_apiv2_elements()
-                    if self._is_parent(function, parameterv2)
-                ]
-            )
-            == 1
-        )
-        if (
-            relevant_apiv2_mappings_include_parameterv1
-            and relevant_apiv2_mappings_include_parameterv2
-        ):
+        """
+        Computes similarity between parameters from apiv1 and apiv2.
+        :param parameterv1: attribute from apiv1
+        :param parameterv2: attribute from apiv2
+        :return: if the parameters are mapped together, the similarity of the previous differ, or else 0.
+        """
+        if self._api_elements_are_mapped_to_each_other(parameterv1, parameterv2):
             return self.differ.compute_parameter_similarity(parameterv1, parameterv2)
-        if (
-            relevant_apiv2_mappings_include_parameterv1
-            or relevant_apiv2_mappings_include_parameterv2
-        ):
-            return (
-                self.differ.compute_parameter_similarity(parameterv1, parameterv2) / 2
-            )
         return 0.0
 
-    def compute_result_similarity(self, result_a: Result, result_b: Result) -> float:
-        resultv1 = result_a
-        resultv2 = result_b
-        (
-            relevant_apiv1_mappings,
-            relevant_apiv2_mappings,
-        ) = self._get_mapping_for_elements(resultv1, resultv2)
-        relevant_apiv2_mappings_include_resultv1 = (
-            len(
-                [
-                    function
-                    for mapping in relevant_apiv2_mappings
-                    for function in mapping.get_apiv1_elements()
-                    if self._is_parent(function, resultv1)
-                ]
-            )
-            == 1
-        )
-        relevant_apiv2_mappings_include_resultv2 = (
-            len(
-                [
-                    function
-                    for mapping in relevant_apiv1_mappings
-                    for function in mapping.get_apiv2_elements()
-                    if self._is_parent(function, resultv2)
-                ]
-            )
-            == 1
-        )
-        if (
-            relevant_apiv2_mappings_include_resultv1
-            and relevant_apiv2_mappings_include_resultv2
-        ):
+    def compute_result_similarity(self, resultv1: Result, resultv2: Result) -> float:
+        """
+        Computes similarity between results from apiv1 and apiv2.
+        :param resultv1: attribute from apiv1
+        :param resultv2: attribute from apiv2
+        :return: if the parameters are mapped together, the similarity of the previous differ, or else 0.
+        """
+        if self._api_elements_are_mapped_to_each_other(resultv1, resultv2):
             return self.differ.compute_result_similarity(resultv1, resultv2)
-        if (
-            relevant_apiv2_mappings_include_resultv1
-            or relevant_apiv2_mappings_include_resultv2
-        ):
-            return 0.5
         return 0.0
 
     def compute_attribute_similarity(
-        self, attributes_a: Attribute, attributes_b: Attribute
+        self, attributev1: Attribute, attributev2: Attribute
     ) -> float:
-        attributev1 = attributes_a
-        attributev2 = attributes_b
-        (
-            relevant_apiv1_mappings,
-            relevant_apiv2_mappings,
-        ) = self._get_mapping_for_elements(attributev1, attributev2)
-        relevant_apiv2_mappings_include_attributev1 = (
-            len(
-                [
-                    class_
-                    for mapping in relevant_apiv2_mappings
-                    for class_ in mapping.get_apiv1_elements()
-                    if self._is_parent(class_, attributev1)
-                ]
-            )
-            == 1
-        )
-        relevant_apiv2_mappings_include_attributev2 = (
-            len(
-                [
-                    class_
-                    for mapping in relevant_apiv1_mappings
-                    for class_ in mapping.get_apiv2_elements()
-                    if self._is_parent(class_, attributev2)
-                ]
-            )
-            == 1
-        )
-        if (
-            relevant_apiv2_mappings_include_attributev1
-            and relevant_apiv2_mappings_include_attributev2
-        ):
+        if self._api_elements_are_mapped_to_each_other(attributev1, attributev2):
             return self.differ.compute_attribute_similarity(attributev1, attributev2)
-        if (
-            relevant_apiv2_mappings_include_attributev1
-            or relevant_apiv2_mappings_include_attributev2
-        ):
-            return (
-                self.differ.compute_attribute_similarity(attributev1, attributev2) / 2
-            )
         return 0.0
