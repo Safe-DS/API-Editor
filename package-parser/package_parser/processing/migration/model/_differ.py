@@ -261,7 +261,9 @@ class SimpleDiffer(AbstractDiffer):
     def compute_parameter_similarity(
         self, parameter_a: Parameter, parameter_b: Parameter
     ) -> float:
-        stored_result = self.previous_id_similarity.get(parameter_a.id, {}).get(parameter_b.id, -1)
+        stored_result = self.previous_id_similarity.get(parameter_a.id, {}).get(
+            parameter_b.id, -1
+        )
         if stored_result >= 0:
             return stored_result
 
@@ -295,7 +297,14 @@ class SimpleDiffer(AbstractDiffer):
 
         id_similarity = self._compute_id_similarity(parameter_a.id, parameter_b.id)
 
-        result = (parameter_name_similarity + parameter_type_similarity + parameter_assignment_similarity + parameter_default_value_similarity + parameter_documentation_similarity + id_similarity) / normalize_similarity
+        result = (
+            parameter_name_similarity
+            + parameter_type_similarity
+            + parameter_assignment_similarity
+            + parameter_default_value_similarity
+            + parameter_documentation_similarity
+            + id_similarity
+        ) / normalize_similarity
         self.previous_parameter_similarity[parameter_a.id][parameter_b.id] = result
         return result
 
