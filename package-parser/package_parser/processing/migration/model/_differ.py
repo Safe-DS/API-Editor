@@ -305,7 +305,9 @@ class SimpleDiffer(AbstractDiffer):
             + parameter_documentation_similarity
             + id_similarity
         ) / normalize_similarity
-        self.previous_parameter_similarity.get(parameter_a.id, {})[
+        if self.previous_parameter_similarity.get(parameter_a.id, None) is None:
+            self.previous_parameter_similarity[parameter_a.id] = {}
+        self.previous_parameter_similarity[parameter_a.id][
             parameter_b.id
         ] = result
         return result
@@ -431,6 +433,8 @@ class SimpleDiffer(AbstractDiffer):
             module_path_a, module_path_b, cost_function, iteration=0
         )
         result = 1 - (total_costs / sum(range(1, max_iterations + 1)))
+        if self.previous_id_similarity.get(id_a, None) is None:
+            self.previous_id_similarity[id_a] = {}
         self.previous_id_similarity[id_a][id_b] = stored_result
         return result
 
