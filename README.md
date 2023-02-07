@@ -16,20 +16,20 @@ The automation described above relies on structured information about the existi
     java -jar api-editor-<version>.jar
     ```
 4. Open [localhost:4280](http://localhost:4280) in your browser.
-5. In the window that opens, enter your username in the bottom right field. 
+5. In the window that opens, enter your username in the bottom right field.
 6. Download the contents of the [`data`](data) folder of this project. Alternatively, compute the required data for another Python API using the [package-parser][package-parser].
 7. Open `File > Import > API Data` and upload the API data that you stored locally.
 8. Open `File > Import > Usages` and upload the usage data that you stored locally.
 9. Open `File > Import > Annotations` and upload the annotation data that you stored locally (from the repository or your own prior usages of the tool).
 
-Now you are ready to explore the API and review existing annotations.  
+Now you are ready to explore the API and review existing annotations.
 
 ## For Developers
 
 ### Installation
 
 1. Install [OpenJDK 17](https://adoptium.net/).
-2. Install [Node.js 16.x](https://nodejs.org/en/).
+2. Install [Node.js 18.x](https://nodejs.org/en/).
 3. Build everything:
     ```shell
     ./gradlew build
@@ -49,6 +49,5 @@ Now you are ready to explore the API and review existing annotations.
 3. Open [localhost:5173](http://localhost:5173) in your browser.
 
 [package-parser]: ./package-parser
-
 [safe-ds]: https://github.com/lars-reimann/safe-data-science
 [adapter-pattern]: https://en.wikipedia.org/wiki/Adapter_pattern

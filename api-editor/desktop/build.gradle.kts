@@ -37,12 +37,12 @@ compose.desktop {
 
 dependencies {
     implementation(compose.desktop.currentOs)
-    implementation("org.jetbrains.compose.components:components-splitpane:1.2.1")
+    implementation("org.jetbrains.compose.components:components-splitpane:1.3.0")
 
     testImplementation(kotlin("test"))
     testImplementation("io.kotest:kotest-assertions-core-jvm:5.5.4")
-    testImplementation("io.mockk:mockk:1.13.3")
-    testImplementation("org.junit.jupiter:junit-jupiter-params:5.9.1")
+    testImplementation("io.mockk:mockk:1.13.4")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:5.9.2")
 }
 
 // Tasks ---------------------------------------------------------------------------------------------------------------
