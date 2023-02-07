@@ -73,6 +73,8 @@ class SimpleDiffer(AbstractDiffer):
     assigned_by_look_up_similarity: dict[
         ParameterAssignment, dict[ParameterAssignment, float]
     ]
+    previous_id_similarity: dict[str, dict[str, float]] = {}
+    previous_parameter_similarity: dict[str, dict[str, float]] = {}
 
     def __init__(self) -> None:
         distance_between_implicit_and_explicit = 0.3
@@ -259,6 +261,10 @@ class SimpleDiffer(AbstractDiffer):
     def compute_parameter_similarity(
         self, parameter_a: Parameter, parameter_b: Parameter
     ) -> float:
+        stored_result = self.previous_id_similarity.get(parameter_a.id, {}).get(parameter_b.id, -1)
+        if stored_result >= 0:
+            return stored_result
+
         normalize_similarity = 6
         parameter_name_similarity = self._compute_name_similarity(
             parameter_a.name, parameter_b.name
@@ -289,14 +295,9 @@ class SimpleDiffer(AbstractDiffer):
 
         id_similarity = self._compute_id_similarity(parameter_a.id, parameter_b.id)
 
-        return (
-            parameter_name_similarity
-            + parameter_type_similarity
-            + parameter_assignment_similarity
-            + parameter_default_value_similarity
-            + parameter_documentation_similarity
-            + id_similarity
-        ) / normalize_similarity
+        result = (parameter_name_similarity + parameter_type_similarity + parameter_assignment_similarity + parameter_default_value_similarity + parameter_documentation_similarity + id_similarity) / normalize_similarity
+        self.previous_parameter_similarity[parameter_a.id][parameter_b.id] = result
+        return result
 
     def _compute_type_similarity(
         self, type_a: Optional[AbstractType], type_b: Optional[AbstractType]
@@ -399,6 +400,10 @@ class SimpleDiffer(AbstractDiffer):
         return 1 - documentation_similarity
 
     def _compute_id_similarity(self, id_a: str, id_b: str) -> float:
+        stored_result = self.previous_id_similarity.get(id_a, {}).get(id_b, -1)
+        if stored_result >= 0:
+            return stored_result
+
         module_path_a = id_a.split("/")[1].split(".")
         additional_module_path_a = id_a.split("/")[2:-1]
         if len(additional_module_path_a) > 0:
@@ -414,7 +419,9 @@ class SimpleDiffer(AbstractDiffer):
         total_costs, max_iterations = distance_elements_with_cost_function(
             module_path_a, module_path_b, cost_function, iteration=0
         )
-        return 1 - (total_costs / sum(range(1, max_iterations + 1)))
+        result = 1 - (total_costs / sum(range(1, max_iterations + 1)))
+        self.previous_id_similarity[id_a][id_b] = stored_result
+        return result
 
 
 def distance_elements_with_cost_function(
