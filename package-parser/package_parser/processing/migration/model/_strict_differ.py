@@ -12,7 +12,9 @@ from package_parser.processing.api.model import (
 from ._differ import AbstractDiffer
 from ._mapping import Mapping
 
-DEPENDENT_API_ELEMENTS = TypeVar("DEPENDENT_API_ELEMENTS", Attribute, Parameter, Result)
+DEPENDENT_API_ELEMENTS = TypeVar(
+    "DEPENDENT_API_ELEMENTS", Function, Attribute, Parameter, Result
+)
 api_element = Union[Attribute, Class, Function, Parameter, Result]
 
 
@@ -88,15 +90,44 @@ class StrictDiffer(AbstractDiffer):
         self, function_a: Function, function_b: Function
     ) -> float:
         functionv1 = function_a
-        functionv2 = function_a
-
-        for mapping in self.previous_mappings:
-            if (
-                functionv1 in mapping.get_apiv1_elements()
-                and functionv2 in mapping.get_apiv2_elements()
-            ):
-                return self.differ.compute_function_similarity(functionv1, functionv2)
-        return 0
+        functionv2 = function_b
+        (
+            relevant_apiv1_mappings,
+            relevant_apiv2_mappings,
+        ) = self._get_mapping_for_elements(functionv1, functionv2)
+        relevant_apiv2_mappings_include_functionv1 = (
+            len(
+                [
+                    class_
+                    for mapping in relevant_apiv2_mappings
+                    for class_ in mapping.get_apiv1_elements()
+                    if self._is_parent(class_, functionv1)
+                ]
+            )
+            == 1
+        )
+        relevant_apiv2_mappings_include_functionv2 = (
+            len(
+                [
+                    class_
+                    for mapping in relevant_apiv1_mappings
+                    for class_ in mapping.get_apiv2_elements()
+                    if self._is_parent(class_, functionv2)
+                ]
+            )
+            == 1
+        )
+        if (
+            relevant_apiv2_mappings_include_functionv1
+            and relevant_apiv2_mappings_include_functionv2
+        ):
+            return self.differ.compute_function_similarity(functionv1, functionv2)
+        if (
+            relevant_apiv2_mappings_include_functionv1
+            or relevant_apiv2_mappings_include_functionv2
+        ):
+            return self.differ.compute_function_similarity(functionv1, functionv2) / 2
+        return 0.0
 
     def compute_parameter_similarity(
         self, parameter_a: Parameter, parameter_b: Parameter
