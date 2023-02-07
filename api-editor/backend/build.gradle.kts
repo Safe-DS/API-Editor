@@ -34,7 +34,7 @@ tasks.withType<ShadowJar> {
 
 // Dependencies --------------------------------------------------------------------------------------------------------
 
-val ktorVersion = "2.2.1"
+val ktorVersion = "2.2.3"
 
 dependencies {
     implementation("ch.qos.logback:logback-classic:1.4.5")
@@ -50,8 +50,8 @@ dependencies {
     testImplementation(kotlin("test"))
     testImplementation("io.kotest:kotest-assertions-core-jvm:5.5.4")
     testImplementation("io.ktor:ktor-server-test-host:$ktorVersion")
-    testImplementation("io.mockk:mockk:1.13.3")
-    testImplementation("org.junit.jupiter:junit-jupiter-params:5.9.1")
+    testImplementation("io.mockk:mockk:1.13.4")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:5.9.2")
 }
 
 // Tasks ---------------------------------------------------------------------------------------------------------------
