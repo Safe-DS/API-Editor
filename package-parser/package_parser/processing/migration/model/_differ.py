@@ -305,7 +305,9 @@ class SimpleDiffer(AbstractDiffer):
             + parameter_documentation_similarity
             + id_similarity
         ) / normalize_similarity
-        self.previous_parameter_similarity.get(parameter_a.id, {})[parameter_b.id] = result
+        self.previous_parameter_similarity.get(parameter_a.id, {})[
+            parameter_b.id
+        ] = result
         return result
 
     def _compute_type_similarity(
