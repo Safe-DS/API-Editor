@@ -1,4 +1,4 @@
-from typing import Callable, List, Optional, Union, TypeVar
+from typing import Callable, List, Optional, TypeVar, Union
 
 from package_parser.processing.api.model import (
     API,
@@ -68,9 +68,9 @@ class APIMapping:
         if relevant_comparisons is not None:
             for relevant_comparison in relevant_comparisons:
                 mapping = relevant_comparison
-                if isinstance(mapping.get_apiv1_elements()[0], Attribute) and isinstance(
-                    mapping.get_apiv2_elements()[0], Attribute
-                ):
+                if isinstance(
+                    mapping.get_apiv1_elements()[0], Attribute
+                ) and isinstance(mapping.get_apiv2_elements()[0], Attribute):
                     mappings.extend(
                         self._get_mappings_for_api_elements(
                             [
@@ -104,9 +104,9 @@ class APIMapping:
                             self.differ.compute_class_similarity,
                         )
                     )
-                elif isinstance(mapping.get_apiv1_elements()[0], Function) and isinstance(
-                    mapping.get_apiv2_elements()[0], Function
-                ):
+                elif isinstance(
+                    mapping.get_apiv1_elements()[0], Function
+                ) and isinstance(mapping.get_apiv2_elements()[0], Function):
                     mappings.extend(
                         self._get_mappings_for_api_elements(
                             [
@@ -122,9 +122,9 @@ class APIMapping:
                             self.differ.compute_function_similarity,
                         )
                     )
-                elif isinstance(mapping.get_apiv1_elements()[0], Parameter) and isinstance(
-                    mapping.get_apiv2_elements()[0], Parameter
-                ):
+                elif isinstance(
+                    mapping.get_apiv1_elements()[0], Parameter
+                ) and isinstance(mapping.get_apiv2_elements()[0], Parameter):
                     mappings.extend(
                         self._get_mappings_for_api_elements(
                             [

@@ -41,7 +41,11 @@ class StrictDiffer(AbstractDiffer):
             return "/".join(child.id.split("/")[:-1]) == possible_parent.id
         return False
 
-    def _api_elements_are_mapped_to_each_other(self, api_elementv1: DEPENDENT_API_ELEMENTS, api_elementv2: DEPENDENT_API_ELEMENTS) -> bool:
+    def _api_elements_are_mapped_to_each_other(
+        self,
+        api_elementv1: DEPENDENT_API_ELEMENTS,
+        api_elementv2: DEPENDENT_API_ELEMENTS,
+    ) -> bool:
         (
             relevant_apiv1_mappings,
             relevant_apiv2_mappings,
@@ -68,7 +72,10 @@ class StrictDiffer(AbstractDiffer):
             )
             == 1
         )
-        return relevant_apiv2_mappings_include_functionv1 and relevant_apiv2_mappings_include_functionv2
+        return (
+            relevant_apiv2_mappings_include_functionv1
+            and relevant_apiv2_mappings_include_functionv2
+        )
 
     def _get_mapping_for_elements(
         self,
