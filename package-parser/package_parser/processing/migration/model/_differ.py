@@ -337,7 +337,10 @@ class SimpleDiffer(AbstractDiffer):
         :param parameterv2: attribute from apiv2
         :return: value between 0 and 1, where 1 means that the elements are equal
         """
-        if parameterv1.id in self.previous_parameter_similarity and parameterv2.id in self.previous_parameter_similarity[parameterv1.id]:
+        if (
+            parameterv1.id in self.previous_parameter_similarity
+            and parameterv2.id in self.previous_parameter_similarity[parameterv1.id]
+        ):
             return self.previous_parameter_similarity[parameterv1.id][parameterv2.id]
 
         normalize_similarity = 6
