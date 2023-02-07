@@ -41,7 +41,7 @@ class StrictDiffer(AbstractDiffer):
             return "/".join(child.id.split("/")[:-1]) == possible_parent.id
         return False
 
-    def _api_elements_are_mapped_to_each_other(self, api_elementv1: api_element, api_elementv2: api_element) -> bool:
+    def _api_elements_are_mapped_to_each_other(self, api_elementv1: DEPENDENT_API_ELEMENTS, api_elementv2: DEPENDENT_API_ELEMENTS) -> bool:
         (
             relevant_apiv1_mappings,
             relevant_apiv2_mappings,
@@ -99,8 +99,7 @@ class StrictDiffer(AbstractDiffer):
     def compute_function_similarity(
         self, functionv1: Function, functionv2: Function
     ) -> float:
-        if self._api_elements_are_mapped_to_each_other(
-            functionv1, functionv2):
+        if self._api_elements_are_mapped_to_each_other(functionv1, functionv2):
             return self.differ.compute_function_similarity(functionv1, functionv2)
         return 0.0
 
@@ -119,7 +118,6 @@ class StrictDiffer(AbstractDiffer):
     def compute_attribute_similarity(
         self, attributev1: Attribute, attributev2: Attribute
     ) -> float:
-        if self._api_elements_are_mapped_to_each_other(
-            attributev1, attributev2):
+        if self._api_elements_are_mapped_to_each_other(attributev1, attributev2):
             return self.differ.compute_attribute_similarity(attributev1, attributev2)
         return 0.0

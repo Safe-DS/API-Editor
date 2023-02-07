@@ -16,7 +16,7 @@ from package_parser.processing.api.model import (
     Result,
     UnionType,
 )
-from package_parser.processing.migration import Mapping
+from ._mapping import Mapping
 
 api_element = Union[Attribute, Class, Function, Parameter, Result]
 
