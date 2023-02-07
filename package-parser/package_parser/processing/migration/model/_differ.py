@@ -307,9 +307,7 @@ class SimpleDiffer(AbstractDiffer):
         ) / normalize_similarity
         if self.previous_parameter_similarity.get(parameter_a.id, None) is None:
             self.previous_parameter_similarity[parameter_a.id] = {}
-        self.previous_parameter_similarity[parameter_a.id][
-            parameter_b.id
-        ] = result
+        self.previous_parameter_similarity[parameter_a.id][parameter_b.id] = result
         return result
 
     def _compute_type_similarity(
