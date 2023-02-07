@@ -15,6 +15,7 @@ numpydoc = "^1.5"
 spacy = "^3.2.5"
 scipy = "^1.10.0"
 levenshtein = "^0.20.9"
+black = "^23.1.0"
 
 [tool.poetry.dependencies.en_core_web_sm]
 url = "https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.2.0/en_core_web_sm-3.2.0-py3-none-any.whl"
