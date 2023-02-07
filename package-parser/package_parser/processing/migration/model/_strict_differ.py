@@ -95,6 +95,12 @@ class StrictDiffer(AbstractDiffer):
         return mapping_for_apiv1_elements, mapping_for_apiv2_elements
 
     def compute_class_similarity(self, classv1: Class, classv2: Class) -> float:
+        """
+        Computes similarity between classes from apiv1 and apiv2
+        :param classv1: attribute from apiv1
+        :param classv2: attribute from apiv2
+        :return: if the classes are mapped together, the similarity of the previous differ, or else 0.
+        """
         for mapping in self.previous_mappings:
             if (
                 classv1 in mapping.get_apiv1_elements()
@@ -106,6 +112,12 @@ class StrictDiffer(AbstractDiffer):
     def compute_function_similarity(
         self, functionv1: Function, functionv2: Function
     ) -> float:
+        """
+        Computes similarity between functions from apiv1 and apiv2.
+        :param functionv1: attribute from apiv1
+        :param functionv2: attribute from apiv2
+        :return: if the functions are mapped together, the similarity of the previous differ, or else 0.
+        """
         if self._api_elements_are_mapped_to_each_other(functionv1, functionv2):
             return self.differ.compute_function_similarity(functionv1, functionv2)
         return 0.0
@@ -113,11 +125,23 @@ class StrictDiffer(AbstractDiffer):
     def compute_parameter_similarity(
         self, parameterv1: Parameter, parameterv2: Parameter
     ) -> float:
+        """
+        Computes similarity between parameters from apiv1 and apiv2.
+        :param parameterv1: attribute from apiv1
+        :param parameterv2: attribute from apiv2
+        :return: if the parameters are mapped together, the similarity of the previous differ, or else 0.
+        """
         if self._api_elements_are_mapped_to_each_other(parameterv1, parameterv2):
             return self.differ.compute_parameter_similarity(parameterv1, parameterv2)
         return 0.0
 
     def compute_result_similarity(self, resultv1: Result, resultv2: Result) -> float:
+        """
+        Computes similarity between results from apiv1 and apiv2.
+        :param resultv1: attribute from apiv1
+        :param resultv2: attribute from apiv2
+        :return: if the parameters are mapped together, the similarity of the previous differ, or else 0.
+        """
         if self._api_elements_are_mapped_to_each_other(resultv1, resultv2):
             return self.differ.compute_result_similarity(resultv1, resultv2)
         return 0.0
