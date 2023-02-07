@@ -267,7 +267,7 @@ class SimpleDiffer(AbstractDiffer):
         :return: value between 0 and 1, where 1 means that the elements are equal
         """
         if parameter_a.id in self.previous_parameter_similarity and parameter_b.id in self.previous_parameter_similarity[parameter_a.id]:
-            return self.previous_parameter_similarity.get(parameter_a.id).get(parameter_b.id)
+            return self.previous_parameter_similarity[parameter_a.id][parameter_b.id]
 
         normalize_similarity = 6
         parameter_name_similarity = self._compute_name_similarity(
@@ -428,8 +428,7 @@ class SimpleDiffer(AbstractDiffer):
         total_costs, max_iterations = distance_elements_with_cost_function(
             module_path_a, module_path_b, cost_function, iteration=0
         )
-        result = 1 - (total_costs / sum(range(1, max_iterations + 1)))
-        return result
+        return 1 - (total_costs / sum(range(1, max_iterations + 1)))
 
 
 def distance_elements_with_cost_function(
