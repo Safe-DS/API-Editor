@@ -74,6 +74,7 @@ class SimpleDiffer(AbstractDiffer):
         ParameterAssignment, dict[ParameterAssignment, float]
     ]
     previous_parameter_similarity: dict[str, dict[str, float]] = {}
+    previous_function_similarity: dict[str, dict[str, float]] = {}
 
     def __init__(self) -> None:
         distance_between_implicit_and_explicit = 0.3
@@ -218,6 +219,11 @@ class SimpleDiffer(AbstractDiffer):
     def compute_function_similarity(
         self, function_a: Function, function_b: Function
     ) -> float:
+        if (
+            function_a.id in self.previous_function_similarity
+            and function_b.id in self.previous_function_similarity[function_a.id]
+        ):
+            return self.previous_parameter_similarity[function_a.id][function_b.id]
         code_similarity = self._compute_code_similarity(
             function_a.code, function_b.code
         )
@@ -239,9 +245,11 @@ class SimpleDiffer(AbstractDiffer):
 
         id_similarity = self._compute_id_similarity(function_a.id, function_b.id)
 
-        return (
-            code_similarity + name_similarity + parameter_similarity + id_similarity
-        ) / 4
+        result = (code_similarity + name_similarity + parameter_similarity + id_similarity) / 4
+        if function_a.id not in self.previous_function_similarity:
+            self.previous_function_similarity[function_a.id] = {}
+        self.previous_function_similarity[function_a.id][function_b.id] = result
+        return result
 
     def _compute_code_similarity(self, code_a: str, code_b: str) -> float:
         mode = FileMode()
