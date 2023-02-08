@@ -37,7 +37,10 @@ class StrictDiffer(AbstractDiffer):
             Parameter: 3,
             Result: 4,
         }
-        return sorted(self.previous_mappings, key=lambda mapping: sort_order[type(mapping.get_apiv1_elements()[0])])
+        return sorted(
+            self.previous_mappings,
+            key=lambda mapping: sort_order[type(mapping.get_apiv1_elements()[0])],
+        )
 
     def notify_new_mapping(self, mappings: list[Mapping]) -> None:
         self.new_mappings.extend(mappings)
@@ -134,7 +137,9 @@ class StrictDiffer(AbstractDiffer):
         """
         is_global_functionv1 = len(functionv1.id.split("/")) == 3
         is_global_functionv2 = len(functionv2.id.split("/")) == 3
-        if (is_global_functionv1 and is_global_functionv2) or self._api_elements_are_mapped_to_each_other(functionv1, functionv2):
+        if (
+            is_global_functionv1 and is_global_functionv2
+        ) or self._api_elements_are_mapped_to_each_other(functionv1, functionv2):
             return self.differ.compute_function_similarity(functionv1, functionv2)
         return 0.0
 
