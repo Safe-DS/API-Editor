@@ -39,8 +39,8 @@ class StrictDiffer(AbstractDiffer):
         }
         return sorted(self.previous_mappings, key=lambda mapping: sort_order[type(mapping.get_apiv1_elements()[0])])
 
-    def notify_new_mapping(self, mapping: Mapping):
-        self.new_mappings.extend(mapping)
+    def notify_new_mapping(self, mappings: list[Mapping]) -> None:
+        self.new_mappings.extend(mappings)
 
     def _is_parent(
         self,

@@ -118,7 +118,8 @@ class APIMapping:
                     mappings.extend(
                         new_mapping
                     )
-                self.differ.notify_new_mapping(new_mapping)
+                if new_mapping is not None:
+                    self.differ.notify_new_mapping(new_mapping)
         else:
             mappings.extend(
                 self._get_mappings_for_api_elements(

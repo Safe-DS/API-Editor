@@ -86,12 +86,11 @@ class AbstractDiffer(ABC):
         """
 
     @abstractmethod
-    def notify_new_mapping(self, mapping: Mapping) -> None:
+    def notify_new_mapping(self, mappings: list[Mapping]) -> None:
         """
-        If previous mapping returns None, the differ will be notified about a new mapping. Thereby the differ can calculate the similarity with more information.
-        :return: a list of Mappings if only previously mapped api elements should be mapped to each other or else None.
+        If previous mappings returns None, the differ will be notified about a new mapping. Thereby the differ can calculate the similarity with more information.
+        :param mappings: a list of Mappings if only previously mapped api elements should be mapped to each other or else None.
         """
-
 
 
 X = TypeVar("X")
@@ -126,7 +125,7 @@ class SimpleDiffer(AbstractDiffer):
     ) -> Optional[list[Mapping]]:
         return None
 
-    def notify_new_mapping(self, mapping: Mapping) -> None:
+    def notify_new_mapping(self, mappings: list[Mapping]) -> None:
         return
 
     def __init__(self) -> None:
