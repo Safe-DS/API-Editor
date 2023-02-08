@@ -113,6 +113,7 @@ class SimpleDiffer(AbstractDiffer):
         ParameterAssignment, dict[ParameterAssignment, float]
     ]
     previous_parameter_similarity: dict[str, dict[str, float]] = {}
+    previous_function_similarity: dict[str, dict[str, float]] = {}
 
     def get_relevant_comparisons(
         self,
@@ -280,6 +281,12 @@ class SimpleDiffer(AbstractDiffer):
         :param functionv2: attribute from apiv2
         :return: value between 0 and 1, where 1 means that the elements are equal
         """
+        if (
+            functionv1.id in self.previous_function_similarity
+            and functionv2.id in self.previous_function_similarity[functionv1.id]
+        ):
+            return self.previous_parameter_similarity[functionv1.id][functionv2.id]
+
         code_similarity = self._compute_code_similarity(
             functionv1.code, functionv2.code
         )
@@ -309,9 +316,13 @@ class SimpleDiffer(AbstractDiffer):
 
         id_similarity = self._compute_id_similarity(functionv1.id, functionv2.id)
 
-        return (
+        result = (
             code_similarity + name_similarity + parameter_similarity + id_similarity
         ) / 4
+        if functionv1.id not in self.previous_function_similarity:
+            self.previous_function_similarity[functionv1.id] = {}
+        self.previous_function_similarity[functionv1.id][functionv2.id] = result
+        return result
 
     def _compute_code_similarity(self, codev1: str, codev2: str) -> float:
         mode = FileMode()
