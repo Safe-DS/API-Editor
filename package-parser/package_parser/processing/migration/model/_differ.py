@@ -223,7 +223,8 @@ class SimpleDiffer(AbstractDiffer):
             function_a.id in self.previous_function_similarity
             and function_b.id in self.previous_function_similarity[function_a.id]
         ):
-            return self.previous_parameter_similarity[function_a.id][function_b.id]
+            return self.previous_function_similarity[function_a.id][function_b.id]
+        
         code_similarity = self._compute_code_similarity(
             function_a.code, function_b.code
         )
