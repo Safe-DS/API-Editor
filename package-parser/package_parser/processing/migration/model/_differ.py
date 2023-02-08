@@ -285,7 +285,7 @@ class SimpleDiffer(AbstractDiffer):
             functionv1.id in self.previous_function_similarity
             and functionv2.id in self.previous_function_similarity[functionv1.id]
         ):
-            return self.previous_parameter_similarity[functionv1.id][functionv2.id]
+            return self.previous_function_similarity[functionv1.id][functionv2.id]
 
         code_similarity = self._compute_code_similarity(
             functionv1.code, functionv2.code
