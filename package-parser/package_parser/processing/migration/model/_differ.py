@@ -245,7 +245,9 @@ class SimpleDiffer(AbstractDiffer):
 
         id_similarity = self._compute_id_similarity(function_a.id, function_b.id)
 
-        result = (code_similarity + name_similarity + parameter_similarity + id_similarity) / 4
+        result = (
+            code_similarity + name_similarity + parameter_similarity + id_similarity
+        ) / 4
         if function_a.id not in self.previous_function_similarity:
             self.previous_function_similarity[function_a.id] = {}
         self.previous_function_similarity[function_a.id][function_b.id] = result
