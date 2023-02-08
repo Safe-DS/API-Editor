@@ -77,13 +77,21 @@ class AbstractDiffer(ABC):
         """
 
     @abstractmethod
-    def get_relevant_comparisons(
+    def get_previous_mappings(
         self,
     ) -> Optional[list[Mapping]]:
         """
         Indicates whether all api elements should be compared with each other or just the ones that are mapped to each other.
         :return: a list of Mappings if only previously mapped api elements should be mapped to each other or else None.
         """
+
+    @abstractmethod
+    def notify_new_mapping(self, mapping: Mapping) -> None:
+        """
+        If previous mapping returns None, the differ will be notified about a new mapping. Thereby the differ can calculate the similarity with more information.
+        :return: a list of Mappings if only previously mapped api elements should be mapped to each other or else None.
+        """
+
 
 
 X = TypeVar("X")
@@ -113,10 +121,13 @@ class SimpleDiffer(AbstractDiffer):
         ParameterAssignment, dict[ParameterAssignment, float]
     ]
 
-    def get_relevant_comparisons(
+    def get_previous_mappings(
         self,
     ) -> Optional[list[Mapping]]:
         return None
+
+    def notify_new_mapping(self, mapping: Mapping) -> None:
+        return
 
     def __init__(self) -> None:
         distance_between_implicit_and_explicit = 0.3

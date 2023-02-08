@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Optional, TypeVar, Union
 
 from package_parser.processing.api.model import (
@@ -22,11 +22,25 @@ api_element = Union[Attribute, Class, Function, Parameter, Result]
 class StrictDiffer(AbstractDiffer):
     previous_mappings: list[Mapping]
     differ: AbstractDiffer
+    new_mappings: list[Mapping] = field(init=False)
 
-    def get_relevant_comparisons(
+    def __post_init__(self) -> None:
+        self.new_mappings = []
+
+    def get_previous_mappings(
         self,
     ) -> Optional[list[Mapping]]:
-        return self.previous_mappings
+        sort_order = {
+            Class: 0,
+            Attribute: 1,
+            Function: 2,
+            Parameter: 3,
+            Result: 4,
+        }
+        return sorted(self.previous_mappings, key=lambda mapping: sort_order[type(mapping.get_apiv1_elements()[0])])
+
+    def notify_new_mapping(self, mapping: Mapping):
+        self.new_mappings.extend(mapping)
 
     def _is_parent(
         self,
@@ -84,7 +98,7 @@ class StrictDiffer(AbstractDiffer):
     ) -> tuple[list[Mapping], list[Mapping]]:
         mapping_for_apiv1_elements = []
         mapping_for_apiv2_elements = []
-        for mapping in self.previous_mappings:
+        for mapping in self.new_mappings:
             if isinstance(mapping.get_apiv1_elements()[0], (Class, Function)):
                 for element in mapping.get_apiv1_elements():
                     if self._is_parent(element, apiv1_element):
@@ -118,7 +132,9 @@ class StrictDiffer(AbstractDiffer):
         :param functionv2: attribute from apiv2
         :return: if the functions are mapped together, the similarity of the previous differ, or else 0.
         """
-        if self._api_elements_are_mapped_to_each_other(functionv1, functionv2):
+        is_global_functionv1 = len(functionv1.id.split("/")) == 3
+        is_global_functionv2 = len(functionv2.id.split("/")) == 3
+        if (is_global_functionv1 and is_global_functionv2) or self._api_elements_are_mapped_to_each_other(functionv1, functionv2):
             return self.differ.compute_function_similarity(functionv1, functionv2)
         return 0.0
 
