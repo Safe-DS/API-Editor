@@ -130,14 +130,6 @@ class SimpleDiffer(AbstractDiffer):
     def notify_new_mapping(self, mappings: list[Mapping]) -> None:
         return
 
-    def get_previous_mappings(
-        self,
-    ) -> Optional[list[Mapping]]:
-        return None
-
-    def notify_new_mapping(self, mappings: list[Mapping]) -> None:
-        return
-
     def __init__(self) -> None:
         distance_between_implicit_and_explicit = 0.3
         distance_between_vararg_and_normal = 0.3
@@ -304,7 +296,7 @@ class SimpleDiffer(AbstractDiffer):
             and function_b.id in self.previous_function_similarity[function_a.id]
         ):
             return self.previous_function_similarity[function_a.id][function_b.id]
-        
+
         code_similarity = self._compute_code_similarity(
             functionv1.code, functionv2.code
         )
@@ -371,7 +363,7 @@ class SimpleDiffer(AbstractDiffer):
             and parameter_b.id in self.previous_parameter_similarity[parameter_a.id]
         ):
             return self.previous_parameter_similarity[parameter_a.id][parameter_b.id]
-        
+
         normalize_similarity = 6
         parameter_name_similarity = self._compute_name_similarity(
             parameterv1.name, parameterv2.name
