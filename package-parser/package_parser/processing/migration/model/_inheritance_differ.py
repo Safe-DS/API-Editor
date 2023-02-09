@@ -1,9 +1,10 @@
 from dataclasses import field, dataclass
-from typing import Optional
+from typing import Optional, Union, Callable
 
 from package_parser.processing.api.model import Result, Parameter, Function, Class, Attribute, API
 from package_parser.processing.migration import AbstractDiffer, Mapping, ManyToManyMapping
 
+api_element = Union[Attribute, Class, Function, Parameter, Result]
 
 @dataclass
 class InheritanceDiffer(AbstractDiffer):
@@ -22,7 +23,7 @@ class InheritanceDiffer(AbstractDiffer):
             additional_v2_elements = []
             additional_v2_elements.extend([
                 element
-                for element in self.apiv2.classes.items()
+                for element in self.apiv2.classes.values()
                 if isinstance(element, Class) and
                 (element.name in class_v2.superclasses or class_v2 in element.superclasses)
             ])
@@ -56,19 +57,19 @@ class InheritanceDiffer(AbstractDiffer):
             functionv1_id = "/".join(parameterv1.id.split("/")[:-1])
             for mapping in self.new_mappings:
                 for functionv1 in mapping.get_apiv1_elements():
-                    if functionv1_id == functionv1.id:
+                    if isinstance(functionv1, Function) and functionv1_id == functionv1.id:
                         for functionv2 in mapping.get_apiv2_elements():
-                            if "/".join(parameterv2_id_splitted[:-1]) == functionv2.id:
+                            if isinstance(functionv2, Function) and "/".join(parameterv2_id_splitted[:-1]) == functionv2.id:
                                 return self.differ.compute_parameter_similarity(parameterv1, parameterv2) + self.boost_value
         return 0.0
 
     def compute_result_similarity(self, resultv1: Result, resultv2: Result) -> float:
-        if "/".join(resultv2.function_id.split("/")[:-1]) in self.inheritance:
+        if resultv2.function_id is not None and "/".join(resultv2.function_id.split("/")[:-1]) in self.inheritance:
             for mapping in self.new_mappings:
                 for functionv1 in mapping.get_apiv1_elements():
-                    if resultv1.function_id == functionv1.id:
+                    if isinstance(functionv1, Function) and resultv1.function_id == functionv1.id:
                         for functionv2 in mapping.get_apiv2_elements():
-                            if resultv2.function_id == functionv2.id:
+                            if isinstance(functionv2, Function) and resultv2.function_id == functionv2.id:
                                 return self.differ.compute_result_similarity(resultv1, resultv2) + self.boost_value
         return 0.0
 
@@ -82,15 +83,15 @@ class InheritanceDiffer(AbstractDiffer):
                 related_mappings.append(not_mapped_elements_mapping)
         return related_mappings
 
-    def _get_not_mapped_api_elements(self, mapped_apiv1_elements, mapped_apiv2_elements, get_api_element) -> Optional[Mapping]:
+    def _get_not_mapped_api_elements(self, mapped_apiv1_elements: list[api_element], mapped_apiv2_elements: list[api_element], get_api_element: Callable[[API], list[api_element]]) -> Optional[Mapping]:
         not_mapped_v1_elements = []
-        for api_element in get_api_element(self.apiv1):
-            if api_element not in mapped_apiv1_elements:
-                not_mapped_v1_elements.append(api_element)
+        for api_elementv1 in get_api_element(self.apiv1):
+            if api_elementv1 not in mapped_apiv1_elements:
+                not_mapped_v1_elements.append(api_elementv1)
         not_mapped_v2_elements = []
-        for api_element in get_api_element(self.apiv2):
-            if api_element not in mapped_apiv2_elements:
-                not_mapped_v2_elements.append(api_element)
+        for api_elementv2 in get_api_element(self.apiv2):
+            if api_elementv2 not in mapped_apiv2_elements:
+                not_mapped_v2_elements.append(api_elementv2)
         if len(not_mapped_v1_elements) > 0 and len(not_mapped_v2_elements) > 0:
             return ManyToManyMapping(-1.0, not_mapped_v1_elements, not_mapped_v2_elements)
         return None

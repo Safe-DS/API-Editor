@@ -292,10 +292,10 @@ class SimpleDiffer(AbstractDiffer):
         :return: value between 0 and 1, where 1 means that the elements are equal
         """
         if (
-            function_a.id in self.previous_function_similarity
-            and function_b.id in self.previous_function_similarity[function_a.id]
+            functionv1.id in self.previous_function_similarity
+            and functionv2.id in self.previous_function_similarity[functionv1.id]
         ):
-            return self.previous_function_similarity[function_a.id][function_b.id]
+            return self.previous_function_similarity[functionv1.id][functionv2.id]
 
         code_similarity = self._compute_code_similarity(
             functionv1.code, functionv2.code
@@ -329,9 +329,9 @@ class SimpleDiffer(AbstractDiffer):
         result = (
             code_similarity + name_similarity + parameter_similarity + id_similarity
         ) / 4
-        if function_a.id not in self.previous_function_similarity:
-            self.previous_function_similarity[function_a.id] = {}
-        self.previous_function_similarity[function_a.id][function_b.id] = result
+        if functionv1.id not in self.previous_function_similarity:
+            self.previous_function_similarity[functionv1.id] = {}
+        self.previous_function_similarity[functionv1.id][functionv2.id] = result
         return result
 
     def _compute_code_similarity(self, code_a: str, code_b: str) -> float:
@@ -359,10 +359,10 @@ class SimpleDiffer(AbstractDiffer):
         :return: value between 0 and 1, where 1 means that the elements are equal
         """
         if (
-            parameter_a.id in self.previous_parameter_similarity
-            and parameter_b.id in self.previous_parameter_similarity[parameter_a.id]
+            parameterv1.id in self.previous_parameter_similarity
+            and parameterv2.id in self.previous_parameter_similarity[parameterv1.id]
         ):
-            return self.previous_parameter_similarity[parameter_a.id][parameter_b.id]
+            return self.previous_parameter_similarity[parameterv1.id][parameterv2.id]
 
         normalize_similarity = 6
         parameter_name_similarity = self._compute_name_similarity(
@@ -402,9 +402,9 @@ class SimpleDiffer(AbstractDiffer):
             + parameter_documentation_similarity
             + id_similarity
         ) / normalize_similarity
-        if parameter_a.id not in self.previous_parameter_similarity:
-            self.previous_parameter_similarity[parameter_a.id] = {}
-        self.previous_parameter_similarity[parameter_a.id][parameter_b.id] = result
+        if parameterv1.id not in self.previous_parameter_similarity:
+            self.previous_parameter_similarity[parameterv1.id] = {}
+        self.previous_parameter_similarity[parameterv1.id][parameterv2.id] = result
         return result
 
     def _compute_type_similarity(
