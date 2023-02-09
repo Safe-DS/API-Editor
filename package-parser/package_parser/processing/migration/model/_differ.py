@@ -44,8 +44,30 @@ class AbstractDiffer(ABC):
         pass
 
     @abstractmethod
-    def compute_result_similarity(self, result_a: Result, result_b: Result) -> float:
-        pass
+
+    def compute_result_similarity(self, resultv1: Result, resultv2: Result) -> float:
+        """
+        Computes similarity between results from apiv1 and apiv2.
+        :param resultv1: attribute from apiv1
+        :param resultv2: attribute from apiv2
+        :return: value between 0 and 1, where 1 means that the elements are equal
+        """
+
+    @abstractmethod
+    def get_related_mappings(
+        self,
+    ) -> Optional[list[Mapping]]:
+        """
+        Indicates whether all api elements should be compared with each other or just the ones that are mapped to each other.
+        :return: a list of Mappings if only previously mapped api elements should be mapped to each other or else None.
+        """
+
+    @abstractmethod
+    def notify_new_mapping(self, mappings: list[Mapping]) -> None:
+        """
+        If previous mappings returns None, the differ will be notified about a new mapping. Thereby the differ can calculate the similarity with more information.
+        :param mappings: a list of Mappings if only previously mapped api elements should be mapped to each other or else None.
+        """
 
 
 X = TypeVar("X")
@@ -73,6 +95,16 @@ class SimpleDiffer(AbstractDiffer):
     assigned_by_look_up_similarity: dict[
         ParameterAssignment, dict[ParameterAssignment, float]
     ]
+    previous_parameter_similarity: dict[str, dict[str, float]] = {}
+    previous_function_similarity: dict[str, dict[str, float]] = {}
+
+    def get_related_mappings(
+        self,
+    ) -> Optional[list[Mapping]]:
+        return None
+
+    def notify_new_mapping(self, mappings: list[Mapping]) -> None:
+        return
 
     def __init__(self) -> None:
         distance_between_implicit_and_explicit = 0.3
@@ -217,6 +249,12 @@ class SimpleDiffer(AbstractDiffer):
     def compute_function_similarity(
         self, function_a: Function, function_b: Function
     ) -> float:
+        if (
+            function_a.id in self.previous_function_similarity
+            and function_b.id in self.previous_function_similarity[function_a.id]
+        ):
+            return self.previous_function_similarity[function_a.id][function_b.id]
+
         code_similarity = self._compute_code_similarity(
             function_a.code, function_b.code
         )
@@ -238,9 +276,13 @@ class SimpleDiffer(AbstractDiffer):
 
         id_similarity = self._compute_id_similarity(function_a.id, function_b.id)
 
-        return (
+        result = (
             code_similarity + name_similarity + parameter_similarity + id_similarity
         ) / 4
+        if function_a.id not in self.previous_function_similarity:
+            self.previous_function_similarity[function_a.id] = {}
+        self.previous_function_similarity[function_a.id][function_b.id] = result
+        return result
 
     def _compute_code_similarity(self, code_a: str, code_b: str) -> float:
         mode = FileMode()
@@ -259,6 +301,18 @@ class SimpleDiffer(AbstractDiffer):
     def compute_parameter_similarity(
         self, parameter_a: Parameter, parameter_b: Parameter
     ) -> float:
+        """
+        Computes similarity between parameters from apiv1 and apiv2 with the respect to their name, type, assignment, default value, documentation, and id.
+        :param parameterv1: attribute from apiv1
+        :param parameterv2: attribute from apiv2
+        :return: value between 0 and 1, where 1 means that the elements are equal
+        """
+        if (
+            parameter_a.id in self.previous_parameter_similarity
+            and parameter_b.id in self.previous_parameter_similarity[parameter_a.id]
+        ):
+            return self.previous_parameter_similarity[parameter_a.id][parameter_b.id]
+
         normalize_similarity = 6
         parameter_name_similarity = self._compute_name_similarity(
             parameter_a.name, parameter_b.name
@@ -289,7 +343,7 @@ class SimpleDiffer(AbstractDiffer):
 
         id_similarity = self._compute_id_similarity(parameter_a.id, parameter_b.id)
 
-        return (
+        result = (
             parameter_name_similarity
             + parameter_type_similarity
             + parameter_assignment_similarity
@@ -297,6 +351,10 @@ class SimpleDiffer(AbstractDiffer):
             + parameter_documentation_similarity
             + id_similarity
         ) / normalize_similarity
+        if parameter_a.id not in self.previous_parameter_similarity:
+            self.previous_parameter_similarity[parameter_a.id] = {}
+        self.previous_parameter_similarity[parameter_a.id][parameter_b.id] = result
+        return result
 
     def _compute_type_similarity(
         self, type_a: Optional[AbstractType], type_b: Optional[AbstractType]
