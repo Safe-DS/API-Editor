@@ -1,6 +1,6 @@
 import re
 from abc import ABC, abstractmethod
-from typing import Callable, Optional, Tuple, TypeVar
+from typing import Callable, Optional, Tuple, TypeVar, Union
 
 from black import FileMode, format_str
 from black.linegen import CannotSplit
@@ -17,34 +17,57 @@ from package_parser.processing.api.model import (
     UnionType,
 )
 
+from ._mapping import Mapping
+
+api_element = Union[Attribute, Class, Function, Parameter, Result]
+
 
 class AbstractDiffer(ABC):
     @abstractmethod
     def compute_attribute_similarity(
         self,
-        attributes_a: Attribute,
-        attributes_b: Attribute,
+        attributev1: Attribute,
+        attributev2: Attribute,
     ) -> float:
-        pass
+        """
+        Computes similarity between attributes from apiv1 and apiv2.
+        :param attributev1: attribute from apiv1
+        :param attributev2: attribute from apiv2
+        :return: value between 0 and 1, where 1 means that the elements are equal
+        """
 
     @abstractmethod
-    def compute_class_similarity(self, class_a: Class, class_b: Class) -> float:
-        pass
+    def compute_class_similarity(self, classv1: Class, classv2: Class) -> float:
+        """
+        Computes similarity between classes from apiv1 and apiv2.
+        :param classv1: attribute from apiv1
+        :param classv2: attribute from apiv2
+        :return: value between 0 and 1, where 1 means that the elements are equal
+        """
 
     @abstractmethod
     def compute_function_similarity(
-        self, function_a: Function, function_b: Function
+        self, functionv1: Function, functionv2: Function
     ) -> float:
-        pass
+        """
+        Computes similarity between functions from apiv1 and apiv2.
+        :param functionv1: attribute from apiv1
+        :param functionv2: attribute from apiv2
+        :return: value between 0 and 1, where 1 means that the elements are equal
+        """
 
     @abstractmethod
     def compute_parameter_similarity(
-        self, parameter_a: Parameter, parameter_b: Parameter
+        self, parameterv1: Parameter, parameterv2: Parameter
     ) -> float:
-        pass
+        """
+        Computes similarity between parameters from apiv1 and apiv2.
+        :param parameterv1: attribute from apiv1
+        :param parameterv2: attribute from apiv2
+        :return: value between 0 and 1, where 1 means that the elements are equal
+        """
 
     @abstractmethod
-
     def compute_result_similarity(self, resultv1: Result, resultv2: Result) -> float:
         """
         Computes similarity between results from apiv1 and apiv2.
@@ -92,6 +115,7 @@ def distance_elements(
 
 
 class SimpleDiffer(AbstractDiffer):
+    SPEED_UP: bool = False
     assigned_by_look_up_similarity: dict[
         ParameterAssignment, dict[ParameterAssignment, float]
     ]
@@ -99,6 +123,14 @@ class SimpleDiffer(AbstractDiffer):
     previous_function_similarity: dict[str, dict[str, float]] = {}
 
     def get_related_mappings(
+        self,
+    ) -> Optional[list[Mapping]]:
+        return None
+
+    def notify_new_mapping(self, mappings: list[Mapping]) -> None:
+        return
+
+    def get_previous_mappings(
         self,
     ) -> Optional[list[Mapping]]:
         return None
@@ -204,19 +236,25 @@ class SimpleDiffer(AbstractDiffer):
             },
         }
 
-    def compute_class_similarity(self, class_a: Class, class_b: Class) -> float:
-        name_similarity = self._compute_name_similarity(class_a.name, class_b.name)
+    def compute_class_similarity(self, classv1: Class, classv2: Class) -> float:
+        """
+        Computes similarity between classes from apiv1 and apiv2 with the respect to their name, id, code, and attributes.
+        :param classv1: attribute from apiv1
+        :param classv2: attribute from apiv2
+        :return: value between 0 and 1, where 1 means that the elements are equal
+        """
+        name_similarity = self._compute_name_similarity(classv1.name, classv2.name)
         attributes_similarity = distance_elements(
-            class_a.instance_attributes, class_b.instance_attributes
+            classv1.instance_attributes, classv2.instance_attributes
         )
         attributes_similarity = attributes_similarity / (
-            max(len(class_a.instance_attributes), len(class_b.instance_attributes), 1)
+            max(len(classv1.instance_attributes), len(classv2.instance_attributes), 1)
         )
         attributes_similarity = 1 - attributes_similarity
 
-        code_similarity = self._compute_code_similarity(class_a.code, class_b.code)
+        code_similarity = self._compute_code_similarity(classv1.code, classv2.code)
 
-        id_similarity = self._compute_id_similarity(class_a.id, class_b.id)
+        id_similarity = self._compute_id_similarity(classv1.id, classv2.id)
 
         return (
             name_similarity + attributes_similarity + code_similarity + id_similarity
@@ -228,18 +266,24 @@ class SimpleDiffer(AbstractDiffer):
 
     def compute_attribute_similarity(
         self,
-        attributes_a: Attribute,
-        attributes_b: Attribute,
+        attributev1: Attribute,
+        attributev2: Attribute,
     ) -> float:
+        """
+        Computes similarity between attributes from apiv1 and apiv2 with the respect to their name and type.
+        :param attributev1: attribute from apiv1
+        :param attributev2: attribute from apiv2
+        :return: value between 0 and 1, where 1 means that the elements are equal
+        """
         name_similarity = self._compute_name_similarity(
-            attributes_a.name, attributes_b.name
+            attributev1.name, attributev2.name
         )
-        type_list_a = [attributes_a.types]
-        if attributes_a.types is not None and isinstance(attributes_a, UnionType):
-            type_list_a = [attributes_a.types]
-        type_list_b = [attributes_b.types]
-        if attributes_b.types is not None and isinstance(attributes_b, UnionType):
-            type_list_b = [attributes_a.types]
+        type_list_a = [attributev1.types]
+        if attributev1.types is not None and isinstance(attributev1, UnionType):
+            type_list_a = [attributev1.types]
+        type_list_b = [attributev2.types]
+        if attributev2.types is not None and isinstance(attributev2, UnionType):
+            type_list_b = [attributev1.types]
         type_similarity = distance_elements(type_list_a, type_list_b) / max(
             len(type_list_a), len(type_list_b), 1
         )
@@ -247,34 +291,48 @@ class SimpleDiffer(AbstractDiffer):
         return (name_similarity + type_similarity) / 2
 
     def compute_function_similarity(
-        self, function_a: Function, function_b: Function
+        self, functionv1: Function, functionv2: Function
     ) -> float:
+        """
+        Computes similarity between functions from apiv1 and apiv2 with the respect to their code, name, id, and parameters.
+        :param functionv1: attribute from apiv1
+        :param functionv2: attribute from apiv2
+        :return: value between 0 and 1, where 1 means that the elements are equal
+        """
         if (
             function_a.id in self.previous_function_similarity
             and function_b.id in self.previous_function_similarity[function_a.id]
         ):
             return self.previous_function_similarity[function_a.id][function_b.id]
-
+        
         code_similarity = self._compute_code_similarity(
-            function_a.code, function_b.code
+            functionv1.code, functionv2.code
         )
         name_similarity = self._compute_name_similarity(
-            function_a.name, function_b.name
+            functionv1.name, functionv2.name
         )
 
         def are_parameters_similar(
             parameter_a: Parameter, parameter_b: Parameter
         ) -> bool:
-            return self.compute_parameter_similarity(parameter_a, parameter_b) == 1
+            if not self.SPEED_UP:
+                return self.compute_parameter_similarity(parameter_a, parameter_b) == 1
+            parameter_name_similarity = self._compute_name_similarity(
+                parameter_a.name, parameter_b.name
+            )
+            parameter_type_similarity = self._compute_type_similarity(
+                parameter_a.type, parameter_b.type
+            )
+            return (parameter_name_similarity + parameter_type_similarity) == 2.0
 
         parameter_similarity = distance_elements(
-            function_a.parameters,
-            function_b.parameters,
+            functionv1.parameters,
+            functionv2.parameters,
             are_similar=are_parameters_similar,
-        ) / max(len(function_a.parameters), len(function_b.parameters), 1)
+        ) / max(len(functionv1.parameters), len(functionv2.parameters), 1)
         parameter_similarity = 1 - parameter_similarity
 
-        id_similarity = self._compute_id_similarity(function_a.id, function_b.id)
+        id_similarity = self._compute_id_similarity(functionv1.id, functionv2.id)
 
         result = (
             code_similarity + name_similarity + parameter_similarity + id_similarity
@@ -287,19 +345,20 @@ class SimpleDiffer(AbstractDiffer):
     def _compute_code_similarity(self, code_a: str, code_b: str) -> float:
         mode = FileMode()
         try:
-            code_a = format_str(code_a, mode=mode)
-            code_b = format_str(code_b, mode=mode)
+            code_a_tmp = format_str(code_a, mode=mode)
+            code_b_tmp = format_str(code_b, mode=mode)
         except CannotSplit:
             pass
+        else:
+            code_a = code_a_tmp
+            code_b = code_b_tmp
         split_a = code_a.split("\n")
         split_b = code_b.split("\n")
-        diff_code = distance_elements(split_a, split_b) / max(
-            len(split_a), len(split_b), 1
-        )
+        diff_code = distance(split_a, split_b) / max(len(split_a), len(split_b), 1)
         return 1 - diff_code
 
     def compute_parameter_similarity(
-        self, parameter_a: Parameter, parameter_b: Parameter
+        self, parameterv1: Parameter, parameterv2: Parameter
     ) -> float:
         """
         Computes similarity between parameters from apiv1 and apiv2 with the respect to their name, type, assignment, default value, documentation, and id.
@@ -312,36 +371,36 @@ class SimpleDiffer(AbstractDiffer):
             and parameter_b.id in self.previous_parameter_similarity[parameter_a.id]
         ):
             return self.previous_parameter_similarity[parameter_a.id][parameter_b.id]
-
+        
         normalize_similarity = 6
         parameter_name_similarity = self._compute_name_similarity(
-            parameter_a.name, parameter_b.name
+            parameterv1.name, parameterv2.name
         )
         parameter_type_similarity = self._compute_type_similarity(
-            parameter_a.type, parameter_b.type
+            parameterv1.type, parameterv2.type
         )
         parameter_assignment_similarity = self._compute_assignment_similarity(
-            parameter_a.assigned_by, parameter_b.assigned_by
+            parameterv1.assigned_by, parameterv2.assigned_by
         )
         if parameter_assignment_similarity < 0:
             parameter_assignment_similarity = 0
             normalize_similarity -= 1
         parameter_default_value_similarity = self._compute_default_value_similarity(
-            parameter_a.default_value, parameter_b.default_value
+            parameterv1.default_value, parameterv2.default_value
         )
         if parameter_default_value_similarity < 0:
             parameter_default_value_similarity = 0
             normalize_similarity -= 1
         parameter_documentation_similarity = (
             self._compute_parameter_documentation_similarity(
-                parameter_a.documentation, parameter_b.documentation
+                parameterv1.documentation, parameterv2.documentation
             )
         )
         if parameter_documentation_similarity < 0:
             parameter_documentation_similarity = 0
             normalize_similarity -= 1
 
-        id_similarity = self._compute_id_similarity(parameter_a.id, parameter_b.id)
+        id_similarity = self._compute_id_similarity(parameterv1.id, parameterv2.id)
 
         result = (
             parameter_name_similarity
@@ -388,8 +447,14 @@ class SimpleDiffer(AbstractDiffer):
     ) -> float:
         return self.assigned_by_look_up_similarity[assigned_by_a][assigned_by_b]
 
-    def compute_result_similarity(self, result_a: Result, result_b: Result) -> float:
-        return self._compute_name_similarity(result_a.name, result_b.name)
+    def compute_result_similarity(self, resultv1: Result, resultv2: Result) -> float:
+        """
+        Computes similarity between results from apiv1 and apiv2 with the respect to their name.
+        :param resultv1: attribute from apiv1
+        :param resultv2: attribute from apiv2
+        :return: value between 0 and 1, where 1 means that the elements are equal
+        """
+        return self._compute_name_similarity(resultv1.name, resultv2.name)
 
     def _compute_default_value_similarity(
         self, default_value_a: Optional[str], default_value_b: Optional[str]
