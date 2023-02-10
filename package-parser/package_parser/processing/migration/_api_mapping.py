@@ -9,8 +9,7 @@ from package_parser.processing.api.model import (
     Result,
 )
 
-from ._differ import AbstractDiffer
-from ._mapping import Mapping, OneToOneMapping, merge_mappings
+from package_parser.processing.migration.model import AbstractDiffer, Mapping, OneToOneMapping, merge_mappings
 
 api_element = Union[Attribute, Class, Function, Parameter, Result]
 API_ELEMENTS = TypeVar("API_ELEMENTS", Attribute, Class, Function, Parameter, Result)
