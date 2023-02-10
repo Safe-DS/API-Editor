@@ -2,14 +2,17 @@ import os
 from pathlib import Path
 
 from package_parser.processing.migration import APIMapping, Migration
-from package_parser.processing.migration.model import SimpleDiffer, StrictDiffer
+from package_parser.processing.migration.model import (
+    InheritanceDiffer,
+    SimpleDiffer,
+    StrictDiffer,
+)
 
 from ._read_and_write_file import (
     _read_annotations_file,
     _read_api_file,
     _write_annotations_file,
 )
-from package_parser.processing.migration.model import InheritanceDiffer
 
 
 def _run_migrate_command(
@@ -37,8 +40,9 @@ def _run_migrate_command(
     print_only_migration.migrate_annotations()
     print_only_migration.print(apiv1, apiv2, True)
 
-
-    inheritance_differ = InheritanceDiffer(enhanced_mappings, strict_differ, apiv1, apiv2)
+    inheritance_differ = InheritanceDiffer(
+        enhanced_mappings, strict_differ, apiv1, apiv2
+    )
     api_mapping_including_inheritance = APIMapping(apiv1, apiv2, inheritance_differ)
     enhanced_mappings_with_inheritance = api_mapping_including_inheritance.map_api()
 
