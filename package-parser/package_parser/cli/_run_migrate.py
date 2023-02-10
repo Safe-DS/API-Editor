@@ -1,14 +1,8 @@
 import os
 from pathlib import Path
 
-from package_parser.processing.migration import (
-    APIMapping,
-    Migration,
-)
-from package_parser.processing.migration.model import (
-    SimpleDiffer,
-    StrictDiffer,
-)
+from package_parser.processing.migration import APIMapping, Migration
+from package_parser.processing.migration.model import SimpleDiffer, StrictDiffer
 
 from ._read_and_write_file import (
     _read_annotations_file,
