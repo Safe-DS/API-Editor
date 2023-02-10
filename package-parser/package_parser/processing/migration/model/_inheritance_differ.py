@@ -57,9 +57,9 @@ class InheritanceDiffer(AbstractDiffer):
                     and attributev2 in mapping.get_apiv2_elements()
                 ):
                     return (
-                        self.differ.compute_attribute_similarity(
+                        (self.differ.compute_attribute_similarity(
                             attributev1, attributev2
-                        )
+                        )*0.75)
                         + self.boost_value
                     )
         return 0.0
@@ -72,7 +72,7 @@ class InheritanceDiffer(AbstractDiffer):
                     and classv2 in mapping.get_apiv2_elements()
                 ):
                     return (
-                        self.differ.compute_class_similarity(classv1, classv2)
+                        (self.differ.compute_class_similarity(classv1, classv2)*0.75)
                         + self.boost_value
                     )
         return 0.0
@@ -87,7 +87,7 @@ class InheritanceDiffer(AbstractDiffer):
                     and functionv2 in mapping.get_apiv2_elements()
                 ):
                     return (
-                        self.differ.compute_function_similarity(functionv1, functionv2)
+                        (self.differ.compute_function_similarity(functionv1, functionv2)*0.75)
                         + self.boost_value
                     )
         return 0.0
@@ -111,9 +111,9 @@ class InheritanceDiffer(AbstractDiffer):
                                 == functionv2.id
                             ):
                                 return (
-                                    self.differ.compute_parameter_similarity(
+                                    (self.differ.compute_parameter_similarity(
                                         parameterv1, parameterv2
-                                    )
+                                    )*0.75)
                                     + self.boost_value
                                 )
         return 0.0
@@ -135,9 +135,9 @@ class InheritanceDiffer(AbstractDiffer):
                                 and resultv2.function_id == functionv2.id
                             ):
                                 return (
-                                    self.differ.compute_result_similarity(
+                                    (self.differ.compute_result_similarity(
                                         resultv1, resultv2
-                                    )
+                                    )*0.75)
                                     + self.boost_value
                                 )
         return 0.0
