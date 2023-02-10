@@ -40,9 +40,7 @@ def _run_migrate_command(
     print_only_migration.migrate_annotations()
     print_only_migration.print(apiv1, apiv2, True)
 
-    inheritance_differ = InheritanceDiffer(
-        enhanced_mappings, differ, apiv1, apiv2
-    )
+    inheritance_differ = InheritanceDiffer(enhanced_mappings, differ, apiv1, apiv2)
     api_mapping_including_inheritance = APIMapping(apiv1, apiv2, inheritance_differ)
     enhanced_mappings_with_inheritance = api_mapping_including_inheritance.map_api()
 
