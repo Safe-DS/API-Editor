@@ -22,6 +22,12 @@ class Person:
         self.address = address
 
     def get_name(self) -> str:
+        """get full name of the person
+
+        Returns
+        -------
+        full_name : str
+        """
         return self.first_name + " " + self.last_name
 
     def participate(self) -> None:
