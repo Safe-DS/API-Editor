@@ -9,11 +9,9 @@ from package_parser.processing.api.model import (
     Parameter,
     Result,
 )
+
 from ._differ import AbstractDiffer
-from ._mapping import (
-    ManyToManyMapping,
-    Mapping,
-)
+from ._mapping import ManyToManyMapping, Mapping
 
 api_element = Union[Attribute, Class, Function, Parameter, Result]
 
