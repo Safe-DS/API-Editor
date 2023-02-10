@@ -9,6 +9,7 @@ from ._read_and_write_file import (
     _read_api_file,
     _write_annotations_file,
 )
+from package_parser.processing.migration.model import InheritanceDiffer
 
 
 def _run_migrate_command(
@@ -23,10 +24,15 @@ def _run_migrate_command(
     differ = SimpleDiffer()
     api_mapping = APIMapping(apiv1, apiv2, differ)
     mappings = api_mapping.map_api()
-    enhanced_api_mapping = APIMapping(apiv1, apiv2, StrictDiffer(mappings, differ))
+    strict_differ = StrictDiffer(mappings, differ)
+    enhanced_api_mapping = APIMapping(apiv1, apiv2, strict_differ)
     enhanced_mappings = enhanced_api_mapping.map_api()
 
-    migration = Migration(annotationsv1, enhanced_mappings)
+    inheritance_differ = InheritanceDiffer(enhanced_mappings, strict_differ, apiv1, apiv2)
+    api_mapping_including_inheritance = APIMapping(apiv1, apiv2, inheritance_differ)
+    enhanced_mappings_with_inheritance = api_mapping_including_inheritance.map_api()
+
+    migration = Migration(annotationsv1, enhanced_mappings_with_inheritance)
     migration.migrate_annotations()
     migration.print(apiv1, apiv2, True)
     migrated_annotations_file = Path(

@@ -24,8 +24,8 @@ class InheritanceDiffer(AbstractDiffer):
     differ: AbstractDiffer
     apiv1: API
     apiv2: API
-    inheritance: dict[str, list[Class]]
     boost_value: float = 0.25
+    inheritance: dict[str, list[Class]] = field(init=False)
     new_mappings: list[Mapping] = field(init=False)
 
     def __post_init__(self) -> None:
