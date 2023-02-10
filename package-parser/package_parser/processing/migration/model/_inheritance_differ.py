@@ -48,11 +48,12 @@ class InheritanceDiffer(AbstractDiffer):
     def compute_attribute_similarity(
         self, attributev1: Attribute, attributev2: Attribute
     ) -> float:
-        if attributev2.class_id in self.inheritance and attributev1.class_id in self.inheritance[attributev2.class_id]:
+        if (
+            attributev2.class_id in self.inheritance
+            and attributev1.class_id in self.inheritance[attributev2.class_id]
+        ):
             return (
-                self.differ.compute_attribute_similarity(
-                    attributev1, attributev2
-                )
+                self.differ.compute_attribute_similarity(attributev1, attributev2)
                 * (1 - self.boost_value)
             ) + self.boost_value
         return 0.0
@@ -63,7 +64,8 @@ class InheritanceDiffer(AbstractDiffer):
                 for elementv2 in mapping.get_apiv2_elements():
                     if elementv2.name in self.inheritance[classv2.id]:
                         return (
-                            self.differ.compute_class_similarity(classv1, classv2) * (1-self.boost_value)
+                            self.differ.compute_class_similarity(classv1, classv2)
+                            * (1 - self.boost_value)
                         ) + self.boost_value
         return 0.0
 
@@ -73,9 +75,14 @@ class InheritanceDiffer(AbstractDiffer):
         # is not gloabal fuinction
         class_id_functionv1 = "/".join(functionv1.id.split("/")[:-1])
         class_id_functionv2 = "/".join(functionv2.id.split("/")[:-1])
-        if class_id_functionv2 in self.inheritance and class_id_functionv1 in self.inheritance[class_id_functionv2]:
-            base_similarity = self.differ.compute_function_similarity(functionv1, functionv2)
-            return (base_similarity * (1-self.boost_value)) + self.boost_value
+        if (
+            class_id_functionv2 in self.inheritance
+            and class_id_functionv1 in self.inheritance[class_id_functionv2]
+        ):
+            base_similarity = self.differ.compute_function_similarity(
+                functionv1, functionv2
+            )
+            return (base_similarity * (1 - self.boost_value)) + self.boost_value
         return 0.0
 
     def compute_parameter_similarity(
@@ -100,7 +107,7 @@ class InheritanceDiffer(AbstractDiffer):
                                     self.differ.compute_parameter_similarity(
                                         parameterv1, parameterv2
                                     )
-                                    * (1-self.boost_value)
+                                    * (1 - self.boost_value)
                                 ) + self.boost_value
         return 0.0
 
@@ -124,7 +131,7 @@ class InheritanceDiffer(AbstractDiffer):
                                     self.differ.compute_result_similarity(
                                         resultv1, resultv2
                                     )
-                                    * (1-self.boost_value)
+                                    * (1 - self.boost_value)
                                 ) + self.boost_value
         return 0.0
 
