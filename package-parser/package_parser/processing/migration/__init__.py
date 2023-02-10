@@ -1,12 +1,2 @@
-from package_parser.processing.migration.model import (
-    AbstractDiffer,
-    APIMapping,
-    ManyToManyMapping,
-    ManyToOneMapping,
-    Mapping,
-    OneToManyMapping,
-    OneToOneMapping,
-    SimpleDiffer,
-)
-
+from ._api_mapping import APIMapping
 from ._migrate import Migration

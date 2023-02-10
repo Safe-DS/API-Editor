@@ -27,7 +27,7 @@ class StrictDiffer(AbstractDiffer):
     def __post_init__(self) -> None:
         self.new_mappings = []
 
-    def get_previous_mappings(
+    def get_related_mappings(
         self,
     ) -> Optional[list[Mapping]]:
         sort_order = {

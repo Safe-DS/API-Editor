@@ -8,9 +8,12 @@ from package_parser.processing.api.model import (
     Parameter,
     Result,
 )
-
-from ._differ import AbstractDiffer
-from ._mapping import Mapping, OneToOneMapping, merge_mappings
+from package_parser.processing.migration.model import (
+    AbstractDiffer,
+    Mapping,
+    OneToOneMapping,
+    merge_mappings,
+)
 
 api_element = Union[Attribute, Class, Function, Parameter, Result]
 API_ELEMENTS = TypeVar("API_ELEMENTS", Attribute, Class, Function, Parameter, Result)
@@ -64,7 +67,7 @@ class APIMapping:
 
     def map_api(self) -> List[Mapping]:
         mappings: List[Mapping] = []
-        previous_mappings = self.differ.get_previous_mappings()
+        previous_mappings = self.differ.get_related_mappings()
         if previous_mappings is not None:
             for mapping in previous_mappings:
                 new_mapping = None

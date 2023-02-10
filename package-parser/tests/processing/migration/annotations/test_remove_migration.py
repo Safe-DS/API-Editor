@@ -12,7 +12,7 @@ from package_parser.processing.api.model import (
     Function,
     FunctionDocumentation,
 )
-from package_parser.processing.migration import (
+from package_parser.processing.migration.model import (
     ManyToOneMapping,
     Mapping,
     OneToManyMapping,

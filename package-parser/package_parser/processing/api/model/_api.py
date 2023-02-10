@@ -79,6 +79,26 @@ class API:
 
         return result
 
+    def attributes(self) -> dict[str, Attribute]:
+        result: dict[str, Attribute] = {}
+
+        for class_ in self.classes.values():
+            for attribute in class_.instance_attributes:
+                attribute_id = f"{class_.id}/{attribute.name}"
+                result[attribute_id] = attribute
+
+        return result
+
+    def results(self) -> dict[str, Result]:
+        result_dict: dict[str, Result] = {}
+
+        for function in self.functions.values():
+            for result in function.results:
+                result_id = f"{function.id}/{result.name}"
+                result_dict[result_id] = result
+
+        return result_dict
+
     def get_default_value(self, parameter_id: str) -> Optional[str]:
         function_id = parent_id(parameter_id)
 

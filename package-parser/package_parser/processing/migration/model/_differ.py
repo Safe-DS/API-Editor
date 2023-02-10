@@ -77,7 +77,7 @@ class AbstractDiffer(ABC):
         """
 
     @abstractmethod
-    def get_previous_mappings(
+    def get_related_mappings(
         self,
     ) -> Optional[list[Mapping]]:
         """
@@ -122,7 +122,7 @@ class SimpleDiffer(AbstractDiffer):
     previous_parameter_similarity: dict[str, dict[str, float]] = {}
     previous_function_similarity: dict[str, dict[str, float]] = {}
 
-    def get_previous_mappings(
+    def get_related_mappings(
         self,
     ) -> Optional[list[Mapping]]:
         return None
