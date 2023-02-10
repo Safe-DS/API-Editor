@@ -9,7 +9,7 @@ from package_parser.processing.api.model import (
     Parameter,
     Result,
 )
-from package_parser.processing.migration import (
+from package_parser.processing.migration.model import (
     AbstractDiffer,
     ManyToManyMapping,
     Mapping,

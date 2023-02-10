@@ -25,7 +25,7 @@ from package_parser.processing.api.model import (
     Parameter,
     Result,
 )
-from package_parser.processing.migration import Mapping
+from package_parser.processing.migration.model import Mapping
 
 
 def _get_further_information(annotation: AbstractAnnotation) -> str:

@@ -1,9 +1,11 @@
 import os
 from pathlib import Path
 
-from package_parser.processing.migration import Migration
-from package_parser.processing.migration.model import (
+from package_parser.processing.migration import (
     APIMapping,
+    Migration,
+)
+from package_parser.processing.migration.model import (
     SimpleDiffer,
     StrictDiffer,
 )
