@@ -22,8 +22,8 @@ class InheritanceDiffer(AbstractDiffer):
     differ: AbstractDiffer
     apiv1: API
     apiv2: API
-    boost_value: float = 0.25
-    inheritance: dict[str, list[Class]] = field(init=False)
+    boost_value: float = 0.15
+    inheritance: dict[str, list[str]] = field(init=False)
     new_mappings: list[Mapping] = field(init=False)
 
     def __post_init__(self) -> None:
@@ -33,12 +33,12 @@ class InheritanceDiffer(AbstractDiffer):
             additional_v2_elements = []
             additional_v2_elements.extend(
                 [
-                    element
+                    element.id
                     for element in self.apiv2.classes.values()
                     if isinstance(element, Class)
                     and (
                         element.name in class_v2.superclasses
-                        or class_v2 in element.superclasses
+                        or class_v2.name in element.superclasses
                     )
                 ]
             )
@@ -48,45 +48,34 @@ class InheritanceDiffer(AbstractDiffer):
     def compute_attribute_similarity(
         self, attributev1: Attribute, attributev2: Attribute
     ) -> float:
-        if attributev2.class_id in self.inheritance:
-            for mapping in self.previous_mappings:
-                if (
-                    attributev1 in mapping.get_apiv1_elements()
-                    and attributev2 in mapping.get_apiv2_elements()
-                ):
-                    return (
-                        self.differ.compute_attribute_similarity(
-                            attributev1, attributev2
-                        )
-                        * 0.75
-                    ) + self.boost_value
+        if attributev2.class_id in self.inheritance and attributev1.class_id in self.inheritance[attributev2.class_id]:
+            return (
+                self.differ.compute_attribute_similarity(
+                    attributev1, attributev2
+                )
+                * (1 - self.boost_value)
+            ) + self.boost_value
         return 0.0
 
     def compute_class_similarity(self, classv1: Class, classv2: Class) -> float:
         if classv2.id in self.inheritance:
             for mapping in self.previous_mappings:
-                if (
-                    classv1 in mapping.get_apiv1_elements()
-                    and classv2 in mapping.get_apiv2_elements()
-                ):
-                    return (
-                        self.differ.compute_class_similarity(classv1, classv2) * 0.75
-                    ) + self.boost_value
+                for elementv2 in mapping.get_apiv2_elements():
+                    if elementv2.name in self.inheritance[classv2.id]:
+                        return (
+                            self.differ.compute_class_similarity(classv1, classv2) * (1-self.boost_value)
+                        ) + self.boost_value
         return 0.0
 
     def compute_function_similarity(
         self, functionv1: Function, functionv2: Function
     ) -> float:
-        if "/".join(functionv2.id.split("/")[:-1]) in self.inheritance:
-            for mapping in self.previous_mappings:
-                if (
-                    functionv1 in mapping.get_apiv1_elements()
-                    and functionv2 in mapping.get_apiv2_elements()
-                ):
-                    return (
-                        self.differ.compute_function_similarity(functionv1, functionv2)
-                        * 0.75
-                    ) + self.boost_value
+        # is not gloabal fuinction
+        class_id_functionv1 = "/".join(functionv1.id.split("/")[:-1])
+        class_id_functionv2 = "/".join(functionv2.id.split("/")[:-1])
+        if class_id_functionv2 in self.inheritance and class_id_functionv1 in self.inheritance[class_id_functionv2]:
+            base_similarity = self.differ.compute_function_similarity(functionv1, functionv2)
+            return (base_similarity * (1-self.boost_value)) + self.boost_value
         return 0.0
 
     def compute_parameter_similarity(
@@ -111,7 +100,7 @@ class InheritanceDiffer(AbstractDiffer):
                                     self.differ.compute_parameter_similarity(
                                         parameterv1, parameterv2
                                     )
-                                    * 0.75
+                                    * (1-self.boost_value)
                                 ) + self.boost_value
         return 0.0
 
@@ -135,7 +124,7 @@ class InheritanceDiffer(AbstractDiffer):
                                     self.differ.compute_result_similarity(
                                         resultv1, resultv2
                                     )
-                                    * 0.75
+                                    * (1-self.boost_value)
                                 ) + self.boost_value
         return 0.0
 
@@ -154,9 +143,9 @@ class InheritanceDiffer(AbstractDiffer):
         for get_api_element in [
             lambda api: api.classes.values(),
             lambda api: api.functions.values(),
-            lambda api: api.attributes(),
-            lambda api: api.parameters(),
-            lambda api: api.results(),
+            lambda api: api.attributes().values(),
+            lambda api: api.parameters().values(),
+            lambda api: api.results().values(),
         ]:
             not_mapped_elements_mapping = self._get_not_mapped_api_elements(
                 mapped_apiv1_elements, mapped_apiv2_elements, get_api_element
