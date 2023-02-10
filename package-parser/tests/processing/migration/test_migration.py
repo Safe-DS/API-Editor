@@ -6,8 +6,8 @@ from package_parser.processing.annotations.model import (
     AnnotationStore,
 )
 from package_parser.processing.api.model import API
-from package_parser.processing.migration import APIMapping, Migration, SimpleDiffer
-from package_parser.processing.migration.model import Mapping
+from package_parser.processing.migration import APIMapping, Migration
+from package_parser.processing.migration.model import Mapping, SimpleDiffer
 from tests.processing.migration.annotations.test_boundary_migration import (
     migrate_boundary_annotation_data_duplicated,
     migrate_boundary_annotation_data_one_to_many_mapping,
