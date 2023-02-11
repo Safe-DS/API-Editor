@@ -309,12 +309,12 @@ class Attribute:
 
     def __repr__(self) -> str:
         type_str = (
-            ",type_str=" + str(self.types.to_json()) if self.types is not None else ""
+            " ,type_str=" + str(self.types.to_json()) if self.types is not None else ""
         )
         return (
             "Attribute(class_id="
             + str(self.class_id)
-            + ", name="
+            + "/"
             + self.name
             + type_str
             + ")"
@@ -395,7 +395,7 @@ class Result:
 
     def __repr__(self) -> str:
         return (
-            "Result(function_id=" + str(self.function_id) + ",name=" + self.name + ")"
+            "Result(function_id=" + str(self.function_id) + "/" + self.name + ")"
         )
 
 
