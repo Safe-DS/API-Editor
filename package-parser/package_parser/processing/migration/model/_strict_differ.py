@@ -51,7 +51,7 @@ class StrictDiffer(AbstractDiffer):
         self.new_mappings.extend(mappings)
 
     def replace_previous_mappings(self) -> bool:
-        return False
+        return True
 
     def _is_parent(
         self,

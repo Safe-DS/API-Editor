@@ -75,7 +75,10 @@ class InheritanceDiffer(AbstractDiffer):
     def compute_function_similarity(
         self, functionv1: Function, functionv2: Function
     ) -> float:
-        # is not gloabal fuinction
+        functionv1_is_global = len(functionv1.id.split("/")) == 3
+        functionv2_is_global = len(functionv2.id.split("/")) == 3
+        if functionv1_is_global or functionv2_is_global:
+            return 0.0
         class_id_functionv1 = "/".join(functionv1.id.split("/")[:-1])
         class_id_functionv2 = "/".join(functionv2.id.split("/")[:-1])
         if (
