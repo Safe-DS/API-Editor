@@ -394,9 +394,7 @@ class Result:
         return {"name": self.name, "docstring": self.docstring.to_json()}
 
     def __repr__(self) -> str:
-        return (
-            "Result(function_id=" + str(self.function_id) + "/" + self.name + ")"
-        )
+        return "Result(function_id=" + str(self.function_id) + "/" + self.name + ")"
 
 
 @dataclass
