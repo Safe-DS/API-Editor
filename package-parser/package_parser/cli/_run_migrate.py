@@ -7,6 +7,7 @@ from package_parser.processing.migration.model import (
     SimpleDiffer,
     StrictDiffer,
     AbstractDiffer,
+    Mapping,
 )
 
 from ._read_and_write_file import (
@@ -27,7 +28,7 @@ def _run_migrate_command(
 
     differ_classes: list[type[AbstractDiffer]] = [SimpleDiffer, StrictDiffer, InheritanceDiffer]
     previous_base_differ = None
-    previous_mappings = []
+    previous_mappings: list[Mapping] = []
 
     for differ_class in differ_classes:
         differ = differ_class(previous_base_differ, previous_mappings, apiv1, apiv2)
