@@ -214,7 +214,7 @@ class APIMapping:
             )
 
         if not self.differ.replace_previous_mappings():
-            mappings.extend(related_mappings)
+            mappings.extend(self.differ.previous_mappings)
         mappings.sort(key=Mapping.get_similarity, reverse=True)
         return mappings
 

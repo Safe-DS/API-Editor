@@ -20,9 +20,11 @@ api_element = Union[Attribute, Class, Function, Parameter, Result]
 
 class StrictDiffer(AbstractDiffer):
     new_mappings: list[Mapping] = []
+    differ: AbstractDiffer
 
     def __init__(self, previous_base_differ: AbstractDiffer,  previous_mappings: list[Mapping], apiv1: API, apiv2: API) -> None:
         super().__init__(previous_base_differ, previous_mappings, apiv1, apiv2)
+        self.differ = previous_base_differ
 
     def get_related_mappings(
         self,
@@ -125,7 +127,7 @@ class StrictDiffer(AbstractDiffer):
                 classv1 in mapping.get_apiv1_elements()
                 and classv2 in mapping.get_apiv2_elements()
             ):
-                return self.previous_base_differ.compute_class_similarity(classv1, classv2)
+                return self.differ.compute_class_similarity(classv1, classv2)
         return 0
 
     def compute_function_similarity(
@@ -142,7 +144,7 @@ class StrictDiffer(AbstractDiffer):
         if (
             is_global_functionv1 and is_global_functionv2
         ) or self._api_elements_are_mapped_to_each_other(functionv1, functionv2):
-            return self.previous_base_differ.compute_function_similarity(functionv1, functionv2)
+            return self.differ.compute_function_similarity(functionv1, functionv2)
         return 0.0
 
     def compute_parameter_similarity(
@@ -155,7 +157,7 @@ class StrictDiffer(AbstractDiffer):
         :return: if the parameters are mapped together, the similarity of the previous differ, or else 0.
         """
         if self._api_elements_are_mapped_to_each_other(parameterv1, parameterv2):
-            return self.previous_base_differ.compute_parameter_similarity(parameterv1, parameterv2)
+            return self.differ.compute_parameter_similarity(parameterv1, parameterv2)
         return 0.0
 
     def compute_result_similarity(self, resultv1: Result, resultv2: Result) -> float:
@@ -166,12 +168,12 @@ class StrictDiffer(AbstractDiffer):
         :return: if the parameters are mapped together, the similarity of the previous differ, or else 0.
         """
         if self._api_elements_are_mapped_to_each_other(resultv1, resultv2):
-            return self.previous_base_differ.compute_result_similarity(resultv1, resultv2)
+            return self.differ.compute_result_similarity(resultv1, resultv2)
         return 0.0
 
     def compute_attribute_similarity(
         self, attributev1: Attribute, attributev2: Attribute
     ) -> float:
         if self._api_elements_are_mapped_to_each_other(attributev1, attributev2):
-            return self.previous_base_differ.compute_attribute_similarity(attributev1, attributev2)
+            return self.differ.compute_attribute_similarity(attributev1, attributev2)
         return 0.0

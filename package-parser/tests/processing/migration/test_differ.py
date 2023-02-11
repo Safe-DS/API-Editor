@@ -13,12 +13,12 @@ from package_parser.processing.api.model import (
     ParameterDocumentation,
     Result,
     ResultDocstring,
-    UnionType,
+    UnionType, API,
 )
 from package_parser.processing.migration.model import AbstractDiffer, SimpleDiffer
 
 differ_list = [
-    SimpleDiffer(),
+    SimpleDiffer(None, [], API("test-distribution", "test-package", "1.0.0",), API("test-distribution", "test-package", "1.0.1",)),
 ]
 
 

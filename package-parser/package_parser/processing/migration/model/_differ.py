@@ -100,6 +100,7 @@ class AbstractDiffer(ABC):
         :param mappings: a list of Mappings if only previously mapped api elements should be mapped to each other or else None.
         """
 
+    @abstractmethod
     def replace_previous_mappings(self) -> bool:
         """
         Indicates whether previous mapping will be overwritten or apendended
@@ -146,8 +147,8 @@ class SimpleDiffer(AbstractDiffer):
     def replace_previous_mappings(self) -> bool:
         return True
 
-    def __init__(self, apiv1: API, apiv2: API) -> None:
-        super().__init__(None, [], apiv1, apiv2)
+    def __init__(self, previous_base_differ: Optional[AbstractDiffer],  previous_mappings: list[Mapping], apiv1: API, apiv2: API) -> None:
+        super().__init__(previous_base_differ, previous_mappings, apiv1, apiv2)
 
         distance_between_implicit_and_explicit = 0.3
         distance_between_vararg_and_normal = 0.3
