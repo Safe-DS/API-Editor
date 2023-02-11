@@ -3,11 +3,11 @@ from pathlib import Path
 
 from package_parser.processing.migration import APIMapping, Migration
 from package_parser.processing.migration.model import (
+    AbstractDiffer,
     InheritanceDiffer,
+    Mapping,
     SimpleDiffer,
     StrictDiffer,
-    AbstractDiffer,
-    Mapping,
 )
 
 from ._read_and_write_file import (
@@ -15,6 +15,7 @@ from ._read_and_write_file import (
     _read_api_file,
     _write_annotations_file,
 )
+
 
 def _run_migrate_command(
     apiv1_file_path: Path,
@@ -26,7 +27,11 @@ def _run_migrate_command(
     apiv2 = _read_api_file(apiv2_file_path)
     annotationsv1 = _read_annotations_file(annotations_file_path)
 
-    differ_classes: list[type[AbstractDiffer]] = [SimpleDiffer, StrictDiffer, InheritanceDiffer]
+    differ_classes: list[type[AbstractDiffer]] = [
+        SimpleDiffer,
+        StrictDiffer,
+        InheritanceDiffer,
+    ]
     previous_base_differ = None
     previous_mappings: list[Mapping] = []
 
@@ -40,14 +45,20 @@ def _run_migrate_command(
         print_only_migration.print(apiv1, apiv2, True)
 
         previous_mappings = mappings
-        previous_base_differ = differ if differ.get_related_mappings() is None else differ.previous_base_differ
+        previous_base_differ = (
+            differ
+            if differ.get_related_mappings() is None
+            else differ.previous_base_differ
+        )
 
     if previous_mappings is not None:
         migration = Migration(annotationsv1, previous_mappings)
         migration.migrate_annotations()
         migration.print(apiv1, apiv2, True)
         migrated_annotations_file = Path(
-            os.path.join(out_dir_path, "migrated_annotationsv" + apiv2.version + ".json")
+            os.path.join(
+                out_dir_path, "migrated_annotationsv" + apiv2.version + ".json"
+            )
         )
         unsure_migrated_annotations_file = Path(
             os.path.join(

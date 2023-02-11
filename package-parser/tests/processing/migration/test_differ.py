@@ -2,6 +2,7 @@ from inspect import cleandoc
 
 import pytest
 from package_parser.processing.api.model import (
+    API,
     Attribute,
     Class,
     ClassDocumentation,
@@ -13,12 +14,25 @@ from package_parser.processing.api.model import (
     ParameterDocumentation,
     Result,
     ResultDocstring,
-    UnionType, API,
+    UnionType,
 )
 from package_parser.processing.migration.model import AbstractDiffer, SimpleDiffer
 
 differ_list = [
-    SimpleDiffer(None, [], API("test-distribution", "test-package", "1.0.0",), API("test-distribution", "test-package", "1.0.1",)),
+    SimpleDiffer(
+        None,
+        [],
+        API(
+            "test-distribution",
+            "test-package",
+            "1.0.0",
+        ),
+        API(
+            "test-distribution",
+            "test-package",
+            "1.0.1",
+        ),
+    ),
 ]
 
 

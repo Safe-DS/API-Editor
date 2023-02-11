@@ -1,4 +1,5 @@
 from __future__ import annotations
+
 import re
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
@@ -8,6 +9,7 @@ from black import FileMode, format_str
 from black.linegen import CannotSplit
 from Levenshtein import distance
 from package_parser.processing.api.model import (
+    API,
     AbstractType,
     Attribute,
     Class,
@@ -16,7 +18,7 @@ from package_parser.processing.api.model import (
     ParameterAssignment,
     ParameterDocumentation,
     Result,
-    UnionType, API,
+    UnionType,
 )
 
 from ._mapping import Mapping
@@ -107,6 +109,7 @@ class AbstractDiffer(ABC):
         :return: true, if previous mappings should be replaced
         """
 
+
 X = TypeVar("X")
 
 
@@ -147,7 +150,13 @@ class SimpleDiffer(AbstractDiffer):
     def replace_previous_mappings(self) -> bool:
         return True
 
-    def __init__(self, previous_base_differ: Optional[AbstractDiffer],  previous_mappings: list[Mapping], apiv1: API, apiv2: API) -> None:
+    def __init__(
+        self,
+        previous_base_differ: Optional[AbstractDiffer],
+        previous_mappings: list[Mapping],
+        apiv1: API,
+        apiv2: API,
+    ) -> None:
         super().__init__(previous_base_differ, previous_mappings, apiv1, apiv2)
 
         distance_between_implicit_and_explicit = 0.3

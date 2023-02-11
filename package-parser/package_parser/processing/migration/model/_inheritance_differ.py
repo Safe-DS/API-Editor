@@ -21,7 +21,14 @@ class InheritanceDiffer(AbstractDiffer):
     inheritance: dict[str, list[str]] = {}
     new_mappings: list[Mapping] = []
 
-    def __init__(self, previous_base_differ: AbstractDiffer,  previous_mappings: list[Mapping], apiv1: API, apiv2: API, boost_value: float=0.15) -> None:
+    def __init__(
+        self,
+        previous_base_differ: AbstractDiffer,
+        previous_mappings: list[Mapping],
+        apiv1: API,
+        apiv2: API,
+        boost_value: float = 0.15,
+    ) -> None:
         super().__init__(previous_base_differ, previous_mappings, apiv1, apiv2)
         self.differ = previous_base_differ
         self.boost_value = boost_value
