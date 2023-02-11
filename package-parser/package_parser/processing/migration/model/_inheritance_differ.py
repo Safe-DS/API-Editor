@@ -1,4 +1,3 @@
-from dataclasses import dataclass, field
 from typing import Callable, Optional, Union
 
 from package_parser.processing.api.model import (
@@ -16,19 +15,23 @@ from ._mapping import ManyToManyMapping, Mapping
 api_element = Union[Attribute, Class, Function, Parameter, Result]
 
 
-@dataclass
 class InheritanceDiffer(AbstractDiffer):
-    previous_mappings: list[Mapping]
+    boost_value: float
     differ: AbstractDiffer
-    apiv1: API
-    apiv2: API
-    boost_value: float = 0.15
-    inheritance: dict[str, list[str]] = field(init=False)
-    new_mappings: list[Mapping] = field(init=False)
+    inheritance: dict[str, list[str]] = {}
+    new_mappings: list[Mapping] = []
 
-    def __post_init__(self) -> None:
-        self.new_mappings = []
-        self.inheritance = {}
+    def __init__(
+        self,
+        previous_base_differ: AbstractDiffer,
+        previous_mappings: list[Mapping],
+        apiv1: API,
+        apiv2: API,
+        boost_value: float = 0.15,
+    ) -> None:
+        super().__init__(previous_base_differ, previous_mappings, apiv1, apiv2)
+        self.differ = previous_base_differ
+        self.boost_value = boost_value
         for class_v2 in self.apiv2.classes.values():
             additional_v2_elements = []
             additional_v2_elements.extend(
@@ -183,3 +186,6 @@ class InheritanceDiffer(AbstractDiffer):
 
     def notify_new_mapping(self, mappings: list[Mapping]) -> None:
         self.new_mappings.extend(mappings)
+
+    def replace_previous_mappings(self) -> bool:
+        return False

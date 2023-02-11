@@ -1,7 +1,7 @@
-from dataclasses import dataclass, field
 from typing import Optional, TypeVar, Union
 
 from package_parser.processing.api.model import (
+    API,
     Attribute,
     Class,
     Function,
@@ -18,14 +18,19 @@ DEPENDENT_API_ELEMENTS = TypeVar(
 api_element = Union[Attribute, Class, Function, Parameter, Result]
 
 
-@dataclass
 class StrictDiffer(AbstractDiffer):
-    previous_mappings: list[Mapping]
+    new_mappings: list[Mapping] = []
     differ: AbstractDiffer
-    new_mappings: list[Mapping] = field(init=False)
 
-    def __post_init__(self) -> None:
-        self.new_mappings = []
+    def __init__(
+        self,
+        previous_base_differ: AbstractDiffer,
+        previous_mappings: list[Mapping],
+        apiv1: API,
+        apiv2: API,
+    ) -> None:
+        super().__init__(previous_base_differ, previous_mappings, apiv1, apiv2)
+        self.differ = previous_base_differ
 
     def get_related_mappings(
         self,
@@ -44,6 +49,9 @@ class StrictDiffer(AbstractDiffer):
 
     def notify_new_mapping(self, mappings: list[Mapping]) -> None:
         self.new_mappings.extend(mappings)
+
+    def replace_previous_mappings(self) -> bool:
+        return False
 
     def _is_parent(
         self,

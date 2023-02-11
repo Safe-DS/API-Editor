@@ -1,11 +1,15 @@
+from __future__ import annotations
+
 import re
 from abc import ABC, abstractmethod
+from dataclasses import dataclass
 from typing import Callable, Optional, Tuple, TypeVar, Union
 
 from black import FileMode, format_str
 from black.linegen import CannotSplit
 from Levenshtein import distance
 from package_parser.processing.api.model import (
+    API,
     AbstractType,
     Attribute,
     Class,
@@ -22,7 +26,13 @@ from ._mapping import Mapping
 api_element = Union[Attribute, Class, Function, Parameter, Result]
 
 
+@dataclass
 class AbstractDiffer(ABC):
+    previous_base_differ: Optional[AbstractDiffer]
+    previous_mappings: list[Mapping]
+    apiv1: API
+    apiv2: API
+
     @abstractmethod
     def compute_attribute_similarity(
         self,
@@ -92,6 +102,13 @@ class AbstractDiffer(ABC):
         :param mappings: a list of Mappings if only previously mapped api elements should be mapped to each other or else None.
         """
 
+    @abstractmethod
+    def replace_previous_mappings(self) -> bool:
+        """
+        Indicates whether previous mapping will be overwritten or apendended
+        :return: true, if previous mappings should be replaced
+        """
+
 
 X = TypeVar("X")
 
@@ -130,7 +147,18 @@ class SimpleDiffer(AbstractDiffer):
     def notify_new_mapping(self, mappings: list[Mapping]) -> None:
         return
 
-    def __init__(self) -> None:
+    def replace_previous_mappings(self) -> bool:
+        return True
+
+    def __init__(
+        self,
+        previous_base_differ: Optional[AbstractDiffer],
+        previous_mappings: list[Mapping],
+        apiv1: API,
+        apiv2: API,
+    ) -> None:
+        super().__init__(previous_base_differ, previous_mappings, apiv1, apiv2)
+
         distance_between_implicit_and_explicit = 0.3
         distance_between_vararg_and_normal = 0.3
         distance_between_position_and_named = 0.3

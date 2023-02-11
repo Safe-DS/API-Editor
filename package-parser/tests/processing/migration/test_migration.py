@@ -220,7 +220,7 @@ def test_migrate_command_and_both_annotation_stores() -> None:
             expected_unsure_annotationsv2_json
         )
 
-        differ = SimpleDiffer()
+        differ = SimpleDiffer(None, [], apiv1, apiv2)
         api_mapping = APIMapping(
             apiv1, apiv2, differ, threshold_of_similarity_between_mappings=0.3
         )

@@ -67,9 +67,9 @@ class APIMapping:
 
     def map_api(self) -> List[Mapping]:
         mappings: List[Mapping] = []
-        previous_mappings = self.differ.get_related_mappings()
-        if previous_mappings is not None:
-            for mapping in previous_mappings:
+        related_mappings = self.differ.get_related_mappings()
+        if related_mappings is not None:
+            for mapping in related_mappings:
                 new_mapping = None
                 if isinstance(
                     mapping.get_apiv1_elements()[0], Attribute
@@ -156,7 +156,7 @@ class APIMapping:
                         self.differ.compute_result_similarity,
                     )
                     mappings.extend(new_mapping)
-                if new_mapping is not None:
+                if new_mapping is not None and len(new_mapping) > 0:
                     self.differ.notify_new_mapping(new_mapping)
         else:
             mappings.extend(
@@ -213,6 +213,8 @@ class APIMapping:
                 )
             )
 
+        if not self.differ.replace_previous_mappings():
+            mappings.extend(self.differ.previous_mappings)
         mappings.sort(key=Mapping.get_similarity, reverse=True)
         return mappings
 
