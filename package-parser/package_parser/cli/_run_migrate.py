@@ -1,11 +1,12 @@
 import os
 from pathlib import Path
+from typing import Optional, Callable
 
 from package_parser.processing.migration import APIMapping, Migration
 from package_parser.processing.migration.model import (
     InheritanceDiffer,
     SimpleDiffer,
-    StrictDiffer,
+    StrictDiffer, AbstractDiffer, Mapping,
 )
 
 from ._read_and_write_file import (
@@ -13,6 +14,7 @@ from ._read_and_write_file import (
     _read_api_file,
     _write_annotations_file,
 )
+from package_parser.processing.api.model import API
 
 
 def _run_migrate_command(
@@ -24,18 +26,27 @@ def _run_migrate_command(
     apiv1 = _read_api_file(apiv1_file_path)
     apiv2 = _read_api_file(apiv2_file_path)
     annotationsv1 = _read_annotations_file(annotations_file_path)
-    differ = SimpleDiffer()
-    api_mapping = APIMapping(apiv1, apiv2, differ)
-    mappings = api_mapping.map_api()
-    strict_differ = StrictDiffer(mappings, differ)
-    enhanced_api_mapping = APIMapping(apiv1, apiv2, strict_differ)
-    enhanced_mappings = enhanced_api_mapping.map_api()
 
-    inheritance_differ = InheritanceDiffer(enhanced_mappings, differ, apiv1, apiv2)
-    api_mapping_including_inheritance = APIMapping(apiv1, apiv2, inheritance_differ)
-    enhanced_mappings_with_inheritance = api_mapping_including_inheritance.map_api()
+    create_next_differ_list = list[Callable[[Optional[AbstractDiffer], list[Mapping], API, API], AbstractDiffer]] = [
+        lambda previous_base_differ_, previous_mappings_, apiv1_, apiv2_: SimpleDiffer(apiv1_, apiv2_),
+        lambda previous_base_differ_, previous_mappings_, apiv1_, apiv2_: StrictDiffer(previous_base_differ_, previous_mappings_, apiv1_, apiv2_),
+        lambda previous_base_differ_, previous_mappings_, apiv1_, apiv2_: InheritanceDiffer(previous_base_differ_, previous_mappings_, apiv1_, apiv2_),
+        ]
+    previous_base_differ = None
+    previous_mappings = None
+    for create_next_differ in create_next_differ_list:
+        differ = create_next_differ(previous_base_differ, previous_mappings, apiv1, apiv2)
+        api_mapping = APIMapping(apiv1, apiv2, differ)
+        mappings = api_mapping.map_api()
 
-    migration = Migration(annotationsv1, enhanced_mappings_with_inheritance)
+        print_only_migration = Migration(annotationsv1, mappings)
+        print_only_migration.migrate_annotations()
+        print_only_migration.print(apiv1, apiv2, True)
+
+        previous_mappings = mappings
+        previous_base_differ = differ if differ.get_related_mappings() is None else differ.previous_base_differ
+
+    migration = Migration(annotationsv1, previous_mappings)
     migration.migrate_annotations()
     migration.print(apiv1, apiv2, True)
     migrated_annotations_file = Path(

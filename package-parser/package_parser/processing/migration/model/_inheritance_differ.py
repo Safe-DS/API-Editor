@@ -1,4 +1,3 @@
-from dataclasses import dataclass, field
 from typing import Callable, Optional, Union
 
 from package_parser.processing.api.model import (
@@ -16,19 +15,14 @@ from ._mapping import ManyToManyMapping, Mapping
 api_element = Union[Attribute, Class, Function, Parameter, Result]
 
 
-@dataclass
 class InheritanceDiffer(AbstractDiffer):
-    previous_mappings: list[Mapping]
-    differ: AbstractDiffer
-    apiv1: API
-    apiv2: API
-    boost_value: float = 0.15
-    inheritance: dict[str, list[str]] = field(init=False)
-    new_mappings: list[Mapping] = field(init=False)
+    boost_value: float
+    inheritance: dict[str, list[str]] = {}
+    new_mappings: list[Mapping] = []
 
-    def __post_init__(self) -> None:
-        self.new_mappings = []
-        self.inheritance = {}
+    def __init__(self, previous_base_differ: AbstractDiffer,  previous_mappings: list[Mapping], apiv1: API, apiv2: API, boost_value: float=0.15) -> None:
+        super().__init__(previous_base_differ, previous_mappings, apiv1, apiv2)
+        self.boost_value = boost_value
         for class_v2 in self.apiv2.classes.values():
             additional_v2_elements = []
             additional_v2_elements.extend(
@@ -53,7 +47,7 @@ class InheritanceDiffer(AbstractDiffer):
             and attributev1.class_id in self.inheritance[attributev2.class_id]
         ):
             return (
-                self.differ.compute_attribute_similarity(attributev1, attributev2)
+                self.previous_base_differ.compute_attribute_similarity(attributev1, attributev2)
                 * (1 - self.boost_value)
             ) + self.boost_value
         return 0.0
@@ -64,7 +58,7 @@ class InheritanceDiffer(AbstractDiffer):
                 for elementv2 in mapping.get_apiv2_elements():
                     if elementv2.name in self.inheritance[classv2.id]:
                         return (
-                            self.differ.compute_class_similarity(classv1, classv2)
+                            self.previous_base_differ.compute_class_similarity(classv1, classv2)
                             * (1 - self.boost_value)
                         ) + self.boost_value
         return 0.0
@@ -79,7 +73,7 @@ class InheritanceDiffer(AbstractDiffer):
             class_id_functionv2 in self.inheritance
             and class_id_functionv1 in self.inheritance[class_id_functionv2]
         ):
-            base_similarity = self.differ.compute_function_similarity(
+            base_similarity = self.previous_base_differ.compute_function_similarity(
                 functionv1, functionv2
             )
             return (base_similarity * (1 - self.boost_value)) + self.boost_value
@@ -104,7 +98,7 @@ class InheritanceDiffer(AbstractDiffer):
                                 == functionv2.id
                             ):
                                 return (
-                                    self.differ.compute_parameter_similarity(
+                                    self.previous_base_differ.compute_parameter_similarity(
                                         parameterv1, parameterv2
                                     )
                                     * (1 - self.boost_value)
@@ -128,7 +122,7 @@ class InheritanceDiffer(AbstractDiffer):
                                 and resultv2.function_id == functionv2.id
                             ):
                                 return (
-                                    self.differ.compute_result_similarity(
+                                    self.previous_base_differ.compute_result_similarity(
                                         resultv1, resultv2
                                     )
                                     * (1 - self.boost_value)
@@ -183,3 +177,6 @@ class InheritanceDiffer(AbstractDiffer):
 
     def notify_new_mapping(self, mappings: list[Mapping]) -> None:
         self.new_mappings.extend(mappings)
+
+    def replace_previous_mappings(self) -> bool:
+        return False
