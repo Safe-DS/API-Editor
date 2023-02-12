@@ -536,9 +536,9 @@ class SimpleDiffer(AbstractDiffer):
         descriptionv1 = re.split("[\n ]", documentationv1.description)
         descriptionv2 = re.split("[\n ]", documentationv2.description)
 
-        documentation_similarity = distance_elements(
-            descriptionv1, descriptionv2
-        ) / max(len(descriptionv1), len(descriptionv2))
+        documentation_similarity = distance(descriptionv1, descriptionv2) / max(
+            len(descriptionv1), len(descriptionv2)
+        )
         return 1 - documentation_similarity
 
     def _compute_id_similarity(self, idv1: str, idv2: str) -> float:
