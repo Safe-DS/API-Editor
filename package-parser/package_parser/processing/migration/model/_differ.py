@@ -333,17 +333,9 @@ class SimpleDiffer(AbstractDiffer):
         )
 
         def are_parameters_similar(
-            parameter_a: Parameter, parameter_b: Parameter
+            parameterv1: Parameter, parameterv2: Parameter
         ) -> bool:
-            if not self.SPEED_UP:
-                return self.compute_parameter_similarity(parameter_a, parameter_b) == 1
-            parameter_name_similarity = self._compute_name_similarity(
-                parameter_a.name, parameter_b.name
-            )
-            parameter_type_similarity = self._compute_type_similarity(
-                parameter_a.type, parameter_b.type
-            )
-            return (parameter_name_similarity + parameter_type_similarity) == 2.0
+            return self.compute_parameter_similarity(parameterv1, parameterv2) == 1
 
         parameter_similarity = distance_elements(
             functionv1.parameters,
