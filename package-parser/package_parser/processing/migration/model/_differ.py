@@ -257,26 +257,21 @@ class SimpleDiffer(AbstractDiffer):
     def _compute_code_similarity(self, code_a: str, code_b: str) -> float:
         mode = FileMode()
         try:
-            code_a = format_str(code_a, mode=mode)
-            code_b = format_str(code_b, mode=mode)
+            code_a_tmp = format_str(code_a, mode=mode)
+            code_b_tmp = format_str(code_b, mode=mode)
         except CannotSplit:
             pass
+        else:
+            code_a = code_a_tmp
+            code_b = code_b_tmp
         split_a = code_a.split("\n")
         split_b = code_b.split("\n")
-        diff_code = distance_elements(split_a, split_b) / max(
-            len(split_a), len(split_b), 1
-        )
+        diff_code = distance(split_a, split_b) / max(len(split_a), len(split_b), 1)
         return 1 - diff_code
 
     def compute_parameter_similarity(
         self, parameter_a: Parameter, parameter_b: Parameter
     ) -> float:
-        """
-        Computes similarity between parameters from apiv1 and apiv2 with the respect to their name, type, assignment, default value, documentation, and id.
-        :param parameterv1: attribute from apiv1
-        :param parameterv2: attribute from apiv2
-        :return: value between 0 and 1, where 1 means that the elements are equal
-        """
         if (
             parameter_a.id in self.previous_parameter_similarity
             and parameter_b.id in self.previous_parameter_similarity[parameter_a.id]
