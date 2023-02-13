@@ -64,7 +64,7 @@ class APIMapping:
 
     def map_api(self) -> List[Mapping]:
         mappings: List[Mapping] = []
-        previous_mappings = self.differ.get_previous_mappings()
+        previous_mappings = self.differ.get_related_mappings()
         if previous_mappings is not None:
             for mapping in previous_mappings:
                 new_mapping = None

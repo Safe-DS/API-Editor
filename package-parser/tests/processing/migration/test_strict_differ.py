@@ -63,8 +63,8 @@ def test_similarity(differ: AbstractDiffer) -> None:
 
     function_id_a = class_id_a + "/test_function"
     parameter_a = Parameter(function_id_a + "/test_parameter", "test_parameter",
-                            "test.Test.test_function.test_parameter", "'test_str'",
-                            ParameterAssignment.POSITION_OR_NAME, True, ParameterDocumentation("'test_str'", "", ""), )
+                            "test.Test.test_function.test_parameter", "'test_str_a'",
+                            ParameterAssignment.POSITION_OR_NAME, True, ParameterDocumentation("'test_str_a'", "", ""), )
     result_a = Result("config", ResultDocstring("dict", ""), function_id=function_id_a)
     code_function_a = cleandoc(
         """
@@ -84,8 +84,8 @@ def test_similarity(differ: AbstractDiffer) -> None:
         True,
         [],
         FunctionDocumentation(
-            "This test function is a proof of work",
-            "This test function is a proof of work",
+            "This test function is a for testing",
+            "This test function is a for testing",
         ),
         code_function_a,
     )
@@ -103,10 +103,10 @@ def test_similarity(differ: AbstractDiffer) -> None:
         function_id_b + "/test_parameter",
         "test_parameter",
         "test.Test.test_method.test_parameter",
-        "'test_str'",
+        "'test_str_b'",
         ParameterAssignment.POSITION_OR_NAME,
         True,
-        ParameterDocumentation("'test_str'", "", ""),
+        ParameterDocumentation("'test_str_b'", "", ""),
     )
     result_b = Result(
         "new_config",
@@ -122,8 +122,8 @@ def test_similarity(differ: AbstractDiffer) -> None:
         True,
         [],
         FunctionDocumentation(
-            "This test function is a proof of concept.",
-            "This test function is a proof of concept.",
+            "This test function is a test",
+            "This test function is a test",
         ),
         code_b,
     )
