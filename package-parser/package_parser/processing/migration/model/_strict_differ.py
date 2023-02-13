@@ -19,7 +19,7 @@ api_element = Union[Attribute, Class, Function, Parameter, Result]
 
 
 class StrictDiffer(AbstractDiffer):
-    new_mappings: list[Mapping] = []
+    new_mappings: list[Mapping]
     differ: AbstractDiffer
 
     def __init__(
@@ -31,6 +31,7 @@ class StrictDiffer(AbstractDiffer):
     ) -> None:
         super().__init__(previous_base_differ, previous_mappings, apiv1, apiv2)
         self.differ = previous_base_differ
+        self.new_mappings = []
 
     def get_related_mappings(
         self,
@@ -148,8 +149,8 @@ class StrictDiffer(AbstractDiffer):
         is_global_functionv1 = len(functionv1.id.split("/")) == 3
         is_global_functionv2 = len(functionv2.id.split("/")) == 3
         if (
-            is_global_functionv1 and is_global_functionv2
-        ) or self._api_elements_are_mapped_to_each_other(functionv1, functionv2):
+            not is_global_functionv1 and not is_global_functionv2
+        ) and self._api_elements_are_mapped_to_each_other(functionv1, functionv2):
             return self.differ.compute_function_similarity(functionv1, functionv2)
         return 0.0
 
