@@ -132,7 +132,6 @@ def distance_elements(
 
 
 class SimpleDiffer(AbstractDiffer):
-    SPEED_UP: bool = False
     assigned_by_look_up_similarity: dict[
         ParameterAssignment, dict[ParameterAssignment, float]
     ]
@@ -303,7 +302,7 @@ class SimpleDiffer(AbstractDiffer):
             type_list_a = [attributev1.types]
         type_list_b = [attributev2.types]
         if attributev2.types is not None and isinstance(attributev2, UnionType):
-            type_list_b = [attributev1.types]
+            type_list_b = [attributev2.types]
         type_similarity = distance_elements(type_list_a, type_list_b) / max(
             len(type_list_a), len(type_list_b), 1
         )
@@ -528,9 +527,9 @@ class SimpleDiffer(AbstractDiffer):
         description_a = re.split("[\n ]", documentation_a.description)
         description_b = re.split("[\n ]", documentation_b.description)
 
-        documentation_similarity = distance_elements(
-            description_a, description_b
-        ) / max(len(description_a), len(description_b))
+        documentation_similarity = distance(description_a, description_b) / max(
+            len(description_a), len(description_b), 1
+        )
         return 1 - documentation_similarity
 
     def _compute_id_similarity(self, id_a: str, id_b: str) -> float:
