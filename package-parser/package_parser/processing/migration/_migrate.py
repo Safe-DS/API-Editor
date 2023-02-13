@@ -168,6 +168,7 @@ class Migration:
     def _get_mappings_for_table(self) -> list[str]:
         table_rows: list[str] = []
         for mapping in self.mappings:
+
             def print_api_element(
                 api_element: Union[Attribute, Class, Function, Parameter, Result]
             ) -> str:
