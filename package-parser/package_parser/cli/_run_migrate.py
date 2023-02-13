@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+from typing import Any
 
 from package_parser.processing.migration import APIMapping, Migration
 from package_parser.processing.migration.model import (
@@ -27,16 +28,17 @@ def _run_migrate_command(
     apiv2 = _read_api_file(apiv2_file_path)
     annotationsv1 = _read_annotations_file(annotations_file_path)
 
-    differ_classes: list[type[AbstractDiffer]] = [
-        SimpleDiffer,
-        StrictDiffer,
-        InheritanceDiffer,
+    differ_init_list: list[tuple[type[AbstractDiffer], dict[str, Any]]] = [
+        (SimpleDiffer, {}),
+        (StrictDiffer, {}),
+        (InheritanceDiffer, {}),
     ]
     previous_base_differ = None
     previous_mappings: list[Mapping] = []
 
-    for differ_class in differ_classes:
-        differ = differ_class(previous_base_differ, previous_mappings, apiv1, apiv2)
+    for differ_init in differ_init_list:
+        differ_class, additional_parameters = differ_init
+        differ = differ_class(previous_base_differ, previous_mappings, apiv1, apiv2, **additional_parameters)
         api_mapping = APIMapping(apiv1, apiv2, differ)
         mappings = api_mapping.map_api()
 
