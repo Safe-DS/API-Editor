@@ -18,7 +18,7 @@ from package_parser.processing.api.model import (
 from package_parser.processing.migration.model import (
     AbstractDiffer,
     OneToOneMapping,
-    StrictDiffer
+    StrictDiffer,
 )
 from test_base_differ import differ_list
 
@@ -171,12 +171,22 @@ def test_similarity(differ: AbstractDiffer) -> None:
             function_mapping,
             OneToOneMapping(1.0, parameter_a, parameter_b),
             OneToOneMapping(1.0, result_a, result_b),
-        ], apiv1, apiv2
+        ],
+        apiv1,
+        apiv2,
     )
     assert strict_differ_notify_all.compute_class_similarity(class_a, class_b) > 0
     strict_differ_notify_all.notify_new_mapping([class_mapping])
-    assert strict_differ_notify_all.compute_attribute_similarity(attribute_a, attribute_b) > 0
-    assert strict_differ_notify_all.compute_function_similarity(function_a, function_b) > 0
+    assert (
+        strict_differ_notify_all.compute_attribute_similarity(attribute_a, attribute_b)
+        > 0
+    )
+    assert (
+        strict_differ_notify_all.compute_function_similarity(function_a, function_b) > 0
+    )
     strict_differ_notify_all.notify_new_mapping([function_mapping])
-    assert strict_differ_notify_all.compute_parameter_similarity(parameter_a, parameter_b) > 0
+    assert (
+        strict_differ_notify_all.compute_parameter_similarity(parameter_a, parameter_b)
+        > 0
+    )
     assert strict_differ_notify_all.compute_result_similarity(result_a, result_b) > 0
