@@ -38,7 +38,13 @@ def _run_migrate_command(
 
     for differ_init in differ_init_list:
         differ_class, additional_parameters = differ_init
-        differ = differ_class(previous_base_differ, previous_mappings, apiv1, apiv2, **additional_parameters)
+        differ = differ_class(
+            previous_base_differ,
+            previous_mappings,
+            apiv1,
+            apiv2,
+            **additional_parameters
+        )
         api_mapping = APIMapping(apiv1, apiv2, differ)
         mappings = api_mapping.map_api()
 
