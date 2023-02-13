@@ -279,8 +279,8 @@ class SimpleDiffer(AbstractDiffer):
             name_similarity + attributes_similarity + code_similarity + id_similarity
         ) / 4
 
-    def _compute_name_similarity(self, name_a: str, name_b: str) -> float:
-        name_similarity = distance(name_a, name_b) / max(len(name_a), len(name_b), 1)
+    def _compute_name_similarity(self, namev1: str, namev2: str) -> float:
+        name_similarity = distance(namev1, namev2) / max(len(namev1), len(namev2), 1)
         return 1 - name_similarity
 
     def compute_attribute_similarity(
@@ -297,14 +297,14 @@ class SimpleDiffer(AbstractDiffer):
         name_similarity = self._compute_name_similarity(
             attributev1.name, attributev2.name
         )
-        type_list_a = [attributev1.types]
+        type_listv1 = [attributev1.types]
         if attributev1.types is not None and isinstance(attributev1, UnionType):
-            type_list_a = [attributev1.types]
-        type_list_b = [attributev2.types]
+            type_listv1 = [attributev1.types]
+        type_listv2 = [attributev2.types]
         if attributev2.types is not None and isinstance(attributev2, UnionType):
-            type_list_b = [attributev2.types]
-        type_similarity = distance_elements(type_list_a, type_list_b) / max(
-            len(type_list_a), len(type_list_b), 1
+            type_listv2 = [attributev2.types]
+        type_similarity = distance_elements(type_listv1, type_listv2) / max(
+            len(type_listv1), len(type_listv2), 1
         )
         type_similarity = 1 - type_similarity
         return (name_similarity + type_similarity) / 2
