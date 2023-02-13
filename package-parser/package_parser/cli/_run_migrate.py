@@ -2,7 +2,11 @@ import os
 from pathlib import Path
 
 from package_parser.processing.migration import Migration
-from package_parser.processing.migration.model import APIMapping, SimpleDiffer
+from package_parser.processing.migration.model import (
+    APIMapping,
+    SimpleDiffer,
+    StrictDiffer,
+)
 
 from ._read_and_write_file import (
     _read_annotations_file,
@@ -23,8 +27,12 @@ def _run_migrate_command(
     differ = SimpleDiffer()
     api_mapping = APIMapping(apiv1, apiv2, differ)
     mappings = api_mapping.map_api()
-    migration = Migration(annotationsv1, mappings)
+    enhanced_api_mapping = APIMapping(apiv1, apiv2, StrictDiffer(mappings, differ))
+    enhanced_mappings = enhanced_api_mapping.map_api()
+
+    migration = Migration(annotationsv1, enhanced_mappings)
     migration.migrate_annotations()
+    migration.print(apiv1, apiv2)
     migrated_annotations_file = Path(
         os.path.join(out_dir_path, "migrated_annotationsv" + apiv2.version + ".json")
     )

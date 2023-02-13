@@ -209,7 +209,7 @@ class Class:
             ),
             json.get("code", ""),
             [
-                Attribute.from_json(instance_attribute)
+                Attribute.from_json(instance_attribute, json["id"])
                 for instance_attribute in json.get("instance_attributes", [])
             ],
         )
@@ -267,19 +267,38 @@ class Class:
             ],
         }
 
+    def __repr__(self) -> str:
+        return "Class(id=" + self.id + ")"
+
 
 @dataclass
 class Attribute:
     name: str
     types: Optional[AbstractType]
+    class_id: Optional[str] = None
 
     def to_json(self) -> dict[str, Any]:
         types_json = self.types.to_json() if self.types is not None else None
         return {"name": self.name, "types": types_json}
 
     @staticmethod
-    def from_json(json: Any) -> Attribute:
-        return Attribute(json["name"], AbstractType.from_json(json.get("types", {})))
+    def from_json(json: Any, class_id: Optional[str] = None) -> Attribute:
+        return Attribute(
+            json["name"], AbstractType.from_json(json.get("types", {})), class_id
+        )
+
+    def __repr__(self) -> str:
+        type_str = (
+            " , type=" + str(self.types.to_json()) if self.types is not None else "None"
+        )
+        return (
+            "Attribute(class_id="
+            + str(self.class_id)
+            + "/"
+            + self.name
+            + type_str
+            + ")"
+        )
 
 
 @dataclass
@@ -333,21 +352,31 @@ class Function:
             "code": self.code,
         }
 
+    def __repr__(self) -> str:
+        return "Function(id=" + self.id + ")"
+
 
 @dataclass
 class Result:
     name: str
     docstring: ResultDocstring
+    function_id: Optional[str] = None
 
     @staticmethod
-    def from_json(json: Any) -> Result:
+    def from_json(json: Any, function_id: Optional[str] = None) -> Result:
         return Result(
             json["name"],
             ResultDocstring.from_json(json.get("docstring", {})),
+            function_id,
         )
 
     def to_json(self) -> Any:
         return {"name": self.name, "docstring": self.docstring.to_json()}
+
+    def __repr__(self) -> str:
+        return (
+            "Result(function_id=" + str(self.function_id) + ", name=" + self.name + ")"
+        )
 
 
 @dataclass

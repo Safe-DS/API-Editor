@@ -13,7 +13,7 @@ class ClassDocumentation:
     def from_dict(d: dict) -> ClassDocumentation:
         return ClassDocumentation(**d)
 
-    def to_dict(self):
+    def to_dict(self) -> dict:
         return dataclasses.asdict(self)
 
 
@@ -26,7 +26,7 @@ class FunctionDocumentation:
     def from_dict(d: dict) -> FunctionDocumentation:
         return FunctionDocumentation(**d)
 
-    def to_dict(self):
+    def to_dict(self) -> dict:
         return dataclasses.asdict(self)
 
 
@@ -40,5 +40,5 @@ class ParameterDocumentation:
     def from_dict(d: dict) -> ParameterDocumentation:
         return ParameterDocumentation(**d)
 
-    def to_dict(self):
+    def to_dict(self) -> dict:
         return dataclasses.asdict(self)

@@ -10,7 +10,7 @@ from package_parser.processing.migration import (
     OneToManyMapping,
     OneToOneMapping,
 )
-from test_differ import differ_list
+from test_base_differ import differ_list
 
 
 @pytest.mark.parametrize(
