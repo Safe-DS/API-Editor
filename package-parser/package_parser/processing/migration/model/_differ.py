@@ -73,6 +73,8 @@ class SimpleDiffer(AbstractDiffer):
     assigned_by_look_up_similarity: dict[
         ParameterAssignment, dict[ParameterAssignment, float]
     ]
+    previous_parameter_similarity: dict[str, dict[str, float]] = {}
+    previous_function_similarity: dict[str, dict[str, float]] = {}
 
     def __init__(self) -> None:
         distance_between_implicit_and_explicit = 0.3
@@ -217,6 +219,12 @@ class SimpleDiffer(AbstractDiffer):
     def compute_function_similarity(
         self, function_a: Function, function_b: Function
     ) -> float:
+        if (
+            function_a.id in self.previous_function_similarity
+            and function_b.id in self.previous_function_similarity[function_a.id]
+        ):
+            return self.previous_function_similarity[function_a.id][function_b.id]
+
         code_similarity = self._compute_code_similarity(
             function_a.code, function_b.code
         )
@@ -238,27 +246,38 @@ class SimpleDiffer(AbstractDiffer):
 
         id_similarity = self._compute_id_similarity(function_a.id, function_b.id)
 
-        return (
+        result = (
             code_similarity + name_similarity + parameter_similarity + id_similarity
         ) / 4
+        if function_a.id not in self.previous_function_similarity:
+            self.previous_function_similarity[function_a.id] = {}
+        self.previous_function_similarity[function_a.id][function_b.id] = result
+        return result
 
     def _compute_code_similarity(self, code_a: str, code_b: str) -> float:
         mode = FileMode()
         try:
-            code_a = format_str(code_a, mode=mode)
-            code_b = format_str(code_b, mode=mode)
+            code_a_tmp = format_str(code_a, mode=mode)
+            code_b_tmp = format_str(code_b, mode=mode)
         except CannotSplit:
             pass
+        else:
+            code_a = code_a_tmp
+            code_b = code_b_tmp
         split_a = code_a.split("\n")
         split_b = code_b.split("\n")
-        diff_code = distance_elements(split_a, split_b) / max(
-            len(split_a), len(split_b), 1
-        )
+        diff_code = distance(split_a, split_b) / max(len(split_a), len(split_b), 1)
         return 1 - diff_code
 
     def compute_parameter_similarity(
         self, parameter_a: Parameter, parameter_b: Parameter
     ) -> float:
+        if (
+            parameter_a.id in self.previous_parameter_similarity
+            and parameter_b.id in self.previous_parameter_similarity[parameter_a.id]
+        ):
+            return self.previous_parameter_similarity[parameter_a.id][parameter_b.id]
+
         normalize_similarity = 6
         parameter_name_similarity = self._compute_name_similarity(
             parameter_a.name, parameter_b.name
@@ -289,7 +308,7 @@ class SimpleDiffer(AbstractDiffer):
 
         id_similarity = self._compute_id_similarity(parameter_a.id, parameter_b.id)
 
-        return (
+        result = (
             parameter_name_similarity
             + parameter_type_similarity
             + parameter_assignment_similarity
@@ -297,6 +316,10 @@ class SimpleDiffer(AbstractDiffer):
             + parameter_documentation_similarity
             + id_similarity
         ) / normalize_similarity
+        if parameter_a.id not in self.previous_parameter_similarity:
+            self.previous_parameter_similarity[parameter_a.id] = {}
+        self.previous_parameter_similarity[parameter_a.id][parameter_b.id] = result
+        return result
 
     def _compute_type_similarity(
         self, type_a: Optional[AbstractType], type_b: Optional[AbstractType]
@@ -393,9 +416,9 @@ class SimpleDiffer(AbstractDiffer):
         description_a = re.split("[\n ]", documentation_a.description)
         description_b = re.split("[\n ]", documentation_b.description)
 
-        documentation_similarity = distance_elements(
-            description_a, description_b
-        ) / max(len(description_a), len(description_b))
+        documentation_similarity = distance(description_a, description_b) / max(
+            len(description_a), len(description_b)
+        )
         return 1 - documentation_similarity
 
     def _compute_id_similarity(self, id_a: str, id_b: str) -> float:
