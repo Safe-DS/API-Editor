@@ -32,7 +32,7 @@ def _run_migrate_command(
 
     migration = Migration(annotationsv1, enhanced_mappings)
     migration.migrate_annotations()
-    migration.print(apiv1, apiv2, True)
+    migration.print(apiv1, apiv2)
     migrated_annotations_file = Path(
         os.path.join(out_dir_path, "migrated_annotationsv" + apiv2.version + ".json")
     )

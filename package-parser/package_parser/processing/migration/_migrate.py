@@ -165,39 +165,35 @@ class Migration:
         else:
             self.unsure_migrated_annotation_store.add_annotation(annotation)
 
-    def _get_mappings_for_table(self, print_all_mappings: bool) -> list[str]:
+    def _get_mappings_for_table(self) -> list[str]:
         table_rows: list[str] = []
         for mapping in self.mappings:
-            if mapping.similarity < 1.0 or (
-                mapping.similarity == 1.0 and print_all_mappings
-            ):
+            def print_api_element(
+                api_element: Union[Attribute, Class, Function, Parameter, Result]
+            ) -> str:
+                if isinstance(api_element, Result):
+                    return api_element.name
+                if isinstance(api_element, Attribute):
+                    return str(api_element.class_id) + "/" + api_element.name
+                return "/".join(api_element.id.split("/")[1:])
 
-                def print_api_element(
-                    api_element: Union[Attribute, Class, Function, Parameter, Result]
-                ) -> str:
-                    if isinstance(api_element, Result):
-                        return api_element.name
-                    if isinstance(api_element, Attribute):
-                        return str(api_element.class_id) + "/" + api_element.name
-                    return "/".join(api_element.id.split("/")[1:])
-
-                apiv1_elements = ", ".join(
-                    [
-                        print_api_element(api_element)
-                        for api_element in mapping.get_apiv1_elements()
-                    ]
-                )
-                apiv2_elements = ", ".join(
-                    [
-                        print_api_element(api_element)
-                        for api_element in mapping.get_apiv2_elements()
-                    ]
-                )
-                apiv1_elements = "`" + apiv1_elements + "`"
-                apiv2_elements = "`" + apiv2_elements + "`"
-                table_rows.append(
-                    f"{mapping.similarity:.4}|{apiv1_elements}|{apiv2_elements}|"
-                )
+            apiv1_elements = ", ".join(
+                [
+                    print_api_element(api_element)
+                    for api_element in mapping.get_apiv1_elements()
+                ]
+            )
+            apiv2_elements = ", ".join(
+                [
+                    print_api_element(api_element)
+                    for api_element in mapping.get_apiv2_elements()
+                ]
+            )
+            apiv1_elements = "`" + apiv1_elements + "`"
+            apiv2_elements = "`" + apiv2_elements + "`"
+            table_rows.append(
+                f"{mapping.similarity:.4}|{apiv1_elements}|{apiv2_elements}|"
+            )
         return table_rows
 
     def _get_not_mapped_api_elements_for_table(
@@ -293,10 +289,10 @@ class Migration:
                 not_mapped_api_elements.append(function.id + "/" + result.name)
         return not_mapped_api_elements
 
-    def print(self, apiv1: API, apiv2: API, print_all_mappings: bool) -> None:
+    def print(self, apiv1: API, apiv2: API) -> None:
         print("**Similarity**|**APIV1**|**APIV2**|**comment**")
         print(":-----:|:-----:|:-----:|:----:|")
-        table_body = self._get_mappings_for_table(print_all_mappings)
+        table_body = self._get_mappings_for_table()
         table_body.extend(self._get_not_mapped_api_elements_for_table(apiv1, apiv2))
         table_body.sort(
             key=lambda row: max(len(cell.split("/")) for cell in row.split("|")[:-1])

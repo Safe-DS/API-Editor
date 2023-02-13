@@ -77,7 +77,7 @@ class AbstractDiffer(ABC):
         """
 
     @abstractmethod
-    def get_previous_mappings(
+    def get_related_mappings(
         self,
     ) -> Optional[list[Mapping]]:
         """
@@ -97,20 +97,20 @@ X = TypeVar("X")
 
 
 def distance_elements(
-    list_a: list[X],
-    list_b: list[X],
+    listv1: list[X],
+    listv2: list[X],
     are_similar: Callable[[X, X], bool] = lambda x, y: x == y,
 ) -> float:
-    if len(list_a) == 0:
-        return len(list_b)
-    if len(list_b) == 0:
-        return len(list_a)
-    if are_similar(list_a[0], list_b[0]):
-        return distance_elements(list_a[1:], list_b[1:], are_similar)
+    if len(listv1) == 0:
+        return len(listv2)
+    if len(listv2) == 0:
+        return len(listv1)
+    if are_similar(listv1[0], listv2[0]):
+        return distance_elements(listv1[1:], listv2[1:], are_similar)
     return 1 + min(
-        distance_elements(list_a[1:], list_b, are_similar),
-        distance_elements(list_a, list_b[1:], are_similar),
-        distance_elements(list_a[1:], list_b[1:], are_similar),
+        distance_elements(listv1[1:], listv2, are_similar),
+        distance_elements(listv1, listv2[1:], are_similar),
+        distance_elements(listv1[1:], listv2[1:], are_similar),
     )
 
 
@@ -122,7 +122,7 @@ class SimpleDiffer(AbstractDiffer):
     previous_parameter_similarity: dict[str, dict[str, float]] = {}
     previous_function_similarity: dict[str, dict[str, float]] = {}
 
-    def get_previous_mappings(
+    def get_related_mappings(
         self,
     ) -> Optional[list[Mapping]]:
         return None
@@ -252,8 +252,8 @@ class SimpleDiffer(AbstractDiffer):
             name_similarity + attributes_similarity + code_similarity + id_similarity
         ) / 4
 
-    def _compute_name_similarity(self, name_a: str, name_b: str) -> float:
-        name_similarity = distance(name_a, name_b) / max(len(name_a), len(name_b), 1)
+    def _compute_name_similarity(self, namev1: str, namev2: str) -> float:
+        name_similarity = distance(namev1, namev2) / max(len(namev1), len(namev2), 1)
         return 1 - name_similarity
 
     def compute_attribute_similarity(
@@ -270,14 +270,14 @@ class SimpleDiffer(AbstractDiffer):
         name_similarity = self._compute_name_similarity(
             attributev1.name, attributev2.name
         )
-        type_list_a = [attributev1.types]
+        type_listv1 = [attributev1.types]
         if attributev1.types is not None and isinstance(attributev1, UnionType):
-            type_list_a = [attributev1.types]
-        type_list_b = [attributev2.types]
+            type_listv1 = [attributev1.types]
+        type_listv2 = [attributev2.types]
         if attributev2.types is not None and isinstance(attributev2, UnionType):
-            type_list_b = [attributev1.types]
-        type_similarity = distance_elements(type_list_a, type_list_b) / max(
-            len(type_list_a), len(type_list_b), 1
+            type_listv2 = [attributev1.types]
+        type_similarity = distance_elements(type_listv1, type_listv2) / max(
+            len(type_listv1), len(type_listv2), 1
         )
         type_similarity = 1 - type_similarity
         return (name_similarity + type_similarity) / 2
@@ -326,19 +326,19 @@ class SimpleDiffer(AbstractDiffer):
         self.previous_function_similarity[functionv1.id][functionv2.id] = result
         return result
 
-    def _compute_code_similarity(self, code_a: str, code_b: str) -> float:
+    def _compute_code_similarity(self, codev1: str, codev2: str) -> float:
         mode = FileMode()
         try:
-            code_a_tmp = format_str(code_a, mode=mode)
-            code_b_tmp = format_str(code_b, mode=mode)
+            codev1_tmp = format_str(codev1, mode=mode)
+            codev2_tmp = format_str(codev2, mode=mode)
         except CannotSplit:
             pass
         else:
-            code_a = code_a_tmp
-            code_b = code_b_tmp
-        split_a = code_a.split("\n")
-        split_b = code_b.split("\n")
-        diff_code = distance(split_a, split_b) / max(len(split_a), len(split_b), 1)
+            codev1 = codev1_tmp
+            codev2 = codev2_tmp
+        splitv1 = codev1.split("\n")
+        splitv2 = codev2.split("\n")
+        diff_code = distance(splitv1, splitv2) / max(len(splitv1), len(splitv2), 1)
         return 1 - diff_code
 
     def compute_parameter_similarity(
@@ -400,25 +400,25 @@ class SimpleDiffer(AbstractDiffer):
         return result
 
     def _compute_type_similarity(
-        self, type_a: Optional[AbstractType], type_b: Optional[AbstractType]
+        self, typev1: Optional[AbstractType], typev2: Optional[AbstractType]
     ) -> float:
-        if type_a is None:
-            if type_b is None:
+        if typev1 is None:
+            if typev2 is None:
                 return 1
             return 0
-        if type_b is None:
+        if typev2 is None:
             return 0
 
         def are_types_similar(
-            abstract_type_a: AbstractType, abstract_type_b: AbstractType
+            abstract_typev1: AbstractType, abstract_typev2: AbstractType
         ) -> bool:
-            return abstract_type_a.to_json() == abstract_type_b.to_json()
+            return abstract_typev1.to_json() == abstract_typev2.to_json()
 
-        type_list_a = self._create_list_from_type(type_a)
-        type_list_b = self._create_list_from_type(type_b)
+        type_listv1 = self._create_list_from_type(typev1)
+        type_listv2 = self._create_list_from_type(typev2)
         diff_elements = distance_elements(
-            type_list_a, type_list_b, are_similar=are_types_similar
-        ) / max(len(type_list_a), len(type_list_b), 1)
+            type_listv1, type_listv2, are_similar=are_types_similar
+        ) / max(len(type_listv1), len(type_listv2), 1)
         return 1 - diff_elements
 
     def _create_list_from_type(self, abstract_type: AbstractType) -> list[AbstractType]:
@@ -427,9 +427,9 @@ class SimpleDiffer(AbstractDiffer):
         return [abstract_type]
 
     def _compute_assignment_similarity(
-        self, assigned_by_a: ParameterAssignment, assigned_by_b: ParameterAssignment
+        self, assigned_byv1: ParameterAssignment, assigned_byv2: ParameterAssignment
     ) -> float:
-        return self.assigned_by_look_up_similarity[assigned_by_a][assigned_by_b]
+        return self.assigned_by_look_up_similarity[assigned_byv1][assigned_byv2]
 
     def compute_result_similarity(self, resultv1: Result, resultv2: Result) -> float:
         """
@@ -441,122 +441,122 @@ class SimpleDiffer(AbstractDiffer):
         return self._compute_name_similarity(resultv1.name, resultv2.name)
 
     def _compute_default_value_similarity(
-        self, default_value_a: Optional[str], default_value_b: Optional[str]
+        self, default_valuev1: Optional[str], default_valuev2: Optional[str]
     ) -> float:
-        if default_value_a is None and default_value_b is None:
+        if default_valuev1 is None and default_valuev2 is None:
             return -1.0
-        if default_value_a is None or default_value_b is None:
+        if default_valuev1 is None or default_valuev2 is None:
             return 0.0
-        if default_value_a == "None" and default_value_b == "None":
+        if default_valuev1 == "None" and default_valuev2 == "None":
             return 1.0
         try:
-            intv1_value = int(default_value_a)
-            intv2_value = int(default_value_b)
+            intv1_value = int(default_valuev1)
+            intv2_value = int(default_valuev2)
             if intv1_value == intv2_value:
                 return 1.0
             return 0.5
         except ValueError:
             try:
-                floatv1_value = float(default_value_a)
-                floatv2_value = float(default_value_b)
+                floatv1_value = float(default_valuev1)
+                floatv2_value = float(default_valuev2)
                 if floatv1_value == floatv2_value:
                     return 1.0
             except ValueError:
                 try:
-                    if float(int(default_value_a)) == float(default_value_b):
+                    if float(int(default_valuev1)) == float(default_valuev2):
                         return 0.75
                 except ValueError:
                     try:
-                        if float(int(default_value_b)) == float(default_value_a):
+                        if float(int(default_valuev2)) == float(default_valuev1):
                             return 0.75
                     except ValueError:
                         pass
-        if default_value_a in (
+        if default_valuev1 in (
             "True",
             "False",
-        ) and default_value_b in ("True", "False"):
-            if bool(default_value_a) == bool(default_value_b):
+        ) and default_valuev2 in ("True", "False"):
+            if bool(default_valuev1) == bool(default_valuev2):
                 return 1.0
             return 0.5
         valuev1_is_in_quotation_marks = (
-            default_value_a.startswith("'") and default_value_a.endswith("'")
-        ) or (default_value_a.startswith('"') and default_value_a.endswith('"'))
+            default_valuev1.startswith("'") and default_valuev1.endswith("'")
+        ) or (default_valuev1.startswith('"') and default_valuev1.endswith('"'))
         valuev2_is_in_quotation_marks = (
-            default_value_b.startswith("'") and default_value_b.endswith("'")
-        ) or (default_value_b.startswith('"') and default_value_b.endswith('"'))
+            default_valuev2.startswith("'") and default_valuev2.endswith("'")
+        ) or (default_valuev2.startswith('"') and default_valuev2.endswith('"'))
         if valuev1_is_in_quotation_marks and valuev2_is_in_quotation_marks:
-            if default_value_a[1:-1] == default_value_b[1:-1]:
+            if default_valuev1[1:-1] == default_valuev2[1:-1]:
                 return 1.0
             return 0.5
         return 0.0
 
     def _compute_parameter_documentation_similarity(
         self,
-        documentation_a: ParameterDocumentation,
-        documentation_b: ParameterDocumentation,
+        documentationv1: ParameterDocumentation,
+        documentationv2: ParameterDocumentation,
     ) -> float:
-        if len(documentation_a.description) == len(documentation_b.description) == 0:
+        if len(documentationv1.description) == len(documentationv2.description) == 0:
             return -1.0
-        description_a = re.split("[\n ]", documentation_a.description)
-        description_b = re.split("[\n ]", documentation_b.description)
+        descriptionv1 = re.split("[\n ]", documentationv1.description)
+        descriptionv2 = re.split("[\n ]", documentationv2.description)
 
-        documentation_similarity = distance(description_a, description_b) / max(
-            len(description_a), len(description_b)
+        documentation_similarity = distance(descriptionv1, descriptionv2) / max(
+            len(descriptionv1), len(descriptionv2)
         )
         return 1 - documentation_similarity
 
-    def _compute_id_similarity(self, id_a: str, id_b: str) -> float:
-        module_path_a = id_a.split("/")[1].split(".")
-        additional_module_path_a = id_a.split("/")[2:-1]
-        if len(additional_module_path_a) > 0:
-            module_path_a.extend(additional_module_path_a)
-        module_path_b = id_b.split("/")[1].split(".")
-        additional_module_path_b = id_b.split("/")[2:-1]
-        if len(additional_module_path_b) > 0:
-            module_path_b.extend(additional_module_path_b)
+    def _compute_id_similarity(self, idv1: str, idv2: str) -> float:
+        module_pathv1 = idv1.split("/")[1].split(".")
+        additional_module_pathv1 = idv1.split("/")[2:-1]
+        if len(additional_module_pathv1) > 0:
+            module_pathv1.extend(additional_module_pathv1)
+        module_pathv2 = idv2.split("/")[1].split(".")
+        additional_module_pathv2 = idv2.split("/")[2:-1]
+        if len(additional_module_pathv2) > 0:
+            module_pathv2.extend(additional_module_pathv2)
 
         def cost_function(iteration: int, max_iteration: int) -> float:
             return iteration / max_iteration
 
         total_costs, max_iterations = distance_elements_with_cost_function(
-            module_path_a, module_path_b, cost_function, iteration=0
+            module_pathv1, module_pathv2, cost_function, iteration=0
         )
         return 1 - (total_costs / sum(range(1, max_iterations + 1)))
 
 
 def distance_elements_with_cost_function(
-    list_a: list[X],
-    list_b: list[X],
+    listv1: list[X],
+    listv2: list[X],
     cost_function: Callable[[int, int], float],
     are_similar: Callable[[X, X], bool] = lambda x, y: x == y,
     iteration: int = 0,
 ) -> Tuple[float, int]:
-    if len(list_a) == 0:
+    if len(listv1) == 0:
         total_costs = 0.0
-        max_iterations = iteration + len(list_b)
-        for i in range(0, len(list_b)):
+        max_iterations = iteration + len(listv2)
+        for i in range(0, len(listv2)):
             total_costs += cost_function(iteration + i, max_iterations)
         return total_costs, max_iterations
-    if len(list_b) == 0:
+    if len(listv2) == 0:
         total_costs = 0.0
-        max_iterations = iteration + len(list_a)
-        for i in range(0, len(list_a)):
+        max_iterations = iteration + len(listv1)
+        for i in range(0, len(listv1)):
             total_costs += cost_function(iteration + i, max_iterations)
         return total_costs, max_iterations
-    if are_similar(list_a[0], list_b[0]):
+    if are_similar(listv1[0], listv2[0]):
         total_costs, max_iterations = distance_elements_with_cost_function(
-            list_a[1:], list_b[1:], cost_function, are_similar, iteration + 1
+            listv1[1:], listv2[1:], cost_function, are_similar, iteration + 1
         )
         return total_costs, max_iterations
     recursive_results = [
         distance_elements_with_cost_function(
-            list_a[1:], list_b, cost_function, are_similar, iteration + 1
+            listv1[1:], listv2, cost_function, are_similar, iteration + 1
         ),
         distance_elements_with_cost_function(
-            list_a, list_b[1:], cost_function, are_similar, iteration + 1
+            listv1, listv2[1:], cost_function, are_similar, iteration + 1
         ),
         distance_elements_with_cost_function(
-            list_a[1:], list_b[1:], cost_function, are_similar, iteration + 1
+            listv1[1:], listv2[1:], cost_function, are_similar, iteration + 1
         ),
     ]
     total_costs, max_iterations = sorted(
