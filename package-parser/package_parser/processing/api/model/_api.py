@@ -308,7 +308,17 @@ class Attribute:
         )
 
     def __repr__(self) -> str:
-        return "Attribute(class_id=" + str(self.class_id) + ",name=" + self.name + ")"
+        type_str = (
+            " , type=" + str(self.types.to_json()) if self.types is not None else "None"
+        )
+        return (
+            "Attribute(class_id="
+            + str(self.class_id)
+            + "/"
+            + self.name
+            + type_str
+            + ")"
+        )
 
 
 @dataclass
@@ -385,7 +395,7 @@ class Result:
 
     def __repr__(self) -> str:
         return (
-            "Result(function_id=" + str(self.function_id) + ",name=" + self.name + ")"
+            "Result(function_id=" + str(self.function_id) + ", name=" + self.name + ")"
         )
 
 

@@ -132,6 +132,7 @@ def distance_elements(
 
 
 class SimpleDiffer(AbstractDiffer):
+    SPEED_UP: bool = False
     assigned_by_look_up_similarity: dict[
         ParameterAssignment, dict[ParameterAssignment, float]
     ]
@@ -157,7 +158,6 @@ class SimpleDiffer(AbstractDiffer):
         apiv2: API,
     ) -> None:
         super().__init__(previous_base_differ, previous_mappings, apiv1, apiv2)
-
         distance_between_implicit_and_explicit = 0.3
         distance_between_vararg_and_normal = 0.3
         distance_between_position_and_named = 0.3
@@ -506,10 +506,10 @@ class SimpleDiffer(AbstractDiffer):
                 return 1.0
             return 0.5
         valuev1_is_in_quotation_marks = (
-                                            default_valuev1.startswith("'") and default_valuev1.endswith("'")
+            default_valuev1.startswith("'") and default_valuev1.endswith("'")
         ) or (default_valuev1.startswith('"') and default_valuev1.endswith('"'))
         valuev2_is_in_quotation_marks = (
-                                            default_valuev2.startswith("'") and default_valuev2.endswith("'")
+            default_valuev2.startswith("'") and default_valuev2.endswith("'")
         ) or (default_valuev2.startswith('"') and default_valuev2.endswith('"'))
         if valuev1_is_in_quotation_marks and valuev2_is_in_quotation_marks:
             if default_valuev1[1:-1] == default_valuev2[1:-1]:
