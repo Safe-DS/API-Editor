@@ -50,7 +50,7 @@ def _run_migrate_command(
 
         print_only_migration = Migration(annotationsv1, mappings)
         print_only_migration.migrate_annotations()
-        print_only_migration.print(apiv1, apiv2, True)
+        print_only_migration.print(apiv1, apiv2)
 
         previous_mappings = mappings
         previous_base_differ = (
@@ -62,7 +62,7 @@ def _run_migrate_command(
     if previous_mappings is not None:
         migration = Migration(annotationsv1, previous_mappings)
         migration.migrate_annotations()
-        migration.print(apiv1, apiv2, True)
+        migration.print(apiv1, apiv2)
         migrated_annotations_file = Path(
             os.path.join(
                 out_dir_path, "migrated_annotationsv" + apiv2.version + ".json"

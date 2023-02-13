@@ -158,7 +158,6 @@ class SimpleDiffer(AbstractDiffer):
         apiv2: API,
     ) -> None:
         super().__init__(previous_base_differ, previous_mappings, apiv1, apiv2)
-
         distance_between_implicit_and_explicit = 0.3
         distance_between_vararg_and_normal = 0.3
         distance_between_position_and_named = 0.3
@@ -303,7 +302,7 @@ class SimpleDiffer(AbstractDiffer):
             type_listv1 = [attributev1.types]
         type_listv2 = [attributev2.types]
         if attributev2.types is not None and isinstance(attributev2, UnionType):
-            type_listv2 = [attributev1.types]
+            type_listv2 = [attributev2.types]
         type_similarity = distance_elements(type_listv1, type_listv2) / max(
             len(type_listv1), len(type_listv2), 1
         )
@@ -529,7 +528,7 @@ class SimpleDiffer(AbstractDiffer):
         descriptionv2 = re.split("[\n ]", documentationv2.description)
 
         documentation_similarity = distance(descriptionv1, descriptionv2) / max(
-            len(descriptionv1), len(descriptionv2)
+            len(descriptionv1), len(descriptionv2), 1
         )
         return 1 - documentation_similarity
 
