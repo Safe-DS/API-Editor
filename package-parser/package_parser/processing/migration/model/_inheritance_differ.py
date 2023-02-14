@@ -33,20 +33,20 @@ class InheritanceDiffer(AbstractDiffer):
         self.differ = previous_base_differ
         self.boost_value = boost_value
         for class_v2 in self.apiv2.classes.values():
-            additional_v2_elements = []
-            additional_v2_elements.extend(
-                [
-                    element.id
-                    for element in self.apiv2.classes.values()
-                    if isinstance(element, Class)
-                    and (
-                        element.name in class_v2.superclasses
-                        or class_v2.name in element.superclasses
-                    )
-                ]
-            )
-            if len(additional_v2_elements) > 0:
-                self.inheritance[class_v2.id] = additional_v2_elements
+            additional_v1_elements = []
+            for mapping in previous_mappings:
+                if isinstance(mapping.get_apiv2_elements()[0], Class):
+                    is_inheritance_mapping = class_v2 in mapping.get_apiv2_elements()
+                    if not is_inheritance_mapping:
+                        for inheritance_class_v2 in mapping.get_apiv2_elements():
+                            if inheritance_class_v2.name in class_v2.superclasses or class_v2.name in inheritance_class_v2.superclasses:
+                                is_inheritance_mapping = True
+                                break
+                    if is_inheritance_mapping:
+                        for class_v1 in mapping.get_apiv1_elements():
+                            additional_v1_elements.append(class_v1.id)
+            if len(additional_v1_elements) > 0:
+                self.inheritance[class_v2.id] = additional_v1_elements
 
     def compute_attribute_similarity(
         self, attributev1: Attribute, attributev2: Attribute
@@ -187,5 +187,5 @@ class InheritanceDiffer(AbstractDiffer):
     def notify_new_mapping(self, mappings: list[Mapping]) -> None:
         self.new_mappings.extend(mappings)
 
-    def replace_previous_mappings(self) -> bool:
-        return False
+    def get_additional_mappings(self) -> list[Mapping]:
+        return self.previous_mappings

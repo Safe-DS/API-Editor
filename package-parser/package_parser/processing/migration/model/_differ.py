@@ -91,23 +91,26 @@ class AbstractDiffer(ABC):
         self,
     ) -> Optional[list[Mapping]]:
         """
-        Indicates whether all api elements should be compared with each other or just the ones that are mapped to each other.
+        Indicates whether all api elements should be compared with each other
+        or just the ones that are mapped to each other.
         :return: a list of Mappings if only previously mapped api elements should be mapped to each other or else None.
         """
 
     @abstractmethod
     def notify_new_mapping(self, mappings: list[Mapping]) -> None:
         """
-        If previous mappings returns None, the differ will be notified about a new mapping. Thereby the differ can calculate the similarity with more information.
-        :param mappings: a list of Mappings if only previously mapped api elements should be mapped to each other or else None.
+        If previous mappings returns None, the differ will be notified about a new mapping.
+        Thereby the differ can calculate the similarity with more information.
+        :param mappings: a list of mappings new appended mappings.
         """
 
     @abstractmethod
-    def replace_previous_mappings(self) -> bool:
+    def get_additional_mappings(self) -> list[Mapping]:
         """
-        Indicates whether previous mapping will be overwritten or apendended
-        :return: true, if previous mappings should be replaced
+        This method allows the differ to add further mappings from previous differs
+        :return: additional mappings that should be included in the result of the differentiation
         """
+        pass
 
 
 X = TypeVar("X")
@@ -132,7 +135,6 @@ def distance_elements(
 
 
 class SimpleDiffer(AbstractDiffer):
-    SPEED_UP: bool = False
     assigned_by_look_up_similarity: dict[
         ParameterAssignment, dict[ParameterAssignment, float]
     ]
@@ -147,8 +149,8 @@ class SimpleDiffer(AbstractDiffer):
     def notify_new_mapping(self, mappings: list[Mapping]) -> None:
         return
 
-    def replace_previous_mappings(self) -> bool:
-        return True
+    def get_additional_mappings(self) -> list[Mapping]:
+        return []
 
     def __init__(
         self,
@@ -221,7 +223,7 @@ class SimpleDiffer(AbstractDiffer):
                 ParameterAssignment.POSITIONAL_VARARG: 1.0
                 - distance_between_vararg_and_normal
                 - distance_between_both_to_one,
-                ParameterAssignment.POSITION_OR_NAME: -1.0,
+                ParameterAssignment.POSITION_OR_NAME: 1.0,
                 ParameterAssignment.NAME_ONLY: 1.0 - distance_between_both_to_one,
                 ParameterAssignment.POSITION_ONLY: 1.0 - distance_between_both_to_one,
             },

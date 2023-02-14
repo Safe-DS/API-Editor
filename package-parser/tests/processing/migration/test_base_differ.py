@@ -223,3 +223,23 @@ def test_result_similarity(differ: AbstractDiffer) -> None:
         ResultDocstring("dict", "A dictionary that includes the new configuration"),
     )
     assert differ.compute_result_similarity(result_a, result_b) > 0.3
+
+
+def test_simple_differ() -> None:
+    simple_differ = SimpleDiffer(
+        None,
+        [],
+        API(
+            "test-distribution",
+            "test-package",
+            "1.0.0",
+        ),
+        API(
+            "test-distribution",
+            "test-package",
+            "1.0.1",
+        ),
+    )
+    for dict_ in simple_differ.assigned_by_look_up_similarity.values():
+        for similarity in dict_.values():
+            assert similarity >= 0
