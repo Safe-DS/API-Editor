@@ -18,8 +18,8 @@ api_element = Union[Attribute, Class, Function, Parameter, Result]
 class InheritanceDiffer(AbstractDiffer):
     boost_value: float
     differ: AbstractDiffer
-    inheritance: dict[str, list[str]] = {}
-    new_mappings: list[Mapping] = []
+    inheritance: dict[str, list[str]]
+    new_mappings: list[Mapping]
 
     def __init__(
         self,
@@ -32,11 +32,13 @@ class InheritanceDiffer(AbstractDiffer):
         super().__init__(previous_base_differ, previous_mappings, apiv1, apiv2)
         self.differ = previous_base_differ
         self.boost_value = boost_value
+        self.inheritance = {}
+        self.new_mappings = []
         for class_v2 in self.apiv2.classes.values():
             additional_v1_elements = []
             for mapping in previous_mappings:
                 if isinstance(mapping.get_apiv2_elements()[0], Class):
-                    is_inheritance_mapping = class_v2 in mapping.get_apiv2_elements()
+                    is_inheritance_mapping = class_v2.id in map(lambda class_: class_.id if isinstance(class_, Class) else "", mapping.get_apiv2_elements())
                     if not is_inheritance_mapping:
                         for inheritance_class_v2 in mapping.get_apiv2_elements():
                             if isinstance(inheritance_class_v2, Class):
@@ -85,7 +87,7 @@ class InheritanceDiffer(AbstractDiffer):
         if classv2.id in self.inheritance:
             for mapping in self.previous_mappings:
                 for elementv2 in mapping.get_apiv2_elements():
-                    if elementv2.name in self.inheritance[classv2.id]:
+                    if elementv2.id in self.inheritance[classv2.id]:
                         return (
                             self.differ.compute_class_similarity(classv1, classv2)
                             * (1 - self.boost_value)
