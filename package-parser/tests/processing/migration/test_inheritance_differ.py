@@ -94,6 +94,7 @@ def create_api_super() -> Tuple[API, Class, Class, Attribute, Function, Paramete
     apiv1.add_function(function_super)
     return apiv1, class_super, class_sub, attribute_super, function_super, parameter_super, result_super
 
+
 def create_api_sub() -> Tuple[API, Class, Class, Attribute, Function, Parameter, Result]:
     apiv1 = API("test-distribution", "test-package-sub", "1.0")
     code_a = cleandoc(
@@ -154,8 +155,8 @@ def create_api_sub() -> Tuple[API, Class, Class, Attribute, Function, Parameter,
         True,
         [],
         FunctionDocumentation(
-            "This test function is a for testing",
-            "This test function is a for testing",
+            "This test function is only for testing",
+            "This test function is only for testing",
         ),
         code_function_a,
     )
@@ -195,12 +196,13 @@ def test_inheritance_differ(differ: AbstractDiffer) -> None:
             idiffer.notify_new_mapping([OneToOneMapping(1.0, function, functionv2)])
             assert idiffer.compute_parameter_similarity(parameter, parameterv2) == 1
             assert idiffer.compute_result_similarity(result, resultv2) == 1
-            mapping: list[Mapping] = [ManyToManyMapping(-1.0, [result], [resultv2])]
-            assert InheritanceDiffer(differ, mapping, api, api).get_additional_mappings() == mapping
-            related_mapping = InheritanceDiffer(differ, [], api, apiv2).get_related_mappings()
-            expected_related_mapping = [ManyToManyMapping(-1.0, [superclass, subclass], [superclassv2, subclassv2]), ManyToManyMapping(-1.0, [function], [functionv2]), ManyToManyMapping(-1.0, [attribute], [attributev2]), ManyToManyMapping(-1.0, [parameter], [parameterv2]), *mapping]
-            assert related_mapping is not None
-            assert len(related_mapping) == 5
+            previous_mapping: list[Mapping] = [ManyToManyMapping(-1.0, [result], [resultv2])]
+            assert InheritanceDiffer(differ, previous_mapping, api, api).get_additional_mappings() == previous_mapping
+            related_mappings = InheritanceDiffer(differ, [], api, apiv2).get_related_mappings()
+            expected_related_mappings = [ManyToManyMapping(-1.0, [superclass, subclass], [superclassv2, subclassv2]), ManyToManyMapping(-1.0, [function], [functionv2]), ManyToManyMapping(-1.0, [attribute], [attributev2]), ManyToManyMapping(-1.0, [parameter], [parameterv2]), *previous_mapping]
+            assert related_mappings is not None
+            assert len(related_mappings) == 5
+
             def print_api_element(
                 api_element: Union[Attribute, Class, Function, Parameter, Result]
             ) -> str:
@@ -210,6 +212,6 @@ def test_inheritance_differ(differ: AbstractDiffer) -> None:
                     return str(api_element.class_id) + "/" + api_element.name
                 return "/".join(api_element.id.split("/")[1:])
             for i in range(5):
-                mapping = related_mapping[i]
-                assert sorted(mapping.get_apiv1_elements(), key=print_api_element) == sorted(expected_related_mapping[i].get_apiv1_elements(), key=print_api_element)
-                assert sorted(mapping.get_apiv2_elements(), key=print_api_element) == sorted(expected_related_mapping[i].get_apiv2_elements(), key=print_api_element)
+                related_mapping = related_mappings[i]
+                assert sorted(related_mapping.get_apiv1_elements(), key=print_api_element) == sorted(expected_related_mappings[i].get_apiv1_elements(), key=print_api_element)
+                assert sorted(related_mapping.get_apiv2_elements(), key=print_api_element) == sorted(expected_related_mappings[i].get_apiv2_elements(), key=print_api_element)
