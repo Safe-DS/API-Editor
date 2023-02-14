@@ -87,11 +87,12 @@ class InheritanceDiffer(AbstractDiffer):
         if classv2.id in self.inheritance:
             for mapping in self.previous_mappings:
                 for elementv2 in mapping.get_apiv2_elements():
-                    if elementv2.id in self.inheritance[classv2.id]:
-                        return (
-                            self.differ.compute_class_similarity(classv1, classv2)
-                            * (1 - self.boost_value)
-                        ) + self.boost_value
+                    if isinstance(elementv2, Class):
+                        if elementv2.id in self.inheritance[classv2.id]:
+                            return (
+                                self.differ.compute_class_similarity(classv1, classv2)
+                                * (1 - self.boost_value)
+                            ) + self.boost_value
         return 0.0
 
     def compute_function_similarity(

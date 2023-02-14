@@ -1,5 +1,5 @@
 from inspect import cleandoc
-from typing import Union
+from typing import Union, Tuple
 
 import pytest
 from package_parser.processing.api.model import (
@@ -19,12 +19,12 @@ from package_parser.processing.api.model import (
 from package_parser.processing.migration.model import (
     AbstractDiffer,
     OneToOneMapping,
-    InheritanceDiffer, ManyToManyMapping,
+    InheritanceDiffer, ManyToManyMapping, Mapping,
 )
 from test_base_differ import differ_list
 
 
-def create_api_super():
+def create_api_super() -> Tuple[API, Class, Class, Attribute, Function, Parameter, Result]:
     apiv1 = API("test-distribution", "test-package-super", "1.0")
     code_a = cleandoc(
         """
@@ -84,8 +84,8 @@ def create_api_super():
         True,
         [],
         FunctionDocumentation(
-            "This test function is a for testing",
-            "This test function is a for testing",
+            "This is a test function",
+            "This is a test function",
         ),
         code_function_a,
     )
@@ -94,7 +94,7 @@ def create_api_super():
     apiv1.add_function(function_super)
     return apiv1, class_super, class_sub, attribute_super, function_super, parameter_super, result_super
 
-def create_api_sub():
+def create_api_sub() -> Tuple[API, Class, Class, Attribute, Function, Parameter, Result]:
     apiv1 = API("test-distribution", "test-package-sub", "1.0")
     code_a = cleandoc(
         """
@@ -195,10 +195,11 @@ def test_inheritance_differ(differ: AbstractDiffer) -> None:
             idiffer.notify_new_mapping([OneToOneMapping(1.0, function, functionv2)])
             assert idiffer.compute_parameter_similarity(parameter, parameterv2) == 1
             assert idiffer.compute_result_similarity(result, resultv2) == 1
-            mapping = [ManyToManyMapping(-1.0, [result], [resultv2])]
+            mapping: list[Mapping] = [ManyToManyMapping(-1.0, [result], [resultv2])]
             assert InheritanceDiffer(differ, mapping, api, api).get_additional_mappings() == mapping
             related_mapping = InheritanceDiffer(differ, [], api, apiv2).get_related_mappings()
             expected_related_mapping = [ManyToManyMapping(-1.0, [superclass, subclass], [superclassv2, subclassv2]), ManyToManyMapping(-1.0, [function], [functionv2]), ManyToManyMapping(-1.0, [attribute], [attributev2]), ManyToManyMapping(-1.0, [parameter], [parameterv2]), *mapping]
+            assert related_mapping is not None
             assert len(related_mapping) == 5
             def print_api_element(
                 api_element: Union[Attribute, Class, Function, Parameter, Result]
