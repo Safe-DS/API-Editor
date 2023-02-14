@@ -90,6 +90,7 @@ class Book(Media):
             fee_per_day=fee_per_day,
         )
         self.isbn = isbn
+        self.genre = genre
 
 
 class CD(Media):
