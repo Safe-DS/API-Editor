@@ -50,8 +50,8 @@ class AbstractDiffer(ABC):
     def compute_class_similarity(self, classv1: Class, classv2: Class) -> float:
         """
         Computes similarity between classes from apiv1 and apiv2.
-        :param classv1: attribute from apiv1
-        :param classv2: attribute from apiv2
+        :param classv1: class from apiv1
+        :param classv2: class from apiv2
         :return: value between 0 and 1, where 1 means that the elements are equal
         """
 
@@ -61,8 +61,8 @@ class AbstractDiffer(ABC):
     ) -> float:
         """
         Computes similarity between functions from apiv1 and apiv2.
-        :param functionv1: attribute from apiv1
-        :param functionv2: attribute from apiv2
+        :param functionv1: function from apiv1
+        :param functionv2: function from apiv2
         :return: value between 0 and 1, where 1 means that the elements are equal
         """
 
@@ -72,8 +72,8 @@ class AbstractDiffer(ABC):
     ) -> float:
         """
         Computes similarity between parameters from apiv1 and apiv2.
-        :param parameterv1: attribute from apiv1
-        :param parameterv2: attribute from apiv2
+        :param parameterv1: parameter from apiv1
+        :param parameterv2: parameter from apiv2
         :return: value between 0 and 1, where 1 means that the elements are equal
         """
 
@@ -81,8 +81,8 @@ class AbstractDiffer(ABC):
     def compute_result_similarity(self, resultv1: Result, resultv2: Result) -> float:
         """
         Computes similarity between results from apiv1 and apiv2.
-        :param resultv1: attribute from apiv1
-        :param resultv2: attribute from apiv2
+        :param resultv1: result from apiv1
+        :param resultv2: result from apiv2
         :return: value between 0 and 1, where 1 means that the elements are equal
         """
 

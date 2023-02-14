@@ -57,6 +57,13 @@ class InheritanceDiffer(AbstractDiffer):
     def compute_attribute_similarity(
         self, attributev1: Attribute, attributev2: Attribute
     ) -> float:
+        """
+        Computes similarity between attributes from apiv1 and apiv2.
+        :param attributev1: attribute from apiv1
+        :param attributev2: attribute from apiv2
+        :return: if the parent of the attributes are mapped onto each other
+         or onto a super- or subclass, the normalized similarity of the previous differ plus boost_value, or else 0.
+        """
         if (
             attributev2.class_id in self.inheritance
             and attributev1.class_id in self.inheritance[attributev2.class_id]
@@ -68,6 +75,13 @@ class InheritanceDiffer(AbstractDiffer):
         return 0.0
 
     def compute_class_similarity(self, classv1: Class, classv2: Class) -> float:
+        """
+        Computes similarity between classes from apiv1 and apiv2
+        :param classv1: class from apiv1
+        :param classv2: class from apiv2
+        :return: if the classes are mapped onto each other or onto a super- or subclass,
+        the normalized similarity of the previous differ plus boost_value, or else 0.
+        """
         if classv2.id in self.inheritance:
             for mapping in self.previous_mappings:
                 for elementv2 in mapping.get_apiv2_elements():
@@ -81,7 +95,17 @@ class InheritanceDiffer(AbstractDiffer):
     def compute_function_similarity(
         self, functionv1: Function, functionv2: Function
     ) -> float:
-        # is not gloabal fuinction
+        """
+        Computes similarity between functions from apiv1 and apiv2.
+        :param functionv1: function from apiv1
+        :param functionv2: function from apiv2
+        :return: if functions are not global functions and its parent are mapped onto each other
+         or onto a super- or subclass, the normalized similarity of the previous differ plus boost_value, or else 0.
+        """
+        functionv1_is_global = len(functionv1.id.split("/")) == 3
+        functionv2_is_global = len(functionv2.id.split("/")) == 3
+        if functionv1_is_global or functionv2_is_global:
+            return 0.0
         class_id_functionv1 = "/".join(functionv1.id.split("/")[:-1])
         class_id_functionv2 = "/".join(functionv2.id.split("/")[:-1])
         if (
@@ -97,6 +121,13 @@ class InheritanceDiffer(AbstractDiffer):
     def compute_parameter_similarity(
         self, parameterv1: Parameter, parameterv2: Parameter
     ) -> float:
+        """
+        Computes similarity between parameters from apiv1 and apiv2.
+        :param parameterv1: parameter from apiv1
+        :param parameterv2: parameter from apiv2
+        :return: if their parents are mapped together, the normalized similarity of the previous differ plus boost_value,
+        or else 0.
+        """
         parameterv2_id_splitted = parameterv2.id.split("/")
         if "/".join(parameterv2_id_splitted[:-2]) in self.inheritance:
             functionv1_id = "/".join(parameterv1.id.split("/")[:-1])
@@ -121,6 +152,13 @@ class InheritanceDiffer(AbstractDiffer):
         return 0.0
 
     def compute_result_similarity(self, resultv1: Result, resultv2: Result) -> float:
+        """
+        Computes similarity between results from apiv1 and apiv2
+        :param resultv1: result from apiv1
+        :param resultv2: result from apiv2
+        :return: if their parents are mapped together,
+        the normalized similarity of the previous differ plus boost_value, or else 0.
+        """
         if (
             resultv2.function_id is not None
             and "/".join(resultv2.function_id.split("/")[:-1]) in self.inheritance
@@ -145,6 +183,11 @@ class InheritanceDiffer(AbstractDiffer):
         return 0.0
 
     def get_related_mappings(self) -> Optional[list[Mapping]]:
+        """
+        Indicates whether all api elements should be compared with each other
+        or just the ones that are mapped to each other.
+        :return: a list of Mappings by type whose elements are not already mapped
+        """
         related_mappings = []
         mapped_apiv1_elements = [
             element
