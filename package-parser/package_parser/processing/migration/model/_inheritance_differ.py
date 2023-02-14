@@ -38,7 +38,10 @@ class InheritanceDiffer(AbstractDiffer):
             additional_v1_elements = []
             for mapping in previous_mappings:
                 if isinstance(mapping.get_apiv2_elements()[0], Class):
-                    is_inheritance_mapping = class_v2.id in map(lambda class_: class_.id if isinstance(class_, Class) else "", mapping.get_apiv2_elements())
+                    is_inheritance_mapping = class_v2.id in map(
+                        lambda class_: class_.id if isinstance(class_, Class) else "",
+                        mapping.get_apiv2_elements(),
+                    )
                     if not is_inheritance_mapping:
                         for inheritance_class_v2 in mapping.get_apiv2_elements():
                             if isinstance(inheritance_class_v2, Class):
