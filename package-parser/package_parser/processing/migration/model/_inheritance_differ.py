@@ -39,12 +39,14 @@ class InheritanceDiffer(AbstractDiffer):
                     is_inheritance_mapping = class_v2 in mapping.get_apiv2_elements()
                     if not is_inheritance_mapping:
                         for inheritance_class_v2 in mapping.get_apiv2_elements():
-                            if inheritance_class_v2.name in class_v2.superclasses or class_v2.name in inheritance_class_v2.superclasses:
-                                is_inheritance_mapping = True
-                                break
+                            if isinstance(inheritance_class_v2, Class):
+                                if inheritance_class_v2.name in class_v2.superclasses or class_v2.name in inheritance_class_v2.superclasses:
+                                    is_inheritance_mapping = True
+                                    break
                     if is_inheritance_mapping:
                         for class_v1 in mapping.get_apiv1_elements():
-                            additional_v1_elements.append(class_v1.id)
+                            if isinstance(class_v1, Class):
+                                additional_v1_elements.append(class_v1.id)
             if len(additional_v1_elements) > 0:
                 self.inheritance[class_v2.id] = additional_v1_elements
 

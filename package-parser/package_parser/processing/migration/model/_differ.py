@@ -110,7 +110,6 @@ class AbstractDiffer(ABC):
         This method allows the differ to add further mappings from previous differs
         :return: additional mappings that should be included in the result of the differentiation
         """
-        pass
 
 
 X = TypeVar("X")
