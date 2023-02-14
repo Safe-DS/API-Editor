@@ -40,7 +40,11 @@ class InheritanceDiffer(AbstractDiffer):
                     if not is_inheritance_mapping:
                         for inheritance_class_v2 in mapping.get_apiv2_elements():
                             if isinstance(inheritance_class_v2, Class):
-                                if inheritance_class_v2.name in class_v2.superclasses or class_v2.name in inheritance_class_v2.superclasses:
+                                if (
+                                    inheritance_class_v2.name in class_v2.superclasses
+                                    or class_v2.name
+                                    in inheritance_class_v2.superclasses
+                                ):
                                     is_inheritance_mapping = True
                                     break
                     if is_inheritance_mapping:

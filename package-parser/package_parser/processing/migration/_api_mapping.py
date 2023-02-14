@@ -19,8 +19,6 @@ api_element = Union[Attribute, Class, Function, Parameter, Result]
 API_ELEMENTS = TypeVar("API_ELEMENTS", Attribute, Class, Function, Parameter, Result)
 
 
-
-
 class APIMapping:
     threshold_of_similarity_between_mappings: float
     threshold_of_similarity_for_creation_of_mappings: float
@@ -28,6 +26,7 @@ class APIMapping:
     apiv1: API
     apiv2: API
     differ: AbstractDiffer
+
     def __init__(
         self,
         apiv1: API,
