@@ -1,7 +1,12 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
-from typing import Any, Optional
+from dataclasses import dataclass, field
+from typing import Any, Optional, Union
+
+from black import FileMode, format_str, InvalidInput
+from black.brackets import BracketMatchError
+from black.linegen import CannotSplit
+from black.trans import CannotTransform
 
 from package_parser.utils import parent_id
 
@@ -261,6 +266,7 @@ class Class:
         self.documentation: ClassDocumentation = documentation
         self.code: str = code
         self.instance_attributes = instance_attributes
+        self.formatted_code = None
 
     @property
     def name(self) -> str:
@@ -287,8 +293,26 @@ class Class:
             ],
         }
 
+    def get_formatted_code(self) -> str:
+        if self.formatted_code is None:
+            _generate_formatted_code(self)
+        return self.formatted_code
+
     def __repr__(self) -> str:
         return "Class(id=" + self.id + ")"
+
+
+def _generate_formatted_code(api_element: Union[Class, Function]):
+    code = api_element.code
+    try:
+        code_tmp = format_str(code, mode=FileMode())
+    except (CannotSplit, CannotTransform, InvalidInput, BracketMatchError):
+        # As long as the api black has no documentation, we do not know which exceptions are raised
+        pass
+    else:
+        code = code_tmp
+    api_element.formatted_code = code
+    return code
 
 
 @dataclass
@@ -335,6 +359,10 @@ class Function:
     reexported_by: list[str]
     documentation: FunctionDocumentation
     code: str
+    formatted_code: Optional[None] = field(init=False)
+
+    def __post_init__(self) -> None:
+        self.formatted_code = None
 
     @staticmethod
     def from_json(json: Any) -> Function:
@@ -374,6 +402,11 @@ class Function:
             "docstring": self.documentation.full_docstring,
             "code": self.code,
         }
+
+    def get_formatted_code(self) -> str:
+        if self.formatted_code is None:
+            _generate_formatted_code(self)
+        return self.formatted_code
 
     def __repr__(self) -> str:
         return "Function(id=" + self.id + ")"
