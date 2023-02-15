@@ -248,6 +248,9 @@ class SimpleDiffer(AbstractDiffer):
         :param classv2: attribute from apiv2
         :return: value between 0 and 1, where 1 means that the elements are equal
         """
+        code_similarity = self._compute_code_similarity(classv1.code, classv2.code)
+        if code_similarity == 1.0:
+            return 1.0
         name_similarity = self._compute_name_similarity(classv1.name, classv2.name)
         attributes_similarity = distance(
             classv1.instance_attributes, classv2.instance_attributes
@@ -257,7 +260,6 @@ class SimpleDiffer(AbstractDiffer):
         )
         attributes_similarity = 1 - attributes_similarity
 
-        code_similarity = self._compute_code_similarity(classv1.code, classv2.code)
 
         id_similarity = self._compute_id_similarity(classv1.id, classv2.id)
 
@@ -309,6 +311,11 @@ class SimpleDiffer(AbstractDiffer):
         code_similarity = self._compute_code_similarity(
             functionv1.code, functionv2.code
         )
+        if code_similarity == 1.0:
+            if functionv1.id not in self.previous_function_similarity:
+                self.previous_function_similarity[functionv1.id] = {}
+            self.previous_function_similarity[functionv1.id][functionv2.id] = 1.0
+            return 1.0
         name_similarity = self._compute_name_similarity(
             functionv1.name, functionv2.name
         )
