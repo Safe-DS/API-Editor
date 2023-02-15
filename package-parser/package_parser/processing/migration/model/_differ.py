@@ -245,8 +245,6 @@ class SimpleDiffer(AbstractDiffer):
         :return: value between 0 and 1, where 1 means that the elements are equal
         """
         code_similarity = self._compute_code_similarity(classv1.get_formatted_code(), classv2.get_formatted_code())
-        if code_similarity == 1.0:
-            return 1.0
         name_similarity = self._compute_name_similarity(classv1.name, classv2.name)
 
         attributes_similarity = distance(
@@ -307,11 +305,6 @@ class SimpleDiffer(AbstractDiffer):
         code_similarity = self._compute_code_similarity(
             functionv1.get_formatted_code(), functionv2.get_formatted_code()
         )
-        if code_similarity == 1.0:
-            if functionv1.id not in self.previous_function_similarity:
-                self.previous_function_similarity[functionv1.id] = {}
-            self.previous_function_similarity[functionv1.id][functionv2.id] = 1.0
-            return 1.0
         name_similarity = self._compute_name_similarity(
             functionv1.name, functionv2.name
         )
