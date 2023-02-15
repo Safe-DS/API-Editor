@@ -20,6 +20,19 @@ class Parameter:
             ParameterDocumentation.from_dict(json.get("docstring", {})),
         )
 
+    def __hash__(self) -> int:
+        return hash(
+            (
+                self.id,
+                self.name,
+                self.qname,
+                self.default_value,
+                self.assigned_by,
+                self.is_public,
+                self.documentation,
+            )
+        )
+
     def __init__(
         self,
         id_: str,

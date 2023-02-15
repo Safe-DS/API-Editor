@@ -297,6 +297,9 @@ class Attribute:
     types: Optional[AbstractType]
     class_id: Optional[str] = None
 
+    def __hash__(self) -> int:
+        return hash((self.name, self.class_id, self.types))
+
     def to_json(self) -> dict[str, Any]:
         types_json = self.types.to_json() if self.types is not None else None
         return {"name": self.name, "types": types_json}
