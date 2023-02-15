@@ -6,7 +6,6 @@ from dataclasses import dataclass
 from typing import Callable, Optional, Sequence, Tuple, TypeVar, Union
 
 from black import FileMode, format_str
-from black.linegen import CannotSplit
 from Levenshtein import distance
 from package_parser.processing.api.model import (
     API,
@@ -331,7 +330,7 @@ class SimpleDiffer(AbstractDiffer):
         try:
             codev1_tmp = format_str(codev1, mode=mode)
             codev2_tmp = format_str(codev2, mode=mode)
-        except CannotSplit:
+        except:
             pass
         else:
             codev1 = codev1_tmp
