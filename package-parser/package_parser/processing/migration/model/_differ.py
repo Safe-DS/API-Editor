@@ -5,11 +5,7 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import Callable, Optional, Sequence, Tuple, TypeVar, Union
 
-from black import FileMode, format_str, InvalidInput
 from Levenshtein import distance
-from black.brackets import BracketMatchError
-from black.linegen import CannotSplit
-from black.trans import CannotTransform
 
 from package_parser.processing.api.model import (
     API,
@@ -248,10 +244,11 @@ class SimpleDiffer(AbstractDiffer):
         :param classv2: attribute from apiv2
         :return: value between 0 and 1, where 1 means that the elements are equal
         """
-        code_similarity = self._compute_code_similarity(classv1.code, classv2.code)
+        code_similarity = self._compute_code_similarity(classv1.get_formatted_code(), classv2.get_formatted_code())
         if code_similarity == 1.0:
             return 1.0
         name_similarity = self._compute_name_similarity(classv1.name, classv2.name)
+
         attributes_similarity = distance(
             classv1.instance_attributes, classv2.instance_attributes
         )
@@ -259,7 +256,6 @@ class SimpleDiffer(AbstractDiffer):
             max(len(classv1.instance_attributes), len(classv2.instance_attributes), 1)
         )
         attributes_similarity = 1 - attributes_similarity
-
 
         id_similarity = self._compute_id_similarity(classv1.id, classv2.id)
 
@@ -309,7 +305,7 @@ class SimpleDiffer(AbstractDiffer):
             return self.previous_function_similarity[functionv1.id][functionv2.id]
 
         code_similarity = self._compute_code_similarity(
-            functionv1.code, functionv2.code
+            functionv1.get_formatted_code(), functionv2.get_formatted_code()
         )
         if code_similarity == 1.0:
             if functionv1.id not in self.previous_function_similarity:
@@ -337,16 +333,6 @@ class SimpleDiffer(AbstractDiffer):
         return result
 
     def _compute_code_similarity(self, codev1: str, codev2: str) -> float:
-        mode = FileMode()
-        try:
-            codev1_tmp = format_str(codev1, mode=mode)
-            codev2_tmp = format_str(codev2, mode=mode)
-        except (CannotSplit, CannotTransform, InvalidInput, BracketMatchError):
-            # As long as the api black has no documentation, we do not know which exceptions are raised
-            pass
-        else:
-            codev1 = codev1_tmp
-            codev2 = codev2_tmp
         splitv1 = codev1.split("\n")
         splitv2 = codev2.split("\n")
         diff_code = distance(splitv1, splitv2) / max(len(splitv1), len(splitv2), 1)
