@@ -345,11 +345,11 @@
                         "types": [
                             {
                                 "kind": "NamedType",
-                                "name": "date"
+                                "name": "NoneType"
                             },
                             {
                                 "kind": "NamedType",
-                                "name": "NoneType"
+                                "name": "date"
                             }
                         ]
                     }

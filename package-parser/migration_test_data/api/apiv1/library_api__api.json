@@ -177,11 +177,11 @@
                         "types": [
                             {
                                 "kind": "NamedType",
-                                "name": "date"
+                                "name": "NoneType"
                             },
                             {
                                 "kind": "NamedType",
-                                "name": "NoneType"
+                                "name": "date"
                             }
                         ]
                     }
@@ -193,11 +193,11 @@
                         "types": [
                             {
                                 "kind": "NamedType",
-                                "name": "NoneType"
+                                "name": "LibraryUser"
                             },
                             {
                                 "kind": "NamedType",
-                                "name": "LibraryUser"
+                                "name": "NoneType"
                             }
                         ]
                     }
