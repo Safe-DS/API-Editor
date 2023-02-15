@@ -293,6 +293,7 @@ def test_inheritance_differ(differ: AbstractDiffer) -> None:
                 api_element: Union[Attribute, Class, Function, Parameter, Result]
             ) -> str:
                 if isinstance(api_element, Result):
+                    assert api_element.function_id is not None
                     return api_element.function_id + "/" + api_element.name
                 if isinstance(api_element, Attribute):
                     return str(api_element.class_id) + "/" + api_element.name

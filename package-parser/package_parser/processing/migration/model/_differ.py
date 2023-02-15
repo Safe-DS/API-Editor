@@ -5,8 +5,12 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import Callable, Optional, Sequence, Tuple, TypeVar, Union
 
-from black import FileMode, format_str
+from black import FileMode, format_str, InvalidInput
 from Levenshtein import distance
+from black.brackets import BracketMatchError
+from black.linegen import CannotSplit
+from black.trans import CannotTransform
+
 from package_parser.processing.api.model import (
     API,
     AbstractType,
@@ -330,7 +334,8 @@ class SimpleDiffer(AbstractDiffer):
         try:
             codev1_tmp = format_str(codev1, mode=mode)
             codev2_tmp = format_str(codev2, mode=mode)
-        except:
+        except (CannotSplit, CannotTransform, InvalidInput, BracketMatchError):
+            # As long as the api black has no documentation, we do not know which exceptions are raised
             pass
         else:
             codev1 = codev1_tmp
@@ -407,11 +412,6 @@ class SimpleDiffer(AbstractDiffer):
             return 0
         if typev2 is None:
             return 0
-
-        def are_types_similar(
-            abstract_typev1: AbstractType, abstract_typev2: AbstractType
-        ) -> bool:
-            return abstract_typev1.to_json() == abstract_typev2.to_json()
 
         type_listv1 = self._create_list_from_type(typev1)
         type_listv2 = self._create_list_from_type(typev2)
