@@ -237,13 +237,13 @@ class APIMapping:
             return None
         if len(mappings) == 1:
             return mappings[0]
-        if (
-            mappings[0].similarity - mappings[1].similarity
-            < self.threshold_of_similarity_between_mappings
+        while (
+            (len(mappings) > 1) and
+            ((mappings[0].similarity - mappings[1].similarity)
+            < self.threshold_of_similarity_between_mappings)
         ):
             mappings[0] = merge_mappings(mappings[0], mappings[1])
             mappings.pop(1)
-            return self._merge_similar_mappings(mappings)
         return mappings[0]
 
     def _merge_mappings_with_same_elements(
