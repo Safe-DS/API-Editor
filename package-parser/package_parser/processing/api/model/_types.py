@@ -108,7 +108,7 @@ class EnumType(AbstractType):
         return {"kind": self.__class__.__name__, "values": self.values}
 
     def __hash__(self) -> int:
-        return hash(self.values)
+        return hash(frozenset(self.values))
 
 
 @dataclass
