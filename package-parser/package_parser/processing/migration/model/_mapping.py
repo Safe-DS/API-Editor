@@ -105,7 +105,7 @@ def merge_api_elements_and_remove_duplicates(
     merged_list: list[api_element] = []
     for element in api_elements:
         element_id = ""
-        if isinstance(element, (Class, Function)):
+        if isinstance(element, (Class, Function, Parameter)):
             element_id = element.id
         elif isinstance(element, Attribute):
             element_id = str(element.class_id) + "/" + element.name
