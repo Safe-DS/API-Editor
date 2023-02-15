@@ -3,7 +3,7 @@ from __future__ import annotations
 import re
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import Callable, Optional, Tuple, TypeVar, Union
+from typing import Callable, Optional, Sequence, Tuple, TypeVar, Union
 
 from black import FileMode, format_str
 from black.linegen import CannotSplit
@@ -113,24 +113,6 @@ class AbstractDiffer(ABC):
 
 
 X = TypeVar("X")
-
-
-def distance_elements(
-    listv1: list[X],
-    listv2: list[X],
-    are_similar: Callable[[X, X], bool] = lambda x, y: x == y,
-) -> float:
-    if len(listv1) == 0:
-        return len(listv2)
-    if len(listv2) == 0:
-        return len(listv1)
-    if are_similar(listv1[0], listv2[0]):
-        return distance_elements(listv1[1:], listv2[1:], are_similar)
-    return 1 + min(
-        distance_elements(listv1[1:], listv2, are_similar),
-        distance_elements(listv1, listv2[1:], are_similar),
-        distance_elements(listv1[1:], listv2[1:], are_similar),
-    )
 
 
 class SimpleDiffer(AbstractDiffer):
@@ -264,7 +246,7 @@ class SimpleDiffer(AbstractDiffer):
         :return: value between 0 and 1, where 1 means that the elements are equal
         """
         name_similarity = self._compute_name_similarity(classv1.name, classv2.name)
-        attributes_similarity = distance_elements(
+        attributes_similarity = distance(
             classv1.instance_attributes, classv2.instance_attributes
         )
         attributes_similarity = attributes_similarity / (
@@ -298,13 +280,9 @@ class SimpleDiffer(AbstractDiffer):
         name_similarity = self._compute_name_similarity(
             attributev1.name, attributev2.name
         )
-        type_listv1 = [attributev1.types]
-        if attributev1.types is not None and isinstance(attributev1, UnionType):
-            type_listv1 = [attributev1.types]
-        type_listv2 = [attributev2.types]
-        if attributev2.types is not None and isinstance(attributev2, UnionType):
-            type_listv2 = [attributev2.types]
-        type_similarity = distance_elements(type_listv1, type_listv2) / max(
+        type_listv1 = self._create_list_from_type(attributev1.types)
+        type_listv2 = self._create_list_from_type(attributev2.types)
+        type_similarity = distance(type_listv1, type_listv2) / max(
             len(type_listv1), len(type_listv2), 1
         )
         type_similarity = 1 - type_similarity
@@ -332,15 +310,9 @@ class SimpleDiffer(AbstractDiffer):
             functionv1.name, functionv2.name
         )
 
-        def are_parameters_similar(
-            parameterv1: Parameter, parameterv2: Parameter
-        ) -> bool:
-            return self.compute_parameter_similarity(parameterv1, parameterv2) == 1
-
-        parameter_similarity = distance_elements(
+        parameter_similarity = distance(
             functionv1.parameters,
             functionv2.parameters,
-            are_similar=are_parameters_similar,
         ) / max(len(functionv1.parameters), len(functionv2.parameters), 1)
         parameter_similarity = 1 - parameter_similarity
 
@@ -444,13 +416,15 @@ class SimpleDiffer(AbstractDiffer):
 
         type_listv1 = self._create_list_from_type(typev1)
         type_listv2 = self._create_list_from_type(typev2)
-        diff_elements = distance_elements(
-            type_listv1, type_listv2, are_similar=are_types_similar
-        ) / max(len(type_listv1), len(type_listv2), 1)
+        diff_elements = distance(type_listv1, type_listv2) / max(
+            len(type_listv1), len(type_listv2), 1
+        )
         return 1 - diff_elements
 
-    def _create_list_from_type(self, abstract_type: AbstractType) -> list[AbstractType]:
-        if isinstance(abstract_type, UnionType):
+    def _create_list_from_type(
+        self, abstract_type: Optional[AbstractType]
+    ) -> Sequence[Optional[AbstractType]]:
+        if abstract_type is not None and isinstance(abstract_type, UnionType):
             return abstract_type.types
         return [abstract_type]
 

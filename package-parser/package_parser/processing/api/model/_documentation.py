@@ -42,3 +42,6 @@ class ParameterDocumentation:
 
     def to_dict(self) -> dict:
         return dataclasses.asdict(self)
+
+    def __hash__(self) -> int:
+        return hash((self.type, self.default_value, self.description))

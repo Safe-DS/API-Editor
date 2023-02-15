@@ -51,6 +51,9 @@ class NamedType(AbstractType):
             return self.name == other.name
         return False
 
+    def __hash__(self) -> int:
+        return hash(self.name)
+
 
 @dataclass
 class EnumType(AbstractType):
@@ -103,6 +106,9 @@ class EnumType(AbstractType):
 
     def to_json(self) -> dict[str, Any]:
         return {"kind": self.__class__.__name__, "values": self.values}
+
+    def __hash__(self) -> int:
+        return hash(self.values)
 
 
 @dataclass
@@ -200,6 +206,11 @@ class BoundaryType(AbstractType):
                 return self.max_inclusive == __o.max_inclusive
         return False
 
+    def __hash__(self) -> int:
+        return hash(
+            (self.base_type, self.min, self.min_inclusive, self.max, self.max_inclusive)
+        )
+
     def to_json(self) -> dict[str, Any]:
         return {
             "kind": self.__class__.__name__,
@@ -232,6 +243,9 @@ class UnionType(AbstractType):
             type_list.append(t.to_json())
 
         return {"kind": self.__class__.__name__, "types": type_list}
+
+    def __hash__(self) -> int:
+        return hash((frozenset(self.types)))
 
 
 def create_type(
