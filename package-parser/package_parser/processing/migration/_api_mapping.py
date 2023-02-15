@@ -54,7 +54,12 @@ class APIMapping:
         compute_similarity: Callable[[API_ELEMENTS, API_ELEMENTS], float],
     ) -> list[Mapping]:
         element_mappings: list[Mapping] = []
+        i = 0
         for api_elementv1 in api_elementv1_list:
+            with open("output.txt", "a") as f:
+                print(str(i) + "/" + str(len(api_elementv1_list)), file=f)
+            print(str(i) + "/" + str(len(api_elementv1_list)))
+            i += 1
             mapping_for_api_elementv1: list[Mapping] = []
             for api_elementv2 in api_elementv2_list:
                 similarity = compute_similarity(api_elementv1, api_elementv2)

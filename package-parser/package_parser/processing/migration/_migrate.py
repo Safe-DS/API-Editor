@@ -291,6 +291,9 @@ class Migration:
         return not_mapped_api_elements
 
     def print(self, apiv1: API, apiv2: API) -> None:
+        with open("output.txt", "a") as f:
+            print("**Similarity**|**APIV1**|**APIV2**|**comment**", file=f)
+            print(":-----:|:-----:|:-----:|:----:|", file=f)
         print("**Similarity**|**APIV1**|**APIV2**|**comment**")
         print(":-----:|:-----:|:-----:|:----:|")
         table_body = self._get_mappings_for_table()
@@ -300,6 +303,8 @@ class Migration:
         )
         for row in table_body:
             print(row)
+            with open("output.txt", "a") as f:
+                print(row, file=f)
 
     def _remove_duplicates(self) -> None:
         for annotation_type in [
