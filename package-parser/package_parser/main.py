@@ -8,8 +8,5 @@ def main() -> None:
 
     cli()
 
-    with open("output.txt", "a") as f:
-        print("\n============================================================", file=f)
-        print(f"Program ran in {time.time() - start_time}s", file=f)
     print("\n============================================================")
     print(f"Program ran in {time.time() - start_time}s")
