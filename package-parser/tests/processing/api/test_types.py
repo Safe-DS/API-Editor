@@ -1,7 +1,17 @@
+from copy import deepcopy
 from typing import Any
 
 import pytest
-from package_parser.processing.api.model import ParameterDocumentation, create_type
+from package_parser.processing.api.model import (
+    Attribute,
+    BoundaryType,
+    EnumType,
+    NamedType,
+    Parameter,
+    ParameterAssignment,
+    ParameterDocumentation,
+    create_type,
+)
 
 
 @pytest.mark.parametrize(
@@ -68,8 +78,8 @@ from package_parser.processing.api.model import ParameterDocumentation, create_t
             },
         ),
     ],
-)
-def test_union_from_string(docstring_type: str, expected: dict[str, Any]):
+)  # type: ignore
+def test_union_from_string(docstring_type: str, expected: dict[str, Any]) -> None:
     result = create_type(ParameterDocumentation(docstring_type, "", ""))
     if result is None:
         assert expected == {}
@@ -104,8 +114,8 @@ def test_union_from_string(docstring_type: str, expected: dict[str, Any]):
         ),
         ("", {}),
     ],
-)
-def test_boundary_from_string(description: str, expected: dict[str, Any]):
+)  # type: ignore
+def test_boundary_from_string(description: str, expected: dict[str, Any]) -> None:
     result = create_type(ParameterDocumentation("", "", description))
     if result is None:
         assert expected == {}
@@ -137,10 +147,10 @@ def test_boundary_from_string(description: str, expected: dict[str, Any]):
             },
         ),
     ],
-)
+)  # type: ignore
 def test_boundary_and_union_from_string(
     docstring_type: str, docstring_description: str, expected: dict[str, Any]
-):
+) -> None:
     result = create_type(
         ParameterDocumentation(
             type=docstring_type, default_value="", description=docstring_description
@@ -151,3 +161,30 @@ def test_boundary_and_union_from_string(
         assert expected == {}
     else:
         assert result.to_json() == expected
+
+
+def test_correct_hash() -> None:
+    parameter = Parameter(
+        "test/test.Test/test/test_parameter_for_hashing",
+        "test_parameter_for_hashing",
+        "test.Test.test.test_parameter_for_hashing",
+        "'test_str'",
+        ParameterAssignment.POSITION_OR_NAME,
+        True,
+        ParameterDocumentation("'hashvalue'", "r", "r"),
+    )
+    assert hash(parameter) == hash(deepcopy(parameter))
+    enum_type = EnumType({"a", "b", "c"}, "full_match")
+    assert enum_type == deepcopy(enum_type)
+    assert hash(enum_type) == hash(deepcopy(enum_type))
+    assert enum_type == EnumType({"a", "c", "b"}, "full_match")
+    assert hash(enum_type) == hash(EnumType({"a", "c", "b"}, "full_match"))
+    assert enum_type != EnumType({"a", "b"}, "full_match")
+    assert hash(enum_type) != hash(EnumType({"a", "b"}, "full_match"))
+    assert NamedType("a") == NamedType("a")
+    assert hash(NamedType("a")) == hash(NamedType("a"))
+    assert NamedType("a") != NamedType("b")
+    assert hash(NamedType("a")) != hash(NamedType("b"))
+    attribute = Attribute("boundary", BoundaryType("int", 0, 1, True, True))
+    assert attribute == deepcopy(attribute)
+    assert hash(attribute) == hash(deepcopy(attribute))

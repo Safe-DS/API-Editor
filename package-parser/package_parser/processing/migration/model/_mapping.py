@@ -101,8 +101,17 @@ def merge_api_elements_and_remove_duplicates(
     api_elements: list[api_element] = []
     api_elements.extend(list_a)
     api_elements.extend(list_b)
-    api_elements_tmp: list[api_element] = [
-        i for n, i in enumerate(api_elements) if i not in api_elements[:n]
-    ]
-    api_elements = api_elements_tmp
-    return api_elements
+    id_list: list[str] = []
+    merged_list: list[api_element] = []
+    for element in api_elements:
+        element_id = ""
+        if isinstance(element, (Class, Function, Parameter)):
+            element_id = element.id
+        elif isinstance(element, Attribute):
+            element_id = str(element.class_id) + "/" + element.name
+        elif isinstance(element, Result):
+            element_id = str(element.function_id) + "/" + element.name
+        if len(element_id) > 0 and element_id not in id_list:
+            merged_list.append(element)
+            id_list.append(element_id)
+    return merged_list

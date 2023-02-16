@@ -6,8 +6,8 @@ from package_parser.processing.annotations.model import (
     AnnotationStore,
 )
 from package_parser.processing.api.model import API
-from package_parser.processing.migration import APIMapping, Migration, SimpleDiffer
-from package_parser.processing.migration.model import Mapping
+from package_parser.processing.migration import APIMapping, Migration
+from package_parser.processing.migration.model import Mapping, SimpleDiffer
 from tests.processing.migration.annotations.test_boundary_migration import (
     migrate_boundary_annotation_data_duplicated,
     migrate_boundary_annotation_data_one_to_many_mapping,
@@ -220,7 +220,7 @@ def test_migrate_command_and_both_annotation_stores() -> None:
             expected_unsure_annotationsv2_json
         )
 
-        differ = SimpleDiffer()
+        differ = SimpleDiffer(None, [], apiv1, apiv2)
         api_mapping = APIMapping(
             apiv1, apiv2, differ, threshold_of_similarity_between_mappings=0.3
         )

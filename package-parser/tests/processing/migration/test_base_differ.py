@@ -2,6 +2,7 @@ from inspect import cleandoc
 
 import pytest
 from package_parser.processing.api.model import (
+    API,
     Attribute,
     Class,
     ClassDocumentation,
@@ -15,10 +16,23 @@ from package_parser.processing.api.model import (
     ResultDocstring,
     UnionType,
 )
-from package_parser.processing.migration import AbstractDiffer, SimpleDiffer
+from package_parser.processing.migration.model import AbstractDiffer, SimpleDiffer
 
 differ_list = [
-    SimpleDiffer(),
+    SimpleDiffer(
+        None,
+        [],
+        API(
+            "test-distribution",
+            "test-package",
+            "1.0.0",
+        ),
+        API(
+            "test-distribution",
+            "test-package",
+            "1.0.1",
+        ),
+    ),
 ]
 
 
@@ -182,7 +196,7 @@ def test_parameter_similarity(differ: AbstractDiffer) -> None:
         True,
         ParameterDocumentation("int", "", ""),
     )
-    assert 0.45 < differ.compute_parameter_similarity(parameter_a, parameter_b) < 0.6
+    assert 0.45 < differ.compute_parameter_similarity(parameter_a, parameter_b) < 0.7
 
     parameter_a = Parameter(
         "test/test.Test/test_method/test_parameter_new_name",
@@ -193,7 +207,7 @@ def test_parameter_similarity(differ: AbstractDiffer) -> None:
         True,
         ParameterDocumentation("int", "", ""),
     )
-    assert 0.7 < differ.compute_parameter_similarity(parameter_a, parameter_b) < 0.8
+    assert 0.75 < differ.compute_parameter_similarity(parameter_a, parameter_b) < 0.9
 
 
 @pytest.mark.parametrize(
@@ -209,3 +223,23 @@ def test_result_similarity(differ: AbstractDiffer) -> None:
         ResultDocstring("dict", "A dictionary that includes the new configuration"),
     )
     assert differ.compute_result_similarity(result_a, result_b) > 0.3
+
+
+def test_simple_differ() -> None:
+    simple_differ = SimpleDiffer(
+        None,
+        [],
+        API(
+            "test-distribution",
+            "test-package",
+            "1.0.0",
+        ),
+        API(
+            "test-distribution",
+            "test-package",
+            "1.0.1",
+        ),
+    )
+    for dict_ in simple_differ.assigned_by_look_up_similarity.values():
+        for similarity in dict_.values():
+            assert similarity >= 0

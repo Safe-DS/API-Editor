@@ -17,15 +17,15 @@ from package_parser.processing.api.model import (
     ParameterAssignment,
     ParameterDocumentation,
 )
-from package_parser.processing.migration import (
+from package_parser.processing.migration.annotations import (
+    get_migration_text,
+    migration_author,
+)
+from package_parser.processing.migration.model import (
     ManyToOneMapping,
     Mapping,
     OneToManyMapping,
     OneToOneMapping,
-)
-from package_parser.processing.migration.annotations import (
-    get_migration_text,
-    migration_author,
 )
 
 

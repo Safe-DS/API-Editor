@@ -25,7 +25,7 @@ from package_parser.processing.api.model import (
     Parameter,
     Result,
 )
-from package_parser.processing.migration import Mapping
+from package_parser.processing.migration.model import Mapping
 
 
 def _get_further_information(annotation: AbstractAnnotation) -> str:
@@ -78,9 +78,9 @@ def _get_further_information(annotation: AbstractAnnotation) -> str:
         if isinstance(annotation, (ConstantAnnotation, OptionalAnnotation)):
             value += (
                 "' and the default Value '"
-                + annotation.defaultValue
+                + str(annotation.defaultValue)
                 + " ( type: "
-                + annotation.defaultValueType.value
+                + str(annotation.defaultValueType.value)
                 + " )"
             )
         value += "'"

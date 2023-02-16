@@ -1,11 +1,13 @@
+from __future__ import annotations
+
 import re
 from abc import ABC, abstractmethod
-from typing import Callable, Optional, Tuple, TypeVar, Union
+from dataclasses import dataclass
+from typing import Callable, Optional, Sequence, Tuple, TypeVar, Union
 
-from black import FileMode, format_str
-from black.linegen import CannotSplit
 from Levenshtein import distance
 from package_parser.processing.api.model import (
+    API,
     AbstractType,
     Attribute,
     Class,
@@ -22,7 +24,13 @@ from ._mapping import Mapping
 api_element = Union[Attribute, Class, Function, Parameter, Result]
 
 
+@dataclass
 class AbstractDiffer(ABC):
+    previous_base_differ: Optional[AbstractDiffer]
+    previous_mappings: list[Mapping]
+    apiv1: API
+    apiv2: API
+
     @abstractmethod
     def compute_attribute_similarity(
         self,
@@ -40,8 +48,8 @@ class AbstractDiffer(ABC):
     def compute_class_similarity(self, classv1: Class, classv2: Class) -> float:
         """
         Computes similarity between classes from apiv1 and apiv2.
-        :param classv1: attribute from apiv1
-        :param classv2: attribute from apiv2
+        :param classv1: class from apiv1
+        :param classv2: class from apiv2
         :return: value between 0 and 1, where 1 means that the elements are equal
         """
 
@@ -51,8 +59,8 @@ class AbstractDiffer(ABC):
     ) -> float:
         """
         Computes similarity between functions from apiv1 and apiv2.
-        :param functionv1: attribute from apiv1
-        :param functionv2: attribute from apiv2
+        :param functionv1: function from apiv1
+        :param functionv2: function from apiv2
         :return: value between 0 and 1, where 1 means that the elements are equal
         """
 
@@ -62,8 +70,8 @@ class AbstractDiffer(ABC):
     ) -> float:
         """
         Computes similarity between parameters from apiv1 and apiv2.
-        :param parameterv1: attribute from apiv1
-        :param parameterv2: attribute from apiv2
+        :param parameterv1: parameter from apiv1
+        :param parameterv2: parameter from apiv2
         :return: value between 0 and 1, where 1 means that the elements are equal
         """
 
@@ -71,8 +79,8 @@ class AbstractDiffer(ABC):
     def compute_result_similarity(self, resultv1: Result, resultv2: Result) -> float:
         """
         Computes similarity between results from apiv1 and apiv2.
-        :param resultv1: attribute from apiv1
-        :param resultv2: attribute from apiv2
+        :param resultv1: result from apiv1
+        :param resultv2: result from apiv2
         :return: value between 0 and 1, where 1 means that the elements are equal
         """
 
@@ -81,41 +89,31 @@ class AbstractDiffer(ABC):
         self,
     ) -> Optional[list[Mapping]]:
         """
-        Indicates whether all api elements should be compared with each other or just the ones that are mapped to each other.
+        Indicates whether all api elements should be compared with each other
+        or just the ones that are mapped to each other.
         :return: a list of Mappings if only previously mapped api elements should be mapped to each other or else None.
         """
 
     @abstractmethod
     def notify_new_mapping(self, mappings: list[Mapping]) -> None:
         """
-        If previous mappings returns None, the differ will be notified about a new mapping. Thereby the differ can calculate the similarity with more information.
-        :param mappings: a list of Mappings if only previously mapped api elements should be mapped to each other or else None.
+        If previous mappings returns None, the differ will be notified about a new mapping.
+        Thereby the differ can calculate the similarity with more information.
+        :param mappings: a list of mappings new appended mappings.
+        """
+
+    @abstractmethod
+    def get_additional_mappings(self) -> list[Mapping]:
+        """
+        This method allows the differ to add further mappings from previous differs
+        :return: additional mappings that should be included in the result of the differentiation
         """
 
 
 X = TypeVar("X")
 
 
-def distance_elements(
-    listv1: list[X],
-    listv2: list[X],
-    are_similar: Callable[[X, X], bool] = lambda x, y: x == y,
-) -> float:
-    if len(listv1) == 0:
-        return len(listv2)
-    if len(listv2) == 0:
-        return len(listv1)
-    if are_similar(listv1[0], listv2[0]):
-        return distance_elements(listv1[1:], listv2[1:], are_similar)
-    return 1 + min(
-        distance_elements(listv1[1:], listv2, are_similar),
-        distance_elements(listv1, listv2[1:], are_similar),
-        distance_elements(listv1[1:], listv2[1:], are_similar),
-    )
-
-
 class SimpleDiffer(AbstractDiffer):
-    SPEED_UP: bool = False
     assigned_by_look_up_similarity: dict[
         ParameterAssignment, dict[ParameterAssignment, float]
     ]
@@ -130,7 +128,17 @@ class SimpleDiffer(AbstractDiffer):
     def notify_new_mapping(self, mappings: list[Mapping]) -> None:
         return
 
-    def __init__(self) -> None:
+    def get_additional_mappings(self) -> list[Mapping]:
+        return []
+
+    def __init__(
+        self,
+        previous_base_differ: Optional[AbstractDiffer],
+        previous_mappings: list[Mapping],
+        apiv1: API,
+        apiv2: API,
+    ) -> None:
+        super().__init__(previous_base_differ, previous_mappings, apiv1, apiv2)
         distance_between_implicit_and_explicit = 0.3
         distance_between_vararg_and_normal = 0.3
         distance_between_position_and_named = 0.3
@@ -194,7 +202,7 @@ class SimpleDiffer(AbstractDiffer):
                 ParameterAssignment.POSITIONAL_VARARG: 1.0
                 - distance_between_vararg_and_normal
                 - distance_between_both_to_one,
-                ParameterAssignment.POSITION_OR_NAME: -1.0,
+                ParameterAssignment.POSITION_OR_NAME: 1.0,
                 ParameterAssignment.NAME_ONLY: 1.0 - distance_between_both_to_one,
                 ParameterAssignment.POSITION_ONLY: 1.0 - distance_between_both_to_one,
             },
@@ -235,16 +243,18 @@ class SimpleDiffer(AbstractDiffer):
         :param classv2: attribute from apiv2
         :return: value between 0 and 1, where 1 means that the elements are equal
         """
+        code_similarity = self._compute_code_similarity(
+            classv1.get_formatted_code(), classv2.get_formatted_code()
+        )
         name_similarity = self._compute_name_similarity(classv1.name, classv2.name)
-        attributes_similarity = distance_elements(
+
+        attributes_similarity = distance(
             classv1.instance_attributes, classv2.instance_attributes
         )
         attributes_similarity = attributes_similarity / (
             max(len(classv1.instance_attributes), len(classv2.instance_attributes), 1)
         )
         attributes_similarity = 1 - attributes_similarity
-
-        code_similarity = self._compute_code_similarity(classv1.code, classv2.code)
 
         id_similarity = self._compute_id_similarity(classv1.id, classv2.id)
 
@@ -270,13 +280,9 @@ class SimpleDiffer(AbstractDiffer):
         name_similarity = self._compute_name_similarity(
             attributev1.name, attributev2.name
         )
-        type_listv1 = [attributev1.types]
-        if attributev1.types is not None and isinstance(attributev1, UnionType):
-            type_listv1 = [attributev1.types]
-        type_listv2 = [attributev2.types]
-        if attributev2.types is not None and isinstance(attributev2, UnionType):
-            type_listv2 = [attributev1.types]
-        type_similarity = distance_elements(type_listv1, type_listv2) / max(
+        type_listv1 = self._create_list_from_type(attributev1.types)
+        type_listv2 = self._create_list_from_type(attributev2.types)
+        type_similarity = distance(type_listv1, type_listv2) / max(
             len(type_listv1), len(type_listv2), 1
         )
         type_similarity = 1 - type_similarity
@@ -298,21 +304,15 @@ class SimpleDiffer(AbstractDiffer):
             return self.previous_function_similarity[functionv1.id][functionv2.id]
 
         code_similarity = self._compute_code_similarity(
-            functionv1.code, functionv2.code
+            functionv1.get_formatted_code(), functionv2.get_formatted_code()
         )
         name_similarity = self._compute_name_similarity(
             functionv1.name, functionv2.name
         )
 
-        def are_parameters_similar(
-            parameterv1: Parameter, parameterv2: Parameter
-        ) -> bool:
-            return self.compute_parameter_similarity(parameterv1, parameterv2) == 1
-
-        parameter_similarity = distance_elements(
+        parameter_similarity = distance(
             functionv1.parameters,
             functionv2.parameters,
-            are_similar=are_parameters_similar,
         ) / max(len(functionv1.parameters), len(functionv2.parameters), 1)
         parameter_similarity = 1 - parameter_similarity
 
@@ -327,15 +327,6 @@ class SimpleDiffer(AbstractDiffer):
         return result
 
     def _compute_code_similarity(self, codev1: str, codev2: str) -> float:
-        mode = FileMode()
-        try:
-            codev1_tmp = format_str(codev1, mode=mode)
-            codev2_tmp = format_str(codev2, mode=mode)
-        except CannotSplit:
-            pass
-        else:
-            codev1 = codev1_tmp
-            codev2 = codev2_tmp
         splitv1 = codev1.split("\n")
         splitv2 = codev2.split("\n")
         diff_code = distance(splitv1, splitv2) / max(len(splitv1), len(splitv2), 1)
@@ -409,20 +400,17 @@ class SimpleDiffer(AbstractDiffer):
         if typev2 is None:
             return 0
 
-        def are_types_similar(
-            abstract_typev1: AbstractType, abstract_typev2: AbstractType
-        ) -> bool:
-            return abstract_typev1.to_json() == abstract_typev2.to_json()
-
         type_listv1 = self._create_list_from_type(typev1)
         type_listv2 = self._create_list_from_type(typev2)
-        diff_elements = distance_elements(
-            type_listv1, type_listv2, are_similar=are_types_similar
-        ) / max(len(type_listv1), len(type_listv2), 1)
+        diff_elements = distance(type_listv1, type_listv2) / max(
+            len(type_listv1), len(type_listv2), 1
+        )
         return 1 - diff_elements
 
-    def _create_list_from_type(self, abstract_type: AbstractType) -> list[AbstractType]:
-        if isinstance(abstract_type, UnionType):
+    def _create_list_from_type(
+        self, abstract_type: Optional[AbstractType]
+    ) -> Sequence[Optional[AbstractType]]:
+        if abstract_type is not None and isinstance(abstract_type, UnionType):
             return abstract_type.types
         return [abstract_type]
 
@@ -501,7 +489,7 @@ class SimpleDiffer(AbstractDiffer):
         descriptionv2 = re.split("[\n ]", documentationv2.description)
 
         documentation_similarity = distance(descriptionv1, descriptionv2) / max(
-            len(descriptionv1), len(descriptionv2)
+            len(descriptionv1), len(descriptionv2), 1
         )
         return 1 - documentation_similarity
 

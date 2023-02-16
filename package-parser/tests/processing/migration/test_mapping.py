@@ -2,9 +2,9 @@ from inspect import cleandoc
 
 import pytest
 from package_parser.processing.api.model import API, Class, ClassDocumentation
-from package_parser.processing.migration import (
+from package_parser.processing.migration import APIMapping
+from package_parser.processing.migration.model import (
     AbstractDiffer,
-    APIMapping,
     ManyToManyMapping,
     ManyToOneMapping,
     OneToManyMapping,

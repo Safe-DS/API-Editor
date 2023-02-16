@@ -15,8 +15,11 @@ from package_parser.processing.api.model import (
     Result,
     ResultDocstring,
 )
-from package_parser.processing.migration import AbstractDiffer, OneToOneMapping
-from package_parser.processing.migration.model import StrictDiffer
+from package_parser.processing.migration.model import (
+    AbstractDiffer,
+    OneToOneMapping,
+    StrictDiffer,
+)
 from test_base_differ import differ_list
 
 
@@ -51,7 +54,7 @@ def test_similarity(differ: AbstractDiffer) -> None:
     class newTest:
         pass"""
     )
-    class_id_b = "test/test.newTest"
+    class_id_b = "test/test/NewTest"
     attribute_b = Attribute("test_string", NamedType("str"), class_id=class_id_b)
     class_b = Class(
         class_id_b,
@@ -145,14 +148,14 @@ def test_similarity(differ: AbstractDiffer) -> None:
     class_mapping = OneToOneMapping(1.0, class_a, class_b)
     function_mapping = OneToOneMapping(1.0, function_a, function_b)
 
-    strict_differ = StrictDiffer([], differ)
+    strict_differ = StrictDiffer(differ, [], apiv1, apiv2)
     assert strict_differ.compute_class_similarity(class_a, class_b) == 0
     assert strict_differ.compute_attribute_similarity(attribute_a, attribute_b) == 0
     assert strict_differ.compute_function_similarity(function_a, function_b) == 0
     assert strict_differ.compute_parameter_similarity(parameter_a, parameter_b) == 0
     assert strict_differ.compute_result_similarity(result_a, result_b) == 0
 
-    strict_differ = StrictDiffer([class_mapping], differ)
+    strict_differ = StrictDiffer(differ, [class_mapping], apiv1, apiv2)
     assert strict_differ.compute_class_similarity(class_a, class_b) > 0
     strict_differ.notify_new_mapping([class_mapping])
     assert strict_differ.compute_attribute_similarity(attribute_a, attribute_b) > 0
@@ -160,7 +163,8 @@ def test_similarity(differ: AbstractDiffer) -> None:
     assert strict_differ.compute_parameter_similarity(parameter_a, parameter_b) == 0
     assert strict_differ.compute_result_similarity(result_a, result_b) == 0
 
-    strict_differ = StrictDiffer(
+    strict_differ_notify_all = StrictDiffer(
+        differ,
         [
             class_mapping,
             OneToOneMapping(1.0, attribute_a, attribute_b),
@@ -168,12 +172,21 @@ def test_similarity(differ: AbstractDiffer) -> None:
             OneToOneMapping(1.0, parameter_a, parameter_b),
             OneToOneMapping(1.0, result_a, result_b),
         ],
-        differ,
+        apiv1,
+        apiv2,
     )
-    assert strict_differ.compute_class_similarity(class_a, class_b) > 0
-    strict_differ.notify_new_mapping([class_mapping])
-    assert strict_differ.compute_attribute_similarity(attribute_a, attribute_b) > 0
-    assert strict_differ.compute_function_similarity(function_a, function_b) > 0
-    strict_differ.notify_new_mapping([function_mapping])
-    assert strict_differ.compute_parameter_similarity(parameter_a, parameter_b) > 0
-    assert strict_differ.compute_result_similarity(result_a, result_b) > 0
+    assert strict_differ_notify_all.compute_class_similarity(class_a, class_b) > 0
+    strict_differ_notify_all.notify_new_mapping([class_mapping])
+    assert (
+        strict_differ_notify_all.compute_attribute_similarity(attribute_a, attribute_b)
+        > 0
+    )
+    assert (
+        strict_differ_notify_all.compute_function_similarity(function_a, function_b) > 0
+    )
+    strict_differ_notify_all.notify_new_mapping([function_mapping])
+    assert (
+        strict_differ_notify_all.compute_parameter_similarity(parameter_a, parameter_b)
+        > 0
+    )
+    assert strict_differ_notify_all.compute_result_similarity(result_a, result_b) > 0

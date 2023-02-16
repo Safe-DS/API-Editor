@@ -1,7 +1,7 @@
-from dataclasses import dataclass, field
 from typing import Optional, TypeVar, Union
 
 from package_parser.processing.api.model import (
+    API,
     Attribute,
     Class,
     Function,
@@ -18,13 +18,19 @@ DEPENDENT_API_ELEMENTS = TypeVar(
 api_element = Union[Attribute, Class, Function, Parameter, Result]
 
 
-@dataclass
 class StrictDiffer(AbstractDiffer):
-    previous_mappings: list[Mapping]
+    new_mappings: list[Mapping]
     differ: AbstractDiffer
-    new_mappings: list[Mapping] = field(init=False)
 
-    def __post_init__(self) -> None:
+    def __init__(
+        self,
+        previous_base_differ: AbstractDiffer,
+        previous_mappings: list[Mapping],
+        apiv1: API,
+        apiv2: API,
+    ) -> None:
+        super().__init__(previous_base_differ, previous_mappings, apiv1, apiv2)
+        self.differ = previous_base_differ
         self.new_mappings = []
 
     def get_related_mappings(
@@ -44,6 +50,9 @@ class StrictDiffer(AbstractDiffer):
 
     def notify_new_mapping(self, mappings: list[Mapping]) -> None:
         self.new_mappings.extend(mappings)
+
+    def get_additional_mappings(self) -> list[Mapping]:
+        return []
 
     def _is_parent(
         self,
@@ -140,8 +149,8 @@ class StrictDiffer(AbstractDiffer):
         is_global_functionv1 = len(functionv1.id.split("/")) == 3
         is_global_functionv2 = len(functionv2.id.split("/")) == 3
         if (
-            is_global_functionv1 and is_global_functionv2
-        ) or self._api_elements_are_mapped_to_each_other(functionv1, functionv2):
+            not is_global_functionv1 and not is_global_functionv2
+        ) and self._api_elements_are_mapped_to_each_other(functionv1, functionv2):
             return self.differ.compute_function_similarity(functionv1, functionv2)
         return 0.0
 

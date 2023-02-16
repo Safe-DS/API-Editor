@@ -1,8 +1,12 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
-from typing import Any, Optional
+from dataclasses import dataclass, field
+from typing import Any, Optional, Union
 
+from black import FileMode, InvalidInput, format_str
+from black.brackets import BracketMatchError
+from black.linegen import CannotSplit
+from black.trans import CannotTransform
 from package_parser.utils import parent_id
 
 from ._documentation import ClassDocumentation, FunctionDocumentation
@@ -78,6 +82,26 @@ class API:
                 result[parameter_id] = parameter
 
         return result
+
+    def attributes(self) -> dict[str, Attribute]:
+        result: dict[str, Attribute] = {}
+
+        for class_ in self.classes.values():
+            for attribute in class_.instance_attributes:
+                attribute_id = f"{class_.id}/{attribute.name}"
+                result[attribute_id] = attribute
+
+        return result
+
+    def results(self) -> dict[str, Result]:
+        result_dict: dict[str, Result] = {}
+
+        for function in self.functions.values():
+            for result in function.results:
+                result_id = f"{function.id}/{result.name}"
+                result_dict[result_id] = result
+
+        return result_dict
 
     def get_default_value(self, parameter_id: str) -> Optional[str]:
         function_id = parent_id(parameter_id)
@@ -241,6 +265,7 @@ class Class:
         self.documentation: ClassDocumentation = documentation
         self.code: str = code
         self.instance_attributes = instance_attributes
+        self.formatted_code: Optional[str] = None
 
     @property
     def name(self) -> str:
@@ -267,8 +292,25 @@ class Class:
             ],
         }
 
+    def get_formatted_code(self) -> str:
+        if self.formatted_code is None:
+            self.formatted_code = _generate_formatted_code(self)
+        return self.formatted_code
+
     def __repr__(self) -> str:
         return "Class(id=" + self.id + ")"
+
+
+def _generate_formatted_code(api_element: Union[Class, Function]) -> str:
+    code = api_element.code
+    try:
+        code_tmp = format_str(code, mode=FileMode())
+    except (CannotSplit, CannotTransform, InvalidInput, BracketMatchError):
+        # As long as the api black has no documentation, we do not know which exceptions are raised
+        pass
+    else:
+        code = code_tmp
+    return code
 
 
 @dataclass
@@ -276,6 +318,9 @@ class Attribute:
     name: str
     types: Optional[AbstractType]
     class_id: Optional[str] = None
+
+    def __hash__(self) -> int:
+        return hash((self.name, self.class_id, self.types))
 
     def to_json(self) -> dict[str, Any]:
         types_json = self.types.to_json() if self.types is not None else None
@@ -312,6 +357,10 @@ class Function:
     reexported_by: list[str]
     documentation: FunctionDocumentation
     code: str
+    formatted_code: Optional[str] = field(init=False)
+
+    def __post_init__(self) -> None:
+        self.formatted_code = None
 
     @staticmethod
     def from_json(json: Any) -> Function:
@@ -351,6 +400,11 @@ class Function:
             "docstring": self.documentation.full_docstring,
             "code": self.code,
         }
+
+    def get_formatted_code(self) -> str:
+        if self.formatted_code is None:
+            self.formatted_code = _generate_formatted_code(self)
+        return self.formatted_code
 
     def __repr__(self) -> str:
         return "Function(id=" + self.id + ")"
