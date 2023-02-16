@@ -3,11 +3,10 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any, Optional, Union
 
-from black import FileMode, format_str, InvalidInput
+from black import FileMode, InvalidInput, format_str
 from black.brackets import BracketMatchError
 from black.linegen import CannotSplit
 from black.trans import CannotTransform
-
 from package_parser.utils import parent_id
 
 from ._documentation import ClassDocumentation, FunctionDocumentation
