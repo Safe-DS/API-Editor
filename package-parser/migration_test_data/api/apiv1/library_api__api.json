@@ -1,0 +1,1873 @@
+{
+    "schemaVersion": 1,
+    "distribution": "",
+    "package": "library_api",
+    "version": "0.7.12",
+    "modules": [
+        {
+            "id": "library_api/library_api",
+            "name": "library_api",
+            "imports": [],
+            "from_imports": [
+                {
+                    "module": "library_api.book",
+                    "declaration": "Book",
+                    "alias": null
+                },
+                {
+                    "module": "library_api.library",
+                    "declaration": "Library",
+                    "alias": null
+                },
+                {
+                    "module": "library_api.persons",
+                    "declaration": "Employee",
+                    "alias": null
+                },
+                {
+                    "module": "library_api.persons",
+                    "declaration": "LibraryUser",
+                    "alias": null
+                },
+                {
+                    "module": "library_api.position",
+                    "declaration": "Bookshelf",
+                    "alias": null
+                },
+                {
+                    "module": "library_api.position",
+                    "declaration": "Room",
+                    "alias": null
+                },
+                {
+                    "module": "library_api.send_message_to_person",
+                    "declaration": "send_message_to_person",
+                    "alias": null
+                }
+            ],
+            "classes": [],
+            "functions": []
+        },
+        {
+            "id": "library_api/library_api.book",
+            "name": "library_api.book",
+            "imports": [],
+            "from_imports": [
+                {
+                    "module": "datetime",
+                    "declaration": "date",
+                    "alias": null
+                },
+                {
+                    "module": "typing",
+                    "declaration": "Optional",
+                    "alias": null
+                },
+                {
+                    "module": "library_api.persons",
+                    "declaration": "LibraryUser",
+                    "alias": null
+                },
+                {
+                    "module": "library_api.position",
+                    "declaration": "Bookshelf",
+                    "alias": null
+                },
+                {
+                    "module": "library_api.position",
+                    "declaration": "Room",
+                    "alias": null
+                }
+            ],
+            "classes": ["library_api/library_api.book/Book"],
+            "functions": []
+        },
+        {
+            "id": "library_api/library_api.library",
+            "name": "library_api.library",
+            "imports": [],
+            "from_imports": [
+                {
+                    "module": "datetime",
+                    "declaration": "date",
+                    "alias": null
+                },
+                {
+                    "module": "datetime",
+                    "declaration": "datetime",
+                    "alias": null
+                },
+                {
+                    "module": "datetime",
+                    "declaration": "timedelta",
+                    "alias": null
+                },
+                {
+                    "module": "library_api.book",
+                    "declaration": "Book",
+                    "alias": null
+                },
+                {
+                    "module": "library_api.persons",
+                    "declaration": "Employee",
+                    "alias": null
+                },
+                {
+                    "module": "library_api.persons",
+                    "declaration": "LibraryUser",
+                    "alias": null
+                },
+                {
+                    "module": "library_api.send_message_to_person",
+                    "declaration": "send_message_to_person",
+                    "alias": null
+                }
+            ],
+            "classes": ["library_api/library_api.library/Library", "library_api/library_api.library/City"],
+            "functions": []
+        },
+        {
+            "id": "library_api/library_api.persons",
+            "name": "library_api.persons",
+            "imports": [
+                {
+                    "module": "datetime",
+                    "alias": null
+                }
+            ],
+            "from_imports": [],
+            "classes": ["library_api/library_api.persons/LibraryUser", "library_api/library_api.persons/Employee"],
+            "functions": []
+        },
+        {
+            "id": "library_api/library_api.position",
+            "name": "library_api.position",
+            "imports": [],
+            "from_imports": [],
+            "classes": ["library_api/library_api.position/Bookshelf", "library_api/library_api.position/Room"],
+            "functions": []
+        },
+        {
+            "id": "library_api/library_api.send_message_to_person",
+            "name": "library_api.send_message_to_person",
+            "imports": [],
+            "from_imports": [],
+            "classes": [],
+            "functions": ["library_api/library_api.send_message_to_person/send_message_to_person"]
+        }
+    ],
+    "classes": [
+        {
+            "id": "library_api/library_api.book/Book",
+            "name": "Book",
+            "qname": "library_api.book.Book",
+            "decorators": [],
+            "superclasses": [],
+            "methods": ["library_api/library_api.book/Book/__init__"],
+            "is_public": true,
+            "reexported_by": [],
+            "description": "A Class for Books",
+            "docstring": "A Class for Books\n\nParameters\n----------\nborrow_until : Optional[date]\n    if it is borrowed: date else None\nborrow_by : Optional[LibraryUser]\ngenre : str\nisbn :  str\nauthor : str\nrelease_date : date\nnumber_of_times_this_book_was_borrowed : int, default=0\n    number of borrows\nbookshelf : Bookshelf\n    the bookshelf where the book should be placed\nroom : Room\n    the location where the bookshelf can be found",
+            "code": "class Book:\n    \"\"\"A Class for Books\n\n    Parameters\n    ----------\n    borrow_until : Optional[date]\n        if it is borrowed: date else None\n    borrow_by : Optional[LibraryUser]\n    genre : str\n    isbn :  str\n    author : str\n    release_date : date\n    number_of_times_this_book_was_borrowed : int, default=0\n        number of borrows\n    bookshelf : Bookshelf\n        the bookshelf where the book should be placed\n    room : Room\n        the location where the bookshelf can be found\n    \"\"\"\n\n    def __init__(\n        self,\n        borrow_until: Optional[date],\n        borrow_by: Optional[LibraryUser],\n        genre: str,\n        isbn: str,\n        author: str,\n        release_date: date,\n        bookshelf: Bookshelf,\n        room: Room,\n        number_of_times_this_book_was_borrowed: int = 0,\n    ) -> None:\n        self.borrow_until: Optional[date] = borrow_until\n        self.borrow_by = borrow_by\n        self.genre = genre\n        self.isbn = isbn\n        self.author = author\n        self.release_date = release_date\n        self.number_of_times_this_book_was_borrowed = (\n            number_of_times_this_book_was_borrowed\n        )\n        fee_for_each_genre: dict[str, float] = {\n            \"fiction\": 1.0,\n            \"nonfiction\": 2.0,\n            \"poetry\": 1.5,\n            \"drama\": 5.0,\n            \"high_demand\": 10.0,\n            \"low_demand\": 0.5,\n            \"other\": 2.5,\n        }\n        if self.genre in fee_for_each_genre:\n            self.FEE_PER_DAY = fee_for_each_genre[self.genre]\n        else:\n            self.FEE_PER_DAY = fee_for_each_genre[\"other\"]\n        self.bookshelf = bookshelf\n        self.room = room",
+            "instance_attributes": [
+                {
+                    "name": "borrow_until",
+                    "types": null
+                },
+                {
+                    "name": "borrow_by",
+                    "types": {
+                        "kind": "UnionType",
+                        "types": [
+                            {
+                                "kind": "NamedType",
+                                "name": "NoneType"
+                            },
+                            {
+                                "kind": "NamedType",
+                                "name": "LibraryUser"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "genre",
+                    "types": {
+                        "kind": "NamedType",
+                        "name": "str"
+                    }
+                },
+                {
+                    "name": "isbn",
+                    "types": {
+                        "kind": "NamedType",
+                        "name": "str"
+                    }
+                },
+                {
+                    "name": "author",
+                    "types": {
+                        "kind": "NamedType",
+                        "name": "str"
+                    }
+                },
+                {
+                    "name": "release_date",
+                    "types": {
+                        "kind": "NamedType",
+                        "name": "date"
+                    }
+                },
+                {
+                    "name": "number_of_times_this_book_was_borrowed",
+                    "types": {
+                        "kind": "NamedType",
+                        "name": "int"
+                    }
+                },
+                {
+                    "name": "FEE_PER_DAY",
+                    "types": {
+                        "kind": "NamedType",
+                        "name": "float"
+                    }
+                },
+                {
+                    "name": "bookshelf",
+                    "types": {
+                        "kind": "NamedType",
+                        "name": "Bookshelf"
+                    }
+                },
+                {
+                    "name": "room",
+                    "types": {
+                        "kind": "NamedType",
+                        "name": "Room"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "library_api/library_api.library/City",
+            "name": "City",
+            "qname": "library_api.library.City",
+            "decorators": [],
+            "superclasses": [],
+            "methods": ["library_api/library_api.library/City/__init__"],
+            "is_public": true,
+            "reexported_by": [],
+            "description": "A City class",
+            "docstring": "A City class\n\nParameters\n----------\nname : str\nnumber_of_inhabitants : int\nlibraries : list[Library]",
+            "code": "class City:  # apiv2: remove this class\n    \"\"\"A City class\n\n    Parameters\n    ----------\n    name : str\n    number_of_inhabitants : int\n    libraries : list[Library]\n    \"\"\"\n\n    name: str\n    number_of_inhabitants: int\n    libraries: list[Library]\n\n    def __init__(\n        self, name: str, number_of_inhabitants: int, libraries: list[Library]\n    ) -> None:\n        self.name = name\n        self.number_of_inhabitants = number_of_inhabitants\n        self.libraries = libraries",
+            "instance_attributes": [
+                {
+                    "name": "name",
+                    "types": {
+                        "kind": "NamedType",
+                        "name": "str"
+                    }
+                },
+                {
+                    "name": "number_of_inhabitants",
+                    "types": {
+                        "kind": "NamedType",
+                        "name": "int"
+                    }
+                },
+                {
+                    "name": "libraries",
+                    "types": {
+                        "kind": "NamedType",
+                        "name": "list[Library]"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "library_api/library_api.library/Library",
+            "name": "Library",
+            "qname": "library_api.library.Library",
+            "decorators": [],
+            "superclasses": [],
+            "methods": [
+                "library_api/library_api.library/Library/__init__",
+                "library_api/library_api.library/Library/open_library",
+                "library_api/library_api.library/Library/close_library",
+                "library_api/library_api.library/Library/return_book",
+                "library_api/library_api.library/Library/borrow",
+                "library_api/library_api.library/Library/add_new_book",
+                "library_api/library_api.library/Library/let_seminar_room"
+            ],
+            "is_public": true,
+            "reexported_by": [],
+            "description": "The Library",
+            "docstring": "The Library\n\nParameters\n----------\nbooks : list[Book]\nborrowed_books : list[Book]\nusers : list[LibraryUser]\nstaff : list[Employee]\nname : str\nis_open : bool",
+            "code": "class Library:\n    \"\"\"The Library\n\n    Parameters\n    ----------\n    books : list[Book]\n    borrowed_books : list[Book]\n    users : list[LibraryUser]\n    staff : list[Employee]\n    name : str\n    is_open : bool\n    \"\"\"\n\n    books: list[Book]  # apiv2: add other media -> change genre\n    borrowed_books: list[Book]\n    users: list[LibraryUser]\n    staff: list[Employee]  # apiv2: add Person subclass to User and Personal and Author\n    name: str\n    is_open: bool = False  # apiv2: remove is_open attribute\n\n    def __init__(\n        self,\n        books: list[Book],\n        borrowed_books: list[Book],\n        users: list[LibraryUser],\n        staff: list[Employee],\n        name: str,\n        is_open: bool = False,\n    ) -> None:\n        self.books = books\n        self.borrowed_books = borrowed_books\n        self.users = users\n        self.staff = staff\n        self.name = name\n        self.is_open = is_open\n\n    def open_library(self) -> None:\n        self.is_open = True\n\n    def close_library(self) -> None:\n        self.is_open = False\n\n    def return_book(self, book: Book, user: LibraryUser) -> None:\n        \"\"\"Return a book\n\n        Parameters\n        ----------\n        book : Book\n        user : LibraryUser\n        \"\"\"\n        if (\n            book.borrow_by is not None\n            and book.borrow_until is not None\n            and book.borrow_by == user\n        ):  # apiv2: check if book is in borrowed book list\n            late_fee = 0.0\n            today = datetime.today().date()\n            if book.borrow_until > today or (\n                book.borrow_by == today and not self.is_open\n            ):\n                late_fee = (today - book.borrow_until).days * book.FEE_PER_DAY\n                if not self.is_open:\n                    late_fee += 1.0\n            user.give_back(late_fee)  # apiv2: rename function\n            send_message_to_person(\n                user.get_name(), user.address, \"You need to pay your late fee.\"\n            )\n            book.borrow_by = None\n            book.borrow_until = None\n            self.borrowed_books.remove(book)\n\n    def borrow(\n        self, book: Book, user: LibraryUser\n    ) -> None:  # apiv2: check if pending_fees are not above 5\n        \"\"\"borrow\n\n        Parameters\n        ----------\n        book : Book\n        user : LibraryUser\n        \"\"\"\n        if book in self.books and book not in self.borrowed_books:\n            book.borrow_by = user\n            book.borrow_until = datetime.today() + timedelta(days=1)\n\n    def add_new_book(\n        self, book: Book\n    ) -> None:  # apiv2: check if book is not duplicated, rename to add_new_media\n        \"\"\"add a new book\n\n        Parameters\n        ----------\n        book : Book\n        \"\"\"\n        self.books.append(book)\n\n    def let_seminar_room(\n        self,\n        money: float,\n        name: str,\n        address: str,\n        start_of_renting: date,\n        end_of_renting: date,\n    ) -> float:  # apiv2: remove rented_date, move to new subclass OurLibrary with additional attributes owner and address\n        \"\"\"rent the seminar room of the library after it closed\n\n        Parameters\n        ----------\n        money : float\n        name : str\n        address : str\n        start_of_renting : datetime\n        end_of_renting : datetime\n\n        Returns\n        -------\n        exchanged_money_or_money_to_be_paid : float\n        \"\"\"\n        if money >= 50 * (end_of_renting - start_of_renting).days:\n            send_message_to_person(\n                name,\n                address,\n                f\"You rented our seminar room for {money:.2f} \u20ac from \"\n                + str(start_of_renting)\n                + \" to \"\n                + str(end_of_renting),\n            )\n        return money - 50",
+            "instance_attributes": [
+                {
+                    "name": "books",
+                    "types": {
+                        "kind": "NamedType",
+                        "name": "list[Book]"
+                    }
+                },
+                {
+                    "name": "borrowed_books",
+                    "types": {
+                        "kind": "NamedType",
+                        "name": "list[Book]"
+                    }
+                },
+                {
+                    "name": "users",
+                    "types": {
+                        "kind": "NamedType",
+                        "name": "list[LibraryUser]"
+                    }
+                },
+                {
+                    "name": "staff",
+                    "types": {
+                        "kind": "NamedType",
+                        "name": "list[Employee]"
+                    }
+                },
+                {
+                    "name": "name",
+                    "types": {
+                        "kind": "NamedType",
+                        "name": "str"
+                    }
+                },
+                {
+                    "name": "is_open",
+                    "types": {
+                        "kind": "NamedType",
+                        "name": "bool"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "library_api/library_api.persons/Employee",
+            "name": "Employee",
+            "qname": "library_api.persons.Employee",
+            "decorators": [],
+            "superclasses": [],
+            "methods": [
+                "library_api/library_api.persons/Employee/__init__",
+                "library_api/library_api.persons/Employee/get_name"
+            ],
+            "is_public": true,
+            "reexported_by": [],
+            "description": "An Employee of the Library",
+            "docstring": "An Employee of the Library\n\nParameters\n----------\nfirst_name : str\nlast_name : str\naddress : str\nwage : float",
+            "code": "class Employee:\n    \"\"\"An Employee of the Library\n\n    Parameters\n    ----------\n    first_name : str\n    last_name : str\n    address : str\n    wage : float\n    \"\"\"\n\n    first_name: str\n    last_name: str\n    address: str\n    wage: float\n\n    def __init__(\n        self, first_name: str, last_name: str, address: str, wage: float\n    ) -> None:\n        self.first_name = first_name\n        self.last_name = last_name\n        self.address = address\n        self.wage = wage\n\n    def get_name(self) -> str:\n        \"\"\"get full name of Employee\n\n        Returns\n        -------\n        full_name : str\n        \"\"\"\n        return self.first_name + \" \" + self.last_name",
+            "instance_attributes": [
+                {
+                    "name": "first_name",
+                    "types": {
+                        "kind": "NamedType",
+                        "name": "str"
+                    }
+                },
+                {
+                    "name": "last_name",
+                    "types": {
+                        "kind": "NamedType",
+                        "name": "str"
+                    }
+                },
+                {
+                    "name": "address",
+                    "types": {
+                        "kind": "NamedType",
+                        "name": "str"
+                    }
+                },
+                {
+                    "name": "wage",
+                    "types": {
+                        "kind": "NamedType",
+                        "name": "float"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "library_api/library_api.persons/LibraryUser",
+            "name": "LibraryUser",
+            "qname": "library_api.persons.LibraryUser",
+            "decorators": [],
+            "superclasses": [],
+            "methods": [
+                "library_api/library_api.persons/LibraryUser/__init__",
+                "library_api/library_api.persons/LibraryUser/give_back",
+                "library_api/library_api.persons/LibraryUser/extend_membership",
+                "library_api/library_api.persons/LibraryUser/get_name",
+                "library_api/library_api.persons/LibraryUser/pay"
+            ],
+            "is_public": true,
+            "reexported_by": [],
+            "description": "LibraryUser",
+            "docstring": "LibraryUser\n\nParameters\n----------\n\nfirst_name : str\nlast_name : str\nid_number : str\naddress : str\npending_fees : float\nmember_until : date",
+            "code": "class LibraryUser:\n    \"\"\"LibraryUser\n\n    Parameters\n    ----------\n\n    first_name : str\n    last_name : str\n    id_number : str\n    address : str\n    pending_fees : float\n    member_until : date\n    \"\"\"\n\n    first_name: str\n    last_name: str\n    id_number: str\n    address: str\n    pending_fees: float\n    member_until: datetime.date\n\n    def __init__(\n        self,\n        first_name: str,\n        last_name: str,\n        id_number: str,\n        address: str,\n        pending_fees: float,\n        member_until: datetime.date,\n    ) -> None:\n        self.first_name = first_name\n        self.last_name = last_name\n        self.id_number = id_number\n        self.address = address\n        self.pending_fees = pending_fees\n        self.member_until = member_until\n\n    def give_back(self, late_fee: float) -> None:\n        \"\"\"Gives book back and add late_fee is it is too late\n\n        Parameters\n        ----------\n        late_fee : float\n            money to be paid by user\n        \"\"\"\n        self.pending_fees = self.pending_fees + late_fee\n\n    def extend_membership(self) -> None:\n        \"\"\"Extend membership by one year\"\"\"\n        self.member_until = self.member_until + datetime.timedelta(\n            days=365\n        )  # apiv2: change to self.member_until.replace(year=self.member_until.year+1)\n\n    def get_name(self) -> str:\n        \"\"\"get full name of LibraryUser\n\n        Returns\n        -------\n        full_name : str\n        \"\"\"\n        return self.first_name + \" \" + self.last_name\n\n    def pay(self, money: float) -> float:\n        \"\"\"pay the library\n\n        Parameters\n        ----------\n        money : float\n        \"\"\"\n        if money > self.pending_fees:\n            self.pending_fees = 0\n            return money - self.pending_fees\n        self.pending_fees = self.pending_fees - money\n        return 0.0",
+            "instance_attributes": [
+                {
+                    "name": "first_name",
+                    "types": {
+                        "kind": "NamedType",
+                        "name": "str"
+                    }
+                },
+                {
+                    "name": "last_name",
+                    "types": {
+                        "kind": "NamedType",
+                        "name": "str"
+                    }
+                },
+                {
+                    "name": "id_number",
+                    "types": {
+                        "kind": "NamedType",
+                        "name": "str"
+                    }
+                },
+                {
+                    "name": "address",
+                    "types": {
+                        "kind": "NamedType",
+                        "name": "str"
+                    }
+                },
+                {
+                    "name": "pending_fees",
+                    "types": {
+                        "kind": "UnionType",
+                        "types": [
+                            {
+                                "kind": "NamedType",
+                                "name": "float"
+                            },
+                            {
+                                "kind": "NamedType",
+                                "name": "int"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "member_until",
+                    "types": {
+                        "kind": "NamedType",
+                        "name": "date"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "library_api/library_api.position/Bookshelf",
+            "name": "Bookshelf",
+            "qname": "library_api.position.Bookshelf",
+            "decorators": [],
+            "superclasses": [],
+            "methods": ["library_api/library_api.position/Bookshelf/__init__"],
+            "is_public": true,
+            "reexported_by": [],
+            "description": "A Bookshelf holds multiple books and is used to point to where a book should be placed",
+            "docstring": "A Bookshelf holds multiple books and is used to point to where a book should be placed\n\nParameters\n----------\nname_of_bookshelf : str\nmax_number_of_items : int",
+            "code": "class Bookshelf:\n    \"\"\"A Bookshelf holds multiple books and is used to point to where a book should be placed\n\n    Parameters\n    ----------\n    name_of_bookshelf : str\n    max_number_of_items : int\n    \"\"\"\n\n    name_of_bookshelf: str\n    max_number_of_items: int\n\n    def __init__(self, name_of_bookshelf: str, max_number_of_items: int):\n        self.max_number_of_items = max_number_of_items\n        self.name_of_bookshelf = name_of_bookshelf",
+            "instance_attributes": [
+                {
+                    "name": "max_number_of_items",
+                    "types": {
+                        "kind": "NamedType",
+                        "name": "int"
+                    }
+                },
+                {
+                    "name": "name_of_bookshelf",
+                    "types": {
+                        "kind": "NamedType",
+                        "name": "str"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "library_api/library_api.position/Room",
+            "name": "Room",
+            "qname": "library_api.position.Room",
+            "decorators": [],
+            "superclasses": [],
+            "methods": [
+                "library_api/library_api.position/Room/__init__",
+                "library_api/library_api.position/Room/get_room_number"
+            ],
+            "is_public": true,
+            "reexported_by": [],
+            "description": "A Room holds multiple bookshelves and is used to point to where a book should be placed",
+            "docstring": "A Room holds multiple bookshelves and is used to point to where a book should be placed\n\nParameters\n----------\nroom_number: int\nfloor: int",
+            "code": "class Room:\n    \"\"\"A Room holds multiple bookshelves and is used to point to where a book should be placed\n\n    Parameters\n    ----------\n    room_number: int\n    floor: int\n    \"\"\"\n\n    room_number: int\n    floor: int\n\n    def __init__(self, room_number: int, floor: int) -> None:\n        self.room_number = room_number\n        self.floor = floor\n\n    def get_room_number(self) -> str:\n        return str(self.floor) + \".\" + str(self.room_number)",
+            "instance_attributes": [
+                {
+                    "name": "room_number",
+                    "types": {
+                        "kind": "NamedType",
+                        "name": "int"
+                    }
+                },
+                {
+                    "name": "floor",
+                    "types": {
+                        "kind": "NamedType",
+                        "name": "int"
+                    }
+                }
+            ]
+        }
+    ],
+    "functions": [
+        {
+            "id": "library_api/library_api.book/Book/__init__",
+            "name": "__init__",
+            "qname": "library_api.book.Book.__init__",
+            "decorators": [],
+            "parameters": [
+                {
+                    "id": "library_api/library_api.book/Book/__init__/self",
+                    "name": "self",
+                    "qname": "library_api.book.Book.__init__.self",
+                    "default_value": null,
+                    "assigned_by": "IMPLICIT",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.book/Book/__init__/borrow_until",
+                    "name": "borrow_until",
+                    "qname": "library_api.book.Book.__init__.borrow_until",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "Optional[date]",
+                        "default_value": "",
+                        "description": "if it is borrowed: date else None"
+                    },
+                    "type": {
+                        "kind": "NamedType",
+                        "name": "Optional[date]"
+                    }
+                },
+                {
+                    "id": "library_api/library_api.book/Book/__init__/borrow_by",
+                    "name": "borrow_by",
+                    "qname": "library_api.book.Book.__init__.borrow_by",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "Optional[LibraryUser]",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {
+                        "kind": "NamedType",
+                        "name": "Optional[LibraryUser]"
+                    }
+                },
+                {
+                    "id": "library_api/library_api.book/Book/__init__/genre",
+                    "name": "genre",
+                    "qname": "library_api.book.Book.__init__.genre",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "str",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {
+                        "kind": "NamedType",
+                        "name": "str"
+                    }
+                },
+                {
+                    "id": "library_api/library_api.book/Book/__init__/isbn",
+                    "name": "isbn",
+                    "qname": "library_api.book.Book.__init__.isbn",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "str",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {
+                        "kind": "NamedType",
+                        "name": "str"
+                    }
+                },
+                {
+                    "id": "library_api/library_api.book/Book/__init__/author",
+                    "name": "author",
+                    "qname": "library_api.book.Book.__init__.author",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "str",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {
+                        "kind": "NamedType",
+                        "name": "str"
+                    }
+                },
+                {
+                    "id": "library_api/library_api.book/Book/__init__/release_date",
+                    "name": "release_date",
+                    "qname": "library_api.book.Book.__init__.release_date",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "date",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {
+                        "kind": "NamedType",
+                        "name": "date"
+                    }
+                },
+                {
+                    "id": "library_api/library_api.book/Book/__init__/bookshelf",
+                    "name": "bookshelf",
+                    "qname": "library_api.book.Book.__init__.bookshelf",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "Bookshelf",
+                        "default_value": "",
+                        "description": "the bookshelf where the book should be placed"
+                    },
+                    "type": {
+                        "kind": "NamedType",
+                        "name": "Bookshelf"
+                    }
+                },
+                {
+                    "id": "library_api/library_api.book/Book/__init__/room",
+                    "name": "room",
+                    "qname": "library_api.book.Book.__init__.room",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "Room",
+                        "default_value": "",
+                        "description": "the location where the bookshelf can be found"
+                    },
+                    "type": {
+                        "kind": "NamedType",
+                        "name": "Room"
+                    }
+                },
+                {
+                    "id": "library_api/library_api.book/Book/__init__/number_of_times_this_book_was_borrowed",
+                    "name": "number_of_times_this_book_was_borrowed",
+                    "qname": "library_api.book.Book.__init__.number_of_times_this_book_was_borrowed",
+                    "default_value": "0",
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "int",
+                        "default_value": "0",
+                        "description": "number of borrows"
+                    },
+                    "type": {
+                        "kind": "NamedType",
+                        "name": "int"
+                    }
+                }
+            ],
+            "results": [],
+            "is_public": true,
+            "reexported_by": [],
+            "description": "A Class for Books",
+            "docstring": "",
+            "code": "    def __init__(\n        self,\n        borrow_until: Optional[date],\n        borrow_by: Optional[LibraryUser],\n        genre: str,\n        isbn: str,\n        author: str,\n        release_date: date,\n        bookshelf: Bookshelf,\n        room: Room,\n        number_of_times_this_book_was_borrowed: int = 0,\n    ) -> None:\n        self.borrow_until: Optional[date] = borrow_until\n        self.borrow_by = borrow_by\n        self.genre = genre\n        self.isbn = isbn\n        self.author = author\n        self.release_date = release_date\n        self.number_of_times_this_book_was_borrowed = (\n            number_of_times_this_book_was_borrowed\n        )\n        fee_for_each_genre: dict[str, float] = {\n            \"fiction\": 1.0,\n            \"nonfiction\": 2.0,\n            \"poetry\": 1.5,\n            \"drama\": 5.0,\n            \"high_demand\": 10.0,\n            \"low_demand\": 0.5,\n            \"other\": 2.5,\n        }\n        if self.genre in fee_for_each_genre:\n            self.FEE_PER_DAY = fee_for_each_genre[self.genre]\n        else:\n            self.FEE_PER_DAY = fee_for_each_genre[\"other\"]\n        self.bookshelf = bookshelf\n        self.room = room"
+        },
+        {
+            "id": "library_api/library_api.library/City/__init__",
+            "name": "__init__",
+            "qname": "library_api.library.City.__init__",
+            "decorators": [],
+            "parameters": [
+                {
+                    "id": "library_api/library_api.library/City/__init__/self",
+                    "name": "self",
+                    "qname": "library_api.library.City.__init__.self",
+                    "default_value": null,
+                    "assigned_by": "IMPLICIT",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.library/City/__init__/name",
+                    "name": "name",
+                    "qname": "library_api.library.City.__init__.name",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "str",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {
+                        "kind": "NamedType",
+                        "name": "str"
+                    }
+                },
+                {
+                    "id": "library_api/library_api.library/City/__init__/number_of_inhabitants",
+                    "name": "number_of_inhabitants",
+                    "qname": "library_api.library.City.__init__.number_of_inhabitants",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "int",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {
+                        "kind": "NamedType",
+                        "name": "int"
+                    }
+                },
+                {
+                    "id": "library_api/library_api.library/City/__init__/libraries",
+                    "name": "libraries",
+                    "qname": "library_api.library.City.__init__.libraries",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "list[Library]",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {
+                        "kind": "NamedType",
+                        "name": "list[Library]"
+                    }
+                }
+            ],
+            "results": [],
+            "is_public": true,
+            "reexported_by": [],
+            "description": "A City class",
+            "docstring": "",
+            "code": "    def __init__(\n        self, name: str, number_of_inhabitants: int, libraries: list[Library]\n    ) -> None:\n        self.name = name\n        self.number_of_inhabitants = number_of_inhabitants\n        self.libraries = libraries"
+        },
+        {
+            "id": "library_api/library_api.library/Library/__init__",
+            "name": "__init__",
+            "qname": "library_api.library.Library.__init__",
+            "decorators": [],
+            "parameters": [
+                {
+                    "id": "library_api/library_api.library/Library/__init__/self",
+                    "name": "self",
+                    "qname": "library_api.library.Library.__init__.self",
+                    "default_value": null,
+                    "assigned_by": "IMPLICIT",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.library/Library/__init__/books",
+                    "name": "books",
+                    "qname": "library_api.library.Library.__init__.books",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "list[Book]",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {
+                        "kind": "NamedType",
+                        "name": "list[Book]"
+                    }
+                },
+                {
+                    "id": "library_api/library_api.library/Library/__init__/borrowed_books",
+                    "name": "borrowed_books",
+                    "qname": "library_api.library.Library.__init__.borrowed_books",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "list[Book]",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {
+                        "kind": "NamedType",
+                        "name": "list[Book]"
+                    }
+                },
+                {
+                    "id": "library_api/library_api.library/Library/__init__/users",
+                    "name": "users",
+                    "qname": "library_api.library.Library.__init__.users",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "list[LibraryUser]",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {
+                        "kind": "NamedType",
+                        "name": "list[LibraryUser]"
+                    }
+                },
+                {
+                    "id": "library_api/library_api.library/Library/__init__/staff",
+                    "name": "staff",
+                    "qname": "library_api.library.Library.__init__.staff",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "list[Employee]",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {
+                        "kind": "NamedType",
+                        "name": "list[Employee]"
+                    }
+                },
+                {
+                    "id": "library_api/library_api.library/Library/__init__/name",
+                    "name": "name",
+                    "qname": "library_api.library.Library.__init__.name",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "str",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {
+                        "kind": "NamedType",
+                        "name": "str"
+                    }
+                },
+                {
+                    "id": "library_api/library_api.library/Library/__init__/is_open",
+                    "name": "is_open",
+                    "qname": "library_api.library.Library.__init__.is_open",
+                    "default_value": "False",
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "bool",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {
+                        "kind": "NamedType",
+                        "name": "bool"
+                    }
+                }
+            ],
+            "results": [],
+            "is_public": true,
+            "reexported_by": [],
+            "description": "The Library",
+            "docstring": "",
+            "code": "    def __init__(\n        self,\n        books: list[Book],\n        borrowed_books: list[Book],\n        users: list[LibraryUser],\n        staff: list[Employee],\n        name: str,\n        is_open: bool = False,\n    ) -> None:\n        self.books = books\n        self.borrowed_books = borrowed_books\n        self.users = users\n        self.staff = staff\n        self.name = name\n        self.is_open = is_open"
+        },
+        {
+            "id": "library_api/library_api.library/Library/add_new_book",
+            "name": "add_new_book",
+            "qname": "library_api.library.Library.add_new_book",
+            "decorators": [],
+            "parameters": [
+                {
+                    "id": "library_api/library_api.library/Library/add_new_book/self",
+                    "name": "self",
+                    "qname": "library_api.library.Library.add_new_book.self",
+                    "default_value": null,
+                    "assigned_by": "IMPLICIT",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.library/Library/add_new_book/book",
+                    "name": "book",
+                    "qname": "library_api.library.Library.add_new_book.book",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "Book",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {
+                        "kind": "NamedType",
+                        "name": "Book"
+                    }
+                }
+            ],
+            "results": [],
+            "is_public": true,
+            "reexported_by": [],
+            "description": "add a new book",
+            "docstring": "add a new book\n\nParameters\n----------\nbook : Book",
+            "code": "    def add_new_book(\n        self, book: Book\n    ) -> None:  # apiv2: check if book is not duplicated, rename to add_new_media\n        \"\"\"add a new book\n\n        Parameters\n        ----------\n        book : Book\n        \"\"\"\n        self.books.append(book)"
+        },
+        {
+            "id": "library_api/library_api.library/Library/borrow",
+            "name": "borrow",
+            "qname": "library_api.library.Library.borrow",
+            "decorators": [],
+            "parameters": [
+                {
+                    "id": "library_api/library_api.library/Library/borrow/self",
+                    "name": "self",
+                    "qname": "library_api.library.Library.borrow.self",
+                    "default_value": null,
+                    "assigned_by": "IMPLICIT",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.library/Library/borrow/book",
+                    "name": "book",
+                    "qname": "library_api.library.Library.borrow.book",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "Book",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {
+                        "kind": "NamedType",
+                        "name": "Book"
+                    }
+                },
+                {
+                    "id": "library_api/library_api.library/Library/borrow/user",
+                    "name": "user",
+                    "qname": "library_api.library.Library.borrow.user",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "LibraryUser",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {
+                        "kind": "NamedType",
+                        "name": "LibraryUser"
+                    }
+                }
+            ],
+            "results": [],
+            "is_public": true,
+            "reexported_by": [],
+            "description": "borrow",
+            "docstring": "borrow\n\nParameters\n----------\nbook : Book\nuser : LibraryUser",
+            "code": "    def borrow(\n        self, book: Book, user: LibraryUser\n    ) -> None:  # apiv2: check if pending_fees are not above 5\n        \"\"\"borrow\n\n        Parameters\n        ----------\n        book : Book\n        user : LibraryUser\n        \"\"\"\n        if book in self.books and book not in self.borrowed_books:\n            book.borrow_by = user\n            book.borrow_until = datetime.today() + timedelta(days=1)"
+        },
+        {
+            "id": "library_api/library_api.library/Library/close_library",
+            "name": "close_library",
+            "qname": "library_api.library.Library.close_library",
+            "decorators": [],
+            "parameters": [
+                {
+                    "id": "library_api/library_api.library/Library/close_library/self",
+                    "name": "self",
+                    "qname": "library_api.library.Library.close_library.self",
+                    "default_value": null,
+                    "assigned_by": "IMPLICIT",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                }
+            ],
+            "results": [],
+            "is_public": true,
+            "reexported_by": [],
+            "description": "",
+            "docstring": "",
+            "code": "    def close_library(self) -> None:\n        self.is_open = False"
+        },
+        {
+            "id": "library_api/library_api.library/Library/let_seminar_room",
+            "name": "let_seminar_room",
+            "qname": "library_api.library.Library.let_seminar_room",
+            "decorators": [],
+            "parameters": [
+                {
+                    "id": "library_api/library_api.library/Library/let_seminar_room/self",
+                    "name": "self",
+                    "qname": "library_api.library.Library.let_seminar_room.self",
+                    "default_value": null,
+                    "assigned_by": "IMPLICIT",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.library/Library/let_seminar_room/money",
+                    "name": "money",
+                    "qname": "library_api.library.Library.let_seminar_room.money",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "float",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {
+                        "kind": "NamedType",
+                        "name": "float"
+                    }
+                },
+                {
+                    "id": "library_api/library_api.library/Library/let_seminar_room/name",
+                    "name": "name",
+                    "qname": "library_api.library.Library.let_seminar_room.name",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "str",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {
+                        "kind": "NamedType",
+                        "name": "str"
+                    }
+                },
+                {
+                    "id": "library_api/library_api.library/Library/let_seminar_room/address",
+                    "name": "address",
+                    "qname": "library_api.library.Library.let_seminar_room.address",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "str",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {
+                        "kind": "NamedType",
+                        "name": "str"
+                    }
+                },
+                {
+                    "id": "library_api/library_api.library/Library/let_seminar_room/start_of_renting",
+                    "name": "start_of_renting",
+                    "qname": "library_api.library.Library.let_seminar_room.start_of_renting",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "datetime",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {
+                        "kind": "NamedType",
+                        "name": "datetime"
+                    }
+                },
+                {
+                    "id": "library_api/library_api.library/Library/let_seminar_room/end_of_renting",
+                    "name": "end_of_renting",
+                    "qname": "library_api.library.Library.let_seminar_room.end_of_renting",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "datetime",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {
+                        "kind": "NamedType",
+                        "name": "datetime"
+                    }
+                }
+            ],
+            "results": [],
+            "is_public": true,
+            "reexported_by": [],
+            "description": "rent the seminar room of the library after it closed",
+            "docstring": "rent the seminar room of the library after it closed\n\nParameters\n----------\nmoney : float\nname : str\naddress : str\nstart_of_renting : datetime\nend_of_renting : datetime\n\nReturns\n-------\nexchanged_money_or_money_to_be_paid : float",
+            "code": "    def let_seminar_room(\n        self,\n        money: float,\n        name: str,\n        address: str,\n        start_of_renting: date,\n        end_of_renting: date,\n    ) -> float:  # apiv2: remove rented_date, move to new subclass OurLibrary with additional attributes owner and address\n        \"\"\"rent the seminar room of the library after it closed\n\n        Parameters\n        ----------\n        money : float\n        name : str\n        address : str\n        start_of_renting : datetime\n        end_of_renting : datetime\n\n        Returns\n        -------\n        exchanged_money_or_money_to_be_paid : float\n        \"\"\"\n        if money >= 50 * (end_of_renting - start_of_renting).days:\n            send_message_to_person(\n                name,\n                address,\n                f\"You rented our seminar room for {money:.2f} \u20ac from \"\n                + str(start_of_renting)\n                + \" to \"\n                + str(end_of_renting),\n            )\n        return money - 50"
+        },
+        {
+            "id": "library_api/library_api.library/Library/open_library",
+            "name": "open_library",
+            "qname": "library_api.library.Library.open_library",
+            "decorators": [],
+            "parameters": [
+                {
+                    "id": "library_api/library_api.library/Library/open_library/self",
+                    "name": "self",
+                    "qname": "library_api.library.Library.open_library.self",
+                    "default_value": null,
+                    "assigned_by": "IMPLICIT",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                }
+            ],
+            "results": [],
+            "is_public": true,
+            "reexported_by": [],
+            "description": "",
+            "docstring": "",
+            "code": "    def open_library(self) -> None:\n        self.is_open = True"
+        },
+        {
+            "id": "library_api/library_api.library/Library/return_book",
+            "name": "return_book",
+            "qname": "library_api.library.Library.return_book",
+            "decorators": [],
+            "parameters": [
+                {
+                    "id": "library_api/library_api.library/Library/return_book/self",
+                    "name": "self",
+                    "qname": "library_api.library.Library.return_book.self",
+                    "default_value": null,
+                    "assigned_by": "IMPLICIT",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.library/Library/return_book/book",
+                    "name": "book",
+                    "qname": "library_api.library.Library.return_book.book",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "Book",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {
+                        "kind": "NamedType",
+                        "name": "Book"
+                    }
+                },
+                {
+                    "id": "library_api/library_api.library/Library/return_book/user",
+                    "name": "user",
+                    "qname": "library_api.library.Library.return_book.user",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "LibraryUser",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {
+                        "kind": "NamedType",
+                        "name": "LibraryUser"
+                    }
+                }
+            ],
+            "results": [],
+            "is_public": true,
+            "reexported_by": [],
+            "description": "Return a book",
+            "docstring": "Return a book\n\nParameters\n----------\nbook : Book\nuser : LibraryUser",
+            "code": "    def return_book(self, book: Book, user: LibraryUser) -> None:\n        \"\"\"Return a book\n\n        Parameters\n        ----------\n        book : Book\n        user : LibraryUser\n        \"\"\"\n        if (\n            book.borrow_by is not None\n            and book.borrow_until is not None\n            and book.borrow_by == user\n        ):  # apiv2: check if book is in borrowed book list\n            late_fee = 0.0\n            today = datetime.today().date()\n            if book.borrow_until > today or (\n                book.borrow_by == today and not self.is_open\n            ):\n                late_fee = (today - book.borrow_until).days * book.FEE_PER_DAY\n                if not self.is_open:\n                    late_fee += 1.0\n            user.give_back(late_fee)  # apiv2: rename function\n            send_message_to_person(\n                user.get_name(), user.address, \"You need to pay your late fee.\"\n            )\n            book.borrow_by = None\n            book.borrow_until = None\n            self.borrowed_books.remove(book)"
+        },
+        {
+            "id": "library_api/library_api.persons/Employee/__init__",
+            "name": "__init__",
+            "qname": "library_api.persons.Employee.__init__",
+            "decorators": [],
+            "parameters": [
+                {
+                    "id": "library_api/library_api.persons/Employee/__init__/self",
+                    "name": "self",
+                    "qname": "library_api.persons.Employee.__init__.self",
+                    "default_value": null,
+                    "assigned_by": "IMPLICIT",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.persons/Employee/__init__/first_name",
+                    "name": "first_name",
+                    "qname": "library_api.persons.Employee.__init__.first_name",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "str",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {
+                        "kind": "NamedType",
+                        "name": "str"
+                    }
+                },
+                {
+                    "id": "library_api/library_api.persons/Employee/__init__/last_name",
+                    "name": "last_name",
+                    "qname": "library_api.persons.Employee.__init__.last_name",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "str",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {
+                        "kind": "NamedType",
+                        "name": "str"
+                    }
+                },
+                {
+                    "id": "library_api/library_api.persons/Employee/__init__/address",
+                    "name": "address",
+                    "qname": "library_api.persons.Employee.__init__.address",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "str",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {
+                        "kind": "NamedType",
+                        "name": "str"
+                    }
+                },
+                {
+                    "id": "library_api/library_api.persons/Employee/__init__/wage",
+                    "name": "wage",
+                    "qname": "library_api.persons.Employee.__init__.wage",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "float",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {
+                        "kind": "NamedType",
+                        "name": "float"
+                    }
+                }
+            ],
+            "results": [],
+            "is_public": true,
+            "reexported_by": [],
+            "description": "An Employee of the Library",
+            "docstring": "",
+            "code": "    def __init__(\n        self, first_name: str, last_name: str, address: str, wage: float\n    ) -> None:\n        self.first_name = first_name\n        self.last_name = last_name\n        self.address = address\n        self.wage = wage"
+        },
+        {
+            "id": "library_api/library_api.persons/Employee/get_name",
+            "name": "get_name",
+            "qname": "library_api.persons.Employee.get_name",
+            "decorators": [],
+            "parameters": [
+                {
+                    "id": "library_api/library_api.persons/Employee/get_name/self",
+                    "name": "self",
+                    "qname": "library_api.persons.Employee.get_name.self",
+                    "default_value": null,
+                    "assigned_by": "IMPLICIT",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                }
+            ],
+            "results": [],
+            "is_public": true,
+            "reexported_by": [],
+            "description": "get full name of Employee",
+            "docstring": "get full name of Employee\n\nReturns\n-------\nfull_name : str",
+            "code": "    def get_name(self) -> str:\n        \"\"\"get full name of Employee\n\n        Returns\n        -------\n        full_name : str\n        \"\"\"\n        return self.first_name + \" \" + self.last_name"
+        },
+        {
+            "id": "library_api/library_api.persons/LibraryUser/__init__",
+            "name": "__init__",
+            "qname": "library_api.persons.LibraryUser.__init__",
+            "decorators": [],
+            "parameters": [
+                {
+                    "id": "library_api/library_api.persons/LibraryUser/__init__/self",
+                    "name": "self",
+                    "qname": "library_api.persons.LibraryUser.__init__.self",
+                    "default_value": null,
+                    "assigned_by": "IMPLICIT",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.persons/LibraryUser/__init__/first_name",
+                    "name": "first_name",
+                    "qname": "library_api.persons.LibraryUser.__init__.first_name",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "str",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {
+                        "kind": "NamedType",
+                        "name": "str"
+                    }
+                },
+                {
+                    "id": "library_api/library_api.persons/LibraryUser/__init__/last_name",
+                    "name": "last_name",
+                    "qname": "library_api.persons.LibraryUser.__init__.last_name",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "str",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {
+                        "kind": "NamedType",
+                        "name": "str"
+                    }
+                },
+                {
+                    "id": "library_api/library_api.persons/LibraryUser/__init__/id_number",
+                    "name": "id_number",
+                    "qname": "library_api.persons.LibraryUser.__init__.id_number",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "str",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {
+                        "kind": "NamedType",
+                        "name": "str"
+                    }
+                },
+                {
+                    "id": "library_api/library_api.persons/LibraryUser/__init__/address",
+                    "name": "address",
+                    "qname": "library_api.persons.LibraryUser.__init__.address",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "str",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {
+                        "kind": "NamedType",
+                        "name": "str"
+                    }
+                },
+                {
+                    "id": "library_api/library_api.persons/LibraryUser/__init__/pending_fees",
+                    "name": "pending_fees",
+                    "qname": "library_api.persons.LibraryUser.__init__.pending_fees",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "float",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {
+                        "kind": "NamedType",
+                        "name": "float"
+                    }
+                },
+                {
+                    "id": "library_api/library_api.persons/LibraryUser/__init__/member_until",
+                    "name": "member_until",
+                    "qname": "library_api.persons.LibraryUser.__init__.member_until",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "date",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {
+                        "kind": "NamedType",
+                        "name": "date"
+                    }
+                }
+            ],
+            "results": [],
+            "is_public": true,
+            "reexported_by": [],
+            "description": "LibraryUser",
+            "docstring": "",
+            "code": "    def __init__(\n        self,\n        first_name: str,\n        last_name: str,\n        id_number: str,\n        address: str,\n        pending_fees: float,\n        member_until: datetime.date,\n    ) -> None:\n        self.first_name = first_name\n        self.last_name = last_name\n        self.id_number = id_number\n        self.address = address\n        self.pending_fees = pending_fees\n        self.member_until = member_until"
+        },
+        {
+            "id": "library_api/library_api.persons/LibraryUser/extend_membership",
+            "name": "extend_membership",
+            "qname": "library_api.persons.LibraryUser.extend_membership",
+            "decorators": [],
+            "parameters": [
+                {
+                    "id": "library_api/library_api.persons/LibraryUser/extend_membership/self",
+                    "name": "self",
+                    "qname": "library_api.persons.LibraryUser.extend_membership.self",
+                    "default_value": null,
+                    "assigned_by": "IMPLICIT",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                }
+            ],
+            "results": [],
+            "is_public": true,
+            "reexported_by": [],
+            "description": "Extend membership by one year",
+            "docstring": "Extend membership by one year",
+            "code": "    def extend_membership(self) -> None:\n        \"\"\"Extend membership by one year\"\"\"\n        self.member_until = self.member_until + datetime.timedelta(\n            days=365\n        )  # apiv2: change to self.member_until.replace(year=self.member_until.year+1)"
+        },
+        {
+            "id": "library_api/library_api.persons/LibraryUser/get_name",
+            "name": "get_name",
+            "qname": "library_api.persons.LibraryUser.get_name",
+            "decorators": [],
+            "parameters": [
+                {
+                    "id": "library_api/library_api.persons/LibraryUser/get_name/self",
+                    "name": "self",
+                    "qname": "library_api.persons.LibraryUser.get_name.self",
+                    "default_value": null,
+                    "assigned_by": "IMPLICIT",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                }
+            ],
+            "results": [],
+            "is_public": true,
+            "reexported_by": [],
+            "description": "get full name of LibraryUser",
+            "docstring": "get full name of LibraryUser\n\nReturns\n-------\nfull_name : str",
+            "code": "    def get_name(self) -> str:\n        \"\"\"get full name of LibraryUser\n\n        Returns\n        -------\n        full_name : str\n        \"\"\"\n        return self.first_name + \" \" + self.last_name"
+        },
+        {
+            "id": "library_api/library_api.persons/LibraryUser/give_back",
+            "name": "give_back",
+            "qname": "library_api.persons.LibraryUser.give_back",
+            "decorators": [],
+            "parameters": [
+                {
+                    "id": "library_api/library_api.persons/LibraryUser/give_back/self",
+                    "name": "self",
+                    "qname": "library_api.persons.LibraryUser.give_back.self",
+                    "default_value": null,
+                    "assigned_by": "IMPLICIT",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.persons/LibraryUser/give_back/late_fee",
+                    "name": "late_fee",
+                    "qname": "library_api.persons.LibraryUser.give_back.late_fee",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "float",
+                        "default_value": "",
+                        "description": "money to be paid by user"
+                    },
+                    "type": {
+                        "kind": "NamedType",
+                        "name": "float"
+                    }
+                }
+            ],
+            "results": [],
+            "is_public": true,
+            "reexported_by": [],
+            "description": "Gives book back and add late_fee is it is too late",
+            "docstring": "Gives book back and add late_fee is it is too late\n\nParameters\n----------\nlate_fee : float\n    money to be paid by user",
+            "code": "    def give_back(self, late_fee: float) -> None:\n        \"\"\"Gives book back and add late_fee is it is too late\n\n        Parameters\n        ----------\n        late_fee : float\n            money to be paid by user\n        \"\"\"\n        self.pending_fees = self.pending_fees + late_fee"
+        },
+        {
+            "id": "library_api/library_api.persons/LibraryUser/pay",
+            "name": "pay",
+            "qname": "library_api.persons.LibraryUser.pay",
+            "decorators": [],
+            "parameters": [
+                {
+                    "id": "library_api/library_api.persons/LibraryUser/pay/self",
+                    "name": "self",
+                    "qname": "library_api.persons.LibraryUser.pay.self",
+                    "default_value": null,
+                    "assigned_by": "IMPLICIT",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.persons/LibraryUser/pay/money",
+                    "name": "money",
+                    "qname": "library_api.persons.LibraryUser.pay.money",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "float",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {
+                        "kind": "NamedType",
+                        "name": "float"
+                    }
+                }
+            ],
+            "results": [],
+            "is_public": true,
+            "reexported_by": [],
+            "description": "pay the library",
+            "docstring": "pay the library\n\nParameters\n----------\nmoney : float",
+            "code": "    def pay(self, money: float) -> float:\n        \"\"\"pay the library\n\n        Parameters\n        ----------\n        money : float\n        \"\"\"\n        if money > self.pending_fees:\n            self.pending_fees = 0\n            return money - self.pending_fees\n        self.pending_fees = self.pending_fees - money\n        return 0.0"
+        },
+        {
+            "id": "library_api/library_api.position/Bookshelf/__init__",
+            "name": "__init__",
+            "qname": "library_api.position.Bookshelf.__init__",
+            "decorators": [],
+            "parameters": [
+                {
+                    "id": "library_api/library_api.position/Bookshelf/__init__/self",
+                    "name": "self",
+                    "qname": "library_api.position.Bookshelf.__init__.self",
+                    "default_value": null,
+                    "assigned_by": "IMPLICIT",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.position/Bookshelf/__init__/name_of_bookshelf",
+                    "name": "name_of_bookshelf",
+                    "qname": "library_api.position.Bookshelf.__init__.name_of_bookshelf",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "str",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {
+                        "kind": "NamedType",
+                        "name": "str"
+                    }
+                },
+                {
+                    "id": "library_api/library_api.position/Bookshelf/__init__/max_number_of_items",
+                    "name": "max_number_of_items",
+                    "qname": "library_api.position.Bookshelf.__init__.max_number_of_items",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "int",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {
+                        "kind": "NamedType",
+                        "name": "int"
+                    }
+                }
+            ],
+            "results": [],
+            "is_public": true,
+            "reexported_by": [],
+            "description": "A Bookshelf holds multiple books and is used to point to where a book should be placed",
+            "docstring": "",
+            "code": "    def __init__(self, name_of_bookshelf: str, max_number_of_items: int):\n        self.max_number_of_items = max_number_of_items\n        self.name_of_bookshelf = name_of_bookshelf"
+        },
+        {
+            "id": "library_api/library_api.position/Room/__init__",
+            "name": "__init__",
+            "qname": "library_api.position.Room.__init__",
+            "decorators": [],
+            "parameters": [
+                {
+                    "id": "library_api/library_api.position/Room/__init__/self",
+                    "name": "self",
+                    "qname": "library_api.position.Room.__init__.self",
+                    "default_value": null,
+                    "assigned_by": "IMPLICIT",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.position/Room/__init__/room_number",
+                    "name": "room_number",
+                    "qname": "library_api.position.Room.__init__.room_number",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                },
+                {
+                    "id": "library_api/library_api.position/Room/__init__/floor",
+                    "name": "floor",
+                    "qname": "library_api.position.Room.__init__.floor",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                }
+            ],
+            "results": [],
+            "is_public": true,
+            "reexported_by": [],
+            "description": "A Room holds multiple bookshelves and is used to point to where a book should be placed",
+            "docstring": "",
+            "code": "    def __init__(self, room_number: int, floor: int) -> None:\n        self.room_number = room_number\n        self.floor = floor"
+        },
+        {
+            "id": "library_api/library_api.position/Room/get_room_number",
+            "name": "get_room_number",
+            "qname": "library_api.position.Room.get_room_number",
+            "decorators": [],
+            "parameters": [
+                {
+                    "id": "library_api/library_api.position/Room/get_room_number/self",
+                    "name": "self",
+                    "qname": "library_api.position.Room.get_room_number.self",
+                    "default_value": null,
+                    "assigned_by": "IMPLICIT",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {}
+                }
+            ],
+            "results": [],
+            "is_public": true,
+            "reexported_by": [],
+            "description": "",
+            "docstring": "",
+            "code": "    def get_room_number(self) -> str:\n        return str(self.floor) + \".\" + str(self.room_number)"
+        },
+        {
+            "id": "library_api/library_api.send_message_to_person/send_message_to_person",
+            "name": "send_message_to_person",
+            "qname": "library_api.send_message_to_person.send_message_to_person",
+            "decorators": [],
+            "parameters": [
+                {
+                    "id": "library_api/library_api.send_message_to_person/send_message_to_person/name",
+                    "name": "name",
+                    "qname": "library_api.send_message_to_person.send_message_to_person.name",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "str",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {
+                        "kind": "NamedType",
+                        "name": "str"
+                    }
+                },
+                {
+                    "id": "library_api/library_api.send_message_to_person/send_message_to_person/address",
+                    "name": "address",
+                    "qname": "library_api.send_message_to_person.send_message_to_person.address",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "str",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {
+                        "kind": "NamedType",
+                        "name": "str"
+                    }
+                },
+                {
+                    "id": "library_api/library_api.send_message_to_person/send_message_to_person/message",
+                    "name": "message",
+                    "qname": "library_api.send_message_to_person.send_message_to_person.message",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "is_public": true,
+                    "docstring": {
+                        "type": "str",
+                        "default_value": "",
+                        "description": ""
+                    },
+                    "type": {
+                        "kind": "NamedType",
+                        "name": "str"
+                    }
+                }
+            ],
+            "results": [],
+            "is_public": true,
+            "reexported_by": [],
+            "description": "Sends a message to a person",
+            "docstring": "Sends a message to a person\n\nParameters\n----------\nname : str\naddress : str\nmessage : str",
+            "code": "def send_message_to_person(name: str, address: str, message: str) -> None:\n    \"\"\"Sends a message to a person\n\n    Parameters\n    ----------\n    name : str\n    address : str\n    message : str\n    \"\"\"\n    print(\"To: \" + name + \"\\n\" + address + \"\\n\" + message)"
+        }
+    ]
+}

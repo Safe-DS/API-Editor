@@ -26,8 +26,7 @@ class AbstractType(metaclass=ABCMeta):
         value = BoundaryType.from_json(json)
         if value is not None:
             return value
-        value = UnionType.from_json(json)
-        return value
+        return UnionType.from_json(json)
 
 
 @dataclass
@@ -36,7 +35,7 @@ class NamedType(AbstractType):
 
     @classmethod
     def from_json(cls, json: Any) -> Optional[NamedType]:
-        if json.get("kind", "") == cls.__class__.__name__:
+        if json.get("kind", "") == cls.__name__:
             return NamedType(json["name"])
         return None
 
@@ -63,7 +62,7 @@ class EnumType(AbstractType):
 
     @classmethod
     def from_json(cls, json: Any) -> Optional[EnumType]:
-        if json["kind"] == cls.__class__.__name__:
+        if json["kind"] == cls.__name__:
             return EnumType(json["values"])
         return None
 
@@ -109,7 +108,7 @@ class EnumType(AbstractType):
         return {"kind": self.__class__.__name__, "values": self.values}
 
     def __hash__(self) -> int:
-        return hash(frozenset(self.values))
+        return hash((frozenset(self.values), self.full_match))
 
 
 @dataclass
@@ -135,7 +134,7 @@ class BoundaryType(AbstractType):
 
     @classmethod
     def from_json(cls, json: Any) -> Optional[BoundaryType]:
-        if json["kind"] == cls.__class__.__name__:
+        if json["kind"] == cls.__name__:
             return BoundaryType(
                 json["base_type"],
                 json["min"],
@@ -209,7 +208,14 @@ class BoundaryType(AbstractType):
 
     def __hash__(self) -> int:
         return hash(
-            (self.base_type, self.min, self.min_inclusive, self.max, self.max_inclusive)
+            (
+                self.base_type,
+                self.min,
+                self.min_inclusive,
+                self.max,
+                self.max_inclusive,
+                self.full_match,
+            )
         )
 
     def to_json(self) -> dict[str, Any]:
@@ -229,7 +235,7 @@ class UnionType(AbstractType):
 
     @classmethod
     def from_json(cls, json: Any) -> Optional[UnionType]:
-        if json["kind"] == cls.__class__.__name__:
+        if json["kind"] == cls.__name__:
             types = []
             for element in json["types"]:
                 type_ = AbstractType.from_json(element)

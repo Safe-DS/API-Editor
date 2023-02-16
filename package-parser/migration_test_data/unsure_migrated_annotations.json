@@ -1,0 +1,203 @@
+{
+    "schemaVersion": 2,
+    "boundaryAnnotations": {},
+    "calledAfterAnnotations": {},
+    "completeAnnotations": {},
+    "descriptionAnnotations": {
+        "library_api/library_api.media/Book": {
+            "target": "library_api/library_api.media/Book",
+            "authors": ["aclrian", "migration"],
+            "reviewers": [],
+            "comment": "",
+            "newDescription": "This is a book class",
+            "reviewResult": ""
+        }
+    },
+    "enumAnnotations": {},
+    "expertAnnotations": {},
+    "groupAnnotations": {},
+    "moveAnnotations": {},
+    "pureAnnotations": {},
+    "renameAnnotations": {
+        "library_api/library_api.persons/LibraryMember": {
+            "target": "library_api/library_api.persons/LibraryMember",
+            "authors": ["aclrian", "migration"],
+            "reviewers": [],
+            "comment": "",
+            "newName": "LibraryMembers",
+            "reviewResult": ""
+        },
+        "library_api/library_api.library/Library/borrow/user": {
+            "target": "library_api/library_api.library/Library/borrow/user",
+            "authors": ["aclrian", "migration"],
+            "reviewers": [],
+            "comment": "The @Rename Annotation with the new name 'person' from the previous version was at 'library_api/library_api.library/Library/borrow/user' and the possible alternatives in the new version of the api are: library_api/library_api.library/Library/borrow/user, library_api/library_api.library/Library/borrow/media",
+            "newName": "person",
+            "reviewResult": "unsure"
+        },
+        "library_api/library_api.library/Library/borrow/media": {
+            "target": "library_api/library_api.library/Library/borrow/media",
+            "authors": ["aclrian", "migration"],
+            "reviewers": [],
+            "comment": "The @Rename Annotation with the new name 'person' from the previous version was at 'library_api/library_api.library/Library/borrow/user' and the possible alternatives in the new version of the api are: library_api/library_api.library/Library/borrow/user, library_api/library_api.library/Library/borrow/media",
+            "newName": "person",
+            "reviewResult": "unsure"
+        },
+        "library_api/library_api.library/Library/borrow": {
+            "target": "library_api/library_api.library/Library/borrow",
+            "authors": ["aclrian", "migration"],
+            "reviewers": [],
+            "comment": "",
+            "newName": "borrow_a_book",
+            "reviewResult": ""
+        },
+        "library_api/library_api.library/Library/return_media": {
+            "target": "library_api/library_api.library/Library/return_media",
+            "authors": ["aclrian", "migration"],
+            "reviewers": [],
+            "comment": "",
+            "newName": "give_book_Back",
+            "reviewResult": ""
+        },
+        "library_api/library_api.library/Library/return_media/user": {
+            "target": "library_api/library_api.library/Library/return_media/user",
+            "authors": ["aclrian", "migration"],
+            "reviewers": [],
+            "comment": "The @Rename Annotation with the new name 'person' from the previous version was at 'library_api/library_api.library/Library/return_book/user' and the possible alternatives in the new version of the api are: library_api/library_api.library/Library/return_media/user, library_api/library_api.library/Library/return_media/media",
+            "newName": "person",
+            "reviewResult": "unsure"
+        },
+        "library_api/library_api.library/Library/return_media/media": {
+            "target": "library_api/library_api.library/Library/return_media/media",
+            "authors": ["aclrian", "migration"],
+            "reviewers": [],
+            "comment": "The @Rename Annotation with the new name 'person' from the previous version was at 'library_api/library_api.library/Library/return_book/user' and the possible alternatives in the new version of the api are: library_api/library_api.library/Library/return_media/user, library_api/library_api.library/Library/return_media/media",
+            "newName": "person",
+            "reviewResult": "unsure"
+        },
+        "library_api/library_api.library/Library/__init__/borrowed_media": {
+            "target": "library_api/library_api.library/Library/__init__/borrowed_media",
+            "authors": ["aclrian", "migration"],
+            "reviewers": [],
+            "comment": "The @Rename Annotation with the new name 'members' from the previous version was at 'library_api/library_api.library/Library/__init__/users' and the possible alternatives in the new version of the api are: library_api/library_api.library/Library/__init__/borrowed_media, library_api/library_api.library/Library/__init__/users",
+            "newName": "members",
+            "reviewResult": "unsure"
+        },
+        "library_api/library_api.library/Library/__init__/users": {
+            "target": "library_api/library_api.library/Library/__init__/users",
+            "authors": ["aclrian", "migration"],
+            "reviewers": [],
+            "comment": "The @Rename Annotation with the new name 'members' from the previous version was at 'library_api/library_api.library/Library/__init__/users' and the possible alternatives in the new version of the api are: library_api/library_api.library/Library/__init__/borrowed_media, library_api/library_api.library/Library/__init__/users",
+            "newName": "members",
+            "reviewResult": "unsure"
+        },
+        "library_api/library_api.library/Library": {
+            "target": "library_api/library_api.library/Library",
+            "authors": ["aclrian", "migration"],
+            "reviewers": [],
+            "comment": "",
+            "newName": "OurLibrary",
+            "reviewResult": ""
+        },
+        "library_api/library_api.persons/LibraryMember/extend_membership": {
+            "target": "library_api/library_api.persons/LibraryMember/extend_membership",
+            "authors": ["aclrian", "migration"],
+            "reviewers": [],
+            "comment": "",
+            "newName": "extend_membership_by_one_year",
+            "reviewResult": ""
+        },
+        "library_api/library_api.persons/LibraryMember/give_back": {
+            "target": "library_api/library_api.persons/LibraryMember/give_back",
+            "authors": ["aclrian", "migration"],
+            "reviewers": [],
+            "comment": "",
+            "newName": "give_book_back",
+            "reviewResult": ""
+        },
+        "library_api/library_api.persons/Employee": {
+            "target": "library_api/library_api.persons/Employee",
+            "authors": ["aclrian", "migration"],
+            "reviewers": [],
+            "comment": "",
+            "newName": "Worker",
+            "reviewResult": ""
+        }
+    },
+    "removeAnnotations": {
+        "library_api/library_api.library/Library/add_new_media": {
+            "target": "library_api/library_api.library/Library/add_new_media",
+            "authors": ["aclrian", "migration"],
+            "reviewers": [],
+            "comment": "",
+            "reviewResult": ""
+        }
+    },
+    "todoAnnotations": {
+        "library_api/library_api.media/Book/__init__/borrow_by": {
+            "target": "library_api/library_api.media/Book/__init__/borrow_by",
+            "authors": ["aclrian", "migration"],
+            "reviewers": [],
+            "comment": "",
+            "newTodo": "__init__ author borrow_by",
+            "reviewResult": ""
+        },
+        "library_api/library_api.library/Library/__init__/borrowed_media": {
+            "target": "library_api/library_api.library/Library/__init__/borrowed_media",
+            "authors": ["aclrian", "migration"],
+            "reviewers": [],
+            "comment": "",
+            "newTodo": "library_api.library.Library.return_book.user",
+            "reviewResult": ""
+        },
+        "library_api/library_api.library/Library/__init__/users": {
+            "target": "library_api/library_api.library/Library/__init__/users",
+            "authors": ["aclrian", "migration"],
+            "reviewers": [],
+            "comment": "",
+            "newTodo": "library_api.library.Library.return_book.user",
+            "reviewResult": ""
+        },
+        "library_api/library_api.library/Library/borrow/user": {
+            "target": "library_api/library_api.library/Library/borrow/user",
+            "authors": ["aclrian", "migration"],
+            "reviewers": [],
+            "comment": "",
+            "newTodo": "library_api.library.Library.return_book.user",
+            "reviewResult": ""
+        },
+        "library_api/library_api.library/Library/borrow/media": {
+            "target": "library_api/library_api.library/Library/borrow/media",
+            "authors": ["aclrian", "migration"],
+            "reviewers": [],
+            "comment": "",
+            "newTodo": "library_api.library.Library.return_book.user",
+            "reviewResult": ""
+        },
+        "library_api/library_api.library/Library/return_media/user": {
+            "target": "library_api/library_api.library/Library/return_media/user",
+            "authors": ["aclrian", "migration"],
+            "reviewers": [],
+            "comment": "",
+            "newTodo": "library_api.library.Library.return_book.user",
+            "reviewResult": ""
+        },
+        "library_api/library_api.library/Library/return_media/media": {
+            "target": "library_api/library_api.library/Library/return_media/media",
+            "authors": ["aclrian", "migration"],
+            "reviewers": [],
+            "comment": "",
+            "newTodo": "library_api.library.Library.return_book.user",
+            "reviewResult": ""
+        },
+        "library_api/library_api.persons/LibraryMember/pay": {
+            "target": "library_api/library_api.persons/LibraryMember/pay",
+            "authors": ["aclrian", "migration"],
+            "reviewers": [],
+            "comment": "",
+            "newTodo": "user.pay",
+            "reviewResult": ""
+        }
+    },
+    "valueAnnotations": {}
+}

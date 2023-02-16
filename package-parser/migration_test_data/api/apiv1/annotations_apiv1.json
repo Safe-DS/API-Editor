@@ -1,0 +1,387 @@
+{
+    "schemaVersion": 2,
+    "boundaryAnnotations": {
+        "library_api/library_api.book/Book/__init__/number_of_times_this_book_was_borrowed": {
+            "target": "library_api/library_api.book/Book/__init__/number_of_times_this_book_was_borrowed",
+            "interval": {
+                "isDiscrete": true,
+                "lowerIntervalLimit": 0,
+                "lowerLimitType": 0,
+                "upperIntervalLimit": 0,
+                "upperLimitType": 2
+            },
+            "comment": "",
+            "authors": ["aclrian"],
+            "reviewers": []
+        }
+    },
+    "calledAfterAnnotations": {},
+    "completeAnnotations": {},
+    "descriptionAnnotations": {
+        "library_api/library_api.send_message_to_person/send_message_to_person/name": {
+            "target": "library_api/library_api.send_message_to_person/send_message_to_person/name",
+            "newDescription": "the name of the person",
+            "comment": "",
+            "authors": ["aclrian"],
+            "reviewers": []
+        },
+        "library_api/library_api.send_message_to_person/send_message_to_person/address": {
+            "target": "library_api/library_api.send_message_to_person/send_message_to_person/address",
+            "newDescription": "the address of the person",
+            "comment": "",
+            "authors": ["aclrian"],
+            "reviewers": []
+        },
+        "library_api/library_api.send_message_to_person/send_message_to_person/message": {
+            "target": "library_api/library_api.send_message_to_person/send_message_to_person/message",
+            "newDescription": "the message that should be sent to a person",
+            "comment": "",
+            "authors": ["aclrian"],
+            "reviewers": []
+        },
+        "library_api/library_api.book/Book": {
+            "target": "library_api/library_api.book/Book",
+            "newDescription": "This is a book class",
+            "comment": "",
+            "authors": ["aclrian"],
+            "reviewers": []
+        }
+    },
+    "enumAnnotations": {
+        "library_api/library_api.book/Book/__init__/genre": {
+            "target": "library_api/library_api.book/Book/__init__/genre",
+            "enumName": "Genre",
+            "pairs": [
+                {
+                    "stringValue": "fiction",
+                    "instanceName": "FICTION"
+                },
+                {
+                    "stringValue": "nonfiction",
+                    "instanceName": "NONFICTION"
+                },
+                {
+                    "stringValue": "poetry",
+                    "instanceName": "POETRY"
+                },
+                {
+                    "stringValue": "drama",
+                    "instanceName": "DRAMA"
+                },
+                {
+                    "stringValue": "high_demand",
+                    "instanceName": "HIGH_DEMAND"
+                },
+                {
+                    "stringValue": "low_demand",
+                    "instanceName": "LOW_DEMAND"
+                },
+                {
+                    "stringValue": "other",
+                    "instanceName": "OTHER"
+                }
+            ],
+            "comment": "",
+            "authors": ["aclrian"],
+            "reviewers": []
+        }
+    },
+    "expertAnnotations": {},
+    "groupAnnotations": {},
+    "moveAnnotations": {
+        "library_api/library_api.send_message_to_person/send_message_to_person": {
+            "target": "library_api/library_api.send_message_to_person/send_message_to_person",
+            "destination": "library_api.message",
+            "comment": "",
+            "authors": ["aclrian"],
+            "reviewers": []
+        }
+    },
+    "pureAnnotations": {
+        "library_api/library_api.persons/Employee/get_name": {
+            "target": "library_api/library_api.persons/Employee/get_name",
+            "comment": "",
+            "authors": ["aclrian"],
+            "reviewers": []
+        },
+        "library_api/library_api.persons/LibraryUser/get_name": {
+            "target": "library_api/library_api.persons/LibraryUser/get_name",
+            "comment": "",
+            "authors": ["aclrian"],
+            "reviewers": []
+        }
+    },
+    "renameAnnotations": {
+        "library_api/library_api.persons/LibraryUser": {
+            "target": "library_api/library_api.persons/LibraryUser",
+            "newName": "LibraryMembers",
+            "comment": "",
+            "authors": ["aclrian"],
+            "reviewers": []
+        },
+        "library_api/library_api.book/Book/__init__/isbn": {
+            "target": "library_api/library_api.book/Book/__init__/isbn",
+            "newName": "ISBN",
+            "comment": "",
+            "authors": ["aclrian"],
+            "reviewers": []
+        },
+        "library_api/library_api.library/Library/borrow/user": {
+            "target": "library_api/library_api.library/Library/borrow/user",
+            "newName": "person",
+            "comment": "",
+            "authors": ["aclrian"],
+            "reviewers": []
+        },
+        "library_api/library_api.library/Library/borrow": {
+            "target": "library_api/library_api.library/Library/borrow",
+            "newName": "borrow_a_book",
+            "comment": "",
+            "authors": ["aclrian"],
+            "reviewers": []
+        },
+        "library_api/library_api.library/Library/return_book": {
+            "target": "library_api/library_api.library/Library/return_book",
+            "newName": "give_book_Back",
+            "comment": "",
+            "authors": ["aclrian"],
+            "reviewers": []
+        },
+        "library_api/library_api.library/Library/return_book/user": {
+            "target": "library_api/library_api.library/Library/return_book/user",
+            "newName": "person",
+            "comment": "",
+            "authors": ["aclrian"],
+            "reviewers": []
+        },
+        "library_api/library_api.library/Library/__init__/staff": {
+            "target": "library_api/library_api.library/Library/__init__/staff",
+            "newName": "personnel",
+            "comment": "",
+            "authors": ["aclrian"],
+            "reviewers": []
+        },
+        "library_api/library_api.library/Library/__init__/users": {
+            "target": "library_api/library_api.library/Library/__init__/users",
+            "newName": "members",
+            "comment": "",
+            "authors": ["aclrian"],
+            "reviewers": []
+        },
+        "library_api/library_api.library/Library": {
+            "target": "library_api/library_api.library/Library",
+            "newName": "OurLibrary",
+            "comment": "",
+            "authors": ["aclrian"],
+            "reviewers": []
+        },
+        "library_api/library_api.persons/Employee/__init__/wage": {
+            "target": "library_api/library_api.persons/Employee/__init__/wage",
+            "newName": "salary",
+            "comment": "",
+            "authors": ["aclrian"],
+            "reviewers": []
+        },
+        "library_api/library_api.persons/LibraryUser/__init__/pending_fees": {
+            "target": "library_api/library_api.persons/LibraryUser/__init__/pending_fees",
+            "newName": "outstanding_payments",
+            "comment": "",
+            "authors": ["aclrian"],
+            "reviewers": []
+        },
+        "library_api/library_api.persons/LibraryUser/extend_membership": {
+            "target": "library_api/library_api.persons/LibraryUser/extend_membership",
+            "newName": "extend_membership_by_one_year",
+            "comment": "",
+            "authors": ["aclrian"],
+            "reviewers": []
+        },
+        "library_api/library_api.persons/LibraryUser/give_back/late_fee": {
+            "target": "library_api/library_api.persons/LibraryUser/give_back/late_fee",
+            "newName": "late_charge",
+            "comment": "",
+            "authors": ["aclrian"],
+            "reviewers": []
+        },
+        "library_api/library_api.persons/LibraryUser/give_back": {
+            "target": "library_api/library_api.persons/LibraryUser/give_back",
+            "newName": "give_book_back",
+            "comment": "",
+            "authors": ["aclrian"],
+            "reviewers": []
+        },
+        "library_api/library_api.persons/LibraryUser/pay/money": {
+            "target": "library_api/library_api.persons/LibraryUser/pay/money",
+            "newName": "payment",
+            "comment": "",
+            "authors": ["aclrian"],
+            "reviewers": []
+        },
+        "library_api/library_api.persons/Employee": {
+            "target": "library_api/library_api.persons/Employee",
+            "newName": "Worker",
+            "comment": "",
+            "authors": ["aclrian"],
+            "reviewers": []
+        }
+    },
+    "removeAnnotations": {
+        "library_api/library_api.library/Library/add_new_book": {
+            "target": "library_api/library_api.library/Library/add_new_book",
+            "comment": "",
+            "authors": ["aclrian"],
+            "reviewers": []
+        },
+        "library_api/library_api.library/Library/close_library": {
+            "target": "library_api/library_api.library/Library/close_library",
+            "comment": "",
+            "authors": ["aclrian"],
+            "reviewers": []
+        },
+        "library_api/library_api.library/Library/open_library": {
+            "target": "library_api/library_api.library/Library/open_library",
+            "comment": "",
+            "authors": ["aclrian"],
+            "reviewers": []
+        }
+    },
+    "todoAnnotations": {
+        "library_api/library_api.book/Book/__init__/release_date": {
+            "target": "library_api/library_api.book/Book/__init__/release_date",
+            "newTodo": "releasedate annotation",
+            "comment": "",
+            "authors": ["aclrian"],
+            "reviewers": []
+        },
+        "library_api/library_api.book/Book/__init__/author": {
+            "target": "library_api/library_api.book/Book/__init__/author",
+            "newTodo": "__init__ author annotation",
+            "comment": "",
+            "authors": ["aclrian"],
+            "reviewers": []
+        },
+        "library_api/library_api.book/Book/__init__/borrow_by": {
+            "target": "library_api/library_api.book/Book/__init__/borrow_by",
+            "newTodo": "__init__ author borrow_by",
+            "comment": "",
+            "authors": ["aclrian"],
+            "reviewers": []
+        },
+        "library_api/library_api.book/Book/__init__/borrow_until": {
+            "target": "library_api/library_api.book/Book/__init__/borrow_until",
+            "newTodo": "__init__ author borrow_until",
+            "comment": "",
+            "authors": ["aclrian"],
+            "reviewers": []
+        },
+        "library_api/library_api.library/Library/__init__/name": {
+            "target": "library_api/library_api.library/Library/__init__/name",
+            "newTodo": "__init__ author name",
+            "comment": "",
+            "authors": ["aclrian"],
+            "reviewers": []
+        },
+        "library_api/library_api.library/Library/__init__/borrowed_books": {
+            "target": "library_api/library_api.library/Library/__init__/borrowed_books",
+            "newTodo": "library_api.library.Library.return_book.user",
+            "comment": "",
+            "authors": ["aclrian"],
+            "reviewers": []
+        },
+        "library_api/library_api.library/Library/__init__/books": {
+            "target": "library_api/library_api.library/Library/__init__/books",
+            "newTodo": "library_api.library.Library.return_book.user",
+            "comment": "",
+            "authors": ["aclrian"],
+            "reviewers": []
+        },
+        "library_api/library_api.library/Library/borrow/book": {
+            "target": "library_api/library_api.library/Library/borrow/book",
+            "newTodo": "library_api.library.Library.return_book.user",
+            "comment": "",
+            "authors": ["aclrian"],
+            "reviewers": []
+        },
+        "library_api/library_api.library/Library/return_book/book": {
+            "target": "library_api/library_api.library/Library/return_book/book",
+            "newTodo": "library_api.library.Library.return_book.user",
+            "comment": "",
+            "authors": ["aclrian"],
+            "reviewers": []
+        },
+        "library_api/library_api.persons/Employee/__init__/address": {
+            "target": "library_api/library_api.persons/Employee/__init__/address",
+            "newTodo": "library_api.persons.Employee.__init__.address",
+            "comment": "",
+            "authors": ["aclrian"],
+            "reviewers": []
+        },
+        "library_api/library_api.persons/Employee/__init__/last_name": {
+            "target": "library_api/library_api.persons/Employee/__init__/last_name",
+            "newTodo": "library_api.persons.Employee.__init__.last_name",
+            "comment": "",
+            "authors": ["aclrian"],
+            "reviewers": []
+        },
+        "library_api/library_api.persons/Employee/__init__/first_name": {
+            "target": "library_api/library_api.persons/Employee/__init__/first_name",
+            "newTodo": "library_api.persons.Employee.__init__.first_name",
+            "comment": "",
+            "authors": ["aclrian"],
+            "reviewers": []
+        },
+        "library_api/library_api.persons/LibraryUser/__init__/first_name": {
+            "target": "library_api/library_api.persons/LibraryUser/__init__/first_name",
+            "newTodo": "library_api.persons.LibraryUser.__init__.first_name",
+            "comment": "",
+            "authors": ["aclrian"],
+            "reviewers": []
+        },
+        "library_api/library_api.persons/LibraryUser/__init__/last_name": {
+            "target": "library_api/library_api.persons/LibraryUser/__init__/last_name",
+            "newTodo": "library_api.persons.LibraryUser.__init__.first_name",
+            "comment": "",
+            "authors": ["aclrian"],
+            "reviewers": []
+        },
+        "library_api/library_api.persons/LibraryUser/__init__/id_number": {
+            "target": "library_api/library_api.persons/LibraryUser/__init__/id_number",
+            "newTodo": "library_api.persons.LibraryUser.__init__.id_number",
+            "comment": "",
+            "authors": ["aclrian"],
+            "reviewers": []
+        },
+        "library_api/library_api.persons/LibraryUser/__init__/address": {
+            "target": "library_api/library_api.persons/LibraryUser/__init__/address",
+            "newTodo": "library_api.persons.LibraryUser.__init__.address",
+            "comment": "",
+            "authors": ["aclrian"],
+            "reviewers": []
+        },
+        "library_api/library_api.persons/LibraryUser/__init__/member_until": {
+            "target": "library_api/library_api.persons/LibraryUser/__init__/member_until",
+            "newTodo": "library_api.persons.LibraryUser.__init__.member_until",
+            "comment": "",
+            "authors": ["aclrian"],
+            "reviewers": []
+        },
+        "library_api/library_api.persons/LibraryUser/pay": {
+            "target": "library_api/library_api.persons/LibraryUser/pay",
+            "newTodo": "user.pay",
+            "comment": "",
+            "authors": ["aclrian"],
+            "reviewers": []
+        }
+    },
+    "valueAnnotations": {
+        "library_api/library_api.library/Library/__init__/is_open": {
+            "target": "library_api/library_api.library/Library/__init__/is_open",
+            "variant": "constant",
+            "defaultValueType": "string",
+            "defaultValue": "true",
+            "comment": "",
+            "authors": ["aclrian"],
+            "reviewers": []
+        }
+    }
+}

@@ -1,0 +1,216 @@
+{
+    "schemaVersion": 2,
+    "boundaryAnnotations": {
+        "library_api/library_api.media/Book/__init__/number_of_times_this_book_was_borrowed": {
+            "target": "library_api/library_api.media/Book/__init__/number_of_times_this_book_was_borrowed",
+            "authors": ["aclrian", "migration"],
+            "reviewers": [],
+            "comment": "",
+            "reviewResult": "",
+            "interval": {
+                "isDiscrete": true,
+                "lowerIntervalLimit": 0,
+                "lowerLimitType": 0,
+                "upperIntervalLimit": 0,
+                "upperLimitType": 2
+            }
+        }
+    },
+    "calledAfterAnnotations": {},
+    "completeAnnotations": {},
+    "descriptionAnnotations": {},
+    "enumAnnotations": {
+        "library_api/library_api.media/Book/__init__/genre": {
+            "target": "library_api/library_api.media/Book/__init__/genre",
+            "authors": ["aclrian", "migration"],
+            "reviewers": [],
+            "comment": "",
+            "reviewResult": "",
+            "enumName": "Genre",
+            "pairs": [
+                {
+                    "stringValue": "fiction",
+                    "instanceName": "FICTION"
+                },
+                {
+                    "stringValue": "nonfiction",
+                    "instanceName": "NONFICTION"
+                },
+                {
+                    "stringValue": "poetry",
+                    "instanceName": "POETRY"
+                },
+                {
+                    "stringValue": "drama",
+                    "instanceName": "DRAMA"
+                },
+                {
+                    "stringValue": "high_demand",
+                    "instanceName": "HIGH_DEMAND"
+                },
+                {
+                    "stringValue": "low_demand",
+                    "instanceName": "LOW_DEMAND"
+                },
+                {
+                    "stringValue": "other",
+                    "instanceName": "OTHER"
+                }
+            ]
+        }
+    },
+    "expertAnnotations": {},
+    "groupAnnotations": {},
+    "moveAnnotations": {},
+    "pureAnnotations": {},
+    "renameAnnotations": {
+        "library_api/library_api.media/Book/__init__/isbn": {
+            "target": "library_api/library_api.media/Book/__init__/isbn",
+            "authors": ["aclrian", "migration"],
+            "reviewers": [],
+            "comment": "",
+            "newName": "ISBN",
+            "reviewResult": ""
+        },
+        "library_api/library_api.library/Library/__init__/staff": {
+            "target": "library_api/library_api.library/Library/__init__/staff",
+            "authors": ["aclrian", "migration"],
+            "reviewers": [],
+            "comment": "",
+            "newName": "personnel",
+            "reviewResult": ""
+        },
+        "library_api/library_api.persons/Employee/__init__/wage": {
+            "target": "library_api/library_api.persons/Employee/__init__/wage",
+            "authors": ["aclrian", "migration"],
+            "reviewers": [],
+            "comment": "",
+            "newName": "salary",
+            "reviewResult": ""
+        },
+        "library_api/library_api.persons/LibraryMember/__init__/pending_fees": {
+            "target": "library_api/library_api.persons/LibraryMember/__init__/pending_fees",
+            "authors": ["aclrian", "migration"],
+            "reviewers": [],
+            "comment": "",
+            "newName": "outstanding_payments",
+            "reviewResult": ""
+        },
+        "library_api/library_api.persons/LibraryMember/give_back/late_fee": {
+            "target": "library_api/library_api.persons/LibraryMember/give_back/late_fee",
+            "authors": ["aclrian", "migration"],
+            "reviewers": [],
+            "comment": "",
+            "newName": "late_charge",
+            "reviewResult": ""
+        },
+        "library_api/library_api.persons/LibraryMember/pay/money": {
+            "target": "library_api/library_api.persons/LibraryMember/pay/money",
+            "authors": ["aclrian", "migration"],
+            "reviewers": [],
+            "comment": "",
+            "newName": "payment",
+            "reviewResult": ""
+        }
+    },
+    "removeAnnotations": {},
+    "todoAnnotations": {
+        "library_api/library_api.media/Book/__init__/release_date": {
+            "target": "library_api/library_api.media/Book/__init__/release_date",
+            "authors": ["aclrian", "migration"],
+            "reviewers": [],
+            "comment": "",
+            "newTodo": "releasedate annotation",
+            "reviewResult": ""
+        },
+        "library_api/library_api.media/Book/__init__/author": {
+            "target": "library_api/library_api.media/Book/__init__/author",
+            "authors": ["aclrian", "migration"],
+            "reviewers": [],
+            "comment": "",
+            "newTodo": "__init__ author annotation",
+            "reviewResult": ""
+        },
+        "library_api/library_api.media/Book/__init__/borrow_until": {
+            "target": "library_api/library_api.media/Book/__init__/borrow_until",
+            "authors": ["aclrian", "migration"],
+            "reviewers": [],
+            "comment": "",
+            "newTodo": "__init__ author borrow_until",
+            "reviewResult": ""
+        },
+        "library_api/library_api.library/Library/__init__/name": {
+            "target": "library_api/library_api.library/Library/__init__/name",
+            "authors": ["aclrian", "migration"],
+            "reviewers": [],
+            "comment": "",
+            "newTodo": "__init__ author name",
+            "reviewResult": ""
+        },
+        "library_api/library_api.persons/Employee/__init__/address": {
+            "target": "library_api/library_api.persons/Employee/__init__/address",
+            "authors": ["aclrian", "migration"],
+            "reviewers": [],
+            "comment": "",
+            "newTodo": "library_api.persons.Employee.__init__.address",
+            "reviewResult": ""
+        },
+        "library_api/library_api.persons/Employee/__init__/last_name": {
+            "target": "library_api/library_api.persons/Employee/__init__/last_name",
+            "authors": ["aclrian", "migration"],
+            "reviewers": [],
+            "comment": "",
+            "newTodo": "library_api.persons.Employee.__init__.last_name",
+            "reviewResult": ""
+        },
+        "library_api/library_api.persons/Employee/__init__/first_name": {
+            "target": "library_api/library_api.persons/Employee/__init__/first_name",
+            "authors": ["aclrian", "migration"],
+            "reviewers": [],
+            "comment": "",
+            "newTodo": "library_api.persons.Employee.__init__.first_name",
+            "reviewResult": ""
+        },
+        "library_api/library_api.persons/LibraryMember/__init__/first_name": {
+            "target": "library_api/library_api.persons/LibraryMember/__init__/first_name",
+            "authors": ["aclrian", "migration"],
+            "reviewers": [],
+            "comment": "",
+            "newTodo": "library_api.persons.LibraryUser.__init__.first_name",
+            "reviewResult": ""
+        },
+        "library_api/library_api.persons/LibraryMember/__init__/last_name": {
+            "target": "library_api/library_api.persons/LibraryMember/__init__/last_name",
+            "authors": ["aclrian", "migration"],
+            "reviewers": [],
+            "comment": "",
+            "newTodo": "library_api.persons.LibraryUser.__init__.first_name",
+            "reviewResult": ""
+        },
+        "library_api/library_api.persons/LibraryMember/__init__/id_number": {
+            "target": "library_api/library_api.persons/LibraryMember/__init__/id_number",
+            "authors": ["aclrian", "migration"],
+            "reviewers": [],
+            "comment": "",
+            "newTodo": "library_api.persons.LibraryUser.__init__.id_number",
+            "reviewResult": ""
+        },
+        "library_api/library_api.persons/LibraryMember/__init__/address": {
+            "target": "library_api/library_api.persons/LibraryMember/__init__/address",
+            "authors": ["aclrian", "migration"],
+            "reviewers": [],
+            "comment": "",
+            "newTodo": "library_api.persons.LibraryUser.__init__.address",
+            "reviewResult": ""
+        },
+        "library_api/library_api.persons/LibraryMember/__init__/member_until": {
+            "target": "library_api/library_api.persons/LibraryMember/__init__/member_until",
+            "authors": ["aclrian", "migration"],
+            "reviewers": [],
+            "comment": "",
+            "newTodo": "library_api.persons.LibraryUser.__init__.member_until",
+            "reviewResult": ""
+        }
+    },
+    "valueAnnotations": {}
+}
