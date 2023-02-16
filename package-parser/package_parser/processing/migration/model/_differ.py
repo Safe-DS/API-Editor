@@ -6,7 +6,6 @@ from dataclasses import dataclass
 from typing import Callable, Optional, Sequence, Tuple, TypeVar, Union
 
 from Levenshtein import distance
-
 from package_parser.processing.api.model import (
     API,
     AbstractType,
@@ -244,7 +243,9 @@ class SimpleDiffer(AbstractDiffer):
         :param classv2: attribute from apiv2
         :return: value between 0 and 1, where 1 means that the elements are equal
         """
-        code_similarity = self._compute_code_similarity(classv1.get_formatted_code(), classv2.get_formatted_code())
+        code_similarity = self._compute_code_similarity(
+            classv1.get_formatted_code(), classv2.get_formatted_code()
+        )
         name_similarity = self._compute_name_similarity(classv1.name, classv2.name)
 
         attributes_similarity = distance(
