@@ -2,8 +2,16 @@ from copy import deepcopy
 from typing import Any
 
 import pytest
-from package_parser.processing.api.model import ParameterDocumentation, create_type, ParameterAssignment, Parameter, \
-    EnumType, NamedType, Attribute, BoundaryType
+from package_parser.processing.api.model import (
+    Attribute,
+    BoundaryType,
+    EnumType,
+    NamedType,
+    Parameter,
+    ParameterAssignment,
+    ParameterDocumentation,
+    create_type,
+)
 
 
 @pytest.mark.parametrize(
@@ -106,7 +114,7 @@ def test_union_from_string(docstring_type: str, expected: dict[str, Any]) -> Non
         ),
         ("", {}),
     ],
-)   # type: ignore
+)  # type: ignore
 def test_boundary_from_string(description: str, expected: dict[str, Any]) -> None:
     result = create_type(ParameterDocumentation("", "", description))
     if result is None:
@@ -156,9 +164,15 @@ def test_boundary_and_union_from_string(
 
 
 def test_correct_hash() -> None:
-    parameter = Parameter("test/test.Test/test/test_parameter_for_hashing", "test_parameter_for_hashing", "test.Test.test.test_parameter_for_hashing",
-                          "'test_str'", ParameterAssignment.POSITION_OR_NAME, True,
-                          ParameterDocumentation("'hashvalue'", "r", "r"), )
+    parameter = Parameter(
+        "test/test.Test/test/test_parameter_for_hashing",
+        "test_parameter_for_hashing",
+        "test.Test.test.test_parameter_for_hashing",
+        "'test_str'",
+        ParameterAssignment.POSITION_OR_NAME,
+        True,
+        ParameterDocumentation("'hashvalue'", "r", "r"),
+    )
     assert hash(parameter) == hash(deepcopy(parameter))
     enum_type = EnumType({"a", "b", "c"}, "full_match")
     assert enum_type == deepcopy(enum_type)
