@@ -1,7 +1,9 @@
+from copy import deepcopy
 from typing import Any
 
 import pytest
-from package_parser.processing.api.model import ParameterDocumentation, create_type
+from package_parser.processing.api.model import ParameterDocumentation, create_type, ParameterAssignment, Parameter, \
+    EnumType, NamedType, Attribute, BoundaryType
 
 
 @pytest.mark.parametrize(
@@ -151,3 +153,24 @@ def test_boundary_and_union_from_string(
         assert expected == {}
     else:
         assert result.to_json() == expected
+
+
+def test_correct_hash() -> None:
+    parameter = Parameter("test/test.Test/test/test_parameter", "test_parameter", "test.Test.test.test_parameter",
+                          "'test_str'", ParameterAssignment.POSITION_OR_NAME, True,
+                          ParameterDocumentation("'test_str'", "", ""), )
+    assert hash(parameter) == hash(deepcopy(parameter))
+    enum_type = EnumType({"a", "b", "c"}, "full_match")
+    assert enum_type == deepcopy(enum_type)
+    assert hash(enum_type) == hash(deepcopy(enum_type))
+    assert enum_type == EnumType({"a", "c", "b"}, "full_match")
+    assert hash(enum_type) == hash(EnumType({"a", "c", "b"}, "full_match"))
+    assert enum_type != EnumType({"a", "b"}, "full_match")
+    assert hash(enum_type) != hash(EnumType({"a", "b"}, "full_match"))
+    assert NamedType("a") == NamedType("a")
+    assert hash(NamedType("a")) == hash(NamedType("a"))
+    assert NamedType("a") != NamedType("b")
+    assert hash(NamedType("a")) != hash(NamedType("b"))
+    attribute = Attribute("boundary", BoundaryType("int", 0, 1, True, True))
+    assert attribute == deepcopy(attribute)
+    assert hash(attribute) == hash(deepcopy(attribute))
