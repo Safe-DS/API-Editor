@@ -208,7 +208,14 @@ class BoundaryType(AbstractType):
 
     def __hash__(self) -> int:
         return hash(
-            (self.base_type, self.min, self.min_inclusive, self.max, self.max_inclusive, self.full_match)
+            (
+                self.base_type,
+                self.min,
+                self.min_inclusive,
+                self.max,
+                self.max_inclusive,
+                self.full_match,
+            )
         )
 
     def to_json(self) -> dict[str, Any]:
