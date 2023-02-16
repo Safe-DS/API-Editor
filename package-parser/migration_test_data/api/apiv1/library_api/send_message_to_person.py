@@ -1,4 +1,5 @@
-# apiv2: rename to notification
+
+# apiv2: rename package to notification and use person instead of name and address
 
 
 def send_message_to_person(name: str, address: str, message: str) -> None:

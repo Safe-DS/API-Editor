@@ -5,6 +5,8 @@ from typing import Optional
 from .persons import LibraryMember
 from .position import Position
 
+# apiv2: add superclasses and new subclasses
+
 
 class Media:
     """A Class for all types of Media

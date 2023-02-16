@@ -2,7 +2,7 @@
 from datetime import date, datetime, timedelta
 
 from .media import Book, Media
-from .notificate import notificate
+from .notificate import send_message_to_person
 from .persons import Employee, LibraryMember, Person
 
 
@@ -23,7 +23,7 @@ class Library:
     users: list[LibraryMember]
     staff: list[Employee]  # apiv2: add Person subclass to User and Personal and Author
     name: str
-    # is_open: bool = False  # apiv2: remove attribute
+    # apiv2: remove is_open attribute
 
     def __init__(
         self,
@@ -57,7 +57,7 @@ class Library:
             if media.borrow_until > today:
                 late_fee = (today - media.borrow_until).days * media.FEE_PER_DAY
             user.give_back(late_fee)  # apiv2: rename function
-            notificate(user, "You need to pay your late fee.")
+            send_message_to_person(user, "You need to pay your late fee.")
             media.borrow_by = None
             media.borrow_until = None
             self.borrowed_media.remove(media)
@@ -93,6 +93,7 @@ class Library:
                     self.media.append(media)
         else:
             self.media.append(media)
+        # apiv2: check if book is not duplicated, rename to add_new_media
 
     def event(self, persons: list[Person]) -> None:
         """host an event with participants
@@ -136,7 +137,7 @@ class OurLibrary(Library):
 
     def let_seminar_room(
         self, money: float, person: Person, renting_date: date
-    ) -> float:  # apiv2: remove rented_date
+    ) -> float:  # apiv2: remove rented_date, move to new subclass OurLibrary with additional attributes owner and address
         """rent the seminar room of the library after it closed
 
         Parameters
@@ -151,7 +152,7 @@ class OurLibrary(Library):
         exchanged_money_or_money_to_be_paid : float
         """
         if money >= 50:
-            notificate(
+            send_message_to_person(
                 person,
                 f"You rented our seminar room for {money:.2f} € at "
                 + str(renting_date),

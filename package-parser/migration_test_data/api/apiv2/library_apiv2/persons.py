@@ -1,6 +1,8 @@
 # pylint: disable=duplicate-code
 import datetime
 
+# apiv2: introduce superclass person with first_name, last_name and address, and get_name(), and participate()
+# apiv2: rename LibraryUser to LibraryMember
 
 class Person:
     """A Class for Persons
@@ -78,6 +80,7 @@ class LibraryMember(Person):
     def extend_membership(self) -> None:
         """Extend membership by one year"""
         self.member_until = self.member_until.replace(year=self.member_until.year + 1)
+        # apiv2: change to self.member_until.replace(year=self.member_until.year+1)
 
     def pay(self, money: float) -> float:
         """pay the library

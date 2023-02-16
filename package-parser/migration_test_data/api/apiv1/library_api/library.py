@@ -23,7 +23,7 @@ class Library:
     users: list[LibraryUser]
     staff: list[Employee]  # apiv2: add Person subclass to User and Personal and Author
     name: str
-    is_open: bool = False  # apiv2: remove attribute
+    is_open: bool = False  # apiv2: remove is_open attribute
 
     def __init__(
         self,
@@ -92,7 +92,7 @@ class Library:
 
     def add_new_book(
         self, book: Book
-    ) -> None:  # apiv2: check if book is not duplicated
+    ) -> None:  # apiv2: check if book is not duplicated, rename to add_new_media
         """add a new book
 
         Parameters
@@ -108,7 +108,7 @@ class Library:
         address: str,
         start_of_renting: date,
         end_of_renting: date,
-    ) -> float:  # apiv2: remove rented_date
+    ) -> float:  # apiv2: remove rented_date, move to new subclass OurLibrary with additional attributes owner and address
         """rent the seminar room of the library after it closed
 
         Parameters

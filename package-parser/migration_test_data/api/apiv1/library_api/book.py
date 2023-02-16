@@ -4,13 +4,15 @@ from typing import Optional
 from .persons import LibraryUser
 from .position import Bookshelf, Room
 
+# apiv2: add superclasses and new subclasses
+
 
 class Book:
     """A Class for Books
 
     Parameters
     ----------
-    borrow_until : typing.Optional[datetime.date]
+    borrow_until : Optional[date]
         if it is borrowed: date else None
     borrow_by : Optional[LibraryUser]
     genre : str
@@ -37,7 +39,7 @@ class Book:
         room: Room,
         number_of_times_this_book_was_borrowed: int = 0,
     ) -> None:
-        self.borrow_until = borrow_until
+        self.borrow_until: Optional[date] = borrow_until
         self.borrow_by = borrow_by
         self.genre = genre
         self.isbn = isbn
