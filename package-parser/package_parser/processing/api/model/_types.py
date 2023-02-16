@@ -108,7 +108,7 @@ class EnumType(AbstractType):
         return {"kind": self.__class__.__name__, "values": self.values}
 
     def __hash__(self) -> int:
-        return hash(frozenset(self.values))
+        return hash((frozenset(self.values), self.full_match))
 
 
 @dataclass
@@ -208,7 +208,7 @@ class BoundaryType(AbstractType):
 
     def __hash__(self) -> int:
         return hash(
-            (self.base_type, self.min, self.min_inclusive, self.max, self.max_inclusive)
+            (self.base_type, self.min, self.min_inclusive, self.max, self.max_inclusive, self.full_match)
         )
 
     def to_json(self) -> dict[str, Any]:
