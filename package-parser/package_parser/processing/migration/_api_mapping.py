@@ -56,7 +56,7 @@ class APIMapping:
         element_mappings: list[Mapping] = []
         i = 0
         for api_elementv1 in api_elementv1_list:
-            with open("output.txt", "a") as f:
+            with open("output_all.txt", "a") as f:
                 print(str(i) + "/" + str(len(api_elementv1_list)), file=f)
             print(str(i) + "/" + str(len(api_elementv1_list)))
             i += 1
@@ -188,7 +188,6 @@ class APIMapping:
                     self.differ.compute_parameter_similarity,
                 )
             )
-
             mappings.extend(
                 self._get_mappings_for_api_elements(
                     [
@@ -204,7 +203,6 @@ class APIMapping:
                     self.differ.compute_attribute_similarity,
                 )
             )
-
             mappings.extend(
                 self._get_mappings_for_api_elements(
                     [
