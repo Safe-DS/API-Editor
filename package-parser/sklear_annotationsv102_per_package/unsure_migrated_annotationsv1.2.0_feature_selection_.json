@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 2,
+  "boundaryAnnotations": {},
+  "calledAfterAnnotations": {},
+  "completeAnnotations": {},
+  "descriptionAnnotations": {},
+  "enumAnnotations": {},
+  "expertAnnotations": {},
+  "groupAnnotations": {},
+  "moveAnnotations": {},
+  "pureAnnotations": {},
+  "renameAnnotations": {},
+  "removeAnnotations": {
+    "sklearn/sklearn.feature_selection._from_model/SelectFromModel/partial_fit": {
+      "target": "sklearn/sklearn.feature_selection._from_model/SelectFromModel/partial_fit",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    }
+  },
+  "todoAnnotations": {},
+  "valueAnnotations": {
+    "sklearn/sklearn.feature_selection._from_model/SelectFromModel/__init__/max_features": {
+      "target": "sklearn/sklearn.feature_selection._from_model/SelectFromModel/__init__/max_features",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lukarade"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "none",
+      "defaultValue": null
+    }
+  }
+}

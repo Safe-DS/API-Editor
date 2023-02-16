@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 2,
+  "boundaryAnnotations": {},
+  "calledAfterAnnotations": {},
+  "completeAnnotations": {},
+  "descriptionAnnotations": {},
+  "enumAnnotations": {},
+  "expertAnnotations": {},
+  "groupAnnotations": {},
+  "moveAnnotations": {},
+  "pureAnnotations": {},
+  "renameAnnotations": {},
+  "removeAnnotations": {
+    "sklearn/sklearn.neural_network._stochastic_optimizers/BaseOptimizer/update_params": {
+      "target": "sklearn/sklearn.neural_network._stochastic_optimizers/BaseOptimizer/update_params",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    }
+  },
+  "todoAnnotations": {
+    "sklearn/sklearn.neural_network._multilayer_perceptron/MLPRegressor/__init__/hidden_layer_sizes": {
+      "target": "sklearn/sklearn.neural_network._multilayer_perceptron/MLPRegressor/__init__/hidden_layer_sizes",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.neural_network._multilayer_perceptron/MLPRegressor/__init__/hidden_layer_sizes' and the possible alternatives in the new version of the api are: sklearn/sklearn.neural_network._multilayer_perceptron/MLPRegressor/__init__/hidden_layer_sizes",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.neural_network._multilayer_perceptron/MLPClassifier/__init__/hidden_layer_sizes": {
+      "target": "sklearn/sklearn.neural_network._multilayer_perceptron/MLPClassifier/__init__/hidden_layer_sizes",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.neural_network._multilayer_perceptron/MLPClassifier/__init__/hidden_layer_sizes' and the possible alternatives in the new version of the api are: sklearn/sklearn.neural_network._multilayer_perceptron/MLPClassifier/__init__/hidden_layer_sizes",
+      "reviewResult": ""
+    }
+  },
+  "valueAnnotations": {
+    "sklearn/sklearn.neural_network._rbm/BernoulliRBM/fit/self": {
+      "target": "sklearn/sklearn.neural_network._rbm/BernoulliRBM/fit/self",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "The @Value Annotation with the variant 'constant' and the default Value 'None ( type: none )' from the previous version was at 'sklearn/sklearn.neural_network._rbm/BernoulliRBM/fit/y' and the possible alternatives in the new version of the api are: sklearn/sklearn.neural_network._rbm/BernoulliRBM/fit/self",
+      "reviewResult": "unsure",
+      "variant": "constant",
+      "defaultValueType": "none",
+      "defaultValue": null
+    }
+  }
+}

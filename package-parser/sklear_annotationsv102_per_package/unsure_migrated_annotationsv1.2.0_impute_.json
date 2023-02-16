@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 2,
+  "boundaryAnnotations": {},
+  "calledAfterAnnotations": {},
+  "completeAnnotations": {},
+  "descriptionAnnotations": {},
+  "enumAnnotations": {},
+  "expertAnnotations": {},
+  "groupAnnotations": {},
+  "moveAnnotations": {},
+  "pureAnnotations": {},
+  "renameAnnotations": {},
+  "removeAnnotations": {
+    "sklearn/sklearn.impute._base/_BaseImputer/__init__": {
+      "target": "sklearn/sklearn.impute._base/_BaseImputer/__init__",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.impute._iterative/IterativeImputer/_initial_imputation": {
+      "target": "sklearn/sklearn.impute._iterative/IterativeImputer/_initial_imputation",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    }
+  },
+  "todoAnnotations": {
+    "sklearn/sklearn.impute._iterative/IterativeImputer/__init__/initial_strategy": {
+      "target": "sklearn/sklearn.impute._iterative/IterativeImputer/__init__/initial_strategy",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "Arsam"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'optional' and the default Value 'mean ( type: string )' from the previous version was at 'sklearn/sklearn.impute._iterative/IterativeImputer/__init__/initial_strategy' and the possible alternatives in the new version of the api are: sklearn/sklearn.impute._iterative/IterativeImputer/__init__/initial_strategy",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.impute._iterative/IterativeImputer/__init__/imputation_order": {
+      "target": "sklearn/sklearn.impute._iterative/IterativeImputer/__init__/imputation_order",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "Arsam"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'optional' and the default Value 'ascending ( type: string )' from the previous version was at 'sklearn/sklearn.impute._iterative/IterativeImputer/__init__/imputation_order' and the possible alternatives in the new version of the api are: sklearn/sklearn.impute._iterative/IterativeImputer/__init__/imputation_order",
+      "reviewResult": ""
+    }
+  },
+  "valueAnnotations": {}
+}

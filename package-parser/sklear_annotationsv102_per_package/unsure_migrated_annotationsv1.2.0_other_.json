@@ -1,0 +1,330 @@
+{
+  "schemaVersion": 2,
+  "boundaryAnnotations": {},
+  "calledAfterAnnotations": {},
+  "completeAnnotations": {},
+  "descriptionAnnotations": {},
+  "enumAnnotations": {},
+  "expertAnnotations": {},
+  "groupAnnotations": {},
+  "moveAnnotations": {
+    "sklearn/sklearn.naive_bayes/MultinomialNB": {
+      "target": "sklearn/sklearn.naive_bayes/MultinomialNB",
+      "authors": [
+        "jofaul",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "destination": "sklearn.classification.naive_bayes",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.naive_bayes/BernoulliNB": {
+      "target": "sklearn/sklearn.naive_bayes/BernoulliNB",
+      "authors": [
+        "jofaul",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "destination": "sklearn.classification.naive_bayes",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.naive_bayes/ComplementNB": {
+      "target": "sklearn/sklearn.naive_bayes/ComplementNB",
+      "authors": [
+        "jofaul",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "destination": "sklearn.classification.naive_bayes",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.multiclass/OneVsRestClassifier": {
+      "target": "sklearn/sklearn.multiclass/OneVsRestClassifier",
+      "authors": [
+        "jofaul",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "destination": "sklearn.classification.multiclass",
+      "reviewResult": ""
+    }
+  },
+  "pureAnnotations": {},
+  "renameAnnotations": {},
+  "removeAnnotations": {
+    "sklearn/sklearn.base/BaseEstimator/_validate_data": {
+      "target": "sklearn/sklearn.base/BaseEstimator/_validate_data",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.discriminant_analysis/LinearDiscriminantAnalysis/_solve_lstsq": {
+      "target": "sklearn/sklearn.discriminant_analysis/LinearDiscriminantAnalysis/_solve_lstsq",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.kernel_approximation/AdditiveChi2Sampler/__init__": {
+      "target": "sklearn/sklearn.kernel_approximation/AdditiveChi2Sampler/__init__",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.kernel_approximation/AdditiveChi2Sampler/fit": {
+      "target": "sklearn/sklearn.kernel_approximation/AdditiveChi2Sampler/fit",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.kernel_approximation/Nystroem/fit": {
+      "target": "sklearn/sklearn.kernel_approximation/Nystroem/fit",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.kernel_approximation/PolynomialCountSketch/fit": {
+      "target": "sklearn/sklearn.kernel_approximation/PolynomialCountSketch/fit",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.kernel_approximation/RBFSampler/fit": {
+      "target": "sklearn/sklearn.kernel_approximation/RBFSampler/fit",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.kernel_approximation/SkewedChi2Sampler/__init__": {
+      "target": "sklearn/sklearn.kernel_approximation/SkewedChi2Sampler/__init__",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.kernel_approximation/SkewedChi2Sampler/fit": {
+      "target": "sklearn/sklearn.kernel_approximation/SkewedChi2Sampler/fit",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.multiclass/OneVsRestClassifier/partial_fit": {
+      "target": "sklearn/sklearn.multiclass/OneVsRestClassifier/partial_fit",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.multiclass/OutputCodeClassifier/__init__": {
+      "target": "sklearn/sklearn.multiclass/OutputCodeClassifier/__init__",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.multiclass/OutputCodeClassifier/fit": {
+      "target": "sklearn/sklearn.multiclass/OutputCodeClassifier/fit",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.multioutput/MultiOutputRegressor/partial_fit": {
+      "target": "sklearn/sklearn.multioutput/MultiOutputRegressor/partial_fit",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.multioutput/_MultiOutputEstimator/partial_fit": {
+      "target": "sklearn/sklearn.multioutput/_MultiOutputEstimator/partial_fit",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.naive_bayes/CategoricalNB/_init_counters": {
+      "target": "sklearn/sklearn.naive_bayes/CategoricalNB/_init_counters",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.naive_bayes/CategoricalNB/partial_fit": {
+      "target": "sklearn/sklearn.naive_bayes/CategoricalNB/partial_fit",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.naive_bayes/_BaseDiscreteNB/_check_X_y": {
+      "target": "sklearn/sklearn.naive_bayes/_BaseDiscreteNB/_check_X_y",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.naive_bayes/_BaseDiscreteNB/_check_alpha": {
+      "target": "sklearn/sklearn.naive_bayes/_BaseDiscreteNB/_check_alpha",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.naive_bayes/_BaseDiscreteNB/_init_counters": {
+      "target": "sklearn/sklearn.naive_bayes/_BaseDiscreteNB/_init_counters",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.pipeline/FeatureUnion/set_params": {
+      "target": "sklearn/sklearn.pipeline/FeatureUnion/set_params",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.pipeline/Pipeline/predict_log_proba": {
+      "target": "sklearn/sklearn.pipeline/Pipeline/predict_log_proba",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.random_projection/BaseRandomProjection/__init__": {
+      "target": "sklearn/sklearn.random_projection/BaseRandomProjection/__init__",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    }
+  },
+  "todoAnnotations": {
+    "sklearn/sklearn.multiclass/OneVsRestClassifier/predict_proba/X": {
+      "target": "sklearn/sklearn.multiclass/OneVsRestClassifier/predict_proba/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.multiclass/OneVsRestClassifier/predict_proba/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.multiclass/OneVsRestClassifier/predict_proba/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.pipeline/FeatureUnion/__init__/transformer_list": {
+      "target": "sklearn/sklearn.pipeline/FeatureUnion/__init__/transformer_list",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.pipeline/FeatureUnion/__init__/transformer_list' and the possible alternatives in the new version of the api are: sklearn/sklearn.pipeline/FeatureUnion/__init__/transformer_list",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.pipeline/Pipeline/__init__/steps": {
+      "target": "sklearn/sklearn.pipeline/Pipeline/__init__/steps",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.pipeline/Pipeline/__init__/steps' and the possible alternatives in the new version of the api are: sklearn/sklearn.pipeline/Pipeline/__init__/steps",
+      "reviewResult": ""
+    }
+  },
+  "valueAnnotations": {}
+}

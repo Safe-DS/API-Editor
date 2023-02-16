@@ -1,0 +1,472 @@
+{
+  "schemaVersion": 2,
+  "boundaryAnnotations": {},
+  "calledAfterAnnotations": {},
+  "completeAnnotations": {},
+  "descriptionAnnotations": {},
+  "enumAnnotations": {},
+  "expertAnnotations": {},
+  "groupAnnotations": {},
+  "moveAnnotations": {},
+  "pureAnnotations": {},
+  "renameAnnotations": {},
+  "removeAnnotations": {
+    "sklearn/sklearn.metrics._plot.det_curve/DetCurveDisplay": {
+      "target": "sklearn/sklearn.metrics._plot.det_curve/DetCurveDisplay",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.metrics._scorer/_BaseScorer": {
+      "target": "sklearn/sklearn.metrics._scorer/_BaseScorer",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.metrics._scorer/_PredictScorer": {
+      "target": "sklearn/sklearn.metrics._scorer/_PredictScorer",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.metrics._scorer/_ProbaScorer": {
+      "target": "sklearn/sklearn.metrics._scorer/_ProbaScorer",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.metrics._scorer/_ThresholdScorer": {
+      "target": "sklearn/sklearn.metrics._scorer/_ThresholdScorer",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.metrics._plot.det_curve/DetCurveDisplay/__init__": {
+      "target": "sklearn/sklearn.metrics._plot.det_curve/DetCurveDisplay/__init__",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.metrics._plot.det_curve/DetCurveDisplay/plot": {
+      "target": "sklearn/sklearn.metrics._plot.det_curve/DetCurveDisplay/plot",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.metrics._scorer/_BaseScorer/__call__": {
+      "target": "sklearn/sklearn.metrics._scorer/_BaseScorer/__call__",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.metrics._scorer/_BaseScorer/__init__": {
+      "target": "sklearn/sklearn.metrics._scorer/_BaseScorer/__init__",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.metrics._scorer/_BaseScorer/__repr__": {
+      "target": "sklearn/sklearn.metrics._scorer/_BaseScorer/__repr__",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.metrics._scorer/_BaseScorer/_check_pos_label": {
+      "target": "sklearn/sklearn.metrics._scorer/_BaseScorer/_check_pos_label",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.metrics._scorer/_BaseScorer/_factory_args": {
+      "target": "sklearn/sklearn.metrics._scorer/_BaseScorer/_factory_args",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.metrics._scorer/_BaseScorer/_select_proba_binary": {
+      "target": "sklearn/sklearn.metrics._scorer/_BaseScorer/_select_proba_binary",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.metrics._scorer/_MultimetricScorer/__call__": {
+      "target": "sklearn/sklearn.metrics._scorer/_MultimetricScorer/__call__",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.metrics._scorer/_MultimetricScorer/_use_cache": {
+      "target": "sklearn/sklearn.metrics._scorer/_MultimetricScorer/_use_cache",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.metrics._scorer/_PredictScorer/_score": {
+      "target": "sklearn/sklearn.metrics._scorer/_PredictScorer/_score",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.metrics._scorer/_ProbaScorer/_factory_args": {
+      "target": "sklearn/sklearn.metrics._scorer/_ProbaScorer/_factory_args",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.metrics._scorer/_ProbaScorer/_score": {
+      "target": "sklearn/sklearn.metrics._scorer/_ProbaScorer/_score",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.metrics._scorer/_ThresholdScorer/_factory_args": {
+      "target": "sklearn/sklearn.metrics._scorer/_ThresholdScorer/_factory_args",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.metrics._scorer/_ThresholdScorer/_score": {
+      "target": "sklearn/sklearn.metrics._scorer/_ThresholdScorer/_score",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    }
+  },
+  "todoAnnotations": {
+    "sklearn/sklearn.metrics._plot.precision_recall_curve/PrecisionRecallDisplay/plot/ax": {
+      "target": "sklearn/sklearn.metrics._plot.precision_recall_curve/PrecisionRecallDisplay/plot/ax",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'constant' and the default Value 'None ( type: none )' from the previous version was at 'sklearn/sklearn.metrics._plot.precision_recall_curve/PrecisionRecallDisplay/plot/ax' and the possible alternatives in the new version of the api are: sklearn/sklearn.metrics._plot.precision_recall_curve/PrecisionRecallDisplay/plot/ax",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.metrics._plot.roc_curve/RocCurveDisplay/plot/ax": {
+      "target": "sklearn/sklearn.metrics._plot.roc_curve/RocCurveDisplay/plot/ax",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'constant' and the default Value 'None ( type: none )' from the previous version was at 'sklearn/sklearn.metrics._plot.roc_curve/RocCurveDisplay/plot/ax' and the possible alternatives in the new version of the api are: sklearn/sklearn.metrics._plot.roc_curve/RocCurveDisplay/plot/ax",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.metrics._plot.confusion_matrix/ConfusionMatrixDisplay/__init__/display_labels": {
+      "target": "sklearn/sklearn.metrics._plot.confusion_matrix/ConfusionMatrixDisplay/__init__/display_labels",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'optional' and the default Value 'None ( type: none )' from the previous version was at 'sklearn/sklearn.metrics._plot.confusion_matrix/ConfusionMatrixDisplay/__init__/display_labels' and the possible alternatives in the new version of the api are: sklearn/sklearn.metrics._plot.confusion_matrix/ConfusionMatrixDisplay/__init__/display_labels",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.metrics._plot.confusion_matrix/ConfusionMatrixDisplay/plot/ax": {
+      "target": "sklearn/sklearn.metrics._plot.confusion_matrix/ConfusionMatrixDisplay/plot/ax",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'optional' and the default Value 'None ( type: none )' from the previous version was at 'sklearn/sklearn.metrics._plot.confusion_matrix/ConfusionMatrixDisplay/plot/ax' and the possible alternatives in the new version of the api are: sklearn/sklearn.metrics._plot.confusion_matrix/ConfusionMatrixDisplay/plot/ax",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.metrics._plot.confusion_matrix/ConfusionMatrixDisplay/__init__/confusion_matrix": {
+      "target": "sklearn/sklearn.metrics._plot.confusion_matrix/ConfusionMatrixDisplay/__init__/confusion_matrix",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.metrics._plot.confusion_matrix/ConfusionMatrixDisplay/__init__/confusion_matrix' and the possible alternatives in the new version of the api are: sklearn/sklearn.metrics._plot.confusion_matrix/ConfusionMatrixDisplay/__init__/confusion_matrix",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.metrics._plot.precision_recall_curve/PrecisionRecallDisplay/__init__/precision": {
+      "target": "sklearn/sklearn.metrics._plot.precision_recall_curve/PrecisionRecallDisplay/__init__/precision",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lukarade"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.metrics._plot.precision_recall_curve/PrecisionRecallDisplay/__init__/precision' and the possible alternatives in the new version of the api are: sklearn/sklearn.metrics._plot.precision_recall_curve/PrecisionRecallDisplay/__init__/precision",
+      "reviewResult": ""
+    }
+  },
+  "valueAnnotations": {
+    "sklearn/sklearn.metrics._plot.precision_recall_curve/PrecisionRecallDisplay/__init__/average_precision": {
+      "target": "sklearn/sklearn.metrics._plot.precision_recall_curve/PrecisionRecallDisplay/__init__/average_precision",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "constant",
+      "defaultValueType": "none",
+      "defaultValue": null
+    },
+    "sklearn/sklearn.metrics._plot.precision_recall_curve/PrecisionRecallDisplay/__init__/estimator_name": {
+      "target": "sklearn/sklearn.metrics._plot.precision_recall_curve/PrecisionRecallDisplay/__init__/estimator_name",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "constant",
+      "defaultValueType": "none",
+      "defaultValue": null
+    },
+    "sklearn/sklearn.metrics._plot.precision_recall_curve/PrecisionRecallDisplay/__init__/pos_label": {
+      "target": "sklearn/sklearn.metrics._plot.precision_recall_curve/PrecisionRecallDisplay/__init__/pos_label",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "constant",
+      "defaultValueType": "none",
+      "defaultValue": null
+    },
+    "sklearn/sklearn.metrics._plot.precision_recall_curve/PrecisionRecallDisplay/plot/name": {
+      "target": "sklearn/sklearn.metrics._plot.precision_recall_curve/PrecisionRecallDisplay/plot/name",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "constant",
+      "defaultValueType": "none",
+      "defaultValue": null
+    },
+    "sklearn/sklearn.metrics._plot.roc_curve/RocCurveDisplay/__init__/roc_auc": {
+      "target": "sklearn/sklearn.metrics._plot.roc_curve/RocCurveDisplay/__init__/roc_auc",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "constant",
+      "defaultValueType": "none",
+      "defaultValue": null
+    },
+    "sklearn/sklearn.metrics._plot.roc_curve/RocCurveDisplay/__init__/estimator_name": {
+      "target": "sklearn/sklearn.metrics._plot.roc_curve/RocCurveDisplay/__init__/estimator_name",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "constant",
+      "defaultValueType": "none",
+      "defaultValue": null
+    },
+    "sklearn/sklearn.metrics._plot.roc_curve/RocCurveDisplay/__init__/pos_label": {
+      "target": "sklearn/sklearn.metrics._plot.roc_curve/RocCurveDisplay/__init__/pos_label",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "constant",
+      "defaultValueType": "none",
+      "defaultValue": null
+    },
+    "sklearn/sklearn.metrics._plot.roc_curve/RocCurveDisplay/plot/name": {
+      "target": "sklearn/sklearn.metrics._plot.roc_curve/RocCurveDisplay/plot/name",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "constant",
+      "defaultValueType": "none",
+      "defaultValue": null
+    },
+    "sklearn/sklearn.metrics._plot.confusion_matrix/ConfusionMatrixDisplay/plot/include_values": {
+      "target": "sklearn/sklearn.metrics._plot.confusion_matrix/ConfusionMatrixDisplay/plot/include_values",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "boolean",
+      "defaultValue": true
+    },
+    "sklearn/sklearn.metrics._plot.confusion_matrix/ConfusionMatrixDisplay/plot/cmap": {
+      "target": "sklearn/sklearn.metrics._plot.confusion_matrix/ConfusionMatrixDisplay/plot/cmap",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "string",
+      "defaultValue": "viridis"
+    },
+    "sklearn/sklearn.metrics._plot.confusion_matrix/ConfusionMatrixDisplay/plot/xticks_rotation": {
+      "target": "sklearn/sklearn.metrics._plot.confusion_matrix/ConfusionMatrixDisplay/plot/xticks_rotation",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "string",
+      "defaultValue": "horizontal"
+    },
+    "sklearn/sklearn.metrics._plot.confusion_matrix/ConfusionMatrixDisplay/plot/values_format": {
+      "target": "sklearn/sklearn.metrics._plot.confusion_matrix/ConfusionMatrixDisplay/plot/values_format",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "none",
+      "defaultValue": null
+    },
+    "sklearn/sklearn.metrics._plot.confusion_matrix/ConfusionMatrixDisplay/plot/colorbar": {
+      "target": "sklearn/sklearn.metrics._plot.confusion_matrix/ConfusionMatrixDisplay/plot/colorbar",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "boolean",
+      "defaultValue": true
+    }
+  }
+}

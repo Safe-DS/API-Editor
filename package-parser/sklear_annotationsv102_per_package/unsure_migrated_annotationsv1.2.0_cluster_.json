@@ -1,0 +1,175 @@
+{
+  "schemaVersion": 2,
+  "boundaryAnnotations": {},
+  "calledAfterAnnotations": {},
+  "completeAnnotations": {},
+  "descriptionAnnotations": {},
+  "enumAnnotations": {},
+  "expertAnnotations": {},
+  "groupAnnotations": {},
+  "moveAnnotations": {},
+  "pureAnnotations": {},
+  "renameAnnotations": {},
+  "removeAnnotations": {
+    "sklearn/sklearn.cluster._bicluster/BaseSpectral/_check_parameters": {
+      "target": "sklearn/sklearn.cluster._bicluster/BaseSpectral/_check_parameters",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.cluster._bicluster/BaseSpectral/fit": {
+      "target": "sklearn/sklearn.cluster._bicluster/BaseSpectral/fit",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.cluster._bicluster/SpectralBiclustering/__init__": {
+      "target": "sklearn/sklearn.cluster._bicluster/SpectralBiclustering/__init__",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.cluster._bicluster/SpectralBiclustering/_check_parameters": {
+      "target": "sklearn/sklearn.cluster._bicluster/SpectralBiclustering/_check_parameters",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.cluster._bicluster/SpectralCoclustering/__init__": {
+      "target": "sklearn/sklearn.cluster._bicluster/SpectralCoclustering/__init__",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.cluster._kmeans/_BaseKMeans/_check_params_vs_input": {
+      "target": "sklearn/sklearn.cluster._kmeans/_BaseKMeans/_check_params_vs_input",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.cluster._kmeans/KMeans/_check_params_vs_input": {
+      "target": "sklearn/sklearn.cluster._kmeans/KMeans/_check_params_vs_input",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.cluster._kmeans/MiniBatchKMeans/_check_params_vs_input": {
+      "target": "sklearn/sklearn.cluster._kmeans/MiniBatchKMeans/_check_params_vs_input",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    }
+  },
+  "todoAnnotations": {
+    "sklearn/sklearn.cluster._optics/OPTICS/fit/y": {
+      "target": "sklearn/sklearn.cluster._optics/OPTICS/fit/y",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'constant' and the default Value 'None ( type: none )' from the previous version was at 'sklearn/sklearn.cluster._optics/OPTICS/fit/y' and the possible alternatives in the new version of the api are: sklearn/sklearn.cluster._optics/OPTICS/fit/y",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.cluster._kmeans/KMeans/__init__/algorithm": {
+      "target": "sklearn/sklearn.cluster._kmeans/KMeans/__init__/algorithm",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "aclrian"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'optional' and the default Value 'lloyd ( type: string )' from the previous version was at 'sklearn/sklearn.cluster._kmeans/KMeans/__init__/algorithm' and the possible alternatives in the new version of the api are: sklearn/sklearn.cluster._kmeans/KMeans/__init__/algorithm",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.cluster._spectral/SpectralClustering/__init__/assign_labels": {
+      "target": "sklearn/sklearn.cluster._spectral/SpectralClustering/__init__/assign_labels",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "aclrian"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'optional' and the default Value 'kmeans ( type: string )' from the previous version was at 'sklearn/sklearn.cluster._spectral/SpectralClustering/__init__/assign_labels' and the possible alternatives in the new version of the api are: sklearn/sklearn.cluster._spectral/SpectralClustering/__init__/assign_labels",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.cluster._optics/OPTICS/fit/X": {
+      "target": "sklearn/sklearn.cluster._optics/OPTICS/fit/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.cluster._optics/OPTICS/fit/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.cluster._optics/OPTICS/fit/X",
+      "reviewResult": ""
+    }
+  },
+  "valueAnnotations": {
+    "sklearn/sklearn.cluster._agglomerative/FeatureAgglomeration/__init__/affinity": {
+      "target": "sklearn/sklearn.cluster._agglomerative/FeatureAgglomeration/__init__/affinity",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "The @Value Annotation with the variant 'constant' and the default Value 'euclidean ( type: string )' from the previous version was at 'sklearn/sklearn.cluster._agglomerative/FeatureAgglomeration/__init__/affinity' and the possible alternatives in the new version of the api are: sklearn/sklearn.cluster._agglomerative/FeatureAgglomeration/__init__/affinity",
+      "reviewResult": "unsure",
+      "variant": "constant",
+      "defaultValueType": "string",
+      "defaultValue": "euclidean"
+    },
+    "sklearn/sklearn.cluster._spectral/SpectralClustering/__init__/eigen_tol": {
+      "target": "sklearn/sklearn.cluster._spectral/SpectralClustering/__init__/eigen_tol",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "The @Value Annotation with the variant 'constant' and the default Value '0 ( type: number )' from the previous version was at 'sklearn/sklearn.cluster._spectral/SpectralClustering/__init__/eigen_tol' and the possible alternatives in the new version of the api are: sklearn/sklearn.cluster._spectral/SpectralClustering/__init__/eigen_tol",
+      "reviewResult": "unsure",
+      "variant": "constant",
+      "defaultValueType": "number",
+      "defaultValue": 0
+    }
+  }
+}

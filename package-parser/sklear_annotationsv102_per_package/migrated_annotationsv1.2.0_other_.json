@@ -1,0 +1,3978 @@
+{
+  "schemaVersion": 2,
+  "boundaryAnnotations": {},
+  "calledAfterAnnotations": {},
+  "completeAnnotations": {},
+  "descriptionAnnotations": {},
+  "enumAnnotations": {},
+  "expertAnnotations": {},
+  "groupAnnotations": {},
+  "moveAnnotations": {
+    "sklearn/sklearn.calibration/CalibratedClassifierCV": {
+      "target": "sklearn/sklearn.calibration/CalibratedClassifierCV",
+      "authors": [
+        "Arsam",
+        "migration"
+      ],
+      "reviewers": [
+        "Arsam"
+      ],
+      "comment": "",
+      "destination": "sklearn.classification.model",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.naive_bayes/CategoricalNB": {
+      "target": "sklearn/sklearn.naive_bayes/CategoricalNB",
+      "authors": [
+        "jofaul",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "destination": "sklearn.classification.naive_bayes",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.naive_bayes/GaussianNB": {
+      "target": "sklearn/sklearn.naive_bayes/GaussianNB",
+      "authors": [
+        "jofaul",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "destination": "sklearn.classification.naive_bayes",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.multiclass/OneVsOneClassifier": {
+      "target": "sklearn/sklearn.multiclass/OneVsOneClassifier",
+      "authors": [
+        "jofaul",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "destination": "sklearn.classification.multiclass",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.multioutput/MultiOutputClassifier": {
+      "target": "sklearn/sklearn.multioutput/MultiOutputClassifier",
+      "authors": [
+        "jofaul",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "destination": "sklearn.classification.multioutput",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.multioutput/MultiOutputRegressor": {
+      "target": "sklearn/sklearn.multioutput/MultiOutputRegressor",
+      "authors": [
+        "jofaul",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "destination": "sklearn.regression.multioutput",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.multioutput/RegressorChain": {
+      "target": "sklearn/sklearn.multioutput/RegressorChain",
+      "authors": [
+        "jofaul",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "destination": "sklearn.regression.multioutput",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.kernel_ridge/KernelRidge": {
+      "target": "sklearn/sklearn.kernel_ridge/KernelRidge",
+      "authors": [
+        "jofaul",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "destination": "sklearn.regression.kernel_ridge",
+      "reviewResult": ""
+    }
+  },
+  "pureAnnotations": {},
+  "renameAnnotations": {},
+  "removeAnnotations": {
+    "sklearn/sklearn.base/DensityMixin": {
+      "target": "sklearn/sklearn.base/DensityMixin",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.base/MetaEstimatorMixin": {
+      "target": "sklearn/sklearn.base/MetaEstimatorMixin",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.base/MultiOutputMixin": {
+      "target": "sklearn/sklearn.base/MultiOutputMixin",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.base/_UnstableArchMixin": {
+      "target": "sklearn/sklearn.base/_UnstableArchMixin",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.calibration/_CalibratedClassifier": {
+      "target": "sklearn/sklearn.calibration/_CalibratedClassifier",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.calibration/_SigmoidCalibration": {
+      "target": "sklearn/sklearn.calibration/_SigmoidCalibration",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.exceptions/FitFailedWarning": {
+      "target": "sklearn/sklearn.exceptions/FitFailedWarning",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.exceptions/EfficiencyWarning": {
+      "target": "sklearn/sklearn.exceptions/EfficiencyWarning",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.exceptions/DataDimensionalityWarning": {
+      "target": "sklearn/sklearn.exceptions/DataDimensionalityWarning",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.exceptions/DataConversionWarning": {
+      "target": "sklearn/sklearn.exceptions/DataConversionWarning",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.exceptions/UndefinedMetricWarning": {
+      "target": "sklearn/sklearn.exceptions/UndefinedMetricWarning",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.exceptions/ConvergenceWarning": {
+      "target": "sklearn/sklearn.exceptions/ConvergenceWarning",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.exceptions/SkipTestWarning": {
+      "target": "sklearn/sklearn.exceptions/SkipTestWarning",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.exceptions/PositiveSpectrumWarning": {
+      "target": "sklearn/sklearn.exceptions/PositiveSpectrumWarning",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.exceptions/NotFittedError": {
+      "target": "sklearn/sklearn.exceptions/NotFittedError",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.kernel_approximation/AdditiveChi2Sampler": {
+      "target": "sklearn/sklearn.kernel_approximation/AdditiveChi2Sampler",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.kernel_approximation/PolynomialCountSketch": {
+      "target": "sklearn/sklearn.kernel_approximation/PolynomialCountSketch",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.kernel_approximation/SkewedChi2Sampler": {
+      "target": "sklearn/sklearn.kernel_approximation/SkewedChi2Sampler",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.multiclass/OutputCodeClassifier": {
+      "target": "sklearn/sklearn.multiclass/OutputCodeClassifier",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.multiclass/_ConstantPredictor": {
+      "target": "sklearn/sklearn.multiclass/_ConstantPredictor",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.multioutput/ClassifierChain": {
+      "target": "sklearn/sklearn.multioutput/ClassifierChain",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.base/BaseEstimator/__getstate__": {
+      "target": "sklearn/sklearn.base/BaseEstimator/__getstate__",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.base/BaseEstimator/__repr__": {
+      "target": "sklearn/sklearn.base/BaseEstimator/__repr__",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.base/BaseEstimator/__setstate__": {
+      "target": "sklearn/sklearn.base/BaseEstimator/__setstate__",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.base/BaseEstimator/_check_n_features": {
+      "target": "sklearn/sklearn.base/BaseEstimator/_check_n_features",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.base/BaseEstimator/_get_param_names": {
+      "target": "sklearn/sklearn.base/BaseEstimator/_get_param_names",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.base/BaseEstimator/_get_tags": {
+      "target": "sklearn/sklearn.base/BaseEstimator/_get_tags",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.base/BaseEstimator/_more_tags": {
+      "target": "sklearn/sklearn.base/BaseEstimator/_more_tags",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.base/BaseEstimator/_repr_html_@getter": {
+      "target": "sklearn/sklearn.base/BaseEstimator/_repr_html_@getter",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.base/BaseEstimator/_repr_html_inner": {
+      "target": "sklearn/sklearn.base/BaseEstimator/_repr_html_inner",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.base/BaseEstimator/_repr_mimebundle_": {
+      "target": "sklearn/sklearn.base/BaseEstimator/_repr_mimebundle_",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.base/ClassifierMixin/_more_tags": {
+      "target": "sklearn/sklearn.base/ClassifierMixin/_more_tags",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.base/ClusterMixin/_more_tags": {
+      "target": "sklearn/sklearn.base/ClusterMixin/_more_tags",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.base/DensityMixin/score": {
+      "target": "sklearn/sklearn.base/DensityMixin/score",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.base/MultiOutputMixin/_more_tags": {
+      "target": "sklearn/sklearn.base/MultiOutputMixin/_more_tags",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.base/RegressorMixin/_more_tags": {
+      "target": "sklearn/sklearn.base/RegressorMixin/_more_tags",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.base/_UnstableArchMixin/_more_tags": {
+      "target": "sklearn/sklearn.base/_UnstableArchMixin/_more_tags",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.calibration/CalibratedClassifierCV/_more_tags": {
+      "target": "sklearn/sklearn.calibration/CalibratedClassifierCV/_more_tags",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.calibration/_CalibratedClassifier/__init__": {
+      "target": "sklearn/sklearn.calibration/_CalibratedClassifier/__init__",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.calibration/_CalibratedClassifier/predict_proba": {
+      "target": "sklearn/sklearn.calibration/_CalibratedClassifier/predict_proba",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.calibration/_SigmoidCalibration/fit": {
+      "target": "sklearn/sklearn.calibration/_SigmoidCalibration/fit",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.calibration/_SigmoidCalibration/predict": {
+      "target": "sklearn/sklearn.calibration/_SigmoidCalibration/predict",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.discriminant_analysis/LinearDiscriminantAnalysis/_solve_eigen": {
+      "target": "sklearn/sklearn.discriminant_analysis/LinearDiscriminantAnalysis/_solve_eigen",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.discriminant_analysis/LinearDiscriminantAnalysis/_solve_svd": {
+      "target": "sklearn/sklearn.discriminant_analysis/LinearDiscriminantAnalysis/_solve_svd",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.discriminant_analysis/LinearDiscriminantAnalysis/decision_function": {
+      "target": "sklearn/sklearn.discriminant_analysis/LinearDiscriminantAnalysis/decision_function",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.discriminant_analysis/LinearDiscriminantAnalysis/predict_log_proba": {
+      "target": "sklearn/sklearn.discriminant_analysis/LinearDiscriminantAnalysis/predict_log_proba",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.discriminant_analysis/QuadraticDiscriminantAnalysis/_decision_function": {
+      "target": "sklearn/sklearn.discriminant_analysis/QuadraticDiscriminantAnalysis/_decision_function",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.discriminant_analysis/QuadraticDiscriminantAnalysis/decision_function": {
+      "target": "sklearn/sklearn.discriminant_analysis/QuadraticDiscriminantAnalysis/decision_function",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.discriminant_analysis/QuadraticDiscriminantAnalysis/predict_log_proba": {
+      "target": "sklearn/sklearn.discriminant_analysis/QuadraticDiscriminantAnalysis/predict_log_proba",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.dummy/DummyClassifier/_more_tags": {
+      "target": "sklearn/sklearn.dummy/DummyClassifier/_more_tags",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.dummy/DummyClassifier/predict_log_proba": {
+      "target": "sklearn/sklearn.dummy/DummyClassifier/predict_log_proba",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.dummy/DummyRegressor/_more_tags": {
+      "target": "sklearn/sklearn.dummy/DummyRegressor/_more_tags",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.isotonic/IsotonicRegression/__getstate__": {
+      "target": "sklearn/sklearn.isotonic/IsotonicRegression/__getstate__",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.isotonic/IsotonicRegression/__setstate__": {
+      "target": "sklearn/sklearn.isotonic/IsotonicRegression/__setstate__",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.isotonic/IsotonicRegression/_build_f": {
+      "target": "sklearn/sklearn.isotonic/IsotonicRegression/_build_f",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.isotonic/IsotonicRegression/_build_y": {
+      "target": "sklearn/sklearn.isotonic/IsotonicRegression/_build_y",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.isotonic/IsotonicRegression/_check_input_data_shape": {
+      "target": "sklearn/sklearn.isotonic/IsotonicRegression/_check_input_data_shape",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.isotonic/IsotonicRegression/_more_tags": {
+      "target": "sklearn/sklearn.isotonic/IsotonicRegression/_more_tags",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.kernel_approximation/AdditiveChi2Sampler/_more_tags": {
+      "target": "sklearn/sklearn.kernel_approximation/AdditiveChi2Sampler/_more_tags",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.kernel_approximation/AdditiveChi2Sampler/_transform_dense": {
+      "target": "sklearn/sklearn.kernel_approximation/AdditiveChi2Sampler/_transform_dense",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.kernel_approximation/AdditiveChi2Sampler/_transform_sparse": {
+      "target": "sklearn/sklearn.kernel_approximation/AdditiveChi2Sampler/_transform_sparse",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.kernel_approximation/AdditiveChi2Sampler/transform": {
+      "target": "sklearn/sklearn.kernel_approximation/AdditiveChi2Sampler/transform",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.kernel_approximation/Nystroem/_get_kernel_params": {
+      "target": "sklearn/sklearn.kernel_approximation/Nystroem/_get_kernel_params",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.kernel_approximation/Nystroem/_more_tags": {
+      "target": "sklearn/sklearn.kernel_approximation/Nystroem/_more_tags",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.kernel_approximation/PolynomialCountSketch/__init__": {
+      "target": "sklearn/sklearn.kernel_approximation/PolynomialCountSketch/__init__",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.kernel_approximation/PolynomialCountSketch/transform": {
+      "target": "sklearn/sklearn.kernel_approximation/PolynomialCountSketch/transform",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.kernel_approximation/SkewedChi2Sampler/transform": {
+      "target": "sklearn/sklearn.kernel_approximation/SkewedChi2Sampler/transform",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.kernel_ridge/KernelRidge/_get_kernel": {
+      "target": "sklearn/sklearn.kernel_ridge/KernelRidge/_get_kernel",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.kernel_ridge/KernelRidge/_more_tags": {
+      "target": "sklearn/sklearn.kernel_ridge/KernelRidge/_more_tags",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.multiclass/OneVsOneClassifier/_more_tags": {
+      "target": "sklearn/sklearn.multiclass/OneVsOneClassifier/_more_tags",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.multiclass/OneVsOneClassifier/n_classes_@getter": {
+      "target": "sklearn/sklearn.multiclass/OneVsOneClassifier/n_classes_@getter",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.multiclass/OneVsOneClassifier/partial_fit": {
+      "target": "sklearn/sklearn.multiclass/OneVsOneClassifier/partial_fit",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.multiclass/OneVsRestClassifier/_more_tags": {
+      "target": "sklearn/sklearn.multiclass/OneVsRestClassifier/_more_tags",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.multiclass/OneVsRestClassifier/multilabel_@getter": {
+      "target": "sklearn/sklearn.multiclass/OneVsRestClassifier/multilabel_@getter",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.multiclass/OneVsRestClassifier/n_classes_@getter": {
+      "target": "sklearn/sklearn.multiclass/OneVsRestClassifier/n_classes_@getter",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.multiclass/OutputCodeClassifier/predict": {
+      "target": "sklearn/sklearn.multiclass/OutputCodeClassifier/predict",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.multiclass/_ConstantPredictor/decision_function": {
+      "target": "sklearn/sklearn.multiclass/_ConstantPredictor/decision_function",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.multiclass/_ConstantPredictor/fit": {
+      "target": "sklearn/sklearn.multiclass/_ConstantPredictor/fit",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.multiclass/_ConstantPredictor/predict": {
+      "target": "sklearn/sklearn.multiclass/_ConstantPredictor/predict",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.multiclass/_ConstantPredictor/predict_proba": {
+      "target": "sklearn/sklearn.multiclass/_ConstantPredictor/predict_proba",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.multioutput/ClassifierChain/_more_tags": {
+      "target": "sklearn/sklearn.multioutput/ClassifierChain/_more_tags",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.multioutput/ClassifierChain/decision_function": {
+      "target": "sklearn/sklearn.multioutput/ClassifierChain/decision_function",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.multioutput/ClassifierChain/fit": {
+      "target": "sklearn/sklearn.multioutput/ClassifierChain/fit",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.multioutput/ClassifierChain/predict_proba": {
+      "target": "sklearn/sklearn.multioutput/ClassifierChain/predict_proba",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.multioutput/MultiOutputClassifier/_more_tags": {
+      "target": "sklearn/sklearn.multioutput/MultiOutputClassifier/_more_tags",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.multioutput/RegressorChain/_more_tags": {
+      "target": "sklearn/sklearn.multioutput/RegressorChain/_more_tags",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.multioutput/_BaseChain/fit": {
+      "target": "sklearn/sklearn.multioutput/_BaseChain/fit",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.multioutput/_MultiOutputEstimator/__init__": {
+      "target": "sklearn/sklearn.multioutput/_MultiOutputEstimator/__init__",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.multioutput/_MultiOutputEstimator/_more_tags": {
+      "target": "sklearn/sklearn.multioutput/_MultiOutputEstimator/_more_tags",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.naive_bayes/BernoulliNB/_check_X": {
+      "target": "sklearn/sklearn.naive_bayes/BernoulliNB/_check_X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.naive_bayes/BernoulliNB/_check_X_y": {
+      "target": "sklearn/sklearn.naive_bayes/BernoulliNB/_check_X_y",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.naive_bayes/BernoulliNB/_count": {
+      "target": "sklearn/sklearn.naive_bayes/BernoulliNB/_count",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.naive_bayes/BernoulliNB/_joint_log_likelihood": {
+      "target": "sklearn/sklearn.naive_bayes/BernoulliNB/_joint_log_likelihood",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.naive_bayes/BernoulliNB/_update_feature_log_prob": {
+      "target": "sklearn/sklearn.naive_bayes/BernoulliNB/_update_feature_log_prob",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.naive_bayes/CategoricalNB/_check_X": {
+      "target": "sklearn/sklearn.naive_bayes/CategoricalNB/_check_X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.naive_bayes/CategoricalNB/_check_X_y": {
+      "target": "sklearn/sklearn.naive_bayes/CategoricalNB/_check_X_y",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.naive_bayes/CategoricalNB/_count": {
+      "target": "sklearn/sklearn.naive_bayes/CategoricalNB/_count",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.naive_bayes/CategoricalNB/_joint_log_likelihood": {
+      "target": "sklearn/sklearn.naive_bayes/CategoricalNB/_joint_log_likelihood",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.naive_bayes/CategoricalNB/_more_tags": {
+      "target": "sklearn/sklearn.naive_bayes/CategoricalNB/_more_tags",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.naive_bayes/CategoricalNB/_update_feature_log_prob": {
+      "target": "sklearn/sklearn.naive_bayes/CategoricalNB/_update_feature_log_prob",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.naive_bayes/CategoricalNB/_validate_n_categories": {
+      "target": "sklearn/sklearn.naive_bayes/CategoricalNB/_validate_n_categories",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.naive_bayes/ComplementNB/_count": {
+      "target": "sklearn/sklearn.naive_bayes/ComplementNB/_count",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.naive_bayes/ComplementNB/_joint_log_likelihood": {
+      "target": "sklearn/sklearn.naive_bayes/ComplementNB/_joint_log_likelihood",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.naive_bayes/ComplementNB/_more_tags": {
+      "target": "sklearn/sklearn.naive_bayes/ComplementNB/_more_tags",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.naive_bayes/ComplementNB/_update_feature_log_prob": {
+      "target": "sklearn/sklearn.naive_bayes/ComplementNB/_update_feature_log_prob",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.naive_bayes/GaussianNB/_check_X": {
+      "target": "sklearn/sklearn.naive_bayes/GaussianNB/_check_X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.naive_bayes/GaussianNB/_joint_log_likelihood": {
+      "target": "sklearn/sklearn.naive_bayes/GaussianNB/_joint_log_likelihood",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.naive_bayes/GaussianNB/_partial_fit": {
+      "target": "sklearn/sklearn.naive_bayes/GaussianNB/_partial_fit",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.naive_bayes/GaussianNB/_update_mean_variance": {
+      "target": "sklearn/sklearn.naive_bayes/GaussianNB/_update_mean_variance",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.naive_bayes/MultinomialNB/_count": {
+      "target": "sklearn/sklearn.naive_bayes/MultinomialNB/_count",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.naive_bayes/MultinomialNB/_joint_log_likelihood": {
+      "target": "sklearn/sklearn.naive_bayes/MultinomialNB/_joint_log_likelihood",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.naive_bayes/MultinomialNB/_more_tags": {
+      "target": "sklearn/sklearn.naive_bayes/MultinomialNB/_more_tags",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.naive_bayes/MultinomialNB/_update_feature_log_prob": {
+      "target": "sklearn/sklearn.naive_bayes/MultinomialNB/_update_feature_log_prob",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.naive_bayes/_BaseDiscreteNB/_check_X": {
+      "target": "sklearn/sklearn.naive_bayes/_BaseDiscreteNB/_check_X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.naive_bayes/_BaseDiscreteNB/_more_tags": {
+      "target": "sklearn/sklearn.naive_bayes/_BaseDiscreteNB/_more_tags",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.naive_bayes/_BaseDiscreteNB/_update_class_log_prior": {
+      "target": "sklearn/sklearn.naive_bayes/_BaseDiscreteNB/_update_class_log_prior",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.naive_bayes/_BaseNB/_check_X": {
+      "target": "sklearn/sklearn.naive_bayes/_BaseNB/_check_X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.naive_bayes/_BaseNB/_joint_log_likelihood": {
+      "target": "sklearn/sklearn.naive_bayes/_BaseNB/_joint_log_likelihood",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.pipeline/FeatureUnion/_log_message": {
+      "target": "sklearn/sklearn.pipeline/FeatureUnion/_log_message",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.pipeline/FeatureUnion/_sk_visual_block_": {
+      "target": "sklearn/sklearn.pipeline/FeatureUnion/_sk_visual_block_",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.pipeline/FeatureUnion/_validate_transformer_weights": {
+      "target": "sklearn/sklearn.pipeline/FeatureUnion/_validate_transformer_weights",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.pipeline/FeatureUnion/get_params": {
+      "target": "sklearn/sklearn.pipeline/FeatureUnion/get_params",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.pipeline/FeatureUnion/n_features_in_@getter": {
+      "target": "sklearn/sklearn.pipeline/FeatureUnion/n_features_in_@getter",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.pipeline/Pipeline/__getitem__": {
+      "target": "sklearn/sklearn.pipeline/Pipeline/__getitem__",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.pipeline/Pipeline/__len__": {
+      "target": "sklearn/sklearn.pipeline/Pipeline/__len__",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.pipeline/Pipeline/_check_fit_params": {
+      "target": "sklearn/sklearn.pipeline/Pipeline/_check_fit_params",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.pipeline/Pipeline/_estimator_type@getter": {
+      "target": "sklearn/sklearn.pipeline/Pipeline/_estimator_type@getter",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.pipeline/Pipeline/_final_estimator@getter": {
+      "target": "sklearn/sklearn.pipeline/Pipeline/_final_estimator@getter",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.pipeline/Pipeline/_fit": {
+      "target": "sklearn/sklearn.pipeline/Pipeline/_fit",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.pipeline/Pipeline/_log_message": {
+      "target": "sklearn/sklearn.pipeline/Pipeline/_log_message",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.pipeline/Pipeline/_more_tags": {
+      "target": "sklearn/sklearn.pipeline/Pipeline/_more_tags",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.pipeline/Pipeline/_sk_visual_block_": {
+      "target": "sklearn/sklearn.pipeline/Pipeline/_sk_visual_block_",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.pipeline/Pipeline/_validate_steps": {
+      "target": "sklearn/sklearn.pipeline/Pipeline/_validate_steps",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.pipeline/Pipeline/classes_@getter": {
+      "target": "sklearn/sklearn.pipeline/Pipeline/classes_@getter",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.pipeline/Pipeline/fit_predict": {
+      "target": "sklearn/sklearn.pipeline/Pipeline/fit_predict",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.pipeline/Pipeline/n_features_in_@getter": {
+      "target": "sklearn/sklearn.pipeline/Pipeline/n_features_in_@getter",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.pipeline/Pipeline/named_steps@getter": {
+      "target": "sklearn/sklearn.pipeline/Pipeline/named_steps@getter",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.pipeline/Pipeline/score_samples": {
+      "target": "sklearn/sklearn.pipeline/Pipeline/score_samples",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.random_projection/BaseRandomProjection/_make_random_matrix": {
+      "target": "sklearn/sklearn.random_projection/BaseRandomProjection/_make_random_matrix",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.random_projection/GaussianRandomProjection/_make_random_matrix": {
+      "target": "sklearn/sklearn.random_projection/GaussianRandomProjection/_make_random_matrix",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.random_projection/SparseRandomProjection/_make_random_matrix": {
+      "target": "sklearn/sklearn.random_projection/SparseRandomProjection/_make_random_matrix",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.dummy/DummyClassifier": {
+      "target": "sklearn/sklearn.dummy/DummyClassifier",
+      "authors": [
+        "jofaul",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.dummy/DummyRegressor": {
+      "target": "sklearn/sklearn.dummy/DummyRegressor",
+      "authors": [
+        "jofaul",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "reviewResult": ""
+    }
+  },
+  "todoAnnotations": {
+    "sklearn/sklearn.kernel_ridge/KernelRidge/__init__/kernel": {
+      "target": "sklearn/sklearn.kernel_ridge/KernelRidge/__init__/kernel",
+      "authors": [
+        "jofaul",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "Add enum for metrixs?",
+      "reviewResult": "correct"
+    },
+    "sklearn/sklearn.base/ClassifierMixin/score/sample_weight": {
+      "target": "sklearn/sklearn.base/ClassifierMixin/score/sample_weight",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'constant' and the default Value 'None ( type: none )' from the previous version was at 'sklearn/sklearn.base/ClassifierMixin/score/sample_weight' and the possible alternatives in the new version of the api are: sklearn/sklearn.base/ClassifierMixin/score/sample_weight",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.base/ClusterMixin/fit_predict/y": {
+      "target": "sklearn/sklearn.base/ClusterMixin/fit_predict/y",
+      "authors": [
+        "lars-reimann",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'optional' and the default Value 'None ( type: none )' from the previous version was at 'sklearn/sklearn.base/ClusterMixin/fit_predict/y' and the possible alternatives in the new version of the api are: sklearn/sklearn.base/ClusterMixin/fit_predict/y",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.base/OutlierMixin/fit_predict/y": {
+      "target": "sklearn/sklearn.base/OutlierMixin/fit_predict/y",
+      "authors": [
+        "lars-reimann",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'optional' and the default Value 'None ( type: none )' from the previous version was at 'sklearn/sklearn.base/OutlierMixin/fit_predict/y' and the possible alternatives in the new version of the api are: sklearn/sklearn.base/OutlierMixin/fit_predict/y",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.calibration/CalibratedClassifierCV/fit/sample_weight": {
+      "target": "sklearn/sklearn.calibration/CalibratedClassifierCV/fit/sample_weight",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'constant' and the default Value 'None ( type: none )' from the previous version was at 'sklearn/sklearn.calibration/CalibratedClassifierCV/fit/sample_weight' and the possible alternatives in the new version of the api are: sklearn/sklearn.calibration/CalibratedClassifierCV/fit/sample_weight",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.discriminant_analysis/LinearDiscriminantAnalysis/__init__/priors": {
+      "target": "sklearn/sklearn.discriminant_analysis/LinearDiscriminantAnalysis/__init__/priors",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'constant' and the default Value 'None ( type: none )' from the previous version was at 'sklearn/sklearn.discriminant_analysis/LinearDiscriminantAnalysis/__init__/priors' and the possible alternatives in the new version of the api are: sklearn/sklearn.discriminant_analysis/LinearDiscriminantAnalysis/__init__/priors",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.discriminant_analysis/LinearDiscriminantAnalysis/__init__/covariance_estimator": {
+      "target": "sklearn/sklearn.discriminant_analysis/LinearDiscriminantAnalysis/__init__/covariance_estimator",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'constant' and the default Value 'None ( type: none )' from the previous version was at 'sklearn/sklearn.discriminant_analysis/LinearDiscriminantAnalysis/__init__/covariance_estimator' and the possible alternatives in the new version of the api are: sklearn/sklearn.discriminant_analysis/LinearDiscriminantAnalysis/__init__/covariance_estimator",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.dummy/DummyClassifier/fit/sample_weight": {
+      "target": "sklearn/sklearn.dummy/DummyClassifier/fit/sample_weight",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'constant' and the default Value 'None ( type: none )' from the previous version was at 'sklearn/sklearn.dummy/DummyClassifier/fit/sample_weight' and the possible alternatives in the new version of the api are: sklearn/sklearn.dummy/DummyClassifier/fit/sample_weight",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.dummy/DummyClassifier/score/sample_weight": {
+      "target": "sklearn/sklearn.dummy/DummyClassifier/score/sample_weight",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'constant' and the default Value 'None ( type: none )' from the previous version was at 'sklearn/sklearn.dummy/DummyClassifier/score/sample_weight' and the possible alternatives in the new version of the api are: sklearn/sklearn.dummy/DummyClassifier/score/sample_weight",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.dummy/DummyRegressor/fit/sample_weight": {
+      "target": "sklearn/sklearn.dummy/DummyRegressor/fit/sample_weight",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'constant' and the default Value 'None ( type: none )' from the previous version was at 'sklearn/sklearn.dummy/DummyRegressor/fit/sample_weight' and the possible alternatives in the new version of the api are: sklearn/sklearn.dummy/DummyRegressor/fit/sample_weight",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.dummy/DummyRegressor/score/sample_weight": {
+      "target": "sklearn/sklearn.dummy/DummyRegressor/score/sample_weight",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'constant' and the default Value 'None ( type: none )' from the previous version was at 'sklearn/sklearn.dummy/DummyRegressor/score/sample_weight' and the possible alternatives in the new version of the api are: sklearn/sklearn.dummy/DummyRegressor/score/sample_weight",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.isotonic/IsotonicRegression/fit/sample_weight": {
+      "target": "sklearn/sklearn.isotonic/IsotonicRegression/fit/sample_weight",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'constant' and the default Value 'None ( type: none )' from the previous version was at 'sklearn/sklearn.isotonic/IsotonicRegression/fit/sample_weight' and the possible alternatives in the new version of the api are: sklearn/sklearn.isotonic/IsotonicRegression/fit/sample_weight",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.kernel_approximation/Nystroem/__init__/kernel_params": {
+      "target": "sklearn/sklearn.kernel_approximation/Nystroem/__init__/kernel_params",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'constant' and the default Value 'None ( type: none )' from the previous version was at 'sklearn/sklearn.kernel_approximation/Nystroem/__init__/kernel_params' and the possible alternatives in the new version of the api are: sklearn/sklearn.kernel_approximation/Nystroem/__init__/kernel_params",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.kernel_ridge/KernelRidge/__init__/kernel_params": {
+      "target": "sklearn/sklearn.kernel_ridge/KernelRidge/__init__/kernel_params",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'constant' and the default Value 'None ( type: none )' from the previous version was at 'sklearn/sklearn.kernel_ridge/KernelRidge/__init__/kernel_params' and the possible alternatives in the new version of the api are: sklearn/sklearn.kernel_ridge/KernelRidge/__init__/kernel_params",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.multioutput/MultiOutputClassifier/fit/sample_weight": {
+      "target": "sklearn/sklearn.multioutput/MultiOutputClassifier/fit/sample_weight",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'constant' and the default Value 'None ( type: none )' from the previous version was at 'sklearn/sklearn.multioutput/MultiOutputClassifier/fit/sample_weight' and the possible alternatives in the new version of the api are: sklearn/sklearn.multioutput/MultiOutputClassifier/fit/sample_weight",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.multioutput/_MultiOutputEstimator/fit/sample_weight": {
+      "target": "sklearn/sklearn.multioutput/_MultiOutputEstimator/fit/sample_weight",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'constant' and the default Value 'None ( type: none )' from the previous version was at 'sklearn/sklearn.multioutput/_MultiOutputEstimator/fit/sample_weight' and the possible alternatives in the new version of the api are: sklearn/sklearn.multioutput/_MultiOutputEstimator/fit/sample_weight",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.naive_bayes/CategoricalNB/__init__/class_prior": {
+      "target": "sklearn/sklearn.naive_bayes/CategoricalNB/__init__/class_prior",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'constant' and the default Value 'None ( type: none )' from the previous version was at 'sklearn/sklearn.naive_bayes/CategoricalNB/__init__/class_prior' and the possible alternatives in the new version of the api are: sklearn/sklearn.naive_bayes/CategoricalNB/__init__/class_prior",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.naive_bayes/CategoricalNB/fit/sample_weight": {
+      "target": "sklearn/sklearn.naive_bayes/CategoricalNB/fit/sample_weight",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'constant' and the default Value 'None ( type: none )' from the previous version was at 'sklearn/sklearn.naive_bayes/CategoricalNB/fit/sample_weight' and the possible alternatives in the new version of the api are: sklearn/sklearn.naive_bayes/CategoricalNB/fit/sample_weight",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.naive_bayes/ComplementNB/__init__/class_prior": {
+      "target": "sklearn/sklearn.naive_bayes/ComplementNB/__init__/class_prior",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'constant' and the default Value 'None ( type: none )' from the previous version was at 'sklearn/sklearn.naive_bayes/ComplementNB/__init__/class_prior' and the possible alternatives in the new version of the api are: sklearn/sklearn.naive_bayes/ComplementNB/__init__/class_prior",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.naive_bayes/GaussianNB/partial_fit/sample_weight": {
+      "target": "sklearn/sklearn.naive_bayes/GaussianNB/partial_fit/sample_weight",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'constant' and the default Value 'None ( type: none )' from the previous version was at 'sklearn/sklearn.naive_bayes/GaussianNB/partial_fit/sample_weight' and the possible alternatives in the new version of the api are: sklearn/sklearn.naive_bayes/GaussianNB/partial_fit/sample_weight",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.naive_bayes/_BaseDiscreteNB/partial_fit/sample_weight": {
+      "target": "sklearn/sklearn.naive_bayes/_BaseDiscreteNB/partial_fit/sample_weight",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'constant' and the default Value 'None ( type: none )' from the previous version was at 'sklearn/sklearn.naive_bayes/_BaseDiscreteNB/partial_fit/sample_weight' and the possible alternatives in the new version of the api are: sklearn/sklearn.naive_bayes/_BaseDiscreteNB/partial_fit/sample_weight",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.pipeline/Pipeline/score/sample_weight": {
+      "target": "sklearn/sklearn.pipeline/Pipeline/score/sample_weight",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'constant' and the default Value 'None ( type: none )' from the previous version was at 'sklearn/sklearn.pipeline/Pipeline/score/sample_weight' and the possible alternatives in the new version of the api are: sklearn/sklearn.pipeline/Pipeline/score/sample_weight",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.base/RegressorMixin/score/sample_weight": {
+      "target": "sklearn/sklearn.base/RegressorMixin/score/sample_weight",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'optional' and the default Value 'None ( type: none )' from the previous version was at 'sklearn/sklearn.base/RegressorMixin/score/sample_weight' and the possible alternatives in the new version of the api are: sklearn/sklearn.base/RegressorMixin/score/sample_weight",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.base/TransformerMixin/fit_transform/y": {
+      "target": "sklearn/sklearn.base/TransformerMixin/fit_transform/y",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'optional' and the default Value 'None ( type: none )' from the previous version was at 'sklearn/sklearn.base/TransformerMixin/fit_transform/y' and the possible alternatives in the new version of the api are: sklearn/sklearn.base/TransformerMixin/fit_transform/y",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.calibration/CalibratedClassifierCV/__init__/method": {
+      "target": "sklearn/sklearn.calibration/CalibratedClassifierCV/__init__/method",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "Arsam"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'optional' and the default Value 'sigmoid ( type: string )' from the previous version was at 'sklearn/sklearn.calibration/CalibratedClassifierCV/__init__/method' and the possible alternatives in the new version of the api are: sklearn/sklearn.calibration/CalibratedClassifierCV/__init__/method",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.discriminant_analysis/LinearDiscriminantAnalysis/__init__/solver": {
+      "target": "sklearn/sklearn.discriminant_analysis/LinearDiscriminantAnalysis/__init__/solver",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'optional' and the default Value 'svd ( type: string )' from the previous version was at 'sklearn/sklearn.discriminant_analysis/LinearDiscriminantAnalysis/__init__/solver' and the possible alternatives in the new version of the api are: sklearn/sklearn.discriminant_analysis/LinearDiscriminantAnalysis/__init__/solver",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.discriminant_analysis/QuadraticDiscriminantAnalysis/__init__/priors": {
+      "target": "sklearn/sklearn.discriminant_analysis/QuadraticDiscriminantAnalysis/__init__/priors",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'optional' and the default Value 'None ( type: none )' from the previous version was at 'sklearn/sklearn.discriminant_analysis/QuadraticDiscriminantAnalysis/__init__/priors' and the possible alternatives in the new version of the api are: sklearn/sklearn.discriminant_analysis/QuadraticDiscriminantAnalysis/__init__/priors",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.isotonic/IsotonicRegression/__init__/out_of_bounds": {
+      "target": "sklearn/sklearn.isotonic/IsotonicRegression/__init__/out_of_bounds",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lukarade"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'optional' and the default Value 'nan ( type: string )' from the previous version was at 'sklearn/sklearn.isotonic/IsotonicRegression/__init__/out_of_bounds' and the possible alternatives in the new version of the api are: sklearn/sklearn.isotonic/IsotonicRegression/__init__/out_of_bounds",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.naive_bayes/BernoulliNB/__init__/class_prior": {
+      "target": "sklearn/sklearn.naive_bayes/BernoulliNB/__init__/class_prior",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'optional' and the default Value 'None ( type: none )' from the previous version was at 'sklearn/sklearn.naive_bayes/BernoulliNB/__init__/class_prior' and the possible alternatives in the new version of the api are: sklearn/sklearn.naive_bayes/BernoulliNB/__init__/class_prior",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.naive_bayes/GaussianNB/__init__/priors": {
+      "target": "sklearn/sklearn.naive_bayes/GaussianNB/__init__/priors",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'optional' and the default Value 'None ( type: none )' from the previous version was at 'sklearn/sklearn.naive_bayes/GaussianNB/__init__/priors' and the possible alternatives in the new version of the api are: sklearn/sklearn.naive_bayes/GaussianNB/__init__/priors",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.naive_bayes/GaussianNB/fit/sample_weight": {
+      "target": "sklearn/sklearn.naive_bayes/GaussianNB/fit/sample_weight",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'optional' and the default Value 'None ( type: none )' from the previous version was at 'sklearn/sklearn.naive_bayes/GaussianNB/fit/sample_weight' and the possible alternatives in the new version of the api are: sklearn/sklearn.naive_bayes/GaussianNB/fit/sample_weight",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.naive_bayes/MultinomialNB/__init__/class_prior": {
+      "target": "sklearn/sklearn.naive_bayes/MultinomialNB/__init__/class_prior",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'optional' and the default Value 'None ( type: none )' from the previous version was at 'sklearn/sklearn.naive_bayes/MultinomialNB/__init__/class_prior' and the possible alternatives in the new version of the api are: sklearn/sklearn.naive_bayes/MultinomialNB/__init__/class_prior",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.naive_bayes/_BaseDiscreteNB/fit/sample_weight": {
+      "target": "sklearn/sklearn.naive_bayes/_BaseDiscreteNB/fit/sample_weight",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.naive_bayes/_BaseDiscreteNB/fit/sample_weight' and the possible alternatives in the new version of the api are: sklearn/sklearn.naive_bayes/_BaseDiscreteNB/fit/sample_weight",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.naive_bayes/_BaseDiscreteNB/partial_fit/classes": {
+      "target": "sklearn/sklearn.naive_bayes/_BaseDiscreteNB/partial_fit/classes",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.naive_bayes/_BaseDiscreteNB/partial_fit/classes' and the possible alternatives in the new version of the api are: sklearn/sklearn.naive_bayes/_BaseDiscreteNB/partial_fit/classes",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.pipeline/FeatureUnion/__init__/transformer_weights": {
+      "target": "sklearn/sklearn.pipeline/FeatureUnion/__init__/transformer_weights",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'optional' and the default Value 'None ( type: none )' from the previous version was at 'sklearn/sklearn.pipeline/FeatureUnion/__init__/transformer_weights' and the possible alternatives in the new version of the api are: sklearn/sklearn.pipeline/FeatureUnion/__init__/transformer_weights",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.pipeline/FeatureUnion/fit/y": {
+      "target": "sklearn/sklearn.pipeline/FeatureUnion/fit/y",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'optional' and the default Value 'None ( type: none )' from the previous version was at 'sklearn/sklearn.pipeline/FeatureUnion/fit/y' and the possible alternatives in the new version of the api are: sklearn/sklearn.pipeline/FeatureUnion/fit/y",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.pipeline/FeatureUnion/fit_transform/y": {
+      "target": "sklearn/sklearn.pipeline/FeatureUnion/fit_transform/y",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'optional' and the default Value 'None ( type: none )' from the previous version was at 'sklearn/sklearn.pipeline/FeatureUnion/fit_transform/y' and the possible alternatives in the new version of the api are: sklearn/sklearn.pipeline/FeatureUnion/fit_transform/y",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.pipeline/Pipeline/fit_transform/y": {
+      "target": "sklearn/sklearn.pipeline/Pipeline/fit_transform/y",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'optional' and the default Value 'None ( type: none )' from the previous version was at 'sklearn/sklearn.pipeline/Pipeline/fit_transform/y' and the possible alternatives in the new version of the api are: sklearn/sklearn.pipeline/Pipeline/fit_transform/y",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.base/ClassifierMixin/score/X": {
+      "target": "sklearn/sklearn.base/ClassifierMixin/score/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.base/ClassifierMixin/score/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.base/ClassifierMixin/score/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.base/ClassifierMixin/score/y": {
+      "target": "sklearn/sklearn.base/ClassifierMixin/score/y",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.base/ClassifierMixin/score/y' and the possible alternatives in the new version of the api are: sklearn/sklearn.base/ClassifierMixin/score/y",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.base/ClusterMixin/fit_predict/X": {
+      "target": "sklearn/sklearn.base/ClusterMixin/fit_predict/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.base/ClusterMixin/fit_predict/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.base/ClusterMixin/fit_predict/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.base/OutlierMixin/fit_predict/X": {
+      "target": "sklearn/sklearn.base/OutlierMixin/fit_predict/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.base/OutlierMixin/fit_predict/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.base/OutlierMixin/fit_predict/X",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.base/RegressorMixin/score/X": {
+      "target": "sklearn/sklearn.base/RegressorMixin/score/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.base/RegressorMixin/score/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.base/RegressorMixin/score/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.base/RegressorMixin/score/y": {
+      "target": "sklearn/sklearn.base/RegressorMixin/score/y",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.base/RegressorMixin/score/y' and the possible alternatives in the new version of the api are: sklearn/sklearn.base/RegressorMixin/score/y",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.base/TransformerMixin/fit_transform/X": {
+      "target": "sklearn/sklearn.base/TransformerMixin/fit_transform/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.base/TransformerMixin/fit_transform/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.base/TransformerMixin/fit_transform/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.calibration/CalibratedClassifierCV/__init__/estimator": {
+      "target": "sklearn/sklearn.calibration/CalibratedClassifierCV/__init__/estimator",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "Arsam"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.calibration/CalibratedClassifierCV/__init__/base_estimator' and the possible alternatives in the new version of the api are: sklearn/sklearn.calibration/CalibratedClassifierCV/__init__/estimator",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.calibration/CalibratedClassifierCV/fit/X": {
+      "target": "sklearn/sklearn.calibration/CalibratedClassifierCV/fit/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "Arsam"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.calibration/CalibratedClassifierCV/fit/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.calibration/CalibratedClassifierCV/fit/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.calibration/CalibratedClassifierCV/fit/y": {
+      "target": "sklearn/sklearn.calibration/CalibratedClassifierCV/fit/y",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "Arsam"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.calibration/CalibratedClassifierCV/fit/y' and the possible alternatives in the new version of the api are: sklearn/sklearn.calibration/CalibratedClassifierCV/fit/y",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.calibration/CalibratedClassifierCV/predict/X": {
+      "target": "sklearn/sklearn.calibration/CalibratedClassifierCV/predict/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "Arsam"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.calibration/CalibratedClassifierCV/predict/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.calibration/CalibratedClassifierCV/predict/X",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.calibration/CalibratedClassifierCV/predict_proba/X": {
+      "target": "sklearn/sklearn.calibration/CalibratedClassifierCV/predict_proba/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "Arsam"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.calibration/CalibratedClassifierCV/predict_proba/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.calibration/CalibratedClassifierCV/predict_proba/X",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.discriminant_analysis/LinearDiscriminantAnalysis/fit/X": {
+      "target": "sklearn/sklearn.discriminant_analysis/LinearDiscriminantAnalysis/fit/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.discriminant_analysis/LinearDiscriminantAnalysis/fit/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.discriminant_analysis/LinearDiscriminantAnalysis/fit/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.discriminant_analysis/LinearDiscriminantAnalysis/fit/y": {
+      "target": "sklearn/sklearn.discriminant_analysis/LinearDiscriminantAnalysis/fit/y",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.discriminant_analysis/LinearDiscriminantAnalysis/fit/y' and the possible alternatives in the new version of the api are: sklearn/sklearn.discriminant_analysis/LinearDiscriminantAnalysis/fit/y",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.discriminant_analysis/LinearDiscriminantAnalysis/predict_proba/X": {
+      "target": "sklearn/sklearn.discriminant_analysis/LinearDiscriminantAnalysis/predict_proba/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.discriminant_analysis/LinearDiscriminantAnalysis/predict_proba/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.discriminant_analysis/LinearDiscriminantAnalysis/predict_proba/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.discriminant_analysis/LinearDiscriminantAnalysis/transform/X": {
+      "target": "sklearn/sklearn.discriminant_analysis/LinearDiscriminantAnalysis/transform/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.discriminant_analysis/LinearDiscriminantAnalysis/transform/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.discriminant_analysis/LinearDiscriminantAnalysis/transform/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.discriminant_analysis/QuadraticDiscriminantAnalysis/fit/X": {
+      "target": "sklearn/sklearn.discriminant_analysis/QuadraticDiscriminantAnalysis/fit/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.discriminant_analysis/QuadraticDiscriminantAnalysis/fit/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.discriminant_analysis/QuadraticDiscriminantAnalysis/fit/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.discriminant_analysis/QuadraticDiscriminantAnalysis/fit/y": {
+      "target": "sklearn/sklearn.discriminant_analysis/QuadraticDiscriminantAnalysis/fit/y",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.discriminant_analysis/QuadraticDiscriminantAnalysis/fit/y' and the possible alternatives in the new version of the api are: sklearn/sklearn.discriminant_analysis/QuadraticDiscriminantAnalysis/fit/y",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.discriminant_analysis/QuadraticDiscriminantAnalysis/predict/X": {
+      "target": "sklearn/sklearn.discriminant_analysis/QuadraticDiscriminantAnalysis/predict/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.discriminant_analysis/QuadraticDiscriminantAnalysis/predict/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.discriminant_analysis/QuadraticDiscriminantAnalysis/predict/X",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.discriminant_analysis/QuadraticDiscriminantAnalysis/predict_proba/X": {
+      "target": "sklearn/sklearn.discriminant_analysis/QuadraticDiscriminantAnalysis/predict_proba/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.discriminant_analysis/QuadraticDiscriminantAnalysis/predict_proba/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.discriminant_analysis/QuadraticDiscriminantAnalysis/predict_proba/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.dummy/DummyClassifier/__init__/strategy": {
+      "target": "sklearn/sklearn.dummy/DummyClassifier/__init__/strategy",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.dummy/DummyClassifier/__init__/strategy' and the possible alternatives in the new version of the api are: sklearn/sklearn.dummy/DummyClassifier/__init__/strategy",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.dummy/DummyClassifier/fit/X": {
+      "target": "sklearn/sklearn.dummy/DummyClassifier/fit/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.dummy/DummyClassifier/fit/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.dummy/DummyClassifier/fit/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.dummy/DummyClassifier/fit/y": {
+      "target": "sklearn/sklearn.dummy/DummyClassifier/fit/y",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.dummy/DummyClassifier/fit/y' and the possible alternatives in the new version of the api are: sklearn/sklearn.dummy/DummyClassifier/fit/y",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.dummy/DummyClassifier/predict/X": {
+      "target": "sklearn/sklearn.dummy/DummyClassifier/predict/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.dummy/DummyClassifier/predict/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.dummy/DummyClassifier/predict/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.dummy/DummyClassifier/predict_proba/X": {
+      "target": "sklearn/sklearn.dummy/DummyClassifier/predict_proba/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.dummy/DummyClassifier/predict_proba/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.dummy/DummyClassifier/predict_proba/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.dummy/DummyClassifier/score/X": {
+      "target": "sklearn/sklearn.dummy/DummyClassifier/score/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.dummy/DummyClassifier/score/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.dummy/DummyClassifier/score/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.dummy/DummyClassifier/score/y": {
+      "target": "sklearn/sklearn.dummy/DummyClassifier/score/y",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.dummy/DummyClassifier/score/y' and the possible alternatives in the new version of the api are: sklearn/sklearn.dummy/DummyClassifier/score/y",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.dummy/DummyRegressor/__init__/strategy": {
+      "target": "sklearn/sklearn.dummy/DummyRegressor/__init__/strategy",
+      "authors": [
+        "$autogen$",
+        "lars-reimann",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'optional' and the default Value 'median ( type: string )' from the previous version was at 'sklearn/sklearn.dummy/DummyRegressor/__init__/strategy' and the possible alternatives in the new version of the api are: sklearn/sklearn.dummy/DummyRegressor/__init__/strategy",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.dummy/DummyRegressor/fit/X": {
+      "target": "sklearn/sklearn.dummy/DummyRegressor/fit/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.dummy/DummyRegressor/fit/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.dummy/DummyRegressor/fit/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.dummy/DummyRegressor/fit/y": {
+      "target": "sklearn/sklearn.dummy/DummyRegressor/fit/y",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.dummy/DummyRegressor/fit/y' and the possible alternatives in the new version of the api are: sklearn/sklearn.dummy/DummyRegressor/fit/y",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.dummy/DummyRegressor/predict/X": {
+      "target": "sklearn/sklearn.dummy/DummyRegressor/predict/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.dummy/DummyRegressor/predict/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.dummy/DummyRegressor/predict/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.isotonic/IsotonicRegression/fit/X": {
+      "target": "sklearn/sklearn.isotonic/IsotonicRegression/fit/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.isotonic/IsotonicRegression/fit/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.isotonic/IsotonicRegression/fit/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.isotonic/IsotonicRegression/fit/y": {
+      "target": "sklearn/sklearn.isotonic/IsotonicRegression/fit/y",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.isotonic/IsotonicRegression/fit/y' and the possible alternatives in the new version of the api are: sklearn/sklearn.isotonic/IsotonicRegression/fit/y",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.isotonic/IsotonicRegression/transform/T": {
+      "target": "sklearn/sklearn.isotonic/IsotonicRegression/transform/T",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lukarade"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.isotonic/IsotonicRegression/transform/T' and the possible alternatives in the new version of the api are: sklearn/sklearn.isotonic/IsotonicRegression/transform/T",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.kernel_approximation/Nystroem/transform/X": {
+      "target": "sklearn/sklearn.kernel_approximation/Nystroem/transform/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.kernel_approximation/Nystroem/transform/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.kernel_approximation/Nystroem/transform/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.kernel_ridge/KernelRidge/__init__/degree": {
+      "target": "sklearn/sklearn.kernel_ridge/KernelRidge/__init__/degree",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.kernel_ridge/KernelRidge/__init__/degree' and the possible alternatives in the new version of the api are: sklearn/sklearn.kernel_ridge/KernelRidge/__init__/degree",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.kernel_ridge/KernelRidge/fit/X": {
+      "target": "sklearn/sklearn.kernel_ridge/KernelRidge/fit/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.kernel_ridge/KernelRidge/fit/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.kernel_ridge/KernelRidge/fit/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.kernel_ridge/KernelRidge/fit/y": {
+      "target": "sklearn/sklearn.kernel_ridge/KernelRidge/fit/y",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.kernel_ridge/KernelRidge/fit/y' and the possible alternatives in the new version of the api are: sklearn/sklearn.kernel_ridge/KernelRidge/fit/y",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.kernel_ridge/KernelRidge/predict/X": {
+      "target": "sklearn/sklearn.kernel_ridge/KernelRidge/predict/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.kernel_ridge/KernelRidge/predict/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.kernel_ridge/KernelRidge/predict/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.multiclass/OneVsOneClassifier/fit/X": {
+      "target": "sklearn/sklearn.multiclass/OneVsOneClassifier/fit/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.multiclass/OneVsOneClassifier/fit/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.multiclass/OneVsOneClassifier/fit/X",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.multiclass/OneVsOneClassifier/fit/y": {
+      "target": "sklearn/sklearn.multiclass/OneVsOneClassifier/fit/y",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.multiclass/OneVsOneClassifier/fit/y' and the possible alternatives in the new version of the api are: sklearn/sklearn.multiclass/OneVsOneClassifier/fit/y",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.multiclass/OneVsOneClassifier/predict/X": {
+      "target": "sklearn/sklearn.multiclass/OneVsOneClassifier/predict/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.multiclass/OneVsOneClassifier/predict/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.multiclass/OneVsOneClassifier/predict/X",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.multiclass/OneVsRestClassifier/__init__/estimator": {
+      "target": "sklearn/sklearn.multiclass/OneVsRestClassifier/__init__/estimator",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.multiclass/OneVsRestClassifier/__init__/estimator' and the possible alternatives in the new version of the api are: sklearn/sklearn.multiclass/OneVsRestClassifier/__init__/estimator",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.multiclass/OneVsRestClassifier/decision_function/X": {
+      "target": "sklearn/sklearn.multiclass/OneVsRestClassifier/decision_function/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.multiclass/OneVsRestClassifier/decision_function/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.multiclass/OneVsRestClassifier/decision_function/X",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.multiclass/OneVsRestClassifier/fit/X": {
+      "target": "sklearn/sklearn.multiclass/OneVsRestClassifier/fit/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.multiclass/OneVsRestClassifier/fit/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.multiclass/OneVsRestClassifier/fit/X",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.multiclass/OneVsRestClassifier/fit/y": {
+      "target": "sklearn/sklearn.multiclass/OneVsRestClassifier/fit/y",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.multiclass/OneVsRestClassifier/fit/y' and the possible alternatives in the new version of the api are: sklearn/sklearn.multiclass/OneVsRestClassifier/fit/y",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.multiclass/OneVsRestClassifier/predict/X": {
+      "target": "sklearn/sklearn.multiclass/OneVsRestClassifier/predict/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.multiclass/OneVsRestClassifier/predict/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.multiclass/OneVsRestClassifier/predict/X",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.multioutput/MultiOutputClassifier/fit/X": {
+      "target": "sklearn/sklearn.multioutput/MultiOutputClassifier/fit/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.multioutput/MultiOutputClassifier/fit/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.multioutput/MultiOutputClassifier/fit/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.multioutput/MultiOutputClassifier/fit/Y": {
+      "target": "sklearn/sklearn.multioutput/MultiOutputClassifier/fit/Y",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.multioutput/MultiOutputClassifier/fit/Y' and the possible alternatives in the new version of the api are: sklearn/sklearn.multioutput/MultiOutputClassifier/fit/Y",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.multioutput/MultiOutputClassifier/score/X": {
+      "target": "sklearn/sklearn.multioutput/MultiOutputClassifier/score/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.multioutput/MultiOutputClassifier/score/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.multioutput/MultiOutputClassifier/score/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.multioutput/MultiOutputClassifier/score/y": {
+      "target": "sklearn/sklearn.multioutput/MultiOutputClassifier/score/y",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.multioutput/MultiOutputClassifier/score/y' and the possible alternatives in the new version of the api are: sklearn/sklearn.multioutput/MultiOutputClassifier/score/y",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.multioutput/MultiOutputRegressor/__init__/estimator": {
+      "target": "sklearn/sklearn.multioutput/MultiOutputRegressor/__init__/estimator",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.multioutput/MultiOutputRegressor/__init__/estimator' and the possible alternatives in the new version of the api are: sklearn/sklearn.multioutput/MultiOutputRegressor/__init__/estimator",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.multioutput/RegressorChain/fit/X": {
+      "target": "sklearn/sklearn.multioutput/RegressorChain/fit/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.multioutput/RegressorChain/fit/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.multioutput/RegressorChain/fit/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.multioutput/RegressorChain/fit/Y": {
+      "target": "sklearn/sklearn.multioutput/RegressorChain/fit/Y",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.multioutput/RegressorChain/fit/Y' and the possible alternatives in the new version of the api are: sklearn/sklearn.multioutput/RegressorChain/fit/Y",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.multioutput/_BaseChain/predict/X": {
+      "target": "sklearn/sklearn.multioutput/_BaseChain/predict/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.multioutput/_BaseChain/predict/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.multioutput/_BaseChain/predict/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.multioutput/_MultiOutputEstimator/fit/X": {
+      "target": "sklearn/sklearn.multioutput/_MultiOutputEstimator/fit/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.multioutput/_MultiOutputEstimator/fit/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.multioutput/_MultiOutputEstimator/fit/X",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.multioutput/_MultiOutputEstimator/fit/y": {
+      "target": "sklearn/sklearn.multioutput/_MultiOutputEstimator/fit/y",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.multioutput/_MultiOutputEstimator/fit/y' and the possible alternatives in the new version of the api are: sklearn/sklearn.multioutput/_MultiOutputEstimator/fit/y",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.multioutput/_MultiOutputEstimator/predict/X": {
+      "target": "sklearn/sklearn.multioutput/_MultiOutputEstimator/predict/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.multioutput/_MultiOutputEstimator/predict/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.multioutput/_MultiOutputEstimator/predict/X",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.naive_bayes/CategoricalNB/fit/X": {
+      "target": "sklearn/sklearn.naive_bayes/CategoricalNB/fit/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.naive_bayes/CategoricalNB/fit/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.naive_bayes/CategoricalNB/fit/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.naive_bayes/CategoricalNB/fit/y": {
+      "target": "sklearn/sklearn.naive_bayes/CategoricalNB/fit/y",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.naive_bayes/CategoricalNB/fit/y' and the possible alternatives in the new version of the api are: sklearn/sklearn.naive_bayes/CategoricalNB/fit/y",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.naive_bayes/GaussianNB/fit/X": {
+      "target": "sklearn/sklearn.naive_bayes/GaussianNB/fit/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.naive_bayes/GaussianNB/fit/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.naive_bayes/GaussianNB/fit/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.naive_bayes/GaussianNB/fit/y": {
+      "target": "sklearn/sklearn.naive_bayes/GaussianNB/fit/y",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.naive_bayes/GaussianNB/fit/y' and the possible alternatives in the new version of the api are: sklearn/sklearn.naive_bayes/GaussianNB/fit/y",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.naive_bayes/GaussianNB/partial_fit/X": {
+      "target": "sklearn/sklearn.naive_bayes/GaussianNB/partial_fit/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.naive_bayes/GaussianNB/partial_fit/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.naive_bayes/GaussianNB/partial_fit/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.naive_bayes/GaussianNB/partial_fit/y": {
+      "target": "sklearn/sklearn.naive_bayes/GaussianNB/partial_fit/y",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.naive_bayes/GaussianNB/partial_fit/y' and the possible alternatives in the new version of the api are: sklearn/sklearn.naive_bayes/GaussianNB/partial_fit/y",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.naive_bayes/GaussianNB/partial_fit/classes": {
+      "target": "sklearn/sklearn.naive_bayes/GaussianNB/partial_fit/classes",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.naive_bayes/GaussianNB/partial_fit/classes' and the possible alternatives in the new version of the api are: sklearn/sklearn.naive_bayes/GaussianNB/partial_fit/classes",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.naive_bayes/_BaseDiscreteNB/fit/X": {
+      "target": "sklearn/sklearn.naive_bayes/_BaseDiscreteNB/fit/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.naive_bayes/_BaseDiscreteNB/fit/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.naive_bayes/_BaseDiscreteNB/fit/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.naive_bayes/_BaseDiscreteNB/fit/y": {
+      "target": "sklearn/sklearn.naive_bayes/_BaseDiscreteNB/fit/y",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.naive_bayes/_BaseDiscreteNB/fit/y' and the possible alternatives in the new version of the api are: sklearn/sklearn.naive_bayes/_BaseDiscreteNB/fit/y",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.naive_bayes/_BaseDiscreteNB/partial_fit/y": {
+      "target": "sklearn/sklearn.naive_bayes/_BaseDiscreteNB/partial_fit/y",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.naive_bayes/_BaseDiscreteNB/partial_fit/y' and the possible alternatives in the new version of the api are: sklearn/sklearn.naive_bayes/_BaseDiscreteNB/partial_fit/y",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.naive_bayes/_BaseNB/predict/X": {
+      "target": "sklearn/sklearn.naive_bayes/_BaseNB/predict/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.naive_bayes/_BaseNB/predict/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.naive_bayes/_BaseNB/predict/X",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.naive_bayes/_BaseNB/predict_log_proba/X": {
+      "target": "sklearn/sklearn.naive_bayes/_BaseNB/predict_log_proba/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.naive_bayes/_BaseNB/predict_log_proba/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.naive_bayes/_BaseNB/predict_log_proba/X",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.naive_bayes/_BaseNB/predict_proba/X": {
+      "target": "sklearn/sklearn.naive_bayes/_BaseNB/predict_proba/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.naive_bayes/_BaseNB/predict_proba/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.naive_bayes/_BaseNB/predict_proba/X",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.pipeline/FeatureUnion/fit/X": {
+      "target": "sklearn/sklearn.pipeline/FeatureUnion/fit/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.pipeline/FeatureUnion/fit/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.pipeline/FeatureUnion/fit/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.pipeline/FeatureUnion/fit_transform/X": {
+      "target": "sklearn/sklearn.pipeline/FeatureUnion/fit_transform/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.pipeline/FeatureUnion/fit_transform/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.pipeline/FeatureUnion/fit_transform/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.pipeline/FeatureUnion/transform/X": {
+      "target": "sklearn/sklearn.pipeline/FeatureUnion/transform/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.pipeline/FeatureUnion/transform/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.pipeline/FeatureUnion/transform/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.pipeline/Pipeline/decision_function/X": {
+      "target": "sklearn/sklearn.pipeline/Pipeline/decision_function/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.pipeline/Pipeline/decision_function/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.pipeline/Pipeline/decision_function/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.pipeline/Pipeline/fit/X": {
+      "target": "sklearn/sklearn.pipeline/Pipeline/fit/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.pipeline/Pipeline/fit/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.pipeline/Pipeline/fit/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.pipeline/Pipeline/fit/y": {
+      "target": "sklearn/sklearn.pipeline/Pipeline/fit/y",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.pipeline/Pipeline/fit/y' and the possible alternatives in the new version of the api are: sklearn/sklearn.pipeline/Pipeline/fit/y",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.pipeline/Pipeline/fit_transform/X": {
+      "target": "sklearn/sklearn.pipeline/Pipeline/fit_transform/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.pipeline/Pipeline/fit_transform/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.pipeline/Pipeline/fit_transform/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.pipeline/Pipeline/predict/X": {
+      "target": "sklearn/sklearn.pipeline/Pipeline/predict/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.pipeline/Pipeline/predict/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.pipeline/Pipeline/predict/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.pipeline/Pipeline/predict_proba/X": {
+      "target": "sklearn/sklearn.pipeline/Pipeline/predict_proba/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.pipeline/Pipeline/predict_proba/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.pipeline/Pipeline/predict_proba/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.pipeline/Pipeline/score/X": {
+      "target": "sklearn/sklearn.pipeline/Pipeline/score/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.pipeline/Pipeline/score/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.pipeline/Pipeline/score/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.pipeline/Pipeline/score/y": {
+      "target": "sklearn/sklearn.pipeline/Pipeline/score/y",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.pipeline/Pipeline/score/y' and the possible alternatives in the new version of the api are: sklearn/sklearn.pipeline/Pipeline/score/y",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.random_projection/BaseRandomProjection/fit/X": {
+      "target": "sklearn/sklearn.random_projection/BaseRandomProjection/fit/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "Arsam"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.random_projection/BaseRandomProjection/fit/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.random_projection/BaseRandomProjection/fit/X",
+      "reviewResult": ""
+    }
+  },
+  "valueAnnotations": {
+    "sklearn/sklearn.calibration/CalibratedClassifierCV/__init__/n_jobs": {
+      "target": "sklearn/sklearn.calibration/CalibratedClassifierCV/__init__/n_jobs",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "constant",
+      "defaultValueType": "none",
+      "defaultValue": null
+    },
+    "sklearn/sklearn.discriminant_analysis/LinearDiscriminantAnalysis/__init__/store_covariance": {
+      "target": "sklearn/sklearn.discriminant_analysis/LinearDiscriminantAnalysis/__init__/store_covariance",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "constant",
+      "defaultValueType": "boolean",
+      "defaultValue": false
+    },
+    "sklearn/sklearn.dummy/DummyRegressor/__init__/quantile": {
+      "target": "sklearn/sklearn.dummy/DummyRegressor/__init__/quantile",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "constant",
+      "defaultValueType": "none",
+      "defaultValue": null
+    },
+    "sklearn/sklearn.dummy/DummyRegressor/predict/return_std": {
+      "target": "sklearn/sklearn.dummy/DummyRegressor/predict/return_std",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "constant",
+      "defaultValueType": "boolean",
+      "defaultValue": false
+    },
+    "sklearn/sklearn.isotonic/IsotonicRegression/__init__/increasing": {
+      "target": "sklearn/sklearn.isotonic/IsotonicRegression/__init__/increasing",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "constant",
+      "defaultValueType": "boolean",
+      "defaultValue": true
+    },
+    "sklearn/sklearn.kernel_approximation/Nystroem/__init__/kernel": {
+      "target": "sklearn/sklearn.kernel_approximation/Nystroem/__init__/kernel",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "constant",
+      "defaultValueType": "string",
+      "defaultValue": "rbf"
+    },
+    "sklearn/sklearn.kernel_approximation/Nystroem/__init__/gamma": {
+      "target": "sklearn/sklearn.kernel_approximation/Nystroem/__init__/gamma",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "constant",
+      "defaultValueType": "none",
+      "defaultValue": null
+    },
+    "sklearn/sklearn.kernel_approximation/Nystroem/__init__/coef0": {
+      "target": "sklearn/sklearn.kernel_approximation/Nystroem/__init__/coef0",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "constant",
+      "defaultValueType": "none",
+      "defaultValue": null
+    },
+    "sklearn/sklearn.kernel_approximation/Nystroem/__init__/degree": {
+      "target": "sklearn/sklearn.kernel_approximation/Nystroem/__init__/degree",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "constant",
+      "defaultValueType": "none",
+      "defaultValue": null
+    },
+    "sklearn/sklearn.kernel_approximation/Nystroem/__init__/n_components": {
+      "target": "sklearn/sklearn.kernel_approximation/Nystroem/__init__/n_components",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "constant",
+      "defaultValueType": "number",
+      "defaultValue": 100
+    },
+    "sklearn/sklearn.kernel_approximation/Nystroem/__init__/n_jobs": {
+      "target": "sklearn/sklearn.kernel_approximation/Nystroem/__init__/n_jobs",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "constant",
+      "defaultValueType": "none",
+      "defaultValue": null
+    },
+    "sklearn/sklearn.kernel_approximation/RBFSampler/__init__/n_components": {
+      "target": "sklearn/sklearn.kernel_approximation/RBFSampler/__init__/n_components",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "constant",
+      "defaultValueType": "number",
+      "defaultValue": 100
+    },
+    "sklearn/sklearn.kernel_ridge/KernelRidge/fit/sample_weight": {
+      "target": "sklearn/sklearn.kernel_ridge/KernelRidge/fit/sample_weight",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "constant",
+      "defaultValueType": "none",
+      "defaultValue": null
+    },
+    "sklearn/sklearn.multiclass/OneVsOneClassifier/__init__/n_jobs": {
+      "target": "sklearn/sklearn.multiclass/OneVsOneClassifier/__init__/n_jobs",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "constant",
+      "defaultValueType": "none",
+      "defaultValue": null
+    },
+    "sklearn/sklearn.multioutput/_BaseChain/__init__/cv": {
+      "target": "sklearn/sklearn.multioutput/_BaseChain/__init__/cv",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "constant",
+      "defaultValueType": "none",
+      "defaultValue": null
+    },
+    "sklearn/sklearn.naive_bayes/CategoricalNB/__init__/fit_prior": {
+      "target": "sklearn/sklearn.naive_bayes/CategoricalNB/__init__/fit_prior",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "constant",
+      "defaultValueType": "boolean",
+      "defaultValue": true
+    },
+    "sklearn/sklearn.naive_bayes/CategoricalNB/__init__/min_categories": {
+      "target": "sklearn/sklearn.naive_bayes/CategoricalNB/__init__/min_categories",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "constant",
+      "defaultValueType": "none",
+      "defaultValue": null
+    },
+    "sklearn/sklearn.naive_bayes/ComplementNB/__init__/fit_prior": {
+      "target": "sklearn/sklearn.naive_bayes/ComplementNB/__init__/fit_prior",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "constant",
+      "defaultValueType": "boolean",
+      "defaultValue": true
+    },
+    "sklearn/sklearn.naive_bayes/ComplementNB/__init__/norm": {
+      "target": "sklearn/sklearn.naive_bayes/ComplementNB/__init__/norm",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "constant",
+      "defaultValueType": "boolean",
+      "defaultValue": false
+    },
+    "sklearn/sklearn.pipeline/Pipeline/_iter/filter_passthrough": {
+      "target": "sklearn/sklearn.pipeline/Pipeline/_iter/filter_passthrough",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "constant",
+      "defaultValueType": "boolean",
+      "defaultValue": true
+    },
+    "sklearn/sklearn.pipeline/Pipeline/get_params/deep": {
+      "target": "sklearn/sklearn.pipeline/Pipeline/get_params/deep",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "constant",
+      "defaultValueType": "boolean",
+      "defaultValue": true
+    },
+    "sklearn/sklearn.random_projection/SparseRandomProjection/__init__/density": {
+      "target": "sklearn/sklearn.random_projection/SparseRandomProjection/__init__/density",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "constant",
+      "defaultValueType": "string",
+      "defaultValue": "auto"
+    },
+    "sklearn/sklearn.base/BaseEstimator/get_params/deep": {
+      "target": "sklearn/sklearn.base/BaseEstimator/get_params/deep",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "boolean",
+      "defaultValue": true
+    },
+    "sklearn/sklearn.calibration/CalibratedClassifierCV/__init__/cv": {
+      "target": "sklearn/sklearn.calibration/CalibratedClassifierCV/__init__/cv",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "Arsam"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "none",
+      "defaultValue": null
+    },
+    "sklearn/sklearn.calibration/CalibratedClassifierCV/__init__/ensemble": {
+      "target": "sklearn/sklearn.calibration/CalibratedClassifierCV/__init__/ensemble",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "Arsam"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "boolean",
+      "defaultValue": true
+    },
+    "sklearn/sklearn.discriminant_analysis/LinearDiscriminantAnalysis/__init__/shrinkage": {
+      "target": "sklearn/sklearn.discriminant_analysis/LinearDiscriminantAnalysis/__init__/shrinkage",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "none",
+      "defaultValue": null
+    },
+    "sklearn/sklearn.discriminant_analysis/LinearDiscriminantAnalysis/__init__/n_components": {
+      "target": "sklearn/sklearn.discriminant_analysis/LinearDiscriminantAnalysis/__init__/n_components",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "none",
+      "defaultValue": null
+    },
+    "sklearn/sklearn.discriminant_analysis/LinearDiscriminantAnalysis/__init__/tol": {
+      "target": "sklearn/sklearn.discriminant_analysis/LinearDiscriminantAnalysis/__init__/tol",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "number",
+      "defaultValue": 0.0001
+    },
+    "sklearn/sklearn.discriminant_analysis/QuadraticDiscriminantAnalysis/__init__/reg_param": {
+      "target": "sklearn/sklearn.discriminant_analysis/QuadraticDiscriminantAnalysis/__init__/reg_param",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "number",
+      "defaultValue": 0
+    },
+    "sklearn/sklearn.discriminant_analysis/QuadraticDiscriminantAnalysis/__init__/store_covariance": {
+      "target": "sklearn/sklearn.discriminant_analysis/QuadraticDiscriminantAnalysis/__init__/store_covariance",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "boolean",
+      "defaultValue": false
+    },
+    "sklearn/sklearn.discriminant_analysis/QuadraticDiscriminantAnalysis/__init__/tol": {
+      "target": "sklearn/sklearn.discriminant_analysis/QuadraticDiscriminantAnalysis/__init__/tol",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "number",
+      "defaultValue": 0.0001
+    },
+    "sklearn/sklearn.dummy/DummyClassifier/__init__/random_state": {
+      "target": "sklearn/sklearn.dummy/DummyClassifier/__init__/random_state",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "none",
+      "defaultValue": null
+    },
+    "sklearn/sklearn.dummy/DummyClassifier/__init__/constant": {
+      "target": "sklearn/sklearn.dummy/DummyClassifier/__init__/constant",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "none",
+      "defaultValue": null
+    },
+    "sklearn/sklearn.dummy/DummyRegressor/__init__/constant": {
+      "target": "sklearn/sklearn.dummy/DummyRegressor/__init__/constant",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "none",
+      "defaultValue": null
+    },
+    "sklearn/sklearn.isotonic/IsotonicRegression/__init__/y_min": {
+      "target": "sklearn/sklearn.isotonic/IsotonicRegression/__init__/y_min",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lukarade"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "none",
+      "defaultValue": null
+    },
+    "sklearn/sklearn.isotonic/IsotonicRegression/__init__/y_max": {
+      "target": "sklearn/sklearn.isotonic/IsotonicRegression/__init__/y_max",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lukarade"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "none",
+      "defaultValue": null
+    },
+    "sklearn/sklearn.kernel_ridge/KernelRidge/__init__/alpha": {
+      "target": "sklearn/sklearn.kernel_ridge/KernelRidge/__init__/alpha",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "number",
+      "defaultValue": 0.6
+    },
+    "sklearn/sklearn.kernel_ridge/KernelRidge/__init__/kernel": {
+      "target": "sklearn/sklearn.kernel_ridge/KernelRidge/__init__/kernel",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "string",
+      "defaultValue": "polynomial"
+    },
+    "sklearn/sklearn.kernel_ridge/KernelRidge/__init__/gamma": {
+      "target": "sklearn/sklearn.kernel_ridge/KernelRidge/__init__/gamma",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "none",
+      "defaultValue": null
+    },
+    "sklearn/sklearn.multiclass/OneVsRestClassifier/__init__/n_jobs": {
+      "target": "sklearn/sklearn.multiclass/OneVsRestClassifier/__init__/n_jobs",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "none",
+      "defaultValue": null
+    },
+    "sklearn/sklearn.multioutput/MultiOutputClassifier/__init__/n_jobs": {
+      "target": "sklearn/sklearn.multioutput/MultiOutputClassifier/__init__/n_jobs",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "none",
+      "defaultValue": null
+    },
+    "sklearn/sklearn.multioutput/MultiOutputRegressor/__init__/n_jobs": {
+      "target": "sklearn/sklearn.multioutput/MultiOutputRegressor/__init__/n_jobs",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "none",
+      "defaultValue": null
+    },
+    "sklearn/sklearn.multioutput/_BaseChain/__init__/random_state": {
+      "target": "sklearn/sklearn.multioutput/_BaseChain/__init__/random_state",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "none",
+      "defaultValue": null
+    },
+    "sklearn/sklearn.naive_bayes/BernoulliNB/__init__/binarize": {
+      "target": "sklearn/sklearn.naive_bayes/BernoulliNB/__init__/binarize",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "number",
+      "defaultValue": 0
+    },
+    "sklearn/sklearn.naive_bayes/BernoulliNB/__init__/fit_prior": {
+      "target": "sklearn/sklearn.naive_bayes/BernoulliNB/__init__/fit_prior",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "boolean",
+      "defaultValue": true
+    },
+    "sklearn/sklearn.naive_bayes/GaussianNB/__init__/var_smoothing": {
+      "target": "sklearn/sklearn.naive_bayes/GaussianNB/__init__/var_smoothing",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "number",
+      "defaultValue": 1e-09
+    },
+    "sklearn/sklearn.naive_bayes/MultinomialNB/__init__/fit_prior": {
+      "target": "sklearn/sklearn.naive_bayes/MultinomialNB/__init__/fit_prior",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "boolean",
+      "defaultValue": true
+    },
+    "sklearn/sklearn.pipeline/FeatureUnion/__init__/verbose": {
+      "target": "sklearn/sklearn.pipeline/FeatureUnion/__init__/verbose",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "boolean",
+      "defaultValue": false
+    },
+    "sklearn/sklearn.pipeline/Pipeline/__init__/memory": {
+      "target": "sklearn/sklearn.pipeline/Pipeline/__init__/memory",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "none",
+      "defaultValue": null
+    },
+    "sklearn/sklearn.pipeline/Pipeline/__init__/verbose": {
+      "target": "sklearn/sklearn.pipeline/Pipeline/__init__/verbose",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "boolean",
+      "defaultValue": false
+    },
+    "sklearn/sklearn.random_projection/GaussianRandomProjection/__init__/eps": {
+      "target": "sklearn/sklearn.random_projection/GaussianRandomProjection/__init__/eps",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "Arsam"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "number",
+      "defaultValue": 0.1
+    },
+    "sklearn/sklearn.random_projection/GaussianRandomProjection/__init__/random_state": {
+      "target": "sklearn/sklearn.random_projection/GaussianRandomProjection/__init__/random_state",
+      "authors": [
+        "$autogen$",
+        "Arsam",
+        "migration"
+      ],
+      "reviewers": [
+        "Arsam"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "none",
+      "defaultValue": null
+    },
+    "sklearn/sklearn.random_projection/SparseRandomProjection/__init__/eps": {
+      "target": "sklearn/sklearn.random_projection/SparseRandomProjection/__init__/eps",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "Arsam"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "number",
+      "defaultValue": 0.1
+    },
+    "sklearn/sklearn.random_projection/SparseRandomProjection/__init__/dense_output": {
+      "target": "sklearn/sklearn.random_projection/SparseRandomProjection/__init__/dense_output",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "Arsam"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "boolean",
+      "defaultValue": true
+    },
+    "sklearn/sklearn.random_projection/SparseRandomProjection/__init__/random_state": {
+      "target": "sklearn/sklearn.random_projection/SparseRandomProjection/__init__/random_state",
+      "authors": [
+        "$autogen$",
+        "Arsam",
+        "migration"
+      ],
+      "reviewers": [
+        "Arsam"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "none",
+      "defaultValue": null
+    },
+    "sklearn/sklearn.pipeline/FeatureUnion/__init__/n_jobs": {
+      "target": "sklearn/sklearn.pipeline/FeatureUnion/__init__/n_jobs",
+      "authors": [
+        "jofaul",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "number",
+      "defaultValue": "-1"
+    },
+    "sklearn/sklearn.kernel_approximation/Nystroem/__init__/random_state": {
+      "target": "sklearn/sklearn.kernel_approximation/Nystroem/__init__/random_state",
+      "authors": [
+        "jofaul",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "none",
+      "defaultValue": null
+    },
+    "sklearn/sklearn.kernel_approximation/RBFSampler/__init__/random_state": {
+      "target": "sklearn/sklearn.kernel_approximation/RBFSampler/__init__/random_state",
+      "authors": [
+        "jofaul",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "none",
+      "defaultValue": null
+    },
+    "sklearn/sklearn.kernel_ridge/KernelRidge/__init__/coef0": {
+      "target": "sklearn/sklearn.kernel_ridge/KernelRidge/__init__/coef0",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "required"
+    },
+    "sklearn/sklearn.multioutput/_BaseChain/__init__/base_estimator": {
+      "target": "sklearn/sklearn.multioutput/_BaseChain/__init__/base_estimator",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "required"
+    },
+    "sklearn/sklearn.multioutput/_BaseChain/__init__/order": {
+      "target": "sklearn/sklearn.multioutput/_BaseChain/__init__/order",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "required"
+    },
+    "sklearn/sklearn.naive_bayes/CategoricalNB/__init__/alpha": {
+      "target": "sklearn/sklearn.naive_bayes/CategoricalNB/__init__/alpha",
+      "authors": [
+        "jofaul",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "number",
+      "defaultValue": "1.0"
+    },
+    "sklearn/sklearn.random_projection/GaussianRandomProjection/__init__/n_components": {
+      "target": "sklearn/sklearn.random_projection/GaussianRandomProjection/__init__/n_components",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "Arsam"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "required"
+    },
+    "sklearn/sklearn.random_projection/SparseRandomProjection/__init__/n_components": {
+      "target": "sklearn/sklearn.random_projection/SparseRandomProjection/__init__/n_components",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "Arsam"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "required"
+    }
+  }
+}

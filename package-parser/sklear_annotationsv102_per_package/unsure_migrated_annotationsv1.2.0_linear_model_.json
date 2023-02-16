@@ -1,0 +1,340 @@
+{
+  "schemaVersion": 2,
+  "boundaryAnnotations": {
+    "sklearn/sklearn.linear_model._stochastic_gradient/SGDClassifier/__init__/eta0": {
+      "target": "sklearn/sklearn.linear_model._stochastic_gradient/SGDClassifier/__init__/eta0",
+      "authors": [
+        "Nils",
+        "migration"
+      ],
+      "reviewers": [
+        "Nils"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "interval": {
+        "isDiscrete": false,
+        "lowerIntervalLimit": 0,
+        "lowerLimitType": 1,
+        "upperIntervalLimit": 0,
+        "upperLimitType": 2
+      }
+    }
+  },
+  "calledAfterAnnotations": {},
+  "completeAnnotations": {},
+  "descriptionAnnotations": {},
+  "enumAnnotations": {},
+  "expertAnnotations": {},
+  "groupAnnotations": {},
+  "moveAnnotations": {
+    "sklearn/sklearn.linear_model._ridge/RidgeClassifier": {
+      "target": "sklearn/sklearn.linear_model._ridge/RidgeClassifier",
+      "authors": [
+        "Nils",
+        "migration"
+      ],
+      "reviewers": [
+        "Nils"
+      ],
+      "comment": "",
+      "destination": "sklearn.classification.model",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.linear_model._ridge/RidgeClassifierCV": {
+      "target": "sklearn/sklearn.linear_model._ridge/RidgeClassifierCV",
+      "authors": [
+        "Nils",
+        "migration"
+      ],
+      "reviewers": [
+        "Nils"
+      ],
+      "comment": "",
+      "destination": "sklearn.classification.model",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.linear_model._glm.glm/TweedieRegressor": {
+      "target": "sklearn/sklearn.linear_model._glm.glm/TweedieRegressor",
+      "authors": [
+        "Nils",
+        "migration"
+      ],
+      "reviewers": [
+        "Nils"
+      ],
+      "comment": "",
+      "destination": "sklearn.regression.model",
+      "reviewResult": ""
+    }
+  },
+  "pureAnnotations": {},
+  "renameAnnotations": {
+    "sklearn/sklearn.linear_model._ridge/RidgeClassifier": {
+      "target": "sklearn/sklearn.linear_model._ridge/RidgeClassifier",
+      "authors": [
+        "Nils",
+        "migration"
+      ],
+      "reviewers": [
+        "Nils"
+      ],
+      "comment": "",
+      "newName": "Ridge",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.linear_model._ridge/RidgeClassifierCV": {
+      "target": "sklearn/sklearn.linear_model._ridge/RidgeClassifierCV",
+      "authors": [
+        "Nils",
+        "migration"
+      ],
+      "reviewers": [
+        "Nils"
+      ],
+      "comment": "",
+      "newName": "RidgeCV",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.linear_model._glm.glm/TweedieRegressor": {
+      "target": "sklearn/sklearn.linear_model._glm.glm/TweedieRegressor",
+      "authors": [
+        "Nils",
+        "migration"
+      ],
+      "reviewers": [
+        "Nils"
+      ],
+      "comment": "",
+      "newName": "Tweedie",
+      "reviewResult": ""
+    }
+  },
+  "removeAnnotations": {
+    "sklearn/sklearn.linear_model._coordinate_descent/MultiTaskLasso/__init__": {
+      "target": "sklearn/sklearn.linear_model._coordinate_descent/MultiTaskLasso/__init__",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.linear_model._coordinate_descent/MultiTaskLassoCV/__init__": {
+      "target": "sklearn/sklearn.linear_model._coordinate_descent/MultiTaskLassoCV/__init__",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.linear_model._passive_aggressive/PassiveAggressiveClassifier/partial_fit": {
+      "target": "sklearn/sklearn.linear_model._passive_aggressive/PassiveAggressiveClassifier/partial_fit",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.linear_model._passive_aggressive/PassiveAggressiveRegressor/partial_fit": {
+      "target": "sklearn/sklearn.linear_model._passive_aggressive/PassiveAggressiveRegressor/partial_fit",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.linear_model._ridge/_BaseRidge/__init__": {
+      "target": "sklearn/sklearn.linear_model._ridge/_BaseRidge/__init__",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.linear_model._ridge/_RidgeGCV/__init__": {
+      "target": "sklearn/sklearn.linear_model._ridge/_RidgeGCV/__init__",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.linear_model._stochastic_gradient/BaseSGD/__init__": {
+      "target": "sklearn/sklearn.linear_model._stochastic_gradient/BaseSGD/__init__",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.linear_model._stochastic_gradient/BaseSGD/_more_validate_params": {
+      "target": "sklearn/sklearn.linear_model._stochastic_gradient/BaseSGD/_more_validate_params",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.linear_model._stochastic_gradient/BaseSGDClassifier/__init__": {
+      "target": "sklearn/sklearn.linear_model._stochastic_gradient/BaseSGDClassifier/__init__",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.linear_model._stochastic_gradient/BaseSGDRegressor/__init__": {
+      "target": "sklearn/sklearn.linear_model._stochastic_gradient/BaseSGDRegressor/__init__",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    }
+  },
+  "todoAnnotations": {
+    "sklearn/sklearn.linear_model._stochastic_gradient/SGDClassifier/__init__/power_t": {
+      "target": "sklearn/sklearn.linear_model._stochastic_gradient/SGDClassifier/__init__/power_t",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'constant' and the default Value '0.5 ( type: number )' from the previous version was at 'sklearn/sklearn.linear_model._stochastic_gradient/SGDClassifier/__init__/power_t' and the possible alternatives in the new version of the api are: sklearn/sklearn.linear_model._stochastic_gradient/SGDClassifier/__init__/power_t",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.linear_model._logistic/LogisticRegression/__init__/penalty": {
+      "target": "sklearn/sklearn.linear_model._logistic/LogisticRegression/__init__/penalty",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "Nils"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'optional' and the default Value 'l2 ( type: string )' from the previous version was at 'sklearn/sklearn.linear_model._logistic/LogisticRegression/__init__/penalty' and the possible alternatives in the new version of the api are: sklearn/sklearn.linear_model._logistic/LogisticRegression/__init__/penalty",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.linear_model._logistic/LogisticRegression/__init__/solver": {
+      "target": "sklearn/sklearn.linear_model._logistic/LogisticRegression/__init__/solver",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "Nils"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'optional' and the default Value 'lbfgs ( type: string )' from the previous version was at 'sklearn/sklearn.linear_model._logistic/LogisticRegression/__init__/solver' and the possible alternatives in the new version of the api are: sklearn/sklearn.linear_model._logistic/LogisticRegression/__init__/solver",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.linear_model._logistic/LogisticRegressionCV/__init__/solver": {
+      "target": "sklearn/sklearn.linear_model._logistic/LogisticRegressionCV/__init__/solver",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "Nils"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'optional' and the default Value 'lbfgs ( type: string )' from the previous version was at 'sklearn/sklearn.linear_model._logistic/LogisticRegressionCV/__init__/solver' and the possible alternatives in the new version of the api are: sklearn/sklearn.linear_model._logistic/LogisticRegressionCV/__init__/solver",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.linear_model._passive_aggressive/PassiveAggressiveClassifier/fit/y": {
+      "target": "sklearn/sklearn.linear_model._passive_aggressive/PassiveAggressiveClassifier/fit/y",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.linear_model._passive_aggressive/PassiveAggressiveClassifier/fit/y' and the possible alternatives in the new version of the api are: sklearn/sklearn.linear_model._passive_aggressive/PassiveAggressiveClassifier/fit/y",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.linear_model._ridge/RidgeClassifierCV/__init__/alphas": {
+      "target": "sklearn/sklearn.linear_model._ridge/RidgeClassifierCV/__init__/alphas",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "Nils"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.linear_model._ridge/RidgeClassifierCV/__init__/alphas' and the possible alternatives in the new version of the api are: sklearn/sklearn.linear_model._ridge/RidgeClassifierCV/__init__/alphas",
+      "reviewResult": ""
+    }
+  },
+  "valueAnnotations": {
+    "sklearn/sklearn.linear_model._passive_aggressive/PassiveAggressiveClassifier/__init__/verbose": {
+      "target": "sklearn/sklearn.linear_model._passive_aggressive/PassiveAggressiveClassifier/__init__/verbose",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "Nils"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "number",
+      "defaultValue": 0
+    },
+    "sklearn/sklearn.linear_model._passive_aggressive/PassiveAggressiveRegressor/__init__/verbose": {
+      "target": "sklearn/sklearn.linear_model._passive_aggressive/PassiveAggressiveRegressor/__init__/verbose",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "Nils"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "number",
+      "defaultValue": 0
+    },
+    "sklearn/sklearn.linear_model._stochastic_gradient/SGDClassifier/__init__/eta0": {
+      "target": "sklearn/sklearn.linear_model._stochastic_gradient/SGDClassifier/__init__/eta0",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "Nils"
+      ],
+      "comment": "The @Value Annotation with the variant 'optional' and the default Value '0 ( type: number )' from the previous version was at 'sklearn/sklearn.linear_model._stochastic_gradient/SGDClassifier/__init__/eta0' and the possible alternatives in the new version of the api are: sklearn/sklearn.linear_model._stochastic_gradient/SGDClassifier/__init__/eta0",
+      "reviewResult": "unsure",
+      "variant": "optional",
+      "defaultValueType": "number",
+      "defaultValue": 0
+    }
+  }
+}

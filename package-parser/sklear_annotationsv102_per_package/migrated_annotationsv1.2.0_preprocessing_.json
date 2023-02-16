@@ -1,0 +1,1952 @@
+{
+  "schemaVersion": 2,
+  "boundaryAnnotations": {
+    "sklearn/sklearn.preprocessing._discretization/KBinsDiscretizer/__init__/n_bins": {
+      "target": "sklearn/sklearn.preprocessing._discretization/KBinsDiscretizer/__init__/n_bins",
+      "authors": [
+        "aclrian",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "reviewResult": "wrong",
+      "interval": {
+        "isDiscrete": true,
+        "lowerIntervalLimit": 2,
+        "lowerLimitType": 1,
+        "upperIntervalLimit": 0,
+        "upperLimitType": 2
+      }
+    }
+  },
+  "calledAfterAnnotations": {},
+  "completeAnnotations": {},
+  "descriptionAnnotations": {
+    "sklearn/sklearn.preprocessing._data/PowerTransformer/inverse_transform": {
+      "target": "sklearn/sklearn.preprocessing._data/PowerTransformer/inverse_transform",
+      "authors": [
+        "aclrian",
+        "migration"
+      ],
+      "reviewers": [
+        "aclrian"
+      ],
+      "comment": "",
+      "newDescription": "Apply the inverse power transformation using the fitted lambdas.\n\nThe inverse of the Box-Cox transformation is given by:\n\n    if lambda_ == 0:\n        X = exp(X_trans)\n    else:\n        X = (X_trans * lambda_ + 1) ** (1 / lambda_)\n\nThe inverse of the Yeo-Johnson transformation is given by:\n\n    if X >= 0 and lambda_ == 0:\n        X = exp(X_trans) - 1\n    elif X >= 0 and lambda_ != 0:\n        X = (X_trans * lambda_ + 1) ** (1 / lambda_) - 1\n    elif X < 0 and lambda_ != 2:\n        X = 1 - (-(2 - lambda_) * X_trans + 1) ** (1 / (2 - lambda_))\n    elif X < 0 and lambda_ == 2:\n        X = 1 - exp(-X_trans)",
+      "reviewResult": ""
+    }
+  },
+  "enumAnnotations": {},
+  "expertAnnotations": {},
+  "groupAnnotations": {},
+  "moveAnnotations": {},
+  "pureAnnotations": {},
+  "renameAnnotations": {},
+  "removeAnnotations": {
+    "sklearn/sklearn.preprocessing._data/Binarizer/_more_tags": {
+      "target": "sklearn/sklearn.preprocessing._data/Binarizer/_more_tags",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._data/KernelCenterer/_more_tags": {
+      "target": "sklearn/sklearn.preprocessing._data/KernelCenterer/_more_tags",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._data/KernelCenterer/fit": {
+      "target": "sklearn/sklearn.preprocessing._data/KernelCenterer/fit",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "aclrian"
+      ],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._data/MaxAbsScaler/_more_tags": {
+      "target": "sklearn/sklearn.preprocessing._data/MaxAbsScaler/_more_tags",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._data/MaxAbsScaler/_reset": {
+      "target": "sklearn/sklearn.preprocessing._data/MaxAbsScaler/_reset",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._data/MaxAbsScaler/partial_fit": {
+      "target": "sklearn/sklearn.preprocessing._data/MaxAbsScaler/partial_fit",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "aclrian"
+      ],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._data/MinMaxScaler/_more_tags": {
+      "target": "sklearn/sklearn.preprocessing._data/MinMaxScaler/_more_tags",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._data/MinMaxScaler/_reset": {
+      "target": "sklearn/sklearn.preprocessing._data/MinMaxScaler/_reset",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._data/Normalizer/_more_tags": {
+      "target": "sklearn/sklearn.preprocessing._data/Normalizer/_more_tags",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._data/PowerTransformer/_box_cox_inverse_tranform": {
+      "target": "sklearn/sklearn.preprocessing._data/PowerTransformer/_box_cox_inverse_tranform",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._data/PowerTransformer/_box_cox_optimize": {
+      "target": "sklearn/sklearn.preprocessing._data/PowerTransformer/_box_cox_optimize",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._data/PowerTransformer/_check_input": {
+      "target": "sklearn/sklearn.preprocessing._data/PowerTransformer/_check_input",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.preprocessing._data/PowerTransformer/_fit": {
+      "target": "sklearn/sklearn.preprocessing._data/PowerTransformer/_fit",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._data/PowerTransformer/_more_tags": {
+      "target": "sklearn/sklearn.preprocessing._data/PowerTransformer/_more_tags",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._data/PowerTransformer/_yeo_johnson_inverse_transform": {
+      "target": "sklearn/sklearn.preprocessing._data/PowerTransformer/_yeo_johnson_inverse_transform",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._data/PowerTransformer/_yeo_johnson_optimize": {
+      "target": "sklearn/sklearn.preprocessing._data/PowerTransformer/_yeo_johnson_optimize",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._data/PowerTransformer/_yeo_johnson_transform": {
+      "target": "sklearn/sklearn.preprocessing._data/PowerTransformer/_yeo_johnson_transform",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._data/QuantileTransformer/_check_inputs": {
+      "target": "sklearn/sklearn.preprocessing._data/QuantileTransformer/_check_inputs",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._data/QuantileTransformer/_dense_fit": {
+      "target": "sklearn/sklearn.preprocessing._data/QuantileTransformer/_dense_fit",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._data/QuantileTransformer/_more_tags": {
+      "target": "sklearn/sklearn.preprocessing._data/QuantileTransformer/_more_tags",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._data/QuantileTransformer/_sparse_fit": {
+      "target": "sklearn/sklearn.preprocessing._data/QuantileTransformer/_sparse_fit",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._data/QuantileTransformer/_transform": {
+      "target": "sklearn/sklearn.preprocessing._data/QuantileTransformer/_transform",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._data/QuantileTransformer/_transform_col": {
+      "target": "sklearn/sklearn.preprocessing._data/QuantileTransformer/_transform_col",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._data/RobustScaler/_more_tags": {
+      "target": "sklearn/sklearn.preprocessing._data/RobustScaler/_more_tags",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._data/StandardScaler/_more_tags": {
+      "target": "sklearn/sklearn.preprocessing._data/StandardScaler/_more_tags",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._data/StandardScaler/_reset": {
+      "target": "sklearn/sklearn.preprocessing._data/StandardScaler/_reset",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._discretization/KBinsDiscretizer/_validate_n_bins": {
+      "target": "sklearn/sklearn.preprocessing._discretization/KBinsDiscretizer/_validate_n_bins",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.preprocessing._discretization/KBinsDiscretizer/inverse_transform": {
+      "target": "sklearn/sklearn.preprocessing._discretization/KBinsDiscretizer/inverse_transform",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "aclrian"
+      ],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._encoders/OneHotEncoder/_compute_drop_idx": {
+      "target": "sklearn/sklearn.preprocessing._encoders/OneHotEncoder/_compute_drop_idx",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.preprocessing._encoders/_BaseEncoder/_check_X": {
+      "target": "sklearn/sklearn.preprocessing._encoders/_BaseEncoder/_check_X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._encoders/_BaseEncoder/_fit": {
+      "target": "sklearn/sklearn.preprocessing._encoders/_BaseEncoder/_fit",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.preprocessing._encoders/_BaseEncoder/_more_tags": {
+      "target": "sklearn/sklearn.preprocessing._encoders/_BaseEncoder/_more_tags",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._encoders/_BaseEncoder/_transform": {
+      "target": "sklearn/sklearn.preprocessing._encoders/_BaseEncoder/_transform",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.preprocessing._function_transformer/FunctionTransformer/_check_inverse_transform": {
+      "target": "sklearn/sklearn.preprocessing._function_transformer/FunctionTransformer/_check_inverse_transform",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.preprocessing._function_transformer/FunctionTransformer/_more_tags": {
+      "target": "sklearn/sklearn.preprocessing._function_transformer/FunctionTransformer/_more_tags",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._function_transformer/FunctionTransformer/_transform": {
+      "target": "sklearn/sklearn.preprocessing._function_transformer/FunctionTransformer/_transform",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._function_transformer/FunctionTransformer/fit": {
+      "target": "sklearn/sklearn.preprocessing._function_transformer/FunctionTransformer/fit",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.preprocessing._function_transformer/FunctionTransformer/inverse_transform": {
+      "target": "sklearn/sklearn.preprocessing._function_transformer/FunctionTransformer/inverse_transform",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._label/LabelBinarizer/_more_tags": {
+      "target": "sklearn/sklearn.preprocessing._label/LabelBinarizer/_more_tags",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._label/LabelEncoder/_more_tags": {
+      "target": "sklearn/sklearn.preprocessing._label/LabelEncoder/_more_tags",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._label/MultiLabelBinarizer/_build_cache": {
+      "target": "sklearn/sklearn.preprocessing._label/MultiLabelBinarizer/_build_cache",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._label/MultiLabelBinarizer/_more_tags": {
+      "target": "sklearn/sklearn.preprocessing._label/MultiLabelBinarizer/_more_tags",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._label/MultiLabelBinarizer/_transform": {
+      "target": "sklearn/sklearn.preprocessing._label/MultiLabelBinarizer/_transform",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "unsure"
+    }
+  },
+  "todoAnnotations": {
+    "sklearn/sklearn.preprocessing._discretization/KBinsDiscretizer/__init__/n_bins": {
+      "target": "sklearn/sklearn.preprocessing._discretization/KBinsDiscretizer/__init__/n_bins",
+      "authors": [
+        "aclrian",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "Parameter n_bins: boundary with >2 and allowing array-like of shape",
+      "reviewResult": "correct"
+    },
+    "sklearn/sklearn.preprocessing._data/Binarizer/fit/y": {
+      "target": "sklearn/sklearn.preprocessing._data/Binarizer/fit/y",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'constant' and the default Value 'None ( type: none )' from the previous version was at 'sklearn/sklearn.preprocessing._data/Binarizer/fit/y' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._data/Binarizer/fit/y",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._data/MaxAbsScaler/fit/y": {
+      "target": "sklearn/sklearn.preprocessing._data/MaxAbsScaler/fit/y",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "aclrian"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'constant' and the default Value 'None ( type: none )' from the previous version was at 'sklearn/sklearn.preprocessing._data/MaxAbsScaler/fit/y' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._data/MaxAbsScaler/fit/y",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._data/MinMaxScaler/partial_fit/y": {
+      "target": "sklearn/sklearn.preprocessing._data/MinMaxScaler/partial_fit/y",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "aclrian"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'constant' and the default Value 'None ( type: none )' from the previous version was at 'sklearn/sklearn.preprocessing._data/MinMaxScaler/partial_fit/y' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._data/MinMaxScaler/partial_fit/y",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._data/PowerTransformer/fit/y": {
+      "target": "sklearn/sklearn.preprocessing._data/PowerTransformer/fit/y",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'constant' and the default Value 'None ( type: none )' from the previous version was at 'sklearn/sklearn.preprocessing._data/PowerTransformer/fit/y' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._data/PowerTransformer/fit/y",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._data/QuantileTransformer/fit/y": {
+      "target": "sklearn/sklearn.preprocessing._data/QuantileTransformer/fit/y",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'constant' and the default Value 'None ( type: none )' from the previous version was at 'sklearn/sklearn.preprocessing._data/QuantileTransformer/fit/y' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._data/QuantileTransformer/fit/y",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._data/StandardScaler/fit/sample_weight": {
+      "target": "sklearn/sklearn.preprocessing._data/StandardScaler/fit/sample_weight",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'constant' and the default Value 'None ( type: none )' from the previous version was at 'sklearn/sklearn.preprocessing._data/StandardScaler/fit/sample_weight' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._data/StandardScaler/fit/sample_weight",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._data/StandardScaler/partial_fit/y": {
+      "target": "sklearn/sklearn.preprocessing._data/StandardScaler/partial_fit/y",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'constant' and the default Value 'None ( type: none )' from the previous version was at 'sklearn/sklearn.preprocessing._data/StandardScaler/partial_fit/y' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._data/StandardScaler/partial_fit/y",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._data/StandardScaler/partial_fit/sample_weight": {
+      "target": "sklearn/sklearn.preprocessing._data/StandardScaler/partial_fit/sample_weight",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'constant' and the default Value 'None ( type: none )' from the previous version was at 'sklearn/sklearn.preprocessing._data/StandardScaler/partial_fit/sample_weight' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._data/StandardScaler/partial_fit/sample_weight",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._discretization/KBinsDiscretizer/__init__/dtype": {
+      "target": "sklearn/sklearn.preprocessing._discretization/KBinsDiscretizer/__init__/dtype",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "aclrian"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'constant' and the default Value 'None ( type: none )' from the previous version was at 'sklearn/sklearn.preprocessing._discretization/KBinsDiscretizer/__init__/dtype' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._discretization/KBinsDiscretizer/__init__/dtype",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._discretization/KBinsDiscretizer/fit/y": {
+      "target": "sklearn/sklearn.preprocessing._discretization/KBinsDiscretizer/fit/y",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "aclrian"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'constant' and the default Value 'None ( type: none )' from the previous version was at 'sklearn/sklearn.preprocessing._discretization/KBinsDiscretizer/fit/y' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._discretization/KBinsDiscretizer/fit/y",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._encoders/OneHotEncoder/fit/y": {
+      "target": "sklearn/sklearn.preprocessing._encoders/OneHotEncoder/fit/y",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "aclrian"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'constant' and the default Value 'None ( type: none )' from the previous version was at 'sklearn/sklearn.preprocessing._encoders/OneHotEncoder/fit/y' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._encoders/OneHotEncoder/fit/y",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._encoders/OrdinalEncoder/fit/y": {
+      "target": "sklearn/sklearn.preprocessing._encoders/OrdinalEncoder/fit/y",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "aclrian"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'constant' and the default Value 'None ( type: none )' from the previous version was at 'sklearn/sklearn.preprocessing._encoders/OrdinalEncoder/fit/y' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._encoders/OrdinalEncoder/fit/y",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._function_transformer/FunctionTransformer/__init__/inv_kw_args": {
+      "target": "sklearn/sklearn.preprocessing._function_transformer/FunctionTransformer/__init__/inv_kw_args",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'constant' and the default Value 'None ( type: none )' from the previous version was at 'sklearn/sklearn.preprocessing._function_transformer/FunctionTransformer/__init__/inv_kw_args' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._function_transformer/FunctionTransformer/__init__/inv_kw_args",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._data/MinMaxScaler/fit/y": {
+      "target": "sklearn/sklearn.preprocessing._data/MinMaxScaler/fit/y",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'optional' and the default Value 'None ( type: none )' from the previous version was at 'sklearn/sklearn.preprocessing._data/MinMaxScaler/fit/y' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._data/MinMaxScaler/fit/y",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._data/Normalizer/__init__/norm": {
+      "target": "sklearn/sklearn.preprocessing._data/Normalizer/__init__/norm",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'optional' and the default Value 'l2 ( type: string )' from the previous version was at 'sklearn/sklearn.preprocessing._data/Normalizer/__init__/norm' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._data/Normalizer/__init__/norm",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._data/PowerTransformer/__init__/method": {
+      "target": "sklearn/sklearn.preprocessing._data/PowerTransformer/__init__/method",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "aclrian"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'optional' and the default Value 'yeo-johnson ( type: string )' from the previous version was at 'sklearn/sklearn.preprocessing._data/PowerTransformer/__init__/method' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._data/PowerTransformer/__init__/method",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._data/QuantileTransformer/__init__/output_distribution": {
+      "target": "sklearn/sklearn.preprocessing._data/QuantileTransformer/__init__/output_distribution",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "aclrian"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'optional' and the default Value 'normal ( type: string )' from the previous version was at 'sklearn/sklearn.preprocessing._data/QuantileTransformer/__init__/output_distribution' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._data/QuantileTransformer/__init__/output_distribution",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._data/StandardScaler/fit/y": {
+      "target": "sklearn/sklearn.preprocessing._data/StandardScaler/fit/y",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'optional' and the default Value 'None ( type: none )' from the previous version was at 'sklearn/sklearn.preprocessing._data/StandardScaler/fit/y' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._data/StandardScaler/fit/y",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._discretization/KBinsDiscretizer/__init__/encode": {
+      "target": "sklearn/sklearn.preprocessing._discretization/KBinsDiscretizer/__init__/encode",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "aclrian"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'optional' and the default Value 'ordinal ( type: string )' from the previous version was at 'sklearn/sklearn.preprocessing._discretization/KBinsDiscretizer/__init__/encode' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._discretization/KBinsDiscretizer/__init__/encode",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._encoders/OneHotEncoder/__init__/categories": {
+      "target": "sklearn/sklearn.preprocessing._encoders/OneHotEncoder/__init__/categories",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'optional' and the default Value 'auto ( type: string )' from the previous version was at 'sklearn/sklearn.preprocessing._encoders/OneHotEncoder/__init__/categories' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._encoders/OneHotEncoder/__init__/categories",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._encoders/OneHotEncoder/__init__/drop": {
+      "target": "sklearn/sklearn.preprocessing._encoders/OneHotEncoder/__init__/drop",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'optional' and the default Value 'None ( type: none )' from the previous version was at 'sklearn/sklearn.preprocessing._encoders/OneHotEncoder/__init__/drop' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._encoders/OneHotEncoder/__init__/drop",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.preprocessing._encoders/OrdinalEncoder/__init__/categories": {
+      "target": "sklearn/sklearn.preprocessing._encoders/OrdinalEncoder/__init__/categories",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'optional' and the default Value 'auto ( type: string )' from the previous version was at 'sklearn/sklearn.preprocessing._encoders/OrdinalEncoder/__init__/categories' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._encoders/OrdinalEncoder/__init__/categories",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._encoders/OrdinalEncoder/__init__/handle_unknown": {
+      "target": "sklearn/sklearn.preprocessing._encoders/OrdinalEncoder/__init__/handle_unknown",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'optional' and the default Value 'error ( type: string )' from the previous version was at 'sklearn/sklearn.preprocessing._encoders/OrdinalEncoder/__init__/handle_unknown' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._encoders/OrdinalEncoder/__init__/handle_unknown",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._function_transformer/FunctionTransformer/__init__/inverse_func": {
+      "target": "sklearn/sklearn.preprocessing._function_transformer/FunctionTransformer/__init__/inverse_func",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'optional' and the default Value 'None ( type: none )' from the previous version was at 'sklearn/sklearn.preprocessing._function_transformer/FunctionTransformer/__init__/inverse_func' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._function_transformer/FunctionTransformer/__init__/inverse_func",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._function_transformer/FunctionTransformer/__init__/kw_args": {
+      "target": "sklearn/sklearn.preprocessing._function_transformer/FunctionTransformer/__init__/kw_args",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'optional' and the default Value 'None ( type: none )' from the previous version was at 'sklearn/sklearn.preprocessing._function_transformer/FunctionTransformer/__init__/kw_args' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._function_transformer/FunctionTransformer/__init__/kw_args",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._data/Binarizer/fit/X": {
+      "target": "sklearn/sklearn.preprocessing._data/Binarizer/fit/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.preprocessing._data/Binarizer/fit/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._data/Binarizer/fit/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._data/Binarizer/transform/X": {
+      "target": "sklearn/sklearn.preprocessing._data/Binarizer/transform/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.preprocessing._data/Binarizer/transform/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._data/Binarizer/transform/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._data/MaxAbsScaler/fit/X": {
+      "target": "sklearn/sklearn.preprocessing._data/MaxAbsScaler/fit/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.preprocessing._data/MaxAbsScaler/fit/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._data/MaxAbsScaler/fit/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._data/MaxAbsScaler/transform/X": {
+      "target": "sklearn/sklearn.preprocessing._data/MaxAbsScaler/transform/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.preprocessing._data/MaxAbsScaler/transform/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._data/MaxAbsScaler/transform/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._data/MinMaxScaler/__init__/feature_range": {
+      "target": "sklearn/sklearn.preprocessing._data/MinMaxScaler/__init__/feature_range",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.preprocessing._data/MinMaxScaler/__init__/feature_range' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._data/MinMaxScaler/__init__/feature_range",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.preprocessing._data/MinMaxScaler/fit/X": {
+      "target": "sklearn/sklearn.preprocessing._data/MinMaxScaler/fit/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.preprocessing._data/MinMaxScaler/fit/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._data/MinMaxScaler/fit/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._data/MinMaxScaler/inverse_transform/X": {
+      "target": "sklearn/sklearn.preprocessing._data/MinMaxScaler/inverse_transform/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.preprocessing._data/MinMaxScaler/inverse_transform/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._data/MinMaxScaler/inverse_transform/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._data/MinMaxScaler/transform/X": {
+      "target": "sklearn/sklearn.preprocessing._data/MinMaxScaler/transform/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.preprocessing._data/MinMaxScaler/transform/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._data/MinMaxScaler/transform/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._data/Normalizer/fit/X": {
+      "target": "sklearn/sklearn.preprocessing._data/Normalizer/fit/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.preprocessing._data/Normalizer/fit/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._data/Normalizer/fit/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._data/Normalizer/transform/X": {
+      "target": "sklearn/sklearn.preprocessing._data/Normalizer/transform/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.preprocessing._data/Normalizer/transform/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._data/Normalizer/transform/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._data/PowerTransformer/fit/X": {
+      "target": "sklearn/sklearn.preprocessing._data/PowerTransformer/fit/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "aclrian"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.preprocessing._data/PowerTransformer/fit/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._data/PowerTransformer/fit/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._data/PowerTransformer/inverse_transform/X": {
+      "target": "sklearn/sklearn.preprocessing._data/PowerTransformer/inverse_transform/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "aclrian"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.preprocessing._data/PowerTransformer/inverse_transform/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._data/PowerTransformer/inverse_transform/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._data/PowerTransformer/transform/X": {
+      "target": "sklearn/sklearn.preprocessing._data/PowerTransformer/transform/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "aclrian"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.preprocessing._data/PowerTransformer/transform/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._data/PowerTransformer/transform/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._data/QuantileTransformer/fit/X": {
+      "target": "sklearn/sklearn.preprocessing._data/QuantileTransformer/fit/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "aclrian"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.preprocessing._data/QuantileTransformer/fit/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._data/QuantileTransformer/fit/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._data/QuantileTransformer/inverse_transform/X": {
+      "target": "sklearn/sklearn.preprocessing._data/QuantileTransformer/inverse_transform/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "aclrian"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.preprocessing._data/QuantileTransformer/inverse_transform/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._data/QuantileTransformer/inverse_transform/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._data/QuantileTransformer/transform/X": {
+      "target": "sklearn/sklearn.preprocessing._data/QuantileTransformer/transform/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "aclrian"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.preprocessing._data/QuantileTransformer/transform/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._data/QuantileTransformer/transform/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._data/RobustScaler/fit/X": {
+      "target": "sklearn/sklearn.preprocessing._data/RobustScaler/fit/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "aclrian"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.preprocessing._data/RobustScaler/fit/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._data/RobustScaler/fit/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._data/RobustScaler/inverse_transform/X": {
+      "target": "sklearn/sklearn.preprocessing._data/RobustScaler/inverse_transform/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "aclrian"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.preprocessing._data/RobustScaler/inverse_transform/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._data/RobustScaler/inverse_transform/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._data/RobustScaler/transform/X": {
+      "target": "sklearn/sklearn.preprocessing._data/RobustScaler/transform/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "aclrian"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.preprocessing._data/RobustScaler/transform/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._data/RobustScaler/transform/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._data/StandardScaler/fit/X": {
+      "target": "sklearn/sklearn.preprocessing._data/StandardScaler/fit/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "aclrian"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.preprocessing._data/StandardScaler/fit/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._data/StandardScaler/fit/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._data/StandardScaler/inverse_transform/X": {
+      "target": "sklearn/sklearn.preprocessing._data/StandardScaler/inverse_transform/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "aclrian"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.preprocessing._data/StandardScaler/inverse_transform/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._data/StandardScaler/inverse_transform/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._data/StandardScaler/partial_fit/X": {
+      "target": "sklearn/sklearn.preprocessing._data/StandardScaler/partial_fit/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "aclrian"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.preprocessing._data/StandardScaler/partial_fit/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._data/StandardScaler/partial_fit/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._data/StandardScaler/transform/X": {
+      "target": "sklearn/sklearn.preprocessing._data/StandardScaler/transform/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "aclrian"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.preprocessing._data/StandardScaler/transform/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._data/StandardScaler/transform/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._discretization/KBinsDiscretizer/__init__/strategy": {
+      "target": "sklearn/sklearn.preprocessing._discretization/KBinsDiscretizer/__init__/strategy",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "aclrian"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.preprocessing._discretization/KBinsDiscretizer/__init__/strategy' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._discretization/KBinsDiscretizer/__init__/strategy",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._discretization/KBinsDiscretizer/fit/X": {
+      "target": "sklearn/sklearn.preprocessing._discretization/KBinsDiscretizer/fit/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.preprocessing._discretization/KBinsDiscretizer/fit/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._discretization/KBinsDiscretizer/fit/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._discretization/KBinsDiscretizer/transform/X": {
+      "target": "sklearn/sklearn.preprocessing._discretization/KBinsDiscretizer/transform/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.preprocessing._discretization/KBinsDiscretizer/transform/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._discretization/KBinsDiscretizer/transform/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._encoders/OneHotEncoder/__init__/dtype": {
+      "target": "sklearn/sklearn.preprocessing._encoders/OneHotEncoder/__init__/dtype",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.preprocessing._encoders/OneHotEncoder/__init__/dtype' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._encoders/OneHotEncoder/__init__/dtype",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.preprocessing._encoders/OneHotEncoder/fit/X": {
+      "target": "sklearn/sklearn.preprocessing._encoders/OneHotEncoder/fit/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.preprocessing._encoders/OneHotEncoder/fit/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._encoders/OneHotEncoder/fit/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._encoders/OneHotEncoder/inverse_transform/X": {
+      "target": "sklearn/sklearn.preprocessing._encoders/OneHotEncoder/inverse_transform/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.preprocessing._encoders/OneHotEncoder/inverse_transform/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._encoders/OneHotEncoder/inverse_transform/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._encoders/OneHotEncoder/transform/X": {
+      "target": "sklearn/sklearn.preprocessing._encoders/OneHotEncoder/transform/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.preprocessing._encoders/OneHotEncoder/transform/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._encoders/OneHotEncoder/transform/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._encoders/OrdinalEncoder/__init__/dtype": {
+      "target": "sklearn/sklearn.preprocessing._encoders/OrdinalEncoder/__init__/dtype",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.preprocessing._encoders/OrdinalEncoder/__init__/dtype' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._encoders/OrdinalEncoder/__init__/dtype",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.preprocessing._encoders/OrdinalEncoder/fit/X": {
+      "target": "sklearn/sklearn.preprocessing._encoders/OrdinalEncoder/fit/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.preprocessing._encoders/OrdinalEncoder/fit/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._encoders/OrdinalEncoder/fit/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._encoders/OrdinalEncoder/transform/X": {
+      "target": "sklearn/sklearn.preprocessing._encoders/OrdinalEncoder/transform/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.preprocessing._encoders/OrdinalEncoder/transform/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._encoders/OrdinalEncoder/transform/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._function_transformer/FunctionTransformer/__init__/func": {
+      "target": "sklearn/sklearn.preprocessing._function_transformer/FunctionTransformer/__init__/func",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "aclrian"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.preprocessing._function_transformer/FunctionTransformer/__init__/func' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._function_transformer/FunctionTransformer/__init__/func",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._function_transformer/FunctionTransformer/transform/X": {
+      "target": "sklearn/sklearn.preprocessing._function_transformer/FunctionTransformer/transform/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.preprocessing._function_transformer/FunctionTransformer/transform/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._function_transformer/FunctionTransformer/transform/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._label/LabelBinarizer/fit/y": {
+      "target": "sklearn/sklearn.preprocessing._label/LabelBinarizer/fit/y",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.preprocessing._label/LabelBinarizer/fit/y' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._label/LabelBinarizer/fit/y",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._label/LabelBinarizer/fit_transform/y": {
+      "target": "sklearn/sklearn.preprocessing._label/LabelBinarizer/fit_transform/y",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.preprocessing._label/LabelBinarizer/fit_transform/y' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._label/LabelBinarizer/fit_transform/y",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._label/LabelBinarizer/inverse_transform/Y": {
+      "target": "sklearn/sklearn.preprocessing._label/LabelBinarizer/inverse_transform/Y",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.preprocessing._label/LabelBinarizer/inverse_transform/Y' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._label/LabelBinarizer/inverse_transform/Y",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._label/LabelBinarizer/transform/y": {
+      "target": "sklearn/sklearn.preprocessing._label/LabelBinarizer/transform/y",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.preprocessing._label/LabelBinarizer/transform/y' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._label/LabelBinarizer/transform/y",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._label/LabelEncoder/fit/y": {
+      "target": "sklearn/sklearn.preprocessing._label/LabelEncoder/fit/y",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.preprocessing._label/LabelEncoder/fit/y' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._label/LabelEncoder/fit/y",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._label/LabelEncoder/fit_transform/y": {
+      "target": "sklearn/sklearn.preprocessing._label/LabelEncoder/fit_transform/y",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.preprocessing._label/LabelEncoder/fit_transform/y' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._label/LabelEncoder/fit_transform/y",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._label/LabelEncoder/inverse_transform/y": {
+      "target": "sklearn/sklearn.preprocessing._label/LabelEncoder/inverse_transform/y",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.preprocessing._label/LabelEncoder/inverse_transform/y' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._label/LabelEncoder/inverse_transform/y",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._label/LabelEncoder/transform/y": {
+      "target": "sklearn/sklearn.preprocessing._label/LabelEncoder/transform/y",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.preprocessing._label/LabelEncoder/transform/y' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._label/LabelEncoder/transform/y",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._label/MultiLabelBinarizer/fit/y": {
+      "target": "sklearn/sklearn.preprocessing._label/MultiLabelBinarizer/fit/y",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.preprocessing._label/MultiLabelBinarizer/fit/y' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._label/MultiLabelBinarizer/fit/y",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._label/MultiLabelBinarizer/fit_transform/y": {
+      "target": "sklearn/sklearn.preprocessing._label/MultiLabelBinarizer/fit_transform/y",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.preprocessing._label/MultiLabelBinarizer/fit_transform/y' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._label/MultiLabelBinarizer/fit_transform/y",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._label/MultiLabelBinarizer/inverse_transform/yt": {
+      "target": "sklearn/sklearn.preprocessing._label/MultiLabelBinarizer/inverse_transform/yt",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.preprocessing._label/MultiLabelBinarizer/inverse_transform/yt' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._label/MultiLabelBinarizer/inverse_transform/yt",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._label/MultiLabelBinarizer/transform/y": {
+      "target": "sklearn/sklearn.preprocessing._label/MultiLabelBinarizer/transform/y",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.preprocessing._label/MultiLabelBinarizer/transform/y' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._label/MultiLabelBinarizer/transform/y",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.preprocessing._label/MultiLabelBinarizer/__init__/classes": {
+      "target": "sklearn/sklearn.preprocessing._label/MultiLabelBinarizer/__init__/classes",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "aclrian"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.preprocessing._label/MultiLabelBinarizer/__init__/classes' and the possible alternatives in the new version of the api are: sklearn/sklearn.preprocessing._label/MultiLabelBinarizer/__init__/classes",
+      "reviewResult": ""
+    }
+  },
+  "valueAnnotations": {
+    "sklearn/sklearn.preprocessing._data/Binarizer/__init__/copy": {
+      "target": "sklearn/sklearn.preprocessing._data/Binarizer/__init__/copy",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "aclrian"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "constant",
+      "defaultValueType": "boolean",
+      "defaultValue": true
+    },
+    "sklearn/sklearn.preprocessing._data/Binarizer/transform/copy": {
+      "target": "sklearn/sklearn.preprocessing._data/Binarizer/transform/copy",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "aclrian"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "constant",
+      "defaultValueType": "none",
+      "defaultValue": null
+    },
+    "sklearn/sklearn.preprocessing._data/KernelCenterer/transform/copy": {
+      "target": "sklearn/sklearn.preprocessing._data/KernelCenterer/transform/copy",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "aclrian"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "constant",
+      "defaultValueType": "boolean",
+      "defaultValue": true
+    },
+    "sklearn/sklearn.preprocessing._data/MinMaxScaler/__init__/clip": {
+      "target": "sklearn/sklearn.preprocessing._data/MinMaxScaler/__init__/clip",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "aclrian"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "constant",
+      "defaultValueType": "boolean",
+      "defaultValue": false
+    },
+    "sklearn/sklearn.preprocessing._data/Normalizer/transform/copy": {
+      "target": "sklearn/sklearn.preprocessing._data/Normalizer/transform/copy",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "aclrian"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "constant",
+      "defaultValueType": "none",
+      "defaultValue": null
+    },
+    "sklearn/sklearn.preprocessing._data/PowerTransformer/__init__/standardize": {
+      "target": "sklearn/sklearn.preprocessing._data/PowerTransformer/__init__/standardize",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "constant",
+      "defaultValueType": "boolean",
+      "defaultValue": true
+    },
+    "sklearn/sklearn.preprocessing._data/QuantileTransformer/__init__/ignore_implicit_zeros": {
+      "target": "sklearn/sklearn.preprocessing._data/QuantileTransformer/__init__/ignore_implicit_zeros",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "constant",
+      "defaultValueType": "boolean",
+      "defaultValue": false
+    },
+    "sklearn/sklearn.preprocessing._data/StandardScaler/inverse_transform/copy": {
+      "target": "sklearn/sklearn.preprocessing._data/StandardScaler/inverse_transform/copy",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "constant",
+      "defaultValueType": "none",
+      "defaultValue": null
+    },
+    "sklearn/sklearn.preprocessing._data/StandardScaler/transform/copy": {
+      "target": "sklearn/sklearn.preprocessing._data/StandardScaler/transform/copy",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "constant",
+      "defaultValueType": "none",
+      "defaultValue": null
+    },
+    "sklearn/sklearn.preprocessing._label/LabelBinarizer/__init__/neg_label": {
+      "target": "sklearn/sklearn.preprocessing._label/LabelBinarizer/__init__/neg_label",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "aclrian"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "constant",
+      "defaultValueType": "number",
+      "defaultValue": 0
+    },
+    "sklearn/sklearn.preprocessing._label/LabelBinarizer/__init__/pos_label": {
+      "target": "sklearn/sklearn.preprocessing._label/LabelBinarizer/__init__/pos_label",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "aclrian"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "constant",
+      "defaultValueType": "number",
+      "defaultValue": 1
+    },
+    "sklearn/sklearn.preprocessing._data/Binarizer/__init__/threshold": {
+      "target": "sklearn/sklearn.preprocessing._data/Binarizer/__init__/threshold",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "number",
+      "defaultValue": 0
+    },
+    "sklearn/sklearn.preprocessing._data/MaxAbsScaler/__init__/copy": {
+      "target": "sklearn/sklearn.preprocessing._data/MaxAbsScaler/__init__/copy",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "boolean",
+      "defaultValue": true
+    },
+    "sklearn/sklearn.preprocessing._data/MinMaxScaler/__init__/copy": {
+      "target": "sklearn/sklearn.preprocessing._data/MinMaxScaler/__init__/copy",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "boolean",
+      "defaultValue": true
+    },
+    "sklearn/sklearn.preprocessing._data/Normalizer/__init__/copy": {
+      "target": "sklearn/sklearn.preprocessing._data/Normalizer/__init__/copy",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "boolean",
+      "defaultValue": true
+    },
+    "sklearn/sklearn.preprocessing._data/PowerTransformer/__init__/copy": {
+      "target": "sklearn/sklearn.preprocessing._data/PowerTransformer/__init__/copy",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "aclrian"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "boolean",
+      "defaultValue": true
+    },
+    "sklearn/sklearn.preprocessing._data/QuantileTransformer/__init__/n_quantiles": {
+      "target": "sklearn/sklearn.preprocessing._data/QuantileTransformer/__init__/n_quantiles",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "aclrian"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "number",
+      "defaultValue": 100
+    },
+    "sklearn/sklearn.preprocessing._data/QuantileTransformer/__init__/random_state": {
+      "target": "sklearn/sklearn.preprocessing._data/QuantileTransformer/__init__/random_state",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "aclrian"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "number",
+      "defaultValue": 0
+    },
+    "sklearn/sklearn.preprocessing._data/QuantileTransformer/__init__/copy": {
+      "target": "sklearn/sklearn.preprocessing._data/QuantileTransformer/__init__/copy",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "aclrian"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "boolean",
+      "defaultValue": true
+    },
+    "sklearn/sklearn.preprocessing._data/RobustScaler/__init__/with_centering": {
+      "target": "sklearn/sklearn.preprocessing._data/RobustScaler/__init__/with_centering",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "aclrian"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "boolean",
+      "defaultValue": true
+    },
+    "sklearn/sklearn.preprocessing._data/RobustScaler/__init__/with_scaling": {
+      "target": "sklearn/sklearn.preprocessing._data/RobustScaler/__init__/with_scaling",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "aclrian"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "boolean",
+      "defaultValue": true
+    },
+    "sklearn/sklearn.preprocessing._data/RobustScaler/__init__/copy": {
+      "target": "sklearn/sklearn.preprocessing._data/RobustScaler/__init__/copy",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "aclrian"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "boolean",
+      "defaultValue": true
+    },
+    "sklearn/sklearn.preprocessing._data/RobustScaler/__init__/unit_variance": {
+      "target": "sklearn/sklearn.preprocessing._data/RobustScaler/__init__/unit_variance",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "aclrian"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "boolean",
+      "defaultValue": false
+    },
+    "sklearn/sklearn.preprocessing._data/StandardScaler/__init__/copy": {
+      "target": "sklearn/sklearn.preprocessing._data/StandardScaler/__init__/copy",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "aclrian"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "boolean",
+      "defaultValue": true
+    },
+    "sklearn/sklearn.preprocessing._data/StandardScaler/__init__/with_mean": {
+      "target": "sklearn/sklearn.preprocessing._data/StandardScaler/__init__/with_mean",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "aclrian"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "boolean",
+      "defaultValue": true
+    },
+    "sklearn/sklearn.preprocessing._data/StandardScaler/__init__/with_std": {
+      "target": "sklearn/sklearn.preprocessing._data/StandardScaler/__init__/with_std",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "aclrian"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "boolean",
+      "defaultValue": true
+    },
+    "sklearn/sklearn.preprocessing._discretization/KBinsDiscretizer/__init__/n_bins": {
+      "target": "sklearn/sklearn.preprocessing._discretization/KBinsDiscretizer/__init__/n_bins",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "aclrian"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "number",
+      "defaultValue": 10
+    },
+    "sklearn/sklearn.preprocessing._encoders/OneHotEncoder/__init__/sparse_output": {
+      "target": "sklearn/sklearn.preprocessing._encoders/OneHotEncoder/__init__/sparse_output",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "reviewResult": "unsure",
+      "variant": "optional",
+      "defaultValueType": "boolean",
+      "defaultValue": true
+    },
+    "sklearn/sklearn.preprocessing._encoders/OrdinalEncoder/__init__/unknown_value": {
+      "target": "sklearn/sklearn.preprocessing._encoders/OrdinalEncoder/__init__/unknown_value",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "none",
+      "defaultValue": null
+    },
+    "sklearn/sklearn.preprocessing._function_transformer/FunctionTransformer/__init__/validate": {
+      "target": "sklearn/sklearn.preprocessing._function_transformer/FunctionTransformer/__init__/validate",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "boolean",
+      "defaultValue": false
+    },
+    "sklearn/sklearn.preprocessing._function_transformer/FunctionTransformer/__init__/accept_sparse": {
+      "target": "sklearn/sklearn.preprocessing._function_transformer/FunctionTransformer/__init__/accept_sparse",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "boolean",
+      "defaultValue": false
+    },
+    "sklearn/sklearn.preprocessing._function_transformer/FunctionTransformer/__init__/check_inverse": {
+      "target": "sklearn/sklearn.preprocessing._function_transformer/FunctionTransformer/__init__/check_inverse",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "boolean",
+      "defaultValue": true
+    },
+    "sklearn/sklearn.preprocessing._label/LabelBinarizer/inverse_transform/threshold": {
+      "target": "sklearn/sklearn.preprocessing._label/LabelBinarizer/inverse_transform/threshold",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "none",
+      "defaultValue": null
+    },
+    "sklearn/sklearn.preprocessing._label/MultiLabelBinarizer/__init__/sparse_output": {
+      "target": "sklearn/sklearn.preprocessing._label/MultiLabelBinarizer/__init__/sparse_output",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "boolean",
+      "defaultValue": false
+    },
+    "sklearn/sklearn.preprocessing._label/LabelBinarizer/__init__/sparse_output": {
+      "target": "sklearn/sklearn.preprocessing._label/LabelBinarizer/__init__/sparse_output",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "aclrian"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "required"
+    }
+  }
+}

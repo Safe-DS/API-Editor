@@ -1,0 +1,133 @@
+{
+  "schemaVersion": 2,
+  "boundaryAnnotations": {},
+  "calledAfterAnnotations": {},
+  "completeAnnotations": {},
+  "descriptionAnnotations": {},
+  "enumAnnotations": {},
+  "expertAnnotations": {},
+  "groupAnnotations": {},
+  "moveAnnotations": {
+    "sklearn/sklearn.neighbors._regression/KNeighborsRegressor": {
+      "target": "sklearn/sklearn.neighbors._regression/KNeighborsRegressor",
+      "authors": [
+        "jofaul",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "destination": "sklearn.regression.neighbors",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.neighbors._classification/KNeighborsClassifier": {
+      "target": "sklearn/sklearn.neighbors._classification/KNeighborsClassifier",
+      "authors": [
+        "jofaul",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "destination": "sklearn.classification.neighbors",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.neighbors._regression/RadiusNeighborsRegressor": {
+      "target": "sklearn/sklearn.neighbors._regression/RadiusNeighborsRegressor",
+      "authors": [
+        "jofaul",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "destination": "sklearn.regression.neighbors",
+      "reviewResult": ""
+    }
+  },
+  "pureAnnotations": {},
+  "renameAnnotations": {},
+  "removeAnnotations": {
+    "sklearn/sklearn.neighbors._graph/KNeighborsTransformer": {
+      "target": "sklearn/sklearn.neighbors._graph/KNeighborsTransformer",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.neighbors._graph/RadiusNeighborsTransformer": {
+      "target": "sklearn/sklearn.neighbors._graph/RadiusNeighborsTransformer",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.neighbors._graph/KNeighborsTransformer/__init__": {
+      "target": "sklearn/sklearn.neighbors._graph/KNeighborsTransformer/__init__",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.neighbors._graph/RadiusNeighborsTransformer/__init__": {
+      "target": "sklearn/sklearn.neighbors._graph/RadiusNeighborsTransformer/__init__",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.neighbors._lof/LocalOutlierFactor/fit_predict": {
+      "target": "sklearn/sklearn.neighbors._lof/LocalOutlierFactor/fit_predict",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.neighbors._lof/LocalOutlierFactor/_predict": {
+      "target": "sklearn/sklearn.neighbors._lof/LocalOutlierFactor/_predict",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    }
+  },
+  "todoAnnotations": {},
+  "valueAnnotations": {
+    "sklearn/sklearn.neighbors._kde/KernelDensity/__init__/bandwidth": {
+      "target": "sklearn/sklearn.neighbors._kde/KernelDensity/__init__/bandwidth",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "jofaul"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "number",
+      "defaultValue": 0.02
+    }
+  }
+}

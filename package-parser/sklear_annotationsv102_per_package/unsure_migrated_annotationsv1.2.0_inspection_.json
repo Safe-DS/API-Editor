@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 2,
+  "boundaryAnnotations": {},
+  "calledAfterAnnotations": {},
+  "completeAnnotations": {},
+  "descriptionAnnotations": {},
+  "enumAnnotations": {},
+  "expertAnnotations": {},
+  "groupAnnotations": {},
+  "moveAnnotations": {},
+  "pureAnnotations": {},
+  "renameAnnotations": {},
+  "removeAnnotations": {
+    "sklearn/sklearn.inspection._plot.partial_dependence/PartialDependenceDisplay": {
+      "target": "sklearn/sklearn.inspection._plot.partial_dependence/PartialDependenceDisplay",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.inspection._plot.partial_dependence/PartialDependenceDisplay/__init__": {
+      "target": "sklearn/sklearn.inspection._plot.partial_dependence/PartialDependenceDisplay/__init__",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.inspection._plot.partial_dependence/PartialDependenceDisplay/_plot_two_way_partial_dependence": {
+      "target": "sklearn/sklearn.inspection._plot.partial_dependence/PartialDependenceDisplay/_plot_two_way_partial_dependence",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.inspection._plot.partial_dependence/PartialDependenceDisplay/plot": {
+      "target": "sklearn/sklearn.inspection._plot.partial_dependence/PartialDependenceDisplay/plot",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    }
+  },
+  "todoAnnotations": {},
+  "valueAnnotations": {}
+}

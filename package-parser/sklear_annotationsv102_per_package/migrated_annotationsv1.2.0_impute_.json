@@ -1,0 +1,633 @@
+{
+  "schemaVersion": 2,
+  "boundaryAnnotations": {},
+  "calledAfterAnnotations": {},
+  "completeAnnotations": {},
+  "descriptionAnnotations": {},
+  "enumAnnotations": {},
+  "expertAnnotations": {},
+  "groupAnnotations": {},
+  "moveAnnotations": {},
+  "pureAnnotations": {},
+  "renameAnnotations": {},
+  "removeAnnotations": {
+    "sklearn/sklearn.impute._base/_BaseImputer": {
+      "target": "sklearn/sklearn.impute._base/_BaseImputer",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.impute._base/MissingIndicator/_fit": {
+      "target": "sklearn/sklearn.impute._base/MissingIndicator/_fit",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.impute._base/MissingIndicator/_get_missing_features_info": {
+      "target": "sklearn/sklearn.impute._base/MissingIndicator/_get_missing_features_info",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.impute._base/MissingIndicator/_more_tags": {
+      "target": "sklearn/sklearn.impute._base/MissingIndicator/_more_tags",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.impute._base/MissingIndicator/_validate_input": {
+      "target": "sklearn/sklearn.impute._base/MissingIndicator/_validate_input",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.impute._base/SimpleImputer/_dense_fit": {
+      "target": "sklearn/sklearn.impute._base/SimpleImputer/_dense_fit",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.impute._base/SimpleImputer/_sparse_fit": {
+      "target": "sklearn/sklearn.impute._base/SimpleImputer/_sparse_fit",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.impute._base/SimpleImputer/_validate_input": {
+      "target": "sklearn/sklearn.impute._base/SimpleImputer/_validate_input",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.impute._base/SimpleImputer/inverse_transform": {
+      "target": "sklearn/sklearn.impute._base/SimpleImputer/inverse_transform",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.impute._base/_BaseImputer/_concatenate_indicator": {
+      "target": "sklearn/sklearn.impute._base/_BaseImputer/_concatenate_indicator",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.impute._base/_BaseImputer/_fit_indicator": {
+      "target": "sklearn/sklearn.impute._base/_BaseImputer/_fit_indicator",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.impute._base/_BaseImputer/_more_tags": {
+      "target": "sklearn/sklearn.impute._base/_BaseImputer/_more_tags",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.impute._base/_BaseImputer/_transform_indicator": {
+      "target": "sklearn/sklearn.impute._base/_BaseImputer/_transform_indicator",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.impute._iterative/IterativeImputer/_get_abs_corr_mat": {
+      "target": "sklearn/sklearn.impute._iterative/IterativeImputer/_get_abs_corr_mat",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.impute._iterative/IterativeImputer/_get_neighbor_feat_idx": {
+      "target": "sklearn/sklearn.impute._iterative/IterativeImputer/_get_neighbor_feat_idx",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.impute._iterative/IterativeImputer/_get_ordered_idx": {
+      "target": "sklearn/sklearn.impute._iterative/IterativeImputer/_get_ordered_idx",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.impute._iterative/IterativeImputer/_impute_one_feature": {
+      "target": "sklearn/sklearn.impute._iterative/IterativeImputer/_impute_one_feature",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "unsure"
+    },
+    "sklearn/sklearn.impute._iterative/IterativeImputer/_validate_limit": {
+      "target": "sklearn/sklearn.impute._iterative/IterativeImputer/_validate_limit",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.impute._knn/KNNImputer/_calc_impute": {
+      "target": "sklearn/sklearn.impute._knn/KNNImputer/_calc_impute",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    }
+  },
+  "todoAnnotations": {
+    "sklearn/sklearn.impute._base/MissingIndicator/__init__/features": {
+      "target": "sklearn/sklearn.impute._base/MissingIndicator/__init__/features",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'constant' and the default Value 'missing-only ( type: string )' from the previous version was at 'sklearn/sklearn.impute._base/MissingIndicator/__init__/features' and the possible alternatives in the new version of the api are: sklearn/sklearn.impute._base/MissingIndicator/__init__/features",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.impute._knn/KNNImputer/__init__/metric": {
+      "target": "sklearn/sklearn.impute._knn/KNNImputer/__init__/metric",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'constant' and the default Value 'nan_euclidean ( type: string )' from the previous version was at 'sklearn/sklearn.impute._knn/KNNImputer/__init__/metric' and the possible alternatives in the new version of the api are: sklearn/sklearn.impute._knn/KNNImputer/__init__/metric",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.impute._iterative/IterativeImputer/__init__/estimator": {
+      "target": "sklearn/sklearn.impute._iterative/IterativeImputer/__init__/estimator",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'optional' and the default Value 'None ( type: none )' from the previous version was at 'sklearn/sklearn.impute._iterative/IterativeImputer/__init__/estimator' and the possible alternatives in the new version of the api are: sklearn/sklearn.impute._iterative/IterativeImputer/__init__/estimator",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.impute._knn/KNNImputer/__init__/weights": {
+      "target": "sklearn/sklearn.impute._knn/KNNImputer/__init__/weights",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "Arsam"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'optional' and the default Value 'uniform ( type: string )' from the previous version was at 'sklearn/sklearn.impute._knn/KNNImputer/__init__/weights' and the possible alternatives in the new version of the api are: sklearn/sklearn.impute._knn/KNNImputer/__init__/weights",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.impute._base/SimpleImputer/fit/X": {
+      "target": "sklearn/sklearn.impute._base/SimpleImputer/fit/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "Arsam"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.impute._base/SimpleImputer/fit/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.impute._base/SimpleImputer/fit/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.impute._base/SimpleImputer/transform/X": {
+      "target": "sklearn/sklearn.impute._base/SimpleImputer/transform/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "Arsam"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.impute._base/SimpleImputer/transform/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.impute._base/SimpleImputer/transform/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.impute._iterative/IterativeImputer/fit/X": {
+      "target": "sklearn/sklearn.impute._iterative/IterativeImputer/fit/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "Arsam"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.impute._iterative/IterativeImputer/fit/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.impute._iterative/IterativeImputer/fit/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.impute._iterative/IterativeImputer/fit_transform/X": {
+      "target": "sklearn/sklearn.impute._iterative/IterativeImputer/fit_transform/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "Arsam"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.impute._iterative/IterativeImputer/fit_transform/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.impute._iterative/IterativeImputer/fit_transform/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.impute._iterative/IterativeImputer/transform/X": {
+      "target": "sklearn/sklearn.impute._iterative/IterativeImputer/transform/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "Arsam"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.impute._iterative/IterativeImputer/transform/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.impute._iterative/IterativeImputer/transform/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.impute._knn/KNNImputer/fit/X": {
+      "target": "sklearn/sklearn.impute._knn/KNNImputer/fit/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "Arsam"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.impute._knn/KNNImputer/fit/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.impute._knn/KNNImputer/fit/X",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.impute._knn/KNNImputer/transform/X": {
+      "target": "sklearn/sklearn.impute._knn/KNNImputer/transform/X",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "Arsam"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'required' from the previous version was at 'sklearn/sklearn.impute._knn/KNNImputer/transform/X' and the possible alternatives in the new version of the api are: sklearn/sklearn.impute._knn/KNNImputer/transform/X",
+      "reviewResult": ""
+    }
+  },
+  "valueAnnotations": {
+    "sklearn/sklearn.impute._base/MissingIndicator/__init__/sparse": {
+      "target": "sklearn/sklearn.impute._base/MissingIndicator/__init__/sparse",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "constant",
+      "defaultValueType": "string",
+      "defaultValue": "auto"
+    },
+    "sklearn/sklearn.impute._base/MissingIndicator/__init__/error_on_new": {
+      "target": "sklearn/sklearn.impute._base/MissingIndicator/__init__/error_on_new",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "constant",
+      "defaultValueType": "boolean",
+      "defaultValue": true
+    },
+    "sklearn/sklearn.impute._iterative/IterativeImputer/__init__/verbose": {
+      "target": "sklearn/sklearn.impute._iterative/IterativeImputer/__init__/verbose",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "constant",
+      "defaultValueType": "number",
+      "defaultValue": 0
+    },
+    "sklearn/sklearn.impute._knn/KNNImputer/__init__/copy": {
+      "target": "sklearn/sklearn.impute._knn/KNNImputer/__init__/copy",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "constant",
+      "defaultValueType": "boolean",
+      "defaultValue": true
+    },
+    "sklearn/sklearn.impute._knn/KNNImputer/__init__/add_indicator": {
+      "target": "sklearn/sklearn.impute._knn/KNNImputer/__init__/add_indicator",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "constant",
+      "defaultValueType": "boolean",
+      "defaultValue": false
+    },
+    "sklearn/sklearn.impute._base/SimpleImputer/__init__/fill_value": {
+      "target": "sklearn/sklearn.impute._base/SimpleImputer/__init__/fill_value",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "Arsam"
+      ],
+      "comment": "",
+      "reviewResult": "unsure",
+      "variant": "optional",
+      "defaultValueType": "none",
+      "defaultValue": null
+    },
+    "sklearn/sklearn.impute._base/SimpleImputer/__init__/copy": {
+      "target": "sklearn/sklearn.impute._base/SimpleImputer/__init__/copy",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "Arsam"
+      ],
+      "comment": "",
+      "reviewResult": "unsure",
+      "variant": "optional",
+      "defaultValueType": "boolean",
+      "defaultValue": true
+    },
+    "sklearn/sklearn.impute._base/SimpleImputer/__init__/add_indicator": {
+      "target": "sklearn/sklearn.impute._base/SimpleImputer/__init__/add_indicator",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "Arsam"
+      ],
+      "comment": "",
+      "reviewResult": "unsure",
+      "variant": "optional",
+      "defaultValueType": "boolean",
+      "defaultValue": false
+    },
+    "sklearn/sklearn.impute._iterative/IterativeImputer/__init__/sample_posterior": {
+      "target": "sklearn/sklearn.impute._iterative/IterativeImputer/__init__/sample_posterior",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "Arsam"
+      ],
+      "comment": "",
+      "reviewResult": "unsure",
+      "variant": "optional",
+      "defaultValueType": "boolean",
+      "defaultValue": false
+    },
+    "sklearn/sklearn.impute._iterative/IterativeImputer/__init__/max_iter": {
+      "target": "sklearn/sklearn.impute._iterative/IterativeImputer/__init__/max_iter",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "Arsam"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "number",
+      "defaultValue": 10
+    },
+    "sklearn/sklearn.impute._iterative/IterativeImputer/__init__/tol": {
+      "target": "sklearn/sklearn.impute._iterative/IterativeImputer/__init__/tol",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "Arsam"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "number",
+      "defaultValue": 0.001
+    },
+    "sklearn/sklearn.impute._iterative/IterativeImputer/__init__/n_nearest_features": {
+      "target": "sklearn/sklearn.impute._iterative/IterativeImputer/__init__/n_nearest_features",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "Arsam"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "none",
+      "defaultValue": null
+    },
+    "sklearn/sklearn.impute._iterative/IterativeImputer/__init__/skip_complete": {
+      "target": "sklearn/sklearn.impute._iterative/IterativeImputer/__init__/skip_complete",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "Arsam"
+      ],
+      "comment": "",
+      "reviewResult": "unsure",
+      "variant": "optional",
+      "defaultValueType": "boolean",
+      "defaultValue": false
+    },
+    "sklearn/sklearn.impute._iterative/IterativeImputer/__init__/random_state": {
+      "target": "sklearn/sklearn.impute._iterative/IterativeImputer/__init__/random_state",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "Arsam"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "none",
+      "defaultValue": null
+    },
+    "sklearn/sklearn.impute._iterative/IterativeImputer/__init__/add_indicator": {
+      "target": "sklearn/sklearn.impute._iterative/IterativeImputer/__init__/add_indicator",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "Arsam"
+      ],
+      "comment": "",
+      "reviewResult": "unsure",
+      "variant": "optional",
+      "defaultValueType": "boolean",
+      "defaultValue": false
+    },
+    "sklearn/sklearn.impute._knn/KNNImputer/__init__/n_neighbors": {
+      "target": "sklearn/sklearn.impute._knn/KNNImputer/__init__/n_neighbors",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "Arsam"
+      ],
+      "comment": "",
+      "reviewResult": "",
+      "variant": "optional",
+      "defaultValueType": "number",
+      "defaultValue": 5
+    },
+    "sklearn/sklearn.impute._base/SimpleImputer/__init__/strategy": {
+      "target": "sklearn/sklearn.impute._base/SimpleImputer/__init__/strategy",
+      "authors": [
+        "$autogen$",
+        "lars-reimann",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "reviewResult": "unsure",
+      "variant": "optional",
+      "defaultValueType": "string",
+      "defaultValue": "mean"
+    },
+    "sklearn/sklearn.impute._iterative/IterativeImputer/__init__/missing_values": {
+      "target": "sklearn/sklearn.impute._iterative/IterativeImputer/__init__/missing_values",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "reviewResult": "unsure",
+      "variant": "required"
+    },
+    "sklearn/sklearn.impute._iterative/IterativeImputer/__init__/min_value": {
+      "target": "sklearn/sklearn.impute._iterative/IterativeImputer/__init__/min_value",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "reviewResult": "unsure",
+      "variant": "required"
+    },
+    "sklearn/sklearn.impute._iterative/IterativeImputer/__init__/max_value": {
+      "target": "sklearn/sklearn.impute._iterative/IterativeImputer/__init__/max_value",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "lars-reimann"
+      ],
+      "comment": "",
+      "reviewResult": "unsure",
+      "variant": "required"
+    }
+  }
+}

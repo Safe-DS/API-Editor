@@ -1,0 +1,331 @@
+{
+  "schemaVersion": 2,
+  "boundaryAnnotations": {},
+  "calledAfterAnnotations": {},
+  "completeAnnotations": {},
+  "descriptionAnnotations": {},
+  "enumAnnotations": {},
+  "expertAnnotations": {},
+  "groupAnnotations": {},
+  "moveAnnotations": {
+    "sklearn/sklearn.ensemble._stacking/StackingClassifier": {
+      "target": "sklearn/sklearn.ensemble._stacking/StackingClassifier",
+      "authors": [
+        "GideonKoenig",
+        "migration"
+      ],
+      "reviewers": [
+        "GideonKoenig"
+      ],
+      "comment": "",
+      "destination": "sklearn.classification.model",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.ensemble._hist_gradient_boosting.gradient_boosting/HistGradientBoostingRegressor": {
+      "target": "sklearn/sklearn.ensemble._hist_gradient_boosting.gradient_boosting/HistGradientBoostingRegressor",
+      "authors": [
+        "GideonKoenig",
+        "migration"
+      ],
+      "reviewers": [
+        "GideonKoenig"
+      ],
+      "comment": "",
+      "destination": "sklearn.regression.model",
+      "reviewResult": ""
+    }
+  },
+  "pureAnnotations": {},
+  "renameAnnotations": {
+    "sklearn/sklearn.ensemble._stacking/StackingClassifier": {
+      "target": "sklearn/sklearn.ensemble._stacking/StackingClassifier",
+      "authors": [
+        "GideonKoenig",
+        "migration"
+      ],
+      "reviewers": [
+        "GideonKoenig"
+      ],
+      "comment": "",
+      "newName": "Stacking",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.ensemble._hist_gradient_boosting.gradient_boosting/HistGradientBoostingRegressor": {
+      "target": "sklearn/sklearn.ensemble._hist_gradient_boosting.gradient_boosting/HistGradientBoostingRegressor",
+      "authors": [
+        "GideonKoenig",
+        "migration"
+      ],
+      "reviewers": [
+        "GideonKoenig"
+      ],
+      "comment": "",
+      "newName": "HistGradientBoosting",
+      "reviewResult": ""
+    }
+  },
+  "removeAnnotations": {
+    "sklearn/sklearn.ensemble._base/BaseEnsemble": {
+      "target": "sklearn/sklearn.ensemble._base/BaseEnsemble",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.ensemble._base/BaseEnsemble/__init__": {
+      "target": "sklearn/sklearn.ensemble._base/BaseEnsemble/__init__",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "GideonKoenig"
+      ],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.ensemble._forest/ForestRegressor/__init__": {
+      "target": "sklearn/sklearn.ensemble._forest/ForestRegressor/__init__",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.ensemble._gb_losses/ClassificationLossFunction/_raw_prediction_to_proba": {
+      "target": "sklearn/sklearn.ensemble._gb_losses/ClassificationLossFunction/_raw_prediction_to_proba",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.ensemble._gb_losses/LossFunction/_update_terminal_region": {
+      "target": "sklearn/sklearn.ensemble._gb_losses/LossFunction/_update_terminal_region",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.ensemble._gb_losses/LossFunction/init_estimator": {
+      "target": "sklearn/sklearn.ensemble._gb_losses/LossFunction/init_estimator",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.ensemble._hist_gradient_boosting.gradient_boosting/HistGradientBoostingClassifier/_get_loss": {
+      "target": "sklearn/sklearn.ensemble._hist_gradient_boosting.gradient_boosting/HistGradientBoostingClassifier/_get_loss",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.ensemble._hist_gradient_boosting.grower/TreeGrower/_validate_parameters": {
+      "target": "sklearn/sklearn.ensemble._hist_gradient_boosting.grower/TreeGrower/_validate_parameters",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.ensemble._stacking/_BaseStacking/_sk_visual_block_with_final_estimator": {
+      "target": "sklearn/sklearn.ensemble._stacking/_BaseStacking/_sk_visual_block_with_final_estimator",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.ensemble._weight_boosting/BaseWeightBoosting/__init__": {
+      "target": "sklearn/sklearn.ensemble._weight_boosting/BaseWeightBoosting/__init__",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    }
+  },
+  "todoAnnotations": {
+    "sklearn/sklearn.ensemble._forest/RandomForestClassifier/__init__/criterion": {
+      "target": "sklearn/sklearn.ensemble._forest/RandomForestClassifier/__init__/criterion",
+      "authors": [
+        "$autogen$",
+        "GideonKoenig",
+        "migration"
+      ],
+      "reviewers": [
+        "GideonKoenig"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'optional' and the default Value 'gini ( type: string )' from the previous version was at 'sklearn/sklearn.ensemble._forest/RandomForestClassifier/__init__/criterion' and the possible alternatives in the new version of the api are: sklearn/sklearn.ensemble._forest/RandomForestClassifier/__init__/criterion",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.ensemble._hist_gradient_boosting.gradient_boosting/HistGradientBoostingClassifier/__init__/monotonic_cst": {
+      "target": "sklearn/sklearn.ensemble._hist_gradient_boosting.gradient_boosting/HistGradientBoostingClassifier/__init__/monotonic_cst",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "GideonKoenig"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'constant' and the default Value 'None ( type: none )' from the previous version was at 'sklearn/sklearn.ensemble._hist_gradient_boosting.gradient_boosting/HistGradientBoostingClassifier/__init__/monotonic_cst' and the possible alternatives in the new version of the api are: sklearn/sklearn.ensemble._hist_gradient_boosting.gradient_boosting/HistGradientBoostingClassifier/__init__/monotonic_cst",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.ensemble._hist_gradient_boosting.gradient_boosting/HistGradientBoostingRegressor/__init__/monotonic_cst": {
+      "target": "sklearn/sklearn.ensemble._hist_gradient_boosting.gradient_boosting/HistGradientBoostingRegressor/__init__/monotonic_cst",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "GideonKoenig"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'constant' and the default Value 'None ( type: none )' from the previous version was at 'sklearn/sklearn.ensemble._hist_gradient_boosting.gradient_boosting/HistGradientBoostingRegressor/__init__/monotonic_cst' and the possible alternatives in the new version of the api are: sklearn/sklearn.ensemble._hist_gradient_boosting.gradient_boosting/HistGradientBoostingRegressor/__init__/monotonic_cst",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.ensemble._forest/ExtraTreesClassifier/__init__/criterion": {
+      "target": "sklearn/sklearn.ensemble._forest/ExtraTreesClassifier/__init__/criterion",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "GideonKoenig"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'optional' and the default Value 'gini ( type: string )' from the previous version was at 'sklearn/sklearn.ensemble._forest/ExtraTreesClassifier/__init__/criterion' and the possible alternatives in the new version of the api are: sklearn/sklearn.ensemble._forest/ExtraTreesClassifier/__init__/criterion",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.ensemble._forest/ExtraTreesRegressor/__init__/criterion": {
+      "target": "sklearn/sklearn.ensemble._forest/ExtraTreesRegressor/__init__/criterion",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "GideonKoenig"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'optional' and the default Value 'squared_error ( type: string )' from the previous version was at 'sklearn/sklearn.ensemble._forest/ExtraTreesRegressor/__init__/criterion' and the possible alternatives in the new version of the api are: sklearn/sklearn.ensemble._forest/ExtraTreesRegressor/__init__/criterion",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.ensemble._forest/RandomForestRegressor/__init__/criterion": {
+      "target": "sklearn/sklearn.ensemble._forest/RandomForestRegressor/__init__/criterion",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "GideonKoenig"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'optional' and the default Value 'squared_error ( type: string )' from the previous version was at 'sklearn/sklearn.ensemble._forest/RandomForestRegressor/__init__/criterion' and the possible alternatives in the new version of the api are: sklearn/sklearn.ensemble._forest/RandomForestRegressor/__init__/criterion",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.ensemble._gb/GradientBoostingClassifier/__init__/loss": {
+      "target": "sklearn/sklearn.ensemble._gb/GradientBoostingClassifier/__init__/loss",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "GideonKoenig"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'optional' and the default Value 'log_loss ( type: string )' from the previous version was at 'sklearn/sklearn.ensemble._gb/GradientBoostingClassifier/__init__/loss' and the possible alternatives in the new version of the api are: sklearn/sklearn.ensemble._gb/GradientBoostingClassifier/__init__/loss",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.ensemble._gb/GradientBoostingClassifier/__init__/criterion": {
+      "target": "sklearn/sklearn.ensemble._gb/GradientBoostingClassifier/__init__/criterion",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "GideonKoenig"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'optional' and the default Value 'friedman_mse ( type: string )' from the previous version was at 'sklearn/sklearn.ensemble._gb/GradientBoostingClassifier/__init__/criterion' and the possible alternatives in the new version of the api are: sklearn/sklearn.ensemble._gb/GradientBoostingClassifier/__init__/criterion",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.ensemble._gb/GradientBoostingRegressor/__init__/loss": {
+      "target": "sklearn/sklearn.ensemble._gb/GradientBoostingRegressor/__init__/loss",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "GideonKoenig"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'optional' and the default Value 'squared_error ( type: string )' from the previous version was at 'sklearn/sklearn.ensemble._gb/GradientBoostingRegressor/__init__/loss' and the possible alternatives in the new version of the api are: sklearn/sklearn.ensemble._gb/GradientBoostingRegressor/__init__/loss",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.ensemble._gb/GradientBoostingRegressor/__init__/criterion": {
+      "target": "sklearn/sklearn.ensemble._gb/GradientBoostingRegressor/__init__/criterion",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "GideonKoenig"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'optional' and the default Value 'friedman_mse ( type: string )' from the previous version was at 'sklearn/sklearn.ensemble._gb/GradientBoostingRegressor/__init__/criterion' and the possible alternatives in the new version of the api are: sklearn/sklearn.ensemble._gb/GradientBoostingRegressor/__init__/criterion",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.ensemble._hist_gradient_boosting.gradient_boosting/HistGradientBoostingClassifier/__init__/loss": {
+      "target": "sklearn/sklearn.ensemble._hist_gradient_boosting.gradient_boosting/HistGradientBoostingClassifier/__init__/loss",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "GideonKoenig"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'optional' and the default Value 'log_loss ( type: string )' from the previous version was at 'sklearn/sklearn.ensemble._hist_gradient_boosting.gradient_boosting/HistGradientBoostingClassifier/__init__/loss' and the possible alternatives in the new version of the api are: sklearn/sklearn.ensemble._hist_gradient_boosting.gradient_boosting/HistGradientBoostingClassifier/__init__/loss",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.ensemble._hist_gradient_boosting.gradient_boosting/HistGradientBoostingRegressor/__init__/loss": {
+      "target": "sklearn/sklearn.ensemble._hist_gradient_boosting.gradient_boosting/HistGradientBoostingRegressor/__init__/loss",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [
+        "GideonKoenig"
+      ],
+      "comment": "",
+      "newTodo": "The @Value Annotation with the variant 'optional' and the default Value 'squared_error ( type: string )' from the previous version was at 'sklearn/sklearn.ensemble._hist_gradient_boosting.gradient_boosting/HistGradientBoostingRegressor/__init__/loss' and the possible alternatives in the new version of the api are: sklearn/sklearn.ensemble._hist_gradient_boosting.gradient_boosting/HistGradientBoostingRegressor/__init__/loss",
+      "reviewResult": ""
+    }
+  },
+  "valueAnnotations": {}
+}

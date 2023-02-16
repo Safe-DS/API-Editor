@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 2,
+  "boundaryAnnotations": {},
+  "calledAfterAnnotations": {},
+  "completeAnnotations": {},
+  "descriptionAnnotations": {},
+  "enumAnnotations": {},
+  "expertAnnotations": {},
+  "groupAnnotations": {},
+  "moveAnnotations": {},
+  "pureAnnotations": {},
+  "renameAnnotations": {},
+  "removeAnnotations": {
+    "sklearn/sklearn.utils.parallel/_FuncWrapper": {
+      "target": "sklearn/sklearn.utils.parallel/_FuncWrapper",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.utils.metaestimators/_IffHasAttrDescriptor": {
+      "target": "sklearn/sklearn.utils.metaestimators/_IffHasAttrDescriptor",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.utils.parallel/_FuncWrapper/__call__": {
+      "target": "sklearn/sklearn.utils.parallel/_FuncWrapper/__call__",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    },
+    "sklearn/sklearn.utils.parallel/_FuncWrapper/__init__": {
+      "target": "sklearn/sklearn.utils.parallel/_FuncWrapper/__init__",
+      "authors": [
+        "$autogen$",
+        "migration"
+      ],
+      "reviewers": [],
+      "comment": "",
+      "reviewResult": ""
+    }
+  },
+  "todoAnnotations": {},
+  "valueAnnotations": {}
+}
