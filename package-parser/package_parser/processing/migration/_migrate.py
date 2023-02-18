@@ -176,7 +176,7 @@ class Migration:
                     return api_element.name
                 if isinstance(api_element, Attribute):
                     return str(api_element.class_id) + "/" + api_element.name
-                return "/".join(api_element.id.split("/")[1:])
+                return api_element.id
 
             apiv1_elements = ", ".join(
                 [
@@ -291,15 +291,13 @@ class Migration:
         return not_mapped_api_elements
 
     def print(self, apiv1: API, apiv2: API) -> None:
-        print("**Similarity**|**APIV1**|**APIV2**|**comment**")
-        print(":-----:|:-----:|:-----:|:----:|")
+        print("**Similarity**|**APIV1**|**APIV2**|**comment**\n:-----:|:-----:|:-----:|:----:|")
         table_body = self._get_mappings_for_table()
         table_body.extend(self._get_not_mapped_api_elements_for_table(apiv1, apiv2))
         table_body.sort(
             key=lambda row: max(len(cell.split("/")) for cell in row.split("|")[:-1])
         )
-        for row in table_body:
-            print(row)
+        print("\n".join(table_body))
 
     def _remove_duplicates(self) -> None:
         for annotation_type in [
