@@ -291,7 +291,9 @@ class Migration:
         return not_mapped_api_elements
 
     def print(self, apiv1: API, apiv2: API) -> None:
-        print("**Similarity**|**APIV1**|**APIV2**|**comment**\n:-----:|:-----:|:-----:|:----:|")
+        print(
+            "**Similarity**|**APIV1**|**APIV2**|**comment**\n:-----:|:-----:|:-----:|:----:|"
+        )
         table_body = self._get_mappings_for_table()
         table_body.extend(self._get_not_mapped_api_elements_for_table(apiv1, apiv2))
         table_body.sort(

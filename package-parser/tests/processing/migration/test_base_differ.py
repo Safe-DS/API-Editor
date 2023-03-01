@@ -17,7 +17,9 @@ from package_parser.processing.api.model import (
     UnionType,
 )
 from package_parser.processing.migration.model import AbstractDiffer, SimpleDiffer
-from package_parser.processing.migration.model._differ import distance_elements_with_cost_function
+from package_parser.processing.migration.model._differ import (
+    distance_elements_with_cost_function,
+)
 
 differ_list = [
     SimpleDiffer(
@@ -248,12 +250,17 @@ def test_simple_differ() -> None:
 
 def test_wheighted_levenshtein_distance() -> None:
     def cost_function(iteration: int, max_iteration: int) -> float:
-        return (max_iteration-iteration+1) / max_iteration
-    cost,max_iteration = distance_elements_with_cost_function(["a","b","c"],["x","b","c"], cost_function=cost_function)
+        return (max_iteration - iteration + 1) / max_iteration
+
+    cost, max_iteration = distance_elements_with_cost_function(
+        ["a", "b", "c"], ["x", "b", "c"], cost_function=cost_function
+    )
     assert cost == 1 and max_iteration == 3
 
-    cost,max_iteration = distance_elements_with_cost_function(["a","b","c"],["a","b","z"], cost_function=cost_function)
-    assert cost == 1/3 and max_iteration == 3
+    cost, max_iteration = distance_elements_with_cost_function(
+        ["a", "b", "c"], ["a", "b", "z"], cost_function=cost_function
+    )
+    assert cost == 1 / 3 and max_iteration == 3
 
     differ = SimpleDiffer(None, [], API("", "", ""), API("", "", ""))
     assert (

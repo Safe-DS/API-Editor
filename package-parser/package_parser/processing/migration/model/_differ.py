@@ -11,12 +11,14 @@ from package_parser.processing.api.model import (
     AbstractType,
     Attribute,
     Class,
+    ClassDocumentation,
     Function,
+    FunctionDocumentation,
     Parameter,
     ParameterAssignment,
     ParameterDocumentation,
     Result,
-    UnionType, FunctionDocumentation, ClassDocumentation,
+    UnionType,
 )
 
 from ._mapping import Mapping
@@ -266,13 +268,20 @@ class SimpleDiffer(AbstractDiffer):
 
         id_similarity = self._compute_id_similarity(classv1.id, classv2.id)
 
-        documentation_similarity = self._compute_documentation_similarity(classv1.documentation, classv2.documentation)
+        documentation_similarity = self._compute_documentation_similarity(
+            classv1.documentation, classv2.documentation
+        )
         if documentation_similarity < 0:
             documentation_similarity = 0
             normalize_similarity -= 1
 
         return (
-            name_similarity + attributes_similarity + function_similarity + code_similarity + id_similarity + documentation_similarity
+            name_similarity
+            + attributes_similarity
+            + function_similarity
+            + code_similarity
+            + id_similarity
+            + documentation_similarity
         ) / normalize_similarity
 
     def _compute_name_similarity(self, namev1: str, namev2: str) -> float:
@@ -333,13 +342,19 @@ class SimpleDiffer(AbstractDiffer):
 
         id_similarity = self._compute_id_similarity(functionv1.id, functionv2.id)
 
-        documentation_similarity = self._compute_documentation_similarity(functionv1.documentation, functionv2.documentation)
+        documentation_similarity = self._compute_documentation_similarity(
+            functionv1.documentation, functionv2.documentation
+        )
         if documentation_similarity < 0:
             documentation_similarity = 0
             normalize_similarity -= 1
 
         result = (
-            code_similarity + name_similarity + parameter_similarity + id_similarity+ documentation_similarity
+            code_similarity
+            + name_similarity
+            + parameter_similarity
+            + id_similarity
+            + documentation_similarity
         ) / normalize_similarity
         if functionv1.id not in self.previous_function_similarity:
             self.previous_function_similarity[functionv1.id] = {}
@@ -386,10 +401,8 @@ class SimpleDiffer(AbstractDiffer):
         if parameter_default_value_similarity < 0:
             parameter_default_value_similarity = 0
             normalize_similarity -= 1
-        parameter_documentation_similarity = (
-            self._compute_documentation_similarity(
-                parameterv1.documentation, parameterv2.documentation
-            )
+        parameter_documentation_similarity = self._compute_documentation_similarity(
+            parameterv1.documentation, parameterv2.documentation
         )
         if parameter_documentation_similarity < 0:
             parameter_documentation_similarity = 0
@@ -500,8 +513,12 @@ class SimpleDiffer(AbstractDiffer):
 
     def _compute_documentation_similarity(
         self,
-        documentationv1: Union[ClassDocumentation, FunctionDocumentation, ParameterDocumentation],
-        documentationv2: Union[ClassDocumentation, FunctionDocumentation, ParameterDocumentation],
+        documentationv1: Union[
+            ClassDocumentation, FunctionDocumentation, ParameterDocumentation
+        ],
+        documentationv2: Union[
+            ClassDocumentation, FunctionDocumentation, ParameterDocumentation
+        ],
     ) -> float:
         if len(documentationv1.description) == len(documentationv2.description) == 0:
             return -1.0
@@ -524,7 +541,7 @@ class SimpleDiffer(AbstractDiffer):
             module_pathv2.extend(additional_module_pathv2)
 
         def cost_function(iteration: int, max_iteration: int) -> float:
-            return (max_iteration-iteration+1) / max_iteration
+            return (max_iteration - iteration + 1) / max_iteration
 
         total_costs, max_iterations = distance_elements_with_cost_function(
             module_pathv1, module_pathv2, cost_function
@@ -540,7 +557,7 @@ def distance_elements_with_cost_function(
     iteration: int = 1,
 ) -> Tuple[float, int]:
     if len(listv1) == 0 and len(listv2) == 0:
-        return 0.0, iteration-1
+        return 0.0, iteration - 1
     if len(listv1) == 0:
         total_costs = 0.0
         max_iterations = iteration + len(listv2)
