@@ -504,12 +504,12 @@ class SimpleDiffer(AbstractDiffer):
             module_pathv2.extend(additional_module_pathv2)
 
         def cost_function(iteration: int, max_iteration: int) -> float:
-            return iteration / max_iteration
+            return (max_iteration-iteration+1) / max_iteration
 
         total_costs, max_iterations = distance_elements_with_cost_function(
-            module_pathv1, module_pathv2, cost_function, iteration=0
+            module_pathv1, module_pathv2, cost_function
         )
-        return 1 - (total_costs / sum(range(1, max_iterations + 1)))
+        return 1 - (total_costs / (sum(range(1, max_iterations + 1)) / max_iterations))
 
 
 def distance_elements_with_cost_function(
@@ -517,8 +517,10 @@ def distance_elements_with_cost_function(
     listv2: list[X],
     cost_function: Callable[[int, int], float],
     are_similar: Callable[[X, X], bool] = lambda x, y: x == y,
-    iteration: int = 0,
+    iteration: int = 1,
 ) -> Tuple[float, int]:
+    if len(listv1) == 0 and len(listv2) == 0:
+        return 0.0, iteration-1
     if len(listv1) == 0:
         total_costs = 0.0
         max_iterations = iteration + len(listv2)
