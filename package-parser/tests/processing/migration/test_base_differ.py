@@ -255,5 +255,8 @@ def test_wheighted_levenshtein_distance() -> None:
     cost,max_iteration = distance_elements_with_cost_function(["a","b","c"],["a","b","z"], cost_function=cost_function)
     assert cost == 1/3 and max_iteration == 3
 
-    differ = SimpleDiffer(None, [], None, None)
-    assert differ._compute_id_similarity("api/test.test.text/a", "api/tests.tests.texts/b") == 0
+    differ = SimpleDiffer(None, [], API("", "", ""), API("", "", ""))
+    assert (
+        differ._compute_id_similarity("api/test.test.text/a", "api/tests.tests.texts/b")
+        == 0
+    )
