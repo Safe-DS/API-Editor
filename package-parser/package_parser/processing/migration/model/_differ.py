@@ -16,7 +16,7 @@ from package_parser.processing.api.model import (
     ParameterAssignment,
     ParameterDocumentation,
     Result,
-    UnionType,
+    UnionType, FunctionDocumentation, ClassDocumentation,
 )
 
 from ._mapping import Mapping
@@ -243,6 +243,8 @@ class SimpleDiffer(AbstractDiffer):
         :param classv2: attribute from apiv2
         :return: value between 0 and 1, where 1 means that the elements are equal
         """
+        normalize_similarity = 5
+
         code_similarity = self._compute_code_similarity(
             classv1.get_formatted_code(), classv2.get_formatted_code()
         )
@@ -258,9 +260,14 @@ class SimpleDiffer(AbstractDiffer):
 
         id_similarity = self._compute_id_similarity(classv1.id, classv2.id)
 
+        documentation_similarity = self._compute_documentation_similarity(classv1.documentation, classv2.documentation)
+        if documentation_similarity < 0:
+            documentation_similarity = 0
+            normalize_similarity -= 1
+
         return (
-            name_similarity + attributes_similarity + code_similarity + id_similarity
-        ) / 4
+            name_similarity + attributes_similarity + code_similarity + id_similarity + documentation_similarity
+        ) / normalize_similarity
 
     def _compute_name_similarity(self, namev1: str, namev2: str) -> float:
         name_similarity = distance(namev1, namev2) / max(len(namev1), len(namev2), 1)
@@ -303,6 +310,8 @@ class SimpleDiffer(AbstractDiffer):
         ):
             return self.previous_function_similarity[functionv1.id][functionv2.id]
 
+        normalize_similarity = 5
+
         code_similarity = self._compute_code_similarity(
             functionv1.get_formatted_code(), functionv2.get_formatted_code()
         )
@@ -318,9 +327,14 @@ class SimpleDiffer(AbstractDiffer):
 
         id_similarity = self._compute_id_similarity(functionv1.id, functionv2.id)
 
+        documentation_similarity = self._compute_documentation_similarity(functionv1.documentation, functionv2.documentation)
+        if documentation_similarity < 0:
+            documentation_similarity = 0
+            normalize_similarity -= 1
+
         result = (
-            code_similarity + name_similarity + parameter_similarity + id_similarity
-        ) / 4
+            code_similarity + name_similarity + parameter_similarity + id_similarity+ documentation_similarity
+        ) / normalize_similarity
         if functionv1.id not in self.previous_function_similarity:
             self.previous_function_similarity[functionv1.id] = {}
         self.previous_function_similarity[functionv1.id][functionv2.id] = result
@@ -367,7 +381,7 @@ class SimpleDiffer(AbstractDiffer):
             parameter_default_value_similarity = 0
             normalize_similarity -= 1
         parameter_documentation_similarity = (
-            self._compute_parameter_documentation_similarity(
+            self._compute_documentation_similarity(
                 parameterv1.documentation, parameterv2.documentation
             )
         )
@@ -478,10 +492,10 @@ class SimpleDiffer(AbstractDiffer):
             return 0.5
         return 0.0
 
-    def _compute_parameter_documentation_similarity(
+    def _compute_documentation_similarity(
         self,
-        documentationv1: ParameterDocumentation,
-        documentationv2: ParameterDocumentation,
+        documentationv1: Union[ClassDocumentation, FunctionDocumentation, ParameterDocumentation],
+        documentationv2: Union[ClassDocumentation, FunctionDocumentation, ParameterDocumentation],
     ) -> float:
         if len(documentationv1.description) == len(documentationv2.description) == 0:
             return -1.0
