@@ -29,6 +29,14 @@ class FunctionDocumentation:
     def to_dict(self) -> dict:
         return dataclasses.asdict(self)
 
+    def __hash__(self) -> int:
+        return hash(
+            (
+                self.description,
+                self.full_docstring,
+            )
+        )
+
 
 @dataclass
 class ParameterDocumentation:

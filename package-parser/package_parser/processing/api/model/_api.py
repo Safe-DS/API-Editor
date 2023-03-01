@@ -409,6 +409,22 @@ class Function:
     def __repr__(self) -> str:
         return "Function(id=" + self.id + ")"
 
+    def __hash__(self) -> int:
+        return hash(
+            (
+                self.id,
+                self.name,
+                self.qname,
+                frozenset(self.decorators),
+                frozenset(self.parameters),
+                frozenset(self.results),
+                self.is_public,
+                frozenset(self.reexported_by),
+                self.documentation,
+                self.code,
+            )
+        )
+
 
 @dataclass
 class Result:
