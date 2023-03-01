@@ -41,7 +41,7 @@ differ_list = [
     "differ",
     differ_list,
 )  # type: ignore
-def test_attribute_similarity(differ: AbstractDiffer):
+def test_attribute_similarity(differ: AbstractDiffer) -> None:
     attribute_a = Attribute("test_string", NamedType("str"))
     assert differ.compute_attribute_similarity(attribute_a, attribute_a) == 1
 
@@ -246,7 +246,7 @@ def test_simple_differ() -> None:
             assert similarity >= 0
 
 
-def test_wheighted_levenshtein_distance():
+def test_wheighted_levenshtein_distance() -> None:
     def cost_function(iteration: int, max_iteration: int) -> float:
         return (max_iteration-iteration+1) / max_iteration
     cost,max_iteration = distance_elements_with_cost_function(["a","b","c"],["x","b","c"], cost_function=cost_function)
