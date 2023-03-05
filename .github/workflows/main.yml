@@ -8,6 +8,10 @@ jobs:
   build-api-editor:
     runs-on: ubuntu-latest
 
+    permissions:
+      packages: write
+      contents: write
+
     strategy:
       matrix:
         node-version: [ 18.x ]
@@ -16,8 +20,6 @@ jobs:
     steps:
       - name: Checkout source
         uses: actions/checkout@v3
-        with:
-          persist-credentials: false
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
@@ -57,7 +59,7 @@ jobs:
         working-directory: ./package-parser
     strategy:
       matrix:
-        python-version: ["3.10"]
+        python-version: [ "3.10" ]
 
     steps:
       - name: Checkout repository
