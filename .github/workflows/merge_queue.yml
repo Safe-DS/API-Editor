@@ -1,12 +1,14 @@
-name: Main
+name: Pull Request
 
 on:
-  push:
-    branches: [ main ]
+  merge_group:
 
 jobs:
   build-api-editor:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./api-editor
 
     strategy:
       matrix:
@@ -37,16 +39,6 @@ jobs:
 
       - name: Build with Gradle
         run: ./gradlew build
-        working-directory: ./api-editor
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Release
-        run: npx semantic-release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
 
   build-package-parser:
     runs-on: ubuntu-latest
@@ -96,9 +88,6 @@ jobs:
 
       - name: Smoke test (all)
         run: poetry run parse-package all -p package_parser -s package_parser -c package_parser -o out
-
-      - name: Smoke test (migration)
-        run: poetry run parse-package migrate -a1 tests/data/migration/apiv1_data.json -a2 tests/data/migration/apiv2_data.json -a tests/data/migration/annotationv1.json -o out
 
       - name: Test with pytest
         run: poetry run pytest --doctest-modules
