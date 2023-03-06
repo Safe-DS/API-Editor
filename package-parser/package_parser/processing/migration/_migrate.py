@@ -395,11 +395,26 @@ class Migration:
                 for annotation in getattr(annotation_store, annotation_type)
             ]
             for annotation_with_same_type_and_target in migrated_annotations:
-                if annotation_with_same_type_and_target.reviewResult == EnumReviewResult.UNSURE:
+                if (
+                    annotation_with_same_type_and_target.reviewResult
+                    == EnumReviewResult.UNSURE
+                ):
                     continue
-                list_without_that_annotation = [annotation for annotation in migrated_annotations if annotation is not migrated_annotations]
+                list_without_that_annotation = [
+                    annotation
+                    for annotation in migrated_annotations
+                    if annotation is not migrated_annotations
+                ]
                 for annotation in list_without_that_annotation:
-                    if isinstance(annotation, type(annotation_with_same_type_and_target)) and annotation.target == annotation_with_same_type_and_target.target:
-                        annotation_with_same_type_and_target.reviewResult = EnumReviewResult.UNSURE
+                    if (
+                        isinstance(
+                            annotation, type(annotation_with_same_type_and_target)
+                        )
+                        and annotation.target
+                        == annotation_with_same_type_and_target.target
+                    ):
+                        annotation_with_same_type_and_target.reviewResult = (
+                            EnumReviewResult.UNSURE
+                        )
                         annotation.reviewResult = EnumReviewResult.UNSURE
                         break
