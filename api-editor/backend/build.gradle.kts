@@ -34,7 +34,7 @@ tasks.withType<ShadowJar> {
 
 // Dependencies --------------------------------------------------------------------------------------------------------
 
-val ktorVersion = "2.2.3"
+val ktorVersion = "2.2.4"
 
 dependencies {
     implementation("ch.qos.logback:logback-classic:1.4.5")
@@ -45,10 +45,10 @@ dependencies {
     implementation("com.larsreimann.safe-ds:safe-ds-core:1.0.0")
 
     // Required, otherwise serializeToFormattedString does not compile
-    implementation("org.eclipse.xtext:org.eclipse.xtext:2.29.0")
+    implementation("org.eclipse.xtext:org.eclipse.xtext:2.30.0")
 
     testImplementation(kotlin("test"))
-    testImplementation("io.kotest:kotest-assertions-core-jvm:5.5.4")
+    testImplementation("io.kotest:kotest-assertions-core-jvm:5.5.5")
     testImplementation("io.ktor:ktor-server-test-host:$ktorVersion")
     testImplementation("io.mockk:mockk:1.13.4")
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.9.2")

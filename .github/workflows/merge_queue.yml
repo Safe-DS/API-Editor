@@ -1,12 +1,7 @@
 name: Pull Request
 
 on:
-  pull_request:
-    branches: [ main ]
-
-concurrency:
-  group: ${{ github.head_ref }}-${{ github.workflow }}
-  cancel-in-progress: true
+  merge_group:
 
 jobs:
   build-api-editor:
@@ -43,56 +38,7 @@ jobs:
         uses: gradle/wrapper-validation-action@v1
 
       - name: Build with Gradle
-        run: ./gradlew build backend:koverHtmlReport
-
-      - name: Upload test report
-        if: ${{ failure() }}
-        uses: actions/upload-artifact@v3
-        with:
-          name: backend test report
-          path: api-editor/backend/build/reports
-          if-no-files-found: ignore
-
-      - name: Upload test coverage
-        if: ${{ github.actor != 'dependabot[bot]' }}
-        uses: actions/upload-artifact@v3
-        with:
-          name: backend test coverage
-          path: api-editor/backend/build/reports/kover/html/
-
-  gui-test-coverage:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./api-editor/gui
-
-    strategy:
-      matrix:
-        node-version: [ 18.x ]
-
-    steps:
-      - name: Checkout source
-        uses: actions/checkout@v3
-
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: npm
-          cache-dependency-path: api-editor/gui/package-lock.json
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Test with Jest
-        run: npm run test-with-coverage
-
-      - name: Upload test report
-        if: ${{ github.actor != 'dependabot[bot]' }}
-        uses: actions/upload-artifact@v3
-        with:
-          name: gui test coverage
-          path: api-editor/gui/coverage/lcov-report
+        run: ./gradlew build
 
   build-package-parser:
     runs-on: ubuntu-latest
@@ -143,13 +89,5 @@ jobs:
       - name: Smoke test (all)
         run: poetry run parse-package all -p package_parser -s package_parser -c package_parser -o out
 
-      # Requires installation of pytest and pytest-cov
       - name: Test with pytest
-        run: poetry run pytest --doctest-modules --cov=package_parser --cov-report=html
-
-      - name: Upload test coverage
-        if: ${{ github.actor != 'dependabot[bot]' }}
-        uses: actions/upload-artifact@v3
-        with:
-          name: package-parser test coverage
-          path: package-parser/htmlcov
+        run: poetry run pytest --doctest-modules
