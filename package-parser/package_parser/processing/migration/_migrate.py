@@ -153,6 +153,7 @@ class Migration:
                         annotation, mapping.get_similarity()
                     )
         self._remove_duplicates()
+        self._mark_annotations_with_same_type_and_target_as_unsure()
 
     def add_annotations_based_on_similarity(
         self, annotation: AbstractAnnotation, similarity: float
@@ -370,3 +371,35 @@ class Migration:
                         getattr(
                             self.unsure_migrated_annotation_store, annotation_type
                         ).remove(annotation_b)
+
+    def _mark_annotations_with_same_type_and_target_as_unsure(self) -> None:
+        for annotation_type in [
+            "boundaryAnnotations",
+            "calledAfterAnnotations",
+            "descriptionAnnotations",
+            "enumAnnotations",
+            "expertAnnotations",
+            "groupAnnotations",
+            "moveAnnotations",
+            "removeAnnotations",
+            "renameAnnotations",
+            "todoAnnotations",
+            "valueAnnotations",
+        ]:
+            migrated_annotations = [
+                annotation
+                for annotation_store in [
+                    self.migrated_annotation_store,
+                    self.unsure_migrated_annotation_store,
+                ]
+                for annotation in getattr(annotation_store, annotation_type)
+            ]
+            for annotation_with_same_type_and_target in migrated_annotations:
+                if annotation_with_same_type_and_target.reviewResult == EnumReviewResult.UNSURE:
+                    continue
+                list_without_that_annotation = [annotation for annotation in migrated_annotations if annotation is not migrated_annotations]
+                for annotation in list_without_that_annotation:
+                    if isinstance(annotation, type(annotation_with_same_type_and_target)) and annotation.target == annotation_with_same_type_and_target.target:
+                        annotation_with_same_type_and_target.reviewResult = EnumReviewResult.UNSURE
+                        annotation.reviewResult = EnumReviewResult.UNSURE
+                        break
