@@ -400,12 +400,9 @@ class Migration:
                     == EnumReviewResult.UNSURE
                 ):
                     continue
-                list_without_that_annotation = [
-                    annotation
-                    for annotation in migrated_annotations
-                    if annotation is not migrated_annotations
-                ]
-                for annotation in list_without_that_annotation:
+                for annotation in migrated_annotations:
+                    if annotation_with_same_type_and_target == annotation:
+                        continue
                     if (
                         isinstance(
                             annotation, type(annotation_with_same_type_and_target)
