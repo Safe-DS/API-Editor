@@ -1,6 +1,6 @@
 name: 'Wrong annotation (autogen)'
 description: 'An annotation was generated automatically but is incorrect.'
-labels: ['bug', 'wrong annotation']
+labels: ['bug :beetle:', 'wrong annotation']
 
 body:
   - type: input
