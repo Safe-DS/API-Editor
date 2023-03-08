@@ -5,9 +5,9 @@ const baseURL = 'https://github.com/lars-reimann/api-editor';
 
 // Documentation
 
-const documentationBaseURL = `${baseURL}/blob/main/docs`;
+const documentationBaseURL = `https://api-editor.readthedocs.io/en/latest`;
 
-export const userGuideURL = `${documentationBaseURL}/api-editor.md`;
+export const userGuideURL = `${documentationBaseURL}/gui`;
 
 // Issues
 
