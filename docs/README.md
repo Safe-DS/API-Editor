@@ -1,11 +1,16 @@
 # API-Editor
 
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/safe-ds/api-editor)](https://github.com/lars-reimann/api-editor/releases/latest)
 [![Main](https://github.com/lars-reimann/api-editor/actions/workflows/main.yml/badge.svg)](https://github.com/lars-reimann/api-editor/actions/workflows/main.yml)
+[![codecov](https://codecov.io/gh/Safe-DS/API-Editor/branch/main/graph/badge.svg?token=xGW2Qs4zXS)](https://codecov.io/gh/Safe-DS/API-Editor)
+[![Documentation Status](https://readthedocs.org/projects/api-editor/badge/?version=latest)](https://api-editor.readthedocs.io/en/latest/?badge=latest)
 [![DOI](https://zenodo.org/badge/365253624.svg)](https://zenodo.org/badge/latestdoi/365253624)
 
 The `api-editor` is a tool to improve the API of a Python library in a semi-automated manner. Several improvements are suggested automatically and the user can add further improvements manually in a user-friendly GUI. These improvements are implemented automatically by the tool as [_wrappers_][adapter-pattern] that provide the desired API while internally using the existing Python library.
 
 The automation described above relies on structured information about the existing Python library. This information can be computed automatically by the [package-parser][package-parser].
+
+You can find the full documentation [here](https://api-editor.readthedocs.io/en/latest/).
 
 ## For Users
 
