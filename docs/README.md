@@ -48,6 +48,6 @@ Now you are ready to explore the API and review existing annotations.
     ```
 3. Open [localhost:5173](http://localhost:5173) in your browser.
 
-[package-parser]: ./package-parser
+[package-parser]: package-parser
 [safe-ds]: https://github.com/lars-reimann/safe-data-science
 [adapter-pattern]: https://en.wikipedia.org/wiki/Adapter_pattern
