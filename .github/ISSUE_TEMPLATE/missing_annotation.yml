@@ -1,6 +1,6 @@
 name: 'Missing annotation (autogen)'
 description: "An annotation should have been generated automatically but wasn't."
-labels: ['bug', 'missing annotation']
+labels: ['bug :beetle:', 'missing annotation']
 
 body:
   - type: input

@@ -1,0 +1,93 @@
+site_name: API-Editor
+repo_url: https://github.com/Safe-DS/API-Editor
+repo_name: Safe-DS/API-Editor
+
+nav:
+  - Home: README.md
+  - GUI: gui.md
+  - package-parser:
+    - Installation & Usage: package-parser/README.md
+    - Architecture: package-parser/architecture.md
+
+# Configuration of MkDocs & Material for MkDocs --------------------------------
+
+theme:
+  name: material
+  logo: https://raw.githubusercontent.com/Safe-DS/.github/main/branding/logo_rounded.svg
+  favicon: https://raw.githubusercontent.com/Safe-DS/.github/main/branding/logo_rounded.svg
+  palette:
+    # Palette toggle for light mode
+    - scheme: default
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to dark mode
+      primary: indigo
+      accent: indigo
+
+    # Palette toggle for dark mode
+    - scheme: slate
+      toggle:
+        icon: material/weather-night
+        name: Switch to light mode
+      primary: indigo
+      accent: indigo
+  features:
+    - content.code.copy
+    - navigation.tabs
+    - navigation.instant
+    - navigation.sections
+
+plugins:
+  - glightbox
+  - search
+
+markdown_extensions:
+  # Admonitions
+  - admonition
+  - pymdownx.details
+
+  # Code blocks
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+
+  # Diagrams
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+
+  # Footnotes
+  - footnotes
+
+  # Keys
+  - pymdownx.keys
+
+  # Icons & emojis
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+
+  # Images
+  - attr_list
+  - md_in_html
+
+  # Lists
+  - def_list
+  - pymdownx.tasklist:
+      custom_checkbox: true
+
+  # MathJax
+  - pymdownx.arithmatex:
+      generic: true
+
+  # Permalinks
+  - toc:
+      permalink: "#"
+
+extra_javascript:
+  - javascript/mathjax.js
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js

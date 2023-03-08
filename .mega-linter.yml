@@ -3,7 +3,7 @@
 EXTENDS: https://raw.githubusercontent.com/lars-reimann/.github/main/.mega-linter.yml
 
 # Config
-FILTER_REGEX_EXCLUDE: (\.github/workflows/)
+FILTER_REGEX_EXCLUDE: (\.github/workflows/|mkdocs.yml)
 
 # Commands
 PRE_COMMANDS:

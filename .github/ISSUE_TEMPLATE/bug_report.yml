@@ -1,6 +1,6 @@
 name: 'Bug report'
 description: 'Report that something does not work as expected'
-labels: ['bug']
+labels: ['bug :beetle:']
 
 body:
   - type: textarea

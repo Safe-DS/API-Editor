@@ -43,7 +43,7 @@ jobs:
         uses: gradle/wrapper-validation-action@v1
 
       - name: Build with Gradle
-        run: ./gradlew build backend:koverHtmlReport
+        run: ./gradlew build koverMergedXmlReport
 
       - name: Upload test report
         if: ${{ failure() }}
@@ -53,12 +53,13 @@ jobs:
           path: api-editor/backend/build/reports
           if-no-files-found: ignore
 
-      - name: Upload test coverage
+      - name: Upload coverage to Codecov
         if: ${{ github.actor != 'dependabot[bot]' }}
-        uses: actions/upload-artifact@v3
+        uses: codecov/codecov-action@v3
         with:
-          name: backend test coverage
-          path: api-editor/backend/build/reports/kover/html/
+          token: ${{ secrets.CODECOV_TOKEN }}
+          directory: api-editor/build/reports/kover/merged/xml
+          files: report.xml
 
   gui-test-coverage:
     runs-on: ubuntu-latest
@@ -87,12 +88,13 @@ jobs:
       - name: Test with Jest
         run: npm run test-with-coverage
 
-      - name: Upload test report
+      - name: Upload coverage to Codecov
         if: ${{ github.actor != 'dependabot[bot]' }}
-        uses: actions/upload-artifact@v3
+        uses: codecov/codecov-action@v3
         with:
-          name: gui test coverage
-          path: api-editor/gui/coverage/lcov-report
+          token: ${{ secrets.CODECOV_TOKEN }}
+          directory: api-editor/gui/coverage
+          files: clover.xml
 
   build-package-parser:
     runs-on: ubuntu-latest
@@ -145,11 +147,12 @@ jobs:
 
       # Requires installation of pytest and pytest-cov
       - name: Test with pytest
-        run: poetry run pytest --doctest-modules --cov=package_parser --cov-report=html
+        run: poetry run pytest --doctest-modules --cov=package_parser --cov-report=xml
 
-      - name: Upload test coverage
+      - name: Upload coverage to Codecov
         if: ${{ github.actor != 'dependabot[bot]' }}
-        uses: actions/upload-artifact@v3
+        uses: codecov/codecov-action@v3
         with:
-          name: package-parser test coverage
-          path: package-parser/htmlcov
+          token: ${{ secrets.CODECOV_TOKEN }}
+          directory: package-parser
+          files: coverage.xml
