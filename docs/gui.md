@@ -5,7 +5,7 @@ to generate an improved API. The _package-parser_, in contrast, marks annotation
 These annotations can be imported, edited and deleted in the _api-editor_.
 
 ## Import
-Before you can start adding own annotations, you need to import the [generated API, usages and annotations files](../package-parser/README.md) from _package-parser_.
+Before you can start adding own annotations, you need to import the [generated API, usages and annotations files](package-parser/README.md) from _package-parser_.
 
 <img src="img/import.jpg" alt="Import API Data">
 

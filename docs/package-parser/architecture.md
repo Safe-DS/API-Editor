@@ -18,8 +18,6 @@ end
 
 ```
 
-Can be found [here](../package-parser/package_parser/processing/annotations/_generate_annotations.py).
-
 ### `generate_annotations()`
 
 Serves as a central function that takes care of inputs and outputs and bundles all underlying functions. The exact
@@ -123,8 +121,6 @@ AnnotationStore "0..1" o-- "*" BaseAnnotation
 
 ```
 
-Can be found [here](../package-parser/package_parser/model/annotations/_annotations.py).
-
 The AnnotationStore class is used for the collection of the individual annotations. An instance of this class is passed
 to the individual `get_[type]_annotation()` functions. These then place their results in the list assigned to them.
 
@@ -148,8 +144,6 @@ ParameterType <.. ParameterInfo
       UNUSED
       }
 ```
-
-Can be found [here](../package-parser/package_parser/model/annotations/_annotations.py).
 
 The ParameterInfo class is used to encapsulate the collected information for a given parameter which is generated in
 the `get_parameter_info()` function.
@@ -182,10 +176,7 @@ classDiagram
  }
 ```
 
-Can be found [here](../package-parser/package_parser/model/usages/_usages.py).
-
-This class is a slimmed down version of the [UsageStore](../package-parser/package_parser/model/usages/_usages.py)
-class.
+This class is a slimmed down version of the UsageStore class.
 
 For the automatic generation of annotations, it is in most cases sufficient to know how often a certain element (class,
 function, parameter, value) is used. In the original class, there are more details stored for each usage, which leads to
@@ -261,24 +252,17 @@ call_annotation_getter --> dump_annotation_store
 
 ### `AnnotationStore`
 
-Can be found [here](../package-parser/tests/model/test_annotations.py).
-
 For the `AnnotationStore` and all associated classes there are automatic tests that ensure that the `to_json()` methods
 work properly. For this purpose, a test configuration of the individual classes is created, and their output is then
 compared against the expected value.
 
 ### `UsageCountStore`
 
-Can be found [here](../package-parser/tests/model/test_usages.py).
-
 For this class, there are automatic checks for the input and output methods, that compare the actual result against the
 expected value. There are also various tests for every setter and getter in which the state of the object is checked
 after.
 
 ### `generate_annotations()`
-
-The tests can be found [here](../package-parser/tests/commands/generate_annotations/test_generate_annotations.py) and
-the test data [here](../package-parser/tests/data).
 
 For this function, all called functions are tested automatically. For this purpose, there is test data for each
 individual getter, for which the output is then compared against the expected value. We decided to split the test data
