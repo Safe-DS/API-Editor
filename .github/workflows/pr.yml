@@ -58,7 +58,7 @@ jobs:
         uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          directory: api-editor/backend/build/reports/kover/merged/xml
+          directory: api-editor/build/reports/kover/merged/xml
           files: report.xml
 
   gui-test-coverage:
@@ -93,8 +93,8 @@ jobs:
         uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          directory: package-parser
-          files: coverage.xml
+          directory: api-editor/gui/coverage
+          files: clover.xml
 
   build-package-parser:
     runs-on: ubuntu-latest
