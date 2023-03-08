@@ -214,21 +214,21 @@ The path specifies where the results are to be stored.
 
 This function needs to be executed before the data can be analyzed and performs the following three tasks:
 
-- `remove_internal_usages()`
+-   `remove_internal_usages()`
 
-  Since we are only concerned with the use of outward-facing package elements, all elements that are used exclusively
-  internally are excluded from consideration.
+    Since we are only concerned with the use of outward-facing package elements, all elements that are used exclusively
+    internally are excluded from consideration.
 
-- `add_unused_api_elements()`
+-   `add_unused_api_elements()`
 
-  Some API elements are not used at all and, therefore, do not appear in the listing of all used elements. However, it
-  is necessary that they do for the following process of the program.
+    Some API elements are not used at all and, therefore, do not appear in the listing of all used elements. However, it
+    is necessary that they do for the following process of the program.
 
-- `add_implicit_usages_of_default_value()`
+-   `add_implicit_usages_of_default_value()`
 
-  If no value is supplied for an optional parameter when a function is called, the default value of the parameter is
-  used implicitly. This implicit use of a value does not appear in the usage data. However, it is necessary that they do
-  so for later analysis.
+    If no value is supplied for an optional parameter when a function is called, the default value of the parameter is
+    used implicitly. This implicit use of a value does not appear in the usage data. However, it is necessary that they do
+    so for later analysis.
 
 All functions of the form `get_[type]_annotation()` are passed in a list to the `generate_annotation_dict()` function.
 This function then calls them one after the other.
