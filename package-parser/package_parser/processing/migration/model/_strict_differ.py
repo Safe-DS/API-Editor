@@ -28,14 +28,12 @@ class StrictDiffer(AbstractDiffer):
         previous_mappings: list[Mapping],
         apiv1: API,
         apiv2: API,
+        *,
+        unchanged_mappings: list[Mapping] = []
     ) -> None:
         super().__init__(previous_base_differ, previous_mappings, apiv1, apiv2)
         self.differ = previous_base_differ
         self.new_mappings = []
-
-    def get_related_mappings(
-        self,
-    ) -> Optional[list[Mapping]]:
         sort_order = {
             Class: 0,
             Attribute: 1,
@@ -43,16 +41,23 @@ class StrictDiffer(AbstractDiffer):
             Parameter: 3,
             Result: 4,
         }
-        return sorted(
+        self.related_mappings = sorted(
             self.previous_mappings,
             key=lambda mapping: sort_order[type(mapping.get_apiv1_elements()[0])],
         )
+        self.related_mappings = [mapping for mapping in self.related_mappings if mapping not in unchanged_mappings]
+        self.unchanged_mappings = unchanged_mappings
+
+    def get_related_mappings(
+        self,
+    ) -> Optional[list[Mapping]]:
+        return self.related_mappings
 
     def notify_new_mapping(self, mappings: list[Mapping]) -> None:
         self.new_mappings.extend(mappings)
 
     def get_additional_mappings(self) -> list[Mapping]:
-        return []
+        return self.unchanged_mappings
 
     def _is_parent(
         self,

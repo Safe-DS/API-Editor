@@ -21,6 +21,7 @@ from package_parser.processing.api.model import (
     UnionType,
 )
 
+from ._get_not_mapped_api_elements import _get_not_mapped_api_elements
 from ._mapping import Mapping
 
 api_element = Union[Attribute, Class, Function, Parameter, Result]
@@ -114,8 +115,10 @@ class AbstractDiffer(ABC):
 
 X = TypeVar("X")
 
+class BaseDiffer(ABC):
+    pass
 
-class SimpleDiffer(AbstractDiffer):
+class SimpleDiffer(AbstractDiffer, BaseDiffer):
     assigned_by_look_up_similarity: dict[
         ParameterAssignment, dict[ParameterAssignment, float]
     ]
@@ -125,13 +128,18 @@ class SimpleDiffer(AbstractDiffer):
     def get_related_mappings(
         self,
     ) -> Optional[list[Mapping]]:
-        return None
+        """
+        Indicates whether all api elements should be compared with each other
+        or just the ones that are mapped to each other.
+        :return: a list of Mappings by type whose elements are not already mapped
+        """
+        return self.related_mappings
 
     def notify_new_mapping(self, mappings: list[Mapping]) -> None:
         return
 
     def get_additional_mappings(self) -> list[Mapping]:
-        return []
+        return self.previous_mappings
 
     def __init__(
         self,
@@ -141,6 +149,9 @@ class SimpleDiffer(AbstractDiffer):
         apiv2: API,
     ) -> None:
         super().__init__(previous_base_differ, previous_mappings, apiv1, apiv2)
+        self.related_mappings = _get_not_mapped_api_elements(
+            self.previous_mappings, self.apiv1, self.apiv2
+        )
         distance_between_implicit_and_explicit = 0.3
         distance_between_vararg_and_normal = 0.3
         distance_between_position_and_named = 0.3

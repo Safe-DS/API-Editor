@@ -9,6 +9,7 @@ from package_parser.processing.migration.model import (
     Mapping,
     SimpleDiffer,
     StrictDiffer,
+    UnchangedDiffer, BaseDiffer,
 )
 
 from ._read_and_write_file import (
@@ -28,13 +29,18 @@ def _run_migrate_command(
     apiv2 = _read_api_file(apiv2_file_path)
     annotationsv1 = _read_annotations_file(annotations_file_path)
 
+    unchanged_differ = UnchangedDiffer(None, [], apiv1, apiv2)
+    api_mapping = APIMapping(apiv1, apiv2, unchanged_differ)
+    unchanged_mappings: list[Mapping] = api_mapping.map_api()
+    previous_mappings = unchanged_mappings
+    previous_base_differ = unchanged_differ
+    print("piep" + str(len(previous_mappings)))
+
     differ_init_list: list[tuple[type[AbstractDiffer], dict[str, Any]]] = [
         (SimpleDiffer, {}),
-        (StrictDiffer, {}),
+        (StrictDiffer, {"unchanged_mappings": unchanged_mappings}),
         (InheritanceDiffer, {}),
     ]
-    previous_base_differ = None
-    previous_mappings: list[Mapping] = []
 
     for differ_init in differ_init_list:
         differ_class, additional_parameters = differ_init
@@ -49,11 +55,8 @@ def _run_migrate_command(
         mappings = api_mapping.map_api()
 
         previous_mappings = mappings
-        previous_base_differ = (
-            differ
-            if differ.get_related_mappings() is None
-            else differ.previous_base_differ
-        )
+        previous_base_differ = differ if isinstance(differ, BaseDiffer) else differ.previous_base_differ
+        print("next")
 
     if previous_mappings is not None:
         migration = Migration(annotationsv1, previous_mappings)
