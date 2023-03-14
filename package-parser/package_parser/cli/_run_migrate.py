@@ -1,6 +1,6 @@
 import os
 from pathlib import Path
-from typing import Any
+from typing import Any, Optional
 
 from package_parser.processing.migration import APIMapping, Migration
 from package_parser.processing.migration.model import (
@@ -9,7 +9,7 @@ from package_parser.processing.migration.model import (
     Mapping,
     SimpleDiffer,
     StrictDiffer,
-    UnchangedDiffer, BaseDiffer,
+    UnchangedDiffer,
 )
 
 from ._read_and_write_file import (
@@ -33,8 +33,7 @@ def _run_migrate_command(
     api_mapping = APIMapping(apiv1, apiv2, unchanged_differ)
     unchanged_mappings: list[Mapping] = api_mapping.map_api()
     previous_mappings = unchanged_mappings
-    previous_base_differ = unchanged_differ
-    print("piep" + str(len(previous_mappings)))
+    previous_base_differ: Optional[AbstractDiffer] = unchanged_differ
 
     differ_init_list: list[tuple[type[AbstractDiffer], dict[str, Any]]] = [
         (SimpleDiffer, {}),
@@ -55,8 +54,9 @@ def _run_migrate_command(
         mappings = api_mapping.map_api()
 
         previous_mappings = mappings
-        previous_base_differ = differ if isinstance(differ, BaseDiffer) else differ.previous_base_differ
-        print("next")
+        previous_base_differ = (
+            differ if differ.is_base_differ() else differ.previous_base_differ
+        )
 
     if previous_mappings is not None:
         migration = Migration(annotationsv1, previous_mappings)

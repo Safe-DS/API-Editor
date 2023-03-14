@@ -29,9 +29,11 @@ class StrictDiffer(AbstractDiffer):
         apiv1: API,
         apiv2: API,
         *,
-        unchanged_mappings: list[Mapping] = []
+        unchanged_mappings: Optional[list[Mapping]] = None
     ) -> None:
         super().__init__(previous_base_differ, previous_mappings, apiv1, apiv2)
+        if unchanged_mappings is None:
+            unchanged_mappings = []
         self.differ = previous_base_differ
         self.new_mappings = []
         sort_order = {
@@ -45,7 +47,11 @@ class StrictDiffer(AbstractDiffer):
             self.previous_mappings,
             key=lambda mapping: sort_order[type(mapping.get_apiv1_elements()[0])],
         )
-        self.related_mappings = [mapping for mapping in self.related_mappings if mapping not in unchanged_mappings]
+        self.related_mappings = [
+            mapping
+            for mapping in self.related_mappings
+            if mapping not in unchanged_mappings
+        ]
         self.unchanged_mappings = unchanged_mappings
 
     def get_related_mappings(

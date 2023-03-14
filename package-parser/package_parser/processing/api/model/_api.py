@@ -300,6 +300,38 @@ class Class:
     def __repr__(self) -> str:
         return "Class(id=" + self.id + ")"
 
+    def __hash__(self) -> int:
+        return hash(
+            (
+                self.id,
+                self.qname,
+                self.decorators,
+                self.superclasses,
+                self.methods,
+                self.is_public,
+                self.reexported_by,
+                self.documentation,
+                self.code,
+                self.instance_attributes,
+                self.formatted_code,
+            )
+        )
+
+    def __eq__(self, other: object) -> bool:
+        return (
+            isinstance(other, Class)
+            and self.id == other.id
+            and self.qname == other.qname
+            and self.decorators == other.decorators
+            and self.superclasses == other.superclasses
+            and self.methods == other.methods
+            and self.is_public == other.is_public
+            and self.reexported_by == other.reexported_by
+            and self.documentation == other.documentation
+            and self.code == other.code
+            and self.instance_attributes == other.instance_attributes
+        )
+
 
 def _generate_formatted_code(api_element: Union[Class, Function]) -> str:
     code = api_element.code
@@ -343,6 +375,14 @@ class Attribute:
             + self.name
             + type_str
             + ")"
+        )
+
+    def __eq__(self, other: object) -> bool:
+        return (
+            isinstance(other, Attribute)
+            and self.name == other.name
+            and self.types == other.types
+            and self.class_id == other.class_id
         )
 
 
@@ -425,6 +465,21 @@ class Function:
             )
         )
 
+    def __eq__(self, other: object) -> bool:
+        return (
+            isinstance(other, Function)
+            and self.id == other.id
+            and self.name == other.name
+            and self.qname == other.qname
+            and self.decorators == other.decorators
+            and self.parameters == other.parameters
+            and self.results == other.results
+            and self.is_public == other.is_public
+            and self.reexported_by == other.reexported_by
+            and self.documentation == other.documentation
+            and self.code == other.code
+        )
+
 
 @dataclass
 class Result:
@@ -448,6 +503,17 @@ class Result:
             "Result(function_id=" + str(self.function_id) + ", name=" + self.name + ")"
         )
 
+    def __eq__(self, other: object) -> bool:
+        return (
+            isinstance(other, Result)
+            and self.name == other.name
+            and self.docstring == other.docstring
+            and self.function_id == other.docstring
+        )
+
+    def __hash__(self) -> int:
+        return hash((self.name, self.docstring, self.function_id))
+
 
 @dataclass
 class ResultDocstring:
@@ -463,3 +529,13 @@ class ResultDocstring:
 
     def to_json(self) -> Any:
         return {"type": self.type, "description": self.description}
+
+    def __eq__(self, other: object) -> bool:
+        return (
+            isinstance(other, ResultDocstring)
+            and self.type == other.type
+            and self.description == other.description
+        )
+
+    def __hash__(self) -> int:
+        return hash((self.type, self.description))

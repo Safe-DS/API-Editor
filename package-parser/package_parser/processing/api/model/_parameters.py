@@ -33,6 +33,19 @@ class Parameter:
             )
         )
 
+    def __eq__(self, other: object) -> bool:
+        return (
+            isinstance(other, Parameter)
+            and self.id == other.id
+            and self.name == other.name
+            and self.qname == other.qname
+            and self.default_value == other.default_value
+            and self.assigned_by == other.assigned_by
+            and self.is_public == other.is_public
+            and self.documentation == other.documentation
+            and self.type == other.type
+        )
+
     def __init__(
         self,
         id_: str,

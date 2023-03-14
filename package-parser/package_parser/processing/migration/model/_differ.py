@@ -3,7 +3,7 @@ from __future__ import annotations
 import re
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import Callable, Optional, Sequence, Tuple, TypeVar, Union
+from typing import Callable, Optional, Sequence, TypeVar, Union
 
 from Levenshtein import distance
 from package_parser.processing.api.model import (
@@ -112,18 +112,20 @@ class AbstractDiffer(ABC):
         :return: additional mappings that should be included in the result of the differentiation
         """
 
+    def is_base_differ(self) -> bool:
+        return False
+
 
 X = TypeVar("X")
 
-class BaseDiffer(ABC):
-    pass
 
-class SimpleDiffer(AbstractDiffer, BaseDiffer):
+class SimpleDiffer(AbstractDiffer):
     assigned_by_look_up_similarity: dict[
         ParameterAssignment, dict[ParameterAssignment, float]
     ]
     previous_parameter_similarity: dict[str, dict[str, float]] = {}
     previous_function_similarity: dict[str, dict[str, float]] = {}
+    previous_id_similarity: dict[str, dict[str, tuple[float, int]]] = {}
 
     def get_related_mappings(
         self,
@@ -554,51 +556,72 @@ class SimpleDiffer(AbstractDiffer, BaseDiffer):
         def cost_function(iteration: int, max_iteration: int) -> float:
             return (max_iteration - iteration + 1) / max_iteration
 
-        total_costs, max_iterations = distance_elements_with_cost_function(
+        total_costs, max_iterations = self.distance_elements_with_cost_function(
             module_pathv1, module_pathv2, cost_function
         )
         return 1 - (total_costs / (sum(range(1, max_iterations + 1)) / max_iterations))
 
-
-def distance_elements_with_cost_function(
-    listv1: list[X],
-    listv2: list[X],
-    cost_function: Callable[[int, int], float],
-    are_similar: Callable[[X, X], bool] = lambda x, y: x == y,
-    iteration: int = 1,
-) -> Tuple[float, int]:
-    if len(listv1) == 0 and len(listv2) == 0:
-        return 0.0, iteration - 1
-    if len(listv1) == 0:
-        total_costs = 0.0
-        max_iterations = iteration + len(listv2)
-        for i in range(0, len(listv2)):
-            total_costs += cost_function(iteration + i, max_iterations)
-        return total_costs, max_iterations
-    if len(listv2) == 0:
-        total_costs = 0.0
-        max_iterations = iteration + len(listv1)
-        for i in range(0, len(listv1)):
-            total_costs += cost_function(iteration + i, max_iterations)
-        return total_costs, max_iterations
-    if are_similar(listv1[0], listv2[0]):
-        total_costs, max_iterations = distance_elements_with_cost_function(
-            listv1[1:], listv2[1:], cost_function, are_similar, iteration + 1
+    def distance_elements_with_cost_function(
+        self,
+        listv1: list[str],
+        listv2: list[str],
+        cost_function: Callable[[int, int], float],
+        iteration: int = 1,
+    ) -> tuple[float, int]:
+        if len(listv1) == 0 and len(listv2) == 0:
+            return 0.0, iteration - 1
+        if len(listv1) == 0:
+            total_costs = 0.0
+            max_iterations = iteration + len(listv2)
+            for i in range(0, len(listv2)):
+                total_costs += cost_function(iteration + i, max_iterations)
+            return total_costs, max_iterations
+        if len(listv2) == 0:
+            total_costs = 0.0
+            max_iterations = iteration + len(listv1)
+            for i in range(0, len(listv1)):
+                total_costs += cost_function(iteration + i, max_iterations)
+            return total_costs, max_iterations
+        id_segmentv1 = "/".join(listv1)
+        id_segmentv2 = "/".join(listv2)
+        if (
+            id_segmentv1 in self.previous_id_similarity
+            and id_segmentv2 in self.previous_id_similarity[id_segmentv1]
+        ):
+            return self.previous_id_similarity[id_segmentv1][id_segmentv2]
+        if listv1[0] == listv2[0]:
+            total_costs, max_iterations = self.distance_elements_with_cost_function(
+                listv1[1:], listv2[1:], cost_function, iteration + 1
+            )
+            if id_segmentv1 not in self.previous_id_similarity:
+                self.previous_id_similarity[id_segmentv1] = {}
+            self.previous_id_similarity[id_segmentv1][id_segmentv2] = (
+                total_costs,
+                max_iterations,
+            )
+            return total_costs, max_iterations
+        recursive_results = [
+            self.distance_elements_with_cost_function(
+                listv1[1:], listv2, cost_function, iteration + 1
+            ),
+            self.distance_elements_with_cost_function(
+                listv1, listv2[1:], cost_function, iteration + 1
+            ),
+            self.distance_elements_with_cost_function(
+                listv1[1:], listv2[1:], cost_function, iteration + 1
+            ),
+        ]
+        total_costs, max_iterations = sorted(
+            recursive_results, key=lambda tuple_: tuple_[0]
+        )[0]
+        total_costs += cost_function(iteration, max_iterations)
+        if id_segmentv1 not in self.previous_id_similarity:
+            self.previous_id_similarity[id_segmentv1] = {}
+        self.previous_id_similarity[id_segmentv1][id_segmentv2] = (
+            total_costs,
+            max_iterations,
         )
         return total_costs, max_iterations
-    recursive_results = [
-        distance_elements_with_cost_function(
-            listv1[1:], listv2, cost_function, are_similar, iteration + 1
-        ),
-        distance_elements_with_cost_function(
-            listv1, listv2[1:], cost_function, are_similar, iteration + 1
-        ),
-        distance_elements_with_cost_function(
-            listv1[1:], listv2[1:], cost_function, are_similar, iteration + 1
-        ),
-    ]
-    total_costs, max_iterations = sorted(
-        recursive_results, key=lambda tuple_: tuple_[0]
-    )[0]
-    total_costs += cost_function(iteration, max_iterations)
-    return total_costs, max_iterations
+
+    def is_base_differ(self) -> bool:
+        return True
