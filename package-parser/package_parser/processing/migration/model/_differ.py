@@ -562,11 +562,11 @@ class SimpleDiffer(AbstractDiffer):
         return 1 - (total_costs / (sum(range(1, max_iterations + 1)) / max_iterations))
 
     def distance_elements_with_cost_function(
-            self,
-            listv1: list[str],
-            listv2: list[str],
-            cost_function: Callable[[int, int], float],
-            iteration: int = 1,
+        self,
+        listv1: list[str],
+        listv2: list[str],
+        cost_function: Callable[[int, int], float],
+        iteration: int = 1,
     ) -> tuple[float, int]:
         if len(listv1) == 0 and len(listv2) == 0:
             return 0.0, iteration - 1
@@ -625,9 +625,7 @@ class SimpleDiffer(AbstractDiffer):
                 listv1, listv2[1:], cost_function, iteration + 1
             ),
         ]
-        best_tuple = sorted(
-            recursive_results, key=lambda tuple_: tuple_[0]
-        )[0]
+        best_tuple = sorted(recursive_results, key=lambda tuple_: tuple_[0])[0]
         index = recursive_results.index(best_tuple) - 1
         total_costs, max_iterations = best_tuple
         total_costs += cost_function(iteration, max_iterations)

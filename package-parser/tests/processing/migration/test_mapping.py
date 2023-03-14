@@ -6,7 +6,8 @@ from package_parser.processing.migration.model import (
     ManyToManyMapping,
     ManyToOneMapping,
     OneToManyMapping,
-    OneToOneMapping, SimpleDiffer,
+    OneToOneMapping,
+    SimpleDiffer,
 )
 
 
