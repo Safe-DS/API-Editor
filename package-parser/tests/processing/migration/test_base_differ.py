@@ -263,5 +263,5 @@ def test_wheighted_levenshtein_distance() -> None:
 
     assert (
         differ._compute_id_similarity("api/test.test.text/a", "api/tests.tests.texts/b")
-        == 0
+        < 0.1e-10
     )

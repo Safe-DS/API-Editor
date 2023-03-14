@@ -125,7 +125,6 @@ class SimpleDiffer(AbstractDiffer):
     ]
     previous_parameter_similarity: dict[str, dict[str, float]] = {}
     previous_function_similarity: dict[str, dict[str, float]] = {}
-    previous_id_similarity: dict[str, dict[str, int]] = {}
 
     def get_related_mappings(
         self,
@@ -559,80 +558,51 @@ class SimpleDiffer(AbstractDiffer):
         total_costs, max_iterations = self.distance_elements_with_cost_function(
             module_pathv1, module_pathv2, cost_function
         )
-        return 1 - (total_costs / (sum(range(1, max_iterations + 1)) / max_iterations))
+        max_length = max(len(module_pathv1), len(module_pathv2))
+        return 1 - (total_costs / (sum(range(1, max_length + 1)) / max_length))
 
     def distance_elements_with_cost_function(
         self,
         listv1: list[str],
         listv2: list[str],
         cost_function: Callable[[int, int], float],
-        iteration: int = 1,
     ) -> tuple[float, int]:
-        if len(listv1) == 0 and len(listv2) == 0:
-            return 0.0, iteration - 1
-        if len(listv1) == 0:
-            total_costs = 0.0
-            max_iterations = iteration + len(listv2)
-            for i in range(0, len(listv2)):
-                total_costs += cost_function(iteration + i, max_iterations)
-            return total_costs, max_iterations
-        if len(listv2) == 0:
-            total_costs = 0.0
-            max_iterations = iteration + len(listv1)
-            for i in range(0, len(listv1)):
-                total_costs += cost_function(iteration + i, max_iterations)
-            return total_costs, max_iterations
-        id_segmentv1 = "/".join(listv1)
-        id_segmentv2 = "/".join(listv2)
-        if (
-            id_segmentv1 in self.previous_id_similarity
-            and id_segmentv2 in self.previous_id_similarity[id_segmentv1]
-        ):
-            # index < 0: first element of the first list will be removed
-            # index = 0: bost first elemente of the lists will be removed
-            # index > 0: first element of the 2nd list will be removed
-            index = self.previous_id_similarity[id_segmentv1][id_segmentv2]
-            if index < 0:
-                total_costs, max_iterations = self.distance_elements_with_cost_function(
-                    listv1[1:], listv2, cost_function, iteration + 1
-                )
-                total_costs += cost_function(iteration, max_iterations)
-                return total_costs, max_iterations
-            if index == 0:
-                total_costs, max_iterations = self.distance_elements_with_cost_function(
-                    listv1[1:], listv2[1:], cost_function, iteration + 1
-                )
-                total_costs += cost_function(iteration, max_iterations)
-                return total_costs, max_iterations
-            total_costs, max_iterations = self.distance_elements_with_cost_function(
-                listv1, listv2[1:], cost_function, iteration + 1
-            )
-            total_costs += cost_function(iteration, max_iterations)
-            return total_costs, max_iterations
-        if listv1[0] == listv2[0]:
-            total_costs, max_iterations = self.distance_elements_with_cost_function(
-                listv1[1:], listv2[1:], cost_function, iteration + 1
-            )
-            return total_costs, max_iterations
-        recursive_results = [
-            self.distance_elements_with_cost_function(
-                listv1[1:], listv2, cost_function, iteration + 1
-            ),
-            self.distance_elements_with_cost_function(
-                listv1[1:], listv2[1:], cost_function, iteration + 1
-            ),
-            self.distance_elements_with_cost_function(
-                listv1, listv2[1:], cost_function, iteration + 1
-            ),
-        ]
-        best_tuple = sorted(recursive_results, key=lambda tuple_: tuple_[0])[0]
-        index = recursive_results.index(best_tuple) - 1
-        total_costs, max_iterations = best_tuple
-        total_costs += cost_function(iteration, max_iterations)
-        if id_segmentv1 not in self.previous_id_similarity:
-            self.previous_id_similarity[id_segmentv1] = {}
-        self.previous_id_similarity[id_segmentv1][id_segmentv2] = index
-        return total_costs, max_iterations
+        if len(listv1) > len(listv2):
+            listv1,listv2 = listv2,listv1
+        m = len(listv1)
+        n = len(listv2)
+        table = [[0] * (n + 1) for _ in range(m + 1)]
+        str_table = [[""] * (n + 1) for _ in range(m + 1)]
+    
+        for i in range(m + 1):
+            table[i][0] = i
+            str_table[i][0] = "-"*i
+        for j in range(n + 1):
+            table[0][j] = j
+            str_table[0][j] = "+"*j
+    
+        for i in range(1, m + 1):
+            for j in range(1, n + 1):
+                if listv1[i - 1] == listv2[j - 1]:
+                    table[i][j] = table[i - 1][j - 1]
+                    str_table[i][j] = str_table[i-1][j-1]+"="
+                else:
+                    table[i][j] = 1 + min(table[i - 1][j], table[i][j - 1], table[i - 1][j - 1])
+                    list_ = [table[i - 1][j], table[i][j - 1], table[i - 1][j - 1]]
+                    min_ = [i for i, j in enumerate(list_) if j == min(list_)][0]
+                    if min_ == 0:
+                        str_table[i][j]=str_table[i - 1][j]+"+"
+                    if min_ == 1:
+                        str_table[i][j]=str_table[i][j - 1]+"-"
+                    if min_ == 2:
+                        str_table[i][j]=str_table[i - 1][j - 1]+"o"
+        edit_string = str_table[-1][-1]
+        total_costs = 0.0
+        max_iteration = len(edit_string)
+        for index, char_ in enumerate(list(edit_string)):
+            if char_ != "=":
+                total_costs += cost_function(index+1, max_iteration)
+        return total_costs, max_iteration
 
     def is_base_differ(self) -> bool:
         return True
