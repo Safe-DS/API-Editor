@@ -567,40 +567,42 @@ class SimpleDiffer(AbstractDiffer):
         cost_function: Callable[[int, int], float],
     ) -> tuple[float, int]:
         if len(listv1) > len(listv2):
-            listv1,listv2 = listv2,listv1
+            listv1, listv2 = listv2, listv1
         m = len(listv1)
         n = len(listv2)
         table = [[0] * (n + 1) for _ in range(m + 1)]
         str_table = [[""] * (n + 1) for _ in range(m + 1)]
-    
+
         for i in range(m + 1):
             table[i][0] = i
-            str_table[i][0] = "-"*i
+            str_table[i][0] = "-" * i
         for j in range(n + 1):
             table[0][j] = j
-            str_table[0][j] = "+"*j
-    
+            str_table[0][j] = "+" * j
+
         for i in range(1, m + 1):
             for j in range(1, n + 1):
                 if listv1[i - 1] == listv2[j - 1]:
                     table[i][j] = table[i - 1][j - 1]
-                    str_table[i][j] = str_table[i-1][j-1]+"="
+                    str_table[i][j] = str_table[i - 1][j - 1] + "="
                 else:
-                    table[i][j] = 1 + min(table[i - 1][j], table[i][j - 1], table[i - 1][j - 1])
+                    table[i][j] = 1 + min(
+                        table[i - 1][j], table[i][j - 1], table[i - 1][j - 1]
+                    )
                     list_ = [table[i - 1][j], table[i][j - 1], table[i - 1][j - 1]]
                     min_ = [i for i, j in enumerate(list_) if j == min(list_)][0]
                     if min_ == 0:
-                        str_table[i][j]=str_table[i - 1][j]+"+"
+                        str_table[i][j] = str_table[i - 1][j] + "+"
                     if min_ == 1:
-                        str_table[i][j]=str_table[i][j - 1]+"-"
+                        str_table[i][j] = str_table[i][j - 1] + "-"
                     if min_ == 2:
-                        str_table[i][j]=str_table[i - 1][j - 1]+"o"
+                        str_table[i][j] = str_table[i - 1][j - 1] + "o"
         edit_string = str_table[-1][-1]
         total_costs = 0.0
         max_iteration = len(edit_string)
         for index, char_ in enumerate(list(edit_string)):
             if char_ != "=":
-                total_costs += cost_function(index+1, max_iteration)
+                total_costs += cost_function(index + 1, max_iteration)
         return total_costs, max_iteration
 
     def is_base_differ(self) -> bool:
