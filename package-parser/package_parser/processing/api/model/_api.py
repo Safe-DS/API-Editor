@@ -74,34 +74,42 @@ class API:
         return len([it for it in self.parameters().values() if it.is_public])
 
     def parameters(self) -> dict[str, Parameter]:
-        result: dict[str, Parameter] = {}
+        if hasattr(self, "parameters_"):
+            return self.parameters_
+        parameters_: dict[str, Parameter] = {}
 
         for function in self.functions.values():
             for parameter in function.parameters:
                 parameter_id = f"{function.id}/{parameter.name}"
-                result[parameter_id] = parameter
-
-        return result
+                parameters_[parameter_id] = parameter
+        self.parameters_ = parameters_
+        return parameters_
 
     def attributes(self) -> dict[str, Attribute]:
-        result: dict[str, Attribute] = {}
+        if hasattr(self, "attributes_"):
+            return self.attributes_
+        attributes_: dict[str, Attribute] = {}
 
         for class_ in self.classes.values():
             for attribute in class_.instance_attributes:
                 attribute_id = f"{class_.id}/{attribute.name}"
-                result[attribute_id] = attribute
+                attributes_[attribute_id] = attribute
+        self.attributes_ = attributes_
 
-        return result
+        return attributes_
 
     def results(self) -> dict[str, Result]:
-        result_dict: dict[str, Result] = {}
+        if hasattr(self, "results_"):
+            return self.results_
+        results_: dict[str, Result] = {}
 
         for function in self.functions.values():
             for result in function.results:
                 result_id = f"{function.id}/{result.name}"
-                result_dict[result_id] = result
+                results_[result_id] = result
+        self.results_ = results_
 
-        return result_dict
+        return results_
 
     def get_default_value(self, parameter_id: str) -> Optional[str]:
         function_id = parent_id(parameter_id)

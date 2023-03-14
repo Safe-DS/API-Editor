@@ -65,73 +65,25 @@ class StrictDiffer(AbstractDiffer):
     def get_additional_mappings(self) -> list[Mapping]:
         return self.unchanged_mappings
 
-    def _is_parent(
-        self,
-        possible_parent: Union[Class, Function, Attribute, Parameter, Result],
-        child: DEPENDENT_API_ELEMENTS,
-    ) -> bool:
-        if isinstance(child, Attribute) and isinstance(possible_parent, Class):
-            return child.class_id == possible_parent.id
-        if isinstance(child, Result) and isinstance(possible_parent, Function):
-            return child.function_id == possible_parent.id
-        if isinstance(child, Parameter) and isinstance(possible_parent, Function):
-            return "/".join(child.id.split("/")[:-1]) == possible_parent.id
-        if isinstance(child, Function) and isinstance(possible_parent, Class):
-            return "/".join(child.id.split("/")[:-1]) == possible_parent.id
-        return False
-
     def _api_elements_are_mapped_to_each_other(
         self,
         api_elementv1: DEPENDENT_API_ELEMENTS,
         api_elementv2: DEPENDENT_API_ELEMENTS,
     ) -> bool:
-        (
-            relevant_apiv1_mappings,
-            relevant_apiv2_mappings,
-        ) = self._get_mapping_for_elements(api_elementv1, api_elementv2)
-        relevant_apiv2_mappings_include_functionv1 = (
-            len(
-                [
-                    parent
-                    for mapping in relevant_apiv2_mappings
-                    for parent in mapping.get_apiv1_elements()
-                    if self._is_parent(parent, api_elementv1)
-                ]
-            )
-            == 1
-        )
-        relevant_apiv2_mappings_include_functionv2 = (
-            len(
-                [
-                    parent
-                    for mapping in relevant_apiv1_mappings
-                    for parent in mapping.get_apiv2_elements()
-                    if self._is_parent(parent, api_elementv2)
-                ]
-            )
-            == 1
-        )
-        return (
-            relevant_apiv2_mappings_include_functionv1
-            and relevant_apiv2_mappings_include_functionv2
-        )
-
-    def _get_mapping_for_elements(
-        self,
-        apiv1_element: DEPENDENT_API_ELEMENTS,
-        apiv2_element: DEPENDENT_API_ELEMENTS,
-    ) -> tuple[list[Mapping], list[Mapping]]:
-        mapping_for_apiv1_elements = []
-        mapping_for_apiv2_elements = []
+        parentv1 = self.get_parent(api_elementv1, self.apiv1)
+        parentv2 = self.get_parent(api_elementv2, self.apiv2)
         for mapping in self.new_mappings:
-            if isinstance(mapping.get_apiv1_elements()[0], (Class, Function)):
-                for element in mapping.get_apiv1_elements():
-                    if self._is_parent(element, apiv1_element):
-                        mapping_for_apiv1_elements.append(mapping)
-                for element in mapping.get_apiv2_elements():
-                    if self._is_parent(element, apiv2_element):
-                        mapping_for_apiv2_elements.append(mapping)
-        return mapping_for_apiv1_elements, mapping_for_apiv2_elements
+            if (
+                    parentv1 in mapping.get_apiv1_elements() and
+                    parentv2 in mapping.get_apiv2_elements()
+            ):
+                return True
+            if (
+                    parentv1 in mapping.get_apiv1_elements() or
+                    parentv2 in mapping.get_apiv2_elements()
+               ):
+                return False
+        return False
 
     def compute_class_similarity(self, classv1: Class, classv2: Class) -> float:
         """
@@ -210,3 +162,13 @@ class StrictDiffer(AbstractDiffer):
         if self._api_elements_are_mapped_to_each_other(attributev1, attributev2):
             return self.differ.compute_attribute_similarity(attributev1, attributev2)
         return 0.0
+
+    def get_parent(self, element: DEPENDENT_API_ELEMENTS, api: API) -> api_element:
+        if isinstance(element, Function):
+            return api.classes.get(element.id.split("/")[-1])
+        elif isinstance(element, Parameter):
+            return api.functions.get(element.id.split("/")[-1])
+        elif isinstance(element, Result):
+            return api.functions.get(element.function_id)
+        elif isinstance(element, Attribute):
+            return api.classes.get(element.class_id)
