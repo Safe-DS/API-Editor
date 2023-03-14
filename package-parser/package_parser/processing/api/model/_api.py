@@ -39,6 +39,9 @@ class API:
         self.modules: dict[str, Module] = {}
         self.classes: dict[str, Class] = {}
         self.functions: dict[str, Function] = {}
+        self.attributes_: Optional[dict[str, Attribute]] = None
+        self.parameters_: Optional[dict[str, Parameter]] = None
+        self.results_: Optional[dict[str, Result]] = None
 
     def add_module(self, module: Module) -> None:
         self.modules[module.id] = module
@@ -74,7 +77,7 @@ class API:
         return len([it for it in self.parameters().values() if it.is_public])
 
     def parameters(self) -> dict[str, Parameter]:
-        if hasattr(self, "parameters_"):
+        if self.parameters_ is not None:
             return self.parameters_
         parameters_: dict[str, Parameter] = {}
 
@@ -86,7 +89,7 @@ class API:
         return parameters_
 
     def attributes(self) -> dict[str, Attribute]:
-        if hasattr(self, "attributes_"):
+        if self.attributes_ is not None:
             return self.attributes_
         attributes_: dict[str, Attribute] = {}
 
@@ -99,7 +102,7 @@ class API:
         return attributes_
 
     def results(self) -> dict[str, Result]:
-        if hasattr(self, "results_"):
+        if self.results_ is not None:
             return self.results_
         results_: dict[str, Result] = {}
 
@@ -108,7 +111,6 @@ class API:
                 result_id = f"{function.id}/{result.name}"
                 results_[result_id] = result
         self.results_ = results_
-
         return results_
 
     def get_default_value(self, parameter_id: str) -> Optional[str]:

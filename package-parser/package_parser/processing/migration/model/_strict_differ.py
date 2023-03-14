@@ -71,7 +71,11 @@ class StrictDiffer(AbstractDiffer):
         api_elementv2: DEPENDENT_API_ELEMENTS,
     ) -> bool:
         parentv1 = self.get_parent(api_elementv1, self.apiv1)
+        if parentv1 is None:
+            return False
         parentv2 = self.get_parent(api_elementv2, self.apiv2)
+        if parentv2 is None:
+            return False
         for mapping in self.new_mappings:
             if (
                     parentv1 in mapping.get_apiv1_elements() and
@@ -163,12 +167,13 @@ class StrictDiffer(AbstractDiffer):
             return self.differ.compute_attribute_similarity(attributev1, attributev2)
         return 0.0
 
-    def get_parent(self, element: DEPENDENT_API_ELEMENTS, api: API) -> api_element:
+    def get_parent(self, element: DEPENDENT_API_ELEMENTS, api: API) -> Optional[api_element]:
         if isinstance(element, Function):
-            return api.classes.get(element.id.split("/")[-1])
-        elif isinstance(element, Parameter):
-            return api.functions.get(element.id.split("/")[-1])
-        elif isinstance(element, Result):
+            return api.classes.get(element.id[:element.id.rfind("/")])
+        if isinstance(element, Parameter):
+            return api.functions.get(element.id[:element.id.rfind("/")])
+        if isinstance(element, Result):
             return api.functions.get(element.function_id)
-        elif isinstance(element, Attribute):
+        if isinstance(element, Attribute):
             return api.classes.get(element.class_id)
+        return None
