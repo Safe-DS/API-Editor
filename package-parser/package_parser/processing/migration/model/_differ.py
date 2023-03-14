@@ -558,8 +558,7 @@ class SimpleDiffer(AbstractDiffer):
         total_costs, max_iterations = self.distance_elements_with_cost_function(
             module_pathv1, module_pathv2, cost_function
         )
-        max_length = max(len(module_pathv1), len(module_pathv2))
-        return 1 - (total_costs / (sum(range(1, max_length + 1)) / max_length))
+        return 1 - (total_costs / (sum(range(1, max_iterations + 1)) / max_iterations))
 
     def distance_elements_with_cost_function(
         self,
