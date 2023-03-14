@@ -173,7 +173,11 @@ class StrictDiffer(AbstractDiffer):
         if isinstance(element, Parameter):
             return api.functions.get(element.id[:element.id.rfind("/")])
         if isinstance(element, Result):
+            if element.function_id is None:
+                return None
             return api.functions.get(element.function_id)
         if isinstance(element, Attribute):
+            if element.class_id is None:
+                return None
             return api.classes.get(element.class_id)
         return None
