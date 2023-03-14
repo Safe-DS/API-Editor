@@ -598,18 +598,17 @@ class SimpleDiffer(AbstractDiffer):
                 )
                 total_costs += cost_function(iteration, max_iterations)
                 return total_costs, max_iterations
-            elif index == 0:
+            if index == 0:
                 total_costs, max_iterations = self.distance_elements_with_cost_function(
                     listv1[1:], listv2[1:], cost_function, iteration + 1
                 )
                 total_costs += cost_function(iteration, max_iterations)
                 return total_costs, max_iterations
-            else:
-                total_costs, max_iterations = self.distance_elements_with_cost_function(
-                    listv1, listv2[1:], cost_function, iteration + 1
-                )
-                total_costs += cost_function(iteration, max_iterations)
-                return total_costs, max_iterations
+            total_costs, max_iterations = self.distance_elements_with_cost_function(
+                listv1, listv2[1:], cost_function, iteration + 1
+            )
+            total_costs += cost_function(iteration, max_iterations)
+            return total_costs, max_iterations
         if listv1[0] == listv2[0]:
             total_costs, max_iterations = self.distance_elements_with_cost_function(
                 listv1[1:], listv2[1:], cost_function, iteration + 1

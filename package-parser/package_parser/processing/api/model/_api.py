@@ -305,15 +305,14 @@ class Class:
             (
                 self.id,
                 self.qname,
-                self.decorators,
-                self.superclasses,
-                self.methods,
+                frozenset(self.decorators),
+                frozenset(self.superclasses),
+                frozenset(self.methods),
                 self.is_public,
-                self.reexported_by,
+                frozenset(self.reexported_by),
                 self.documentation,
                 self.code,
-                self.instance_attributes,
-                self.formatted_code,
+                frozenset(self.instance_attributes),
             )
         )
 
