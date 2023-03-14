@@ -67,8 +67,8 @@ class APIMapping:
             new_mapping = self._merge_similar_mappings(mapping_for_api_elementv1)
             if new_mapping is not None:
                 self._merge_mappings_with_same_elements(new_mapping, element_mappings)
-            print(str(i)+"/"+ str(len(api_elementv1_list)))
-            i=i+1
+            print(str(i) + "/" + str(len(api_elementv1_list)))
+            i = i + 1
         return element_mappings
 
     def map_api(self) -> List[Mapping]:
