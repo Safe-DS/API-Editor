@@ -306,7 +306,9 @@ class Class:
         if self.formatted_code is None:
             self.formatted_code = _generate_formatted_code(self)
         if cut_documentation:
-            self.formatted_code = _cut_documentation_from_code(self.formatted_code, self)
+            self.formatted_code = _cut_documentation_from_code(
+                self.formatted_code, self
+            )
         return self.formatted_code
 
     def __repr__(self) -> str:
@@ -364,24 +366,29 @@ def _cut_documentation_from_code(code: str, api_element: Union[Class, Function])
         if line.lstrip().startswith(start_keyword):
             start_line = index + 1
             break
-    if start_line >= 0 and start_line<len(lines):
+    if 0 <= start_line < len(lines):
         line = lines[start_line].lstrip()
-        if line.startswith("\"\"\""):
+        if line.startswith('"""'):
             end_line = -1
             lines[start_line] = line[3:]
-            if lines[start_line].rstrip().endswith("\"\"\""):
+            if lines[start_line].rstrip().endswith('"""'):
                 end_line = start_line
             else:
                 for index in range(start_line, len(lines)):
                     line = lines[index]
-                    if line.lstrip().startswith("\"\"\""):
+                    if line.lstrip().startswith('"""'):
                         end_line = index
                         break
             if end_line >= 0:
-                if lines[end_line+1].lstrip()=="":
+                if lines[end_line + 1].lstrip() == "":
                     end_line += 1
-                return "\n".join(lines[:start_line])+"\n"+"\n".join(lines[end_line+1:])
+                return (
+                    "\n".join(lines[:start_line])
+                    + "\n"
+                    + "\n".join(lines[end_line + 1 :])
+                )
     return code
+
 
 @dataclass
 class Attribute:
@@ -483,7 +490,9 @@ class Function:
         if self.formatted_code is None:
             self.formatted_code = _generate_formatted_code(self)
         if cut_documentation:
-            self.formatted_code = _cut_documentation_from_code(self.formatted_code, self)
+            self.formatted_code = _cut_documentation_from_code(
+                self.formatted_code, self
+            )
         return self.formatted_code
 
     def __repr__(self) -> str:

@@ -4,7 +4,12 @@ from typing import Union
 import astroid
 import pytest
 from package_parser.processing.api._ast_visitor import trim_code
-from package_parser.processing.api.model import Class, Function, ClassDocumentation, FunctionDocumentation
+from package_parser.processing.api.model import (
+    Class,
+    ClassDocumentation,
+    Function,
+    FunctionDocumentation,
+)
 
 
 @pytest.mark.parametrize(
@@ -74,8 +79,8 @@ from package_parser.processing.api.model import Class, Function, ClassDocumentat
             ),
         ),
     ],
-)
-def test_trim_code(code_to_parse: str, expected_code: str):
+)  # type: ignore
+def test_trim_code(code_to_parse: str, expected_code: str) -> None:
     module = astroid.parse(code_to_parse)
     assert len(module.body) != 0
     assert (
@@ -93,27 +98,30 @@ def test_trim_code(code_to_parse: str, expected_code: str):
     "code,expected_code",
     [
         (
-                cleandoc("""
-    
+            cleandoc(
+                """
+
                 def test():
                     i = 0
                     if i == 0:
                         i = i + 1
                     pass
-    
-                """),
-                cleandoc(
-                    """
+
+                """
+            ),
+            cleandoc(
+                """
                 def test():
                     i = 0
                     if i == 0:
                         i = i + 1
                     pass
                 """
-                ),
+            ),
         ),
         (
-                cleandoc("""
+            cleandoc(
+                """
                 # blank line
                 def test():
                     \"\"\" test doumentation
@@ -123,87 +131,95 @@ def test_trim_code(code_to_parse: str, expected_code: str):
                     sdf
                     \"\"\"
                     pass
-    
-                """),
-                cleandoc(
-                    """
+
+                """
+            ),
+            cleandoc(
+                """
                 # blank line
                 def test():
                     pass
                 """
-                ),
+            ),
         ),
         (
-                cleandoc("""
+            cleandoc(
+                """
                 def test():
                     \"\"\"
                     test doumentation
                     sdfsdf
                     \"\"\"
                     pass
-    
-                """),
-                cleandoc(
-                    """
+
+                """
+            ),
+            cleandoc(
+                """
                 def test():
                     pass
                 """
-                ),
+            ),
         ),
         (
-            cleandoc("""
+            cleandoc(
+                """
                 def test():
                     \"\"\"test doumentation\"\"\"
                     pass
-    
-                """),
+
+                """
+            ),
             cleandoc(
                 """
             def test():
                 pass
             """
             ),
-    ),
+        ),
         (
-          cleandoc(
-              """
+            cleandoc(
+                """
               from dataclasses import dataclass
-              
-              
+
+
               @dataclass()
               class D:
-                  \"\"\" todo 
-                  dfhkdsklfh 
-                  dfhkdsklfh 
+                  \"\"\" todo
+                  dfhkdsklfh
+                  dfhkdsklfh
                   dfhkdsklfh
                   \"\"\"
                   e: str
               """
-          ),
-          cleandoc(
-              """
+            ),
+            cleandoc(
+                """
               from dataclasses import dataclass
-              
-              
+
+
               @dataclass()
               class D:
                   e: str
               """
-          ),
+            ),
         ),
     ],
-)
-def test_cut_documentation_from_code(code: str, expected_code: str):
+)  # type: ignore
+def test_cut_documentation_from_code(code: str, expected_code: str) -> None:
     is_class = "\nclass" in code
     if is_class:
-        api_element = Class(
+        api_element: Union[Class, Function] = Class(
             "test/test.test/Test",
             "test.test.Test",
             [],
             [],
             True,
             [],
-            ClassDocumentation("this documentation string cannot be used", " because indentation was removed"),
+            ClassDocumentation(
+                "this documentation string cannot be used",
+                " because indentation was removed",
+            ),
             code,
             [],
         )
@@ -219,7 +235,6 @@ def test_cut_documentation_from_code(code: str, expected_code: str):
             FunctionDocumentation("", ""),
             code,
         )
-    assert api_element.get_formatted_code(cut_documentation=True) == expected_code+"\n"
-
-
-
+    assert (
+        api_element.get_formatted_code(cut_documentation=True) == expected_code + "\n"
+    )
