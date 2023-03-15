@@ -28,7 +28,7 @@ from package_parser.processing.migration.annotations import (
     migrate_todo_annotation,
     migrate_value_annotation,
 )
-from package_parser.processing.migration.model import Mapping
+from package_parser.processing.migration.model import Mapping, ManyToManyMapping
 
 
 @dataclass
@@ -64,7 +64,7 @@ class Migration:
                     boundary_annotation, mapping
                 ):
                     self.add_annotations_based_on_similarity(
-                        annotation, mapping.get_similarity()
+                        annotation, mapping
                     )
 
         for called_after_annotation in self.annotationsv1.calledAfterAnnotations:
@@ -74,7 +74,7 @@ class Migration:
                     called_after_annotation, mapping, self.mappings
                 ):
                     self.add_annotations_based_on_similarity(
-                        annotation, mapping.get_similarity()
+                        annotation, mapping
                     )
 
         for description_annotation in self.annotationsv1.descriptionAnnotations:
@@ -84,7 +84,7 @@ class Migration:
                     description_annotation, mapping
                 ):
                     self.add_annotations_based_on_similarity(
-                        annotation, mapping.get_similarity()
+                        annotation, mapping
                     )
 
         for enum_annotation in self.annotationsv1.enumAnnotations:
@@ -92,7 +92,7 @@ class Migration:
             if mapping is not None:
                 for annotation in migrate_enum_annotation(enum_annotation, mapping):
                     self.add_annotations_based_on_similarity(
-                        annotation, mapping.get_similarity()
+                        annotation, mapping
                     )
 
         for expert_annotation in self.annotationsv1.expertAnnotations:
@@ -100,7 +100,7 @@ class Migration:
             if mapping is not None:
                 for annotation in migrate_expert_annotation(expert_annotation, mapping):
                     self.add_annotations_based_on_similarity(
-                        annotation, mapping.get_similarity()
+                        annotation, mapping
                     )
 
         for group_annotation in self.annotationsv1.groupAnnotations:
@@ -110,7 +110,7 @@ class Migration:
                     group_annotation, mapping, self.mappings
                 ):
                     self.add_annotations_based_on_similarity(
-                        annotation, mapping.get_similarity()
+                        annotation, mapping
                     )
 
         for move_annotation in self.annotationsv1.moveAnnotations:
@@ -118,7 +118,7 @@ class Migration:
             if mapping is not None:
                 for annotation in migrate_move_annotation(move_annotation, mapping):
                     self.add_annotations_based_on_similarity(
-                        annotation, mapping.get_similarity()
+                        annotation, mapping
                     )
 
         for rename_annotation in self.annotationsv1.renameAnnotations:
@@ -126,7 +126,7 @@ class Migration:
             if mapping is not None:
                 for annotation in migrate_rename_annotation(rename_annotation, mapping):
                     self.add_annotations_based_on_similarity(
-                        annotation, mapping.get_similarity()
+                        annotation, mapping
                     )
 
         for remove_annotation in self.annotationsv1.removeAnnotations:
@@ -134,7 +134,7 @@ class Migration:
             if mapping is not None:
                 for annotation in migrate_remove_annotation(remove_annotation, mapping):
                     self.add_annotations_based_on_similarity(
-                        annotation, mapping.get_similarity()
+                        annotation, mapping
                     )
 
         for todo_annotation in self.annotationsv1.todoAnnotations:
@@ -142,7 +142,7 @@ class Migration:
             if mapping is not None:
                 for annotation in migrate_todo_annotation(todo_annotation, mapping):
                     self.add_annotations_based_on_similarity(
-                        annotation, mapping.get_similarity()
+                        annotation, mapping
                     )
 
         for value_annotation in self.annotationsv1.valueAnnotations:
@@ -150,17 +150,19 @@ class Migration:
             if mapping is not None:
                 for annotation in migrate_value_annotation(value_annotation, mapping):
                     self.add_annotations_based_on_similarity(
-                        annotation, mapping.get_similarity()
+                        annotation, mapping
                     )
         self._remove_duplicates()
         self._mark_annotations_with_same_type_and_target_as_unsure()
 
     def add_annotations_based_on_similarity(
-        self, annotation: AbstractAnnotation, similarity: float
+        self, annotation: AbstractAnnotation, mapping: Mapping
     ) -> None:
-        if similarity >= self.reliable_similarity:
+        if isinstance(mapping, ManyToManyMapping):
+            self.unsure_migrated_annotation_store.add_annotation(annotation)
+        if mapping.similarity >= self.reliable_similarity:
             self.migrated_annotation_store.add_annotation(annotation)
-        elif similarity >= self.unsure_similarity:
+        elif mapping.similarity >= self.unsure_similarity:
             annotation.reviewResult = EnumReviewResult.UNSURE
             self.migrated_annotation_store.add_annotation(annotation)
         else:

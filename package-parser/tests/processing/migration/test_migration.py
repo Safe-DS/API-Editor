@@ -173,7 +173,10 @@ def test_migrate_all_annotations() -> None:
     migration = Migration(annotation_store, mappings)
     migration.migrate_annotations()
 
-    for value in migration.unsure_migrated_annotation_store.to_json().values():
+    unsure_migrated_annotations = migration.unsure_migrated_annotation_store.to_json()
+    assert len(unsure_migrated_annotations["todoAnnotations"]) == 3
+    unsure_migrated_annotations["todoAnnotations"] = []
+    for value in unsure_migrated_annotations.values():
         if isinstance(value, dict):
             assert len(value) == 0
 
