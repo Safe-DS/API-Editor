@@ -305,10 +305,10 @@ class Class:
     def get_formatted_code(self, *, cut_documentation: bool = False) -> str:
         if self.formatted_code is None:
             self.formatted_code = _generate_formatted_code(self)
-        if cut_documentation:
-            self.formatted_code = _cut_documentation_from_code(
-                self.formatted_code, self
-            )
+            if cut_documentation:
+                self.formatted_code = _cut_documentation_from_code(
+                    self.formatted_code, self
+                )
         return self.formatted_code
 
     def __repr__(self) -> str:
@@ -380,7 +380,7 @@ def _cut_documentation_from_code(code: str, api_element: Union[Class, Function])
                         end_line = index
                         break
             if end_line >= 0:
-                if lines[end_line + 1].lstrip() == "":
+                if (end_line+1) < len(lines) and lines[end_line + 1].lstrip() == "":
                     end_line += 1
                 return (
                     "\n".join(lines[:start_line])
@@ -489,10 +489,10 @@ class Function:
     def get_formatted_code(self, *, cut_documentation: bool = False) -> str:
         if self.formatted_code is None:
             self.formatted_code = _generate_formatted_code(self)
-        if cut_documentation:
-            self.formatted_code = _cut_documentation_from_code(
-                self.formatted_code, self
-            )
+            if cut_documentation:
+                self.formatted_code = _cut_documentation_from_code(
+                    self.formatted_code, self
+                )
         return self.formatted_code
 
     def __repr__(self) -> str:
