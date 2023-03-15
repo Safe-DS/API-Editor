@@ -260,7 +260,8 @@ class SimpleDiffer(AbstractDiffer):
         normalize_similarity = 6
 
         code_similarity = self._compute_code_similarity(
-            classv1.get_formatted_code(cut_documentation=True), classv2.get_formatted_code(cut_documentation=True)
+            classv1.get_formatted_code(cut_documentation=True),
+            classv2.get_formatted_code(cut_documentation=True),
         )
         name_similarity = self._compute_name_similarity(classv1.name, classv2.name)
 
@@ -340,7 +341,8 @@ class SimpleDiffer(AbstractDiffer):
         normalize_similarity = 5
 
         code_similarity = self._compute_code_similarity(
-            functionv1.get_formatted_code(cut_documentation=True), functionv2.get_formatted_code(cut_documentation=True)
+            functionv1.get_formatted_code(cut_documentation=True),
+            functionv2.get_formatted_code(cut_documentation=True),
         )
         name_similarity = self._compute_name_similarity(
             functionv1.name, functionv2.name

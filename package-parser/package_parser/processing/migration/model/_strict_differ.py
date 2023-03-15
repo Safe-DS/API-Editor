@@ -19,7 +19,12 @@ api_element = Union[Attribute, Class, Function, Parameter, Result]
 
 
 class StrictDiffer(AbstractDiffer):
-    new_mappings: dict[Union[type[Attribute], type[Class], type[Function], type[Parameter], type[Result]], list[Mapping]]
+    new_mappings: dict[
+        Union[
+            type[Attribute], type[Class], type[Function], type[Parameter], type[Result]
+        ],
+        list[Mapping],
+    ]
     differ: AbstractDiffer
 
     def __init__(
@@ -35,7 +40,13 @@ class StrictDiffer(AbstractDiffer):
         if unchanged_mappings is None:
             unchanged_mappings = []
         self.differ = previous_base_differ
-        self.new_mappings = {Class: [], Attribute: [], Function: [], Parameter: [], Result: []}
+        self.new_mappings = {
+            Class: [],
+            Attribute: [],
+            Function: [],
+            Parameter: [],
+            Result: [],
+        }
         sort_order = {
             Class: 0,
             Attribute: 1,
@@ -185,7 +196,11 @@ class StrictDiffer(AbstractDiffer):
             return api.classes.get(element.class_id)
         return None
 
-    def get_parent_class(self, element: DEPENDENT_API_ELEMENTS) -> Union[type[Attribute], type[Class], type[Function], type[Parameter], type[Result]]:
+    def get_parent_class(
+        self, element: DEPENDENT_API_ELEMENTS
+    ) -> Union[
+        type[Attribute], type[Class], type[Function], type[Parameter], type[Result]
+    ]:
         if isinstance(element, (Function, Attribute)):
             return Class
         return Function
