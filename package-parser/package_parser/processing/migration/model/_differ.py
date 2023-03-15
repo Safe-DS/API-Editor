@@ -566,10 +566,11 @@ class SimpleDiffer(AbstractDiffer):
         listv2: list[str],
         cost_function: Callable[[int, int], float],
     ) -> tuple[float, int]:
-        if len(listv1) > len(listv2):
-            listv1, listv2 = listv2, listv1
         m = len(listv1)
         n = len(listv2)
+        if m > n:
+            listv1, listv2 = listv2, listv1
+            m, n = n, m
         table = [[0] * (n + 1) for _ in range(m + 1)]
         str_table = [[""] * (n + 1) for _ in range(m + 1)]
 
