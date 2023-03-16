@@ -29,21 +29,6 @@ class Mapping(ABC):
     def get_similarity(self) -> float:
         return self.similarity
 
-    def __hash__(self) -> int:
-        return hash(
-            (
-                self.similarity,
-                frozenset(self.get_apiv1_elements()),
-                frozenset(self.get_apiv2_elements()),
-            )
-        )
-
-    def __eq__(self, other: Any) -> bool:
-        return (
-            isinstance(other, Mapping)
-            and set(self.get_apiv1_elements()) == set(other.get_apiv1_elements())
-            and set(self.get_apiv2_elements()) == set(other.get_apiv2_elements())
-        )
 
 
 @dataclass

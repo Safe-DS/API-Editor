@@ -557,7 +557,7 @@ class Result:
             isinstance(other, Result)
             and self.name == other.name
             and self.docstring == other.docstring
-            and self.function_id == other.docstring
+            and self.function_id == other.function_id
         )
 
     def __hash__(self) -> int:
