@@ -30,7 +30,6 @@ class Mapping(ABC):
         return self.similarity
 
 
-
 @dataclass
 class OneToOneMapping(Mapping):
     apiv1_element: api_element

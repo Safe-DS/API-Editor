@@ -15,10 +15,7 @@ from package_parser.processing.api.model import (
     Result,
     ResultDocstring,
 )
-from package_parser.processing.migration.model import (
-    OneToOneMapping,
-    UnchangedDiffer,
-)
+from package_parser.processing.migration.model import OneToOneMapping, UnchangedDiffer
 
 
 def test_similarity() -> None:
