@@ -94,7 +94,7 @@ class _AstVisitor:
 
             # import X as Y
             if isinstance(global_node, astroid.Import):
-                for (name, alias) in global_node.names:
+                for name, alias in global_node.names:
                     imports.append(Import(name, alias))
 
             # from X import a as b
@@ -103,7 +103,7 @@ class _AstVisitor:
                     global_node.modname, global_node.level
                 )
 
-                for (name, alias) in global_node.names:
+                for name, alias in global_node.names:
                     from_imports.append(FromImport(base_import_path, name, alias))
 
                 # Find re-exported declarations in __init__.py files
@@ -196,14 +196,15 @@ class _AstVisitor:
 
         code = self.get_code(function_node)
 
+        function_id = self.__get_function_id(function_node.name, decorator_names)
         function = Function(
-            id=self.__get_function_id(function_node.name, decorator_names),
+            id=function_id,
             qname=qname,
             decorators=decorator_names,
             parameters=get_parameter_list(
                 self.documentation_parser,
                 function_node,
-                self.__get_id(function_node.name),
+                function_id,
                 qname,
                 is_public,
             ),
