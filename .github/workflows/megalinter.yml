@@ -1,0 +1,13 @@
+name: MegaLinter
+
+on:
+  pull_request:
+    branches: [main]
+  merge_group:
+
+jobs:
+  megalinter:
+    if: ${{ github.event_name == 'pull_request' }}
+    uses: lars-reimann/.github/.github/workflows/megalinter-reusable.yml@main
+    secrets:
+      PAT: ${{ secrets.PAT }}
