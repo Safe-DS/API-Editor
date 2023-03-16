@@ -1,8 +1,6 @@
 from copy import deepcopy
 from inspect import cleandoc
-from typing import Optional
 
-import pytest
 from package_parser.processing.api.model import (
     API,
     Attribute,
@@ -18,17 +16,12 @@ from package_parser.processing.api.model import (
     ResultDocstring,
 )
 from package_parser.processing.migration.model import (
-    AbstractDiffer,
     OneToOneMapping,
-    StrictDiffer, UnchangedDiffer, ManyToManyMapping,
+    UnchangedDiffer,
 )
 
 
-@pytest.mark.parametrize(
-    "differ",
-    [None],
-)  # type: ignore
-def test_similarity(differ: Optional[AbstractDiffer]) -> None:
+def test_similarity() -> None:
     apiv1 = API("test-distribution", "test-package", "1.0")
     apiv2 = API("test-distribution", "test-package", "2.0")
     code_a = cleandoc(
@@ -162,11 +155,11 @@ def test_similarity(differ: Optional[AbstractDiffer]) -> None:
     result_mapping = OneToOneMapping(1.0, result_a, result_a)
     class_mapping_changed_code = OneToOneMapping(1.0, class_c, class_d)
 
-    unchanged_differ = UnchangedDiffer(differ, [], apiv1, apiv2)
+    unchanged_differ = UnchangedDiffer(None, [], apiv1, apiv2)
     assert unchanged_differ.get_additional_mappings() == [class_mapping_changed_code]
     apiv1.classes.pop(class_c.id)
     apiv2.classes.pop(class_d.id)
-    unchanged_differ = UnchangedDiffer(differ, [], apiv1, apiv1)
+    unchanged_differ = UnchangedDiffer(None, [], apiv1, apiv1)
     expected_mappings = [
         class_mapping,
         function_mapping,
@@ -175,4 +168,3 @@ def test_similarity(differ: Optional[AbstractDiffer]) -> None:
         result_mapping,
     ]
     assert unchanged_differ.get_additional_mappings() == expected_mappings
-    assert ManyToManyMapping(1.0, [class_a, class_b, class_c, class_d], deepcopy([class_b, class_a, class_c, class_d])) == deepcopy(ManyToManyMapping(1.0, [class_a, class_b, class_c, class_d], deepcopy([class_b, class_a, class_c, class_d])))

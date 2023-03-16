@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import Any, TypeVar, Union
+from typing import TypeVar, Union
 
 from package_parser.processing.api.model import (
     Attribute,
