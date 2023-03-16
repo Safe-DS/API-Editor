@@ -570,6 +570,8 @@ class SimpleDiffer(AbstractDiffer):
     ) -> tuple[float, int]:
         m = len(listv1)
         n = len(listv2)
+        if m == n and listv1 == listv2:
+            return 0, m
         if m > n:
             listv1, listv2 = listv2, listv1
             m, n = n, m
