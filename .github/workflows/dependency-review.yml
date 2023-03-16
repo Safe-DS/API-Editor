@@ -3,7 +3,9 @@ name: Dependency Review
 on:
   pull_request:
     branches: [main]
+  merge_group:
 
 jobs:
   dependency-review:
+    if: ${{ github.event_name == 'pull_request' }}
     uses: lars-reimann/.github/.github/workflows/dependency-review-reusable.yml@main
