@@ -1,13 +1,14 @@
 import json
 import os
+from copy import deepcopy
 
 from package_parser.processing.annotations.model import (
     AbstractAnnotation,
-    AnnotationStore,
+    AnnotationStore, TodoAnnotation, EnumReviewResult
 )
-from package_parser.processing.api.model import API
+from package_parser.processing.api.model import API, Class, ClassDocumentation
 from package_parser.processing.migration import APIMapping, Migration
-from package_parser.processing.migration.model import Mapping, SimpleDiffer
+from package_parser.processing.migration.model import Mapping, SimpleDiffer, OneToManyMapping, ManyToOneMapping
 from tests.processing.migration.annotations.test_boundary_migration import (
     migrate_boundary_annotation_data_duplicated,
     migrate_boundary_annotation_data_one_to_many_mapping,
@@ -280,3 +281,50 @@ def _assert_annotation_stores_are_equal(
     assert sorted(actual_annotations.valueAnnotations, key=get_key) == sorted(
         expected_annotation_store.valueAnnotations, key=get_key
     )
+
+def test_remove_duplicates_and_annotations_with_same_type_and_target() -> None:
+    classv1_a = Class(
+        "test/test.duplicate/TestClass",
+        "Test",
+        [],
+        [],
+        True,
+        [],
+        ClassDocumentation("", ""),
+        "",
+        [],
+    )
+    classv1_b = deepcopy(classv1_a)
+    classv1_b.id = "test/test.duplicate/TestClass2"
+    classv2 = deepcopy(classv1_a)
+    base_annotation = TodoAnnotation(classv1_a.id,
+                                     [""],
+                                     [""],
+                                     "",
+                                     EnumReviewResult.NONE,
+                                     "todo")
+    duplicate_in_apiv2 = TodoAnnotation(classv1_b.id,
+                                        [""],
+                                        [""],
+                                        "",
+                                        EnumReviewResult.NONE,
+                                        "todo")
+    same_target_and_type_in_apiv2 = TodoAnnotation(classv1_b.id,
+                                                   [""],
+                                                   [""],
+                                                   "",
+                                                   EnumReviewResult.NONE,
+                                                   "lightbringer")
+    same_target_and_type_in_both_api_versions = TodoAnnotation(classv1_a.id,
+                                                               [""],
+                                                               [""],
+                                                               "",
+                                                               EnumReviewResult.NONE,
+                                                               "darkage")
+    annotation_store = AnnotationStore()
+    annotation_store.todoAnnotations = [base_annotation, duplicate_in_apiv2, same_target_and_type_in_apiv2,
+                                        same_target_and_type_in_both_api_versions]
+    migration = Migration(annotation_store, [ManyToOneMapping(1.0, [classv1_a, classv1_b], classv2)])
+    migration.migrate_annotations()
+    assert migration.migrated_annotation_store.to_json() == {}
+    assert migration.unsure_migrated_annotation_store.to_json() == {}

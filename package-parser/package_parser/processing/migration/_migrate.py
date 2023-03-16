@@ -401,7 +401,7 @@ class Migration:
                 ):
                     continue
                 for annotation in migrated_annotations:
-                    if annotation_with_same_type_and_target == annotation:
+                    if annotation_with_same_type_and_target is annotation:
                         continue
                     if (
                         isinstance(
