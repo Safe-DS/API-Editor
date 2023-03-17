@@ -751,7 +751,7 @@ def migrate_constant_annotation_data_duplicated() -> Tuple[
         target="test/test.value.duplicate.testB",
         authors=["testauthor", migration_author],
         reviewers=[],
-        comment=get_migration_text(annotation, mapping),
+        comment=get_migration_text(annotation_2, mapping),
         reviewResult=EnumReviewResult.UNSURE,
         defaultValueType=ValueAnnotation.DefaultValueType.STRING,
         defaultValue="This is a string",

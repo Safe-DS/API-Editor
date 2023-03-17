@@ -306,8 +306,11 @@ class Migration:
             "calledAfterAnnotations",
             "descriptionAnnotations",
             "enumAnnotations",
+            "expertAnnotations",
             "groupAnnotations",
             "moveAnnotations",
+            "pureAnnotations",
+            "removeAnnotations",
             "renameAnnotations",
             "todoAnnotations",
             "valueAnnotations",
@@ -322,8 +325,6 @@ class Migration:
             ]
             duplicates_dict: dict[str, list[AbstractAnnotation]] = {}
             for duplicated_annotations in migrated_annotations:
-                if duplicated_annotations.reviewResult == EnumReviewResult.UNSURE:
-                    continue
                 if duplicated_annotations.target in duplicates_dict:
                     duplicates_dict[duplicated_annotations.target].append(
                         duplicated_annotations
@@ -388,7 +389,7 @@ class Migration:
                             self.unsure_migrated_annotation_store,
                         ]:
                             for annotation in duplicates:
-                                if annotation == first_annotation:
+                                if annotation is first_annotation:
                                     continue
                                 annotations: list[AbstractAnnotation] = getattr(
                                     annotation_store, annotation_type
