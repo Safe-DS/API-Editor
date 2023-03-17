@@ -8,7 +8,7 @@ from package_parser.processing.annotations.model import (
 )
 from package_parser.processing.api.model import API, Class, ClassDocumentation
 from package_parser.processing.migration import APIMapping, Migration
-from package_parser.processing.migration.model import Mapping, SimpleDiffer, OneToManyMapping, ManyToOneMapping
+from package_parser.processing.migration.model import Mapping, SimpleDiffer, ManyToOneMapping
 from tests.processing.migration.annotations.test_boundary_migration import (
     migrate_boundary_annotation_data_duplicated,
     migrate_boundary_annotation_data_one_to_many_mapping,
@@ -282,7 +282,8 @@ def _assert_annotation_stores_are_equal(
         expected_annotation_store.valueAnnotations, key=get_key
     )
 
-def test_remove_duplicates_and_annotations_with_same_type_and_target() -> None:
+
+def test_handle_duplicates() -> None:
     classv1_a = Class(
         "test/test.duplicate/TestClass",
         "Test",
@@ -326,5 +327,31 @@ def test_remove_duplicates_and_annotations_with_same_type_and_target() -> None:
                                         same_target_and_type_in_both_api_versions]
     migration = Migration(annotation_store, [ManyToOneMapping(1.0, [classv1_a, classv1_b], classv2)])
     migration.migrate_annotations()
-    assert migration.migrated_annotation_store.to_json() == {}
-    assert migration.unsure_migrated_annotation_store.to_json() == {}
+    store = AnnotationStore()
+    store.add_annotation(TodoAnnotation.from_json(
+
+        {
+            'authors': ['', 'migration'],
+            'comment': "Conflicting Attribute during migration: {'newTodo': 'lightbringer'}, {'newTodo': 'todo'}",
+            'newTodo': 'darkage',
+            'reviewResult': 'unsure',
+            'reviewers': [''],
+            'target': 'test/test.duplicate/TestClass'
+        }
+
+    ))
+    migrated_annotation_store = migration.migrated_annotation_store.to_json()
+    todoAnnotations = migrated_annotation_store.pop("todoAnnotations")
+    migrated_annotation_store["todoAnnotations"] = {}
+    assert migrated_annotation_store == migration.unsure_migrated_annotation_store.to_json() == AnnotationStore().to_json()
+    assert len(todoAnnotations) == 1
+    todo_values = ['darkage', 'lightbringer', "todo"]
+    assert todoAnnotations[classv2.id]["newTodo"] in todo_values
+    todo_values.remove(todoAnnotations[classv2.id].pop("newTodo"))
+    assert todoAnnotations[classv2.id] == {
+        'authors': ['', 'migration'],
+        'comment': "Conflicting Attribute during migration: {'newTodo': '"+todo_values[0]+"'}, {'newTodo': '"+todo_values[1]+"'}",
+        'reviewResult': 'unsure',
+        'reviewers': [''],
+        'target': 'test/test.duplicate/TestClass'
+    }
