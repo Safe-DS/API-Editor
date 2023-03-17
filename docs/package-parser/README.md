@@ -22,9 +22,9 @@ A tool to analyze client and API code written in Python.
     # Step 1:
     parse-package api -p sklearn -o out
     ```
-2. Analyze client code of this API:
+2. Analyze client code that uses this API:
     ```shell
-    parse-package usages -p sklearn -s "Kaggle Kernels" -o out
+    parse-package usages -p sklearn -c "Kaggle Kernels" -o out
     ```
 3. Generate annotations for the API:
     ```shell
