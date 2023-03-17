@@ -322,23 +322,22 @@ class Migration:
             ]
             duplicates_dict: dict[str, list[AbstractAnnotation]] = {}
             for duplicated_annotations in migrated_annotations:
-                if (
-                    duplicated_annotations.reviewResult
-                    == EnumReviewResult.UNSURE
-                ):
+                if duplicated_annotations.reviewResult == EnumReviewResult.UNSURE:
                     continue
                 if duplicated_annotations.target in duplicates_dict:
-                    duplicates_dict[duplicated_annotations.target].append(duplicated_annotations)
+                    duplicates_dict[duplicated_annotations.target].append(
+                        duplicated_annotations
+                    )
                     continue
                 for annotation in migrated_annotations:
-                    if duplicated_annotations is annotation or annotation.target in duplicates_dict:
+                    if (
+                        duplicated_annotations is annotation
+                        or annotation.target in duplicates_dict
+                    ):
                         continue
                     if (
-                        isinstance(
-                            annotation, type(duplicated_annotations)
-                        )
-                        and annotation.target
-                        == duplicated_annotations.target
+                        isinstance(annotation, type(duplicated_annotations))
+                        and annotation.target == duplicated_annotations.target
                     ):
                         duplicates = duplicates_dict.get(annotation.target, [])
                         duplicates.append(annotation)
@@ -348,12 +347,22 @@ class Migration:
 
             for duplicates in duplicates_dict.values():
                 if len(duplicates) > 1:
-                    duplicates = sorted(duplicates, key=lambda annotation: annotation.reviewResult.name)
+                    duplicates = sorted(
+                        duplicates, key=lambda annotation: annotation.reviewResult.name
+                    )
                     different_values = set()
-                    first_annotation_and_value: Optional[tuple[AbstractAnnotation, str]] = None
+                    first_annotation_and_value: Optional[
+                        tuple[AbstractAnnotation, str]
+                    ] = None
                     for annotation in duplicates:
                         annotation_dict = annotation.to_json()
-                        for key in ["target", "authors", "reviewers", "comment", "reviewResult"]:
+                        for key in [
+                            "target",
+                            "authors",
+                            "reviewers",
+                            "comment",
+                            "reviewResult",
+                        ]:
                             del annotation_dict[key]
                         annotation_value = str(annotation_dict)
                         if first_annotation_and_value is None:
@@ -364,16 +373,25 @@ class Migration:
                         first_annotation, first_value = first_annotation_and_value
                         if len(different_values) > 1:
                             different_values.remove(first_value)
-                            comment = "Conflicting Attribute during migration: " + ", ".join(sorted(different_values))
-                            first_annotation.comment = "\n".join([comment, first_annotation.comment]) if len(first_annotation.comment) > 0 else comment
+                            comment = (
+                                "Conflicting Attribute during migration: "
+                                + ", ".join(sorted(different_values))
+                            )
+                            first_annotation.comment = (
+                                "\n".join([comment, first_annotation.comment])
+                                if len(first_annotation.comment) > 0
+                                else comment
+                            )
                             first_annotation.reviewResult = EnumReviewResult.UNSURE
                         for annotation_store in [
-                                self.migrated_annotation_store,
-                                self.unsure_migrated_annotation_store,
+                            self.migrated_annotation_store,
+                            self.unsure_migrated_annotation_store,
                         ]:
                             for annotation in duplicates:
                                 if annotation == first_annotation:
                                     continue
-                                annotations: list[AbstractAnnotation] = getattr(annotation_store, annotation_type)
+                                annotations: list[AbstractAnnotation] = getattr(
+                                    annotation_store, annotation_type
+                                )
                                 if annotation in annotations:
                                     annotations.remove(annotation)
