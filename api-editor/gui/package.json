@@ -19,7 +19,7 @@
         "@chakra-ui/theme-tools": "^2.0.12",
         "@emotion/react": "^11.10.5",
         "@emotion/styled": "^11.10.6",
-        "@reduxjs/toolkit": "^1.9.2",
+        "@reduxjs/toolkit": "^1.9.3",
         "chart.js": "^3.9.1",
         "fastest-levenshtein": "^1.0.16",
         "framer-motion": "^10.0.1",
