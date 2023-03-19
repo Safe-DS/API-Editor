@@ -3,12 +3,12 @@
 ## General
 
 The purpose of the `API-Editor` is to manually annotate classes, functions, and parameters from a given API
-to generate an improved API. The `library-analyzer`, in contrast, marks annotations automatically.
+to generate an improved API. The [`library-analyzer`](https://github.com/Safe-DS/Library-Analyzer), in contrast, marks annotations automatically.
 These annotations can be imported, edited and deleted in the `API-Editor`.
 
 ## Import
 
-Before you can start adding own annotations, you need to import the [generated API, usages and annotations files](library-analyzer/README.md) from _library-analyzer_.
+Before you can start adding own annotations, you need to import the generated API, usages and annotations files from the [`library-analyzer`](https://github.com/Safe-DS/Library-Analyzer).
 
 ![Import API Data](img/import.jpg)
 

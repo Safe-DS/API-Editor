@@ -54,6 +54,6 @@ Now you are ready to explore the API and review existing annotations.
 3. Open [localhost:5173](http://localhost:5173) in your browser.
 
 [data]: https://github.com/Safe-DS/API-Editor/tree/main/data
-[library-analyzer]: library-analyzer
-[safe-ds]: https://github.com/lars-reimann/safe-data-science
+[library-analyzer]: https://github.com/Safe-DS/Library-Analyzer
+[safe-ds]: https://github.com/Safe-DS/DSL
 [adapter-pattern]: https://en.wikipedia.org/wiki/Adapter_pattern
