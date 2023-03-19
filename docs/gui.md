@@ -2,13 +2,13 @@
 
 ## General
 
-The purpose of the _api-editor_ is to manually annotate classes, functions, and parameters from a given API
-to generate an improved API. The _package-parser_, in contrast, marks annotations automatically.
-These annotations can be imported, edited and deleted in the _api-editor_.
+The purpose of the `API-Editor` is to manually annotate classes, functions, and parameters from a given API
+to generate an improved API. The `library-analyzer`, in contrast, marks annotations automatically.
+These annotations can be imported, edited and deleted in the `API-Editor`.
 
 ## Import
 
-Before you can start adding own annotations, you need to import the [generated API, usages and annotations files](package-parser/README.md) from _package-parser_.
+Before you can start adding own annotations, you need to import the [generated API, usages and annotations files](library-analyzer/README.md) from _library-analyzer_.
 
 ![Import API Data](img/import.jpg)
 
@@ -17,7 +17,7 @@ Now you can select packages, classes, functions, or parameters from the tree vie
 ## Annotations
 
 An improved API is created through annotations.
-_Package-parser_ automatically generates some types of annotations by the documentation and the number of calls.
+_library-analyzer_ automatically generates some types of annotations by the documentation and the number of calls.
 These are `Boundary`, `Constant`, `Enum`, `Optional`, `Remove`, and `Required`.
 The other annotations cannot be generated, but are set manually with _api-editor_.
 

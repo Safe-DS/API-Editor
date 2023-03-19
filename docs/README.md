@@ -8,7 +8,7 @@
 
 The `api-editor` is a tool to improve the API of a Python library in a semi-automated manner. Several improvements are suggested automatically and the user can add further improvements manually in a user-friendly GUI. These improvements are implemented automatically by the tool as [_wrappers_][adapter-pattern] that provide the desired API while internally using the existing Python library.
 
-The automation described above relies on structured information about the existing Python library. This information can be computed automatically by the [package-parser][package-parser].
+The automation described above relies on structured information about the existing Python library. This information can be computed automatically by the [library-analyzer][library-analyzer].
 
 You can find the full documentation [here](https://api-editor.readthedocs.io/en/latest/).
 
@@ -22,7 +22,7 @@ You can find the full documentation [here](https://api-editor.readthedocs.io/en/
     ```
 4. Open [localhost:4280](http://localhost:4280) in your browser.
 5. In the window that opens, enter your username in the bottom right field.
-6. Download the contents of the [`data`][data] folder of this project. Alternatively, compute the required data for another Python API using the [package-parser][package-parser].
+6. Download the contents of the [`data`][data] folder of this project. Alternatively, compute the required data for another Python API using the [library-analyzer][library-analyzer].
 7. Open `File > Import > API Data` and upload the API data that you stored locally.
 8. Open `File > Import > Usages` and upload the usage data that you stored locally.
 9. Open `File > Import > Annotations` and upload the annotation data that you stored locally (from the repository or your own prior usages of the tool).
@@ -54,6 +54,6 @@ Now you are ready to explore the API and review existing annotations.
 3. Open [localhost:5173](http://localhost:5173) in your browser.
 
 [data]: https://github.com/Safe-DS/API-Editor/tree/main/data
-[package-parser]: package-parser
+[library-analyzer]: library-analyzer
 [safe-ds]: https://github.com/lars-reimann/safe-data-science
 [adapter-pattern]: https://en.wikipedia.org/wiki/Adapter_pattern
