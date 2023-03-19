@@ -21,7 +21,3 @@ updates:
     directory: '/api-editor/gui'
     schedule:
       interval: 'monthly'
-  - package-ecosystem: 'pip'
-    directory: '/package-parser'
-    schedule:
-      interval: 'monthly'
