@@ -20,7 +20,3 @@ component_management:
       name: gui
       paths:
         - api-editor/gui/**
-    - component_id: module_package-parser
-      name: package-parser
-      paths:
-        - package-parser/**

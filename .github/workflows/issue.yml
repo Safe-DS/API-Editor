@@ -1,4 +1,4 @@
-name: Add Issues to API-Editor Project
+name: Add Issues to Library Analysis Project
 
 on:
   issues:

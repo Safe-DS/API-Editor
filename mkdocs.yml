@@ -5,9 +5,6 @@ repo_name: Safe-DS/API-Editor
 nav:
   - Home: README.md
   - GUI: gui.md
-  - package-parser:
-    - Installation & Usage: package-parser/README.md
-    - Architecture: package-parser/architecture.md
 
 # Configuration of MkDocs & Material for MkDocs --------------------------------
 
