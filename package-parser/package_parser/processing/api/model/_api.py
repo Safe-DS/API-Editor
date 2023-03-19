@@ -227,7 +227,22 @@ class FromImport:
         }
 
 
+@dataclass
 class Class:
+    id: str
+    qname: str
+    decorators: list[str]
+    superclasses: list[str]
+    methods: list[str] = field(init=False)
+    is_public: bool
+    reexported_by: list[str]
+    documentation: ClassDocumentation
+    code: str
+    instance_attributes: list[Attribute]
+    formatted_code: Optional[str] = field(
+        default=None, init=False, hash=False, compare=False
+    )
+
     @staticmethod
     def from_json(json: Any) -> Class:
         result = Class(
@@ -303,47 +318,10 @@ class Class:
         }
 
     def get_formatted_code(self, *, cut_documentation: bool = False) -> str:
-        if self.formatted_code is None:
-            self.formatted_code = _generate_formatted_code(self)
-            if cut_documentation:
-                self.formatted_code = _cut_documentation_from_code(
-                    self.formatted_code, self
-                )
-        return self.formatted_code
-
-    def __repr__(self) -> str:
-        return "Class(id=" + self.id + ")"
-
-    def __hash__(self) -> int:
-        return hash(
-            (
-                self.id,
-                self.qname,
-                frozenset(self.decorators),
-                frozenset(self.superclasses),
-                frozenset(self.methods),
-                self.is_public,
-                frozenset(self.reexported_by),
-                self.documentation,
-                self.code,
-                frozenset(self.instance_attributes),
-            )
-        )
-
-    def __eq__(self, other: object) -> bool:
-        return (
-            isinstance(other, Class)
-            and self.id == other.id
-            and self.qname == other.qname
-            and self.decorators == other.decorators
-            and self.superclasses == other.superclasses
-            and self.methods == other.methods
-            and self.is_public == other.is_public
-            and self.reexported_by == other.reexported_by
-            and self.documentation == other.documentation
-            and self.code == other.code
-            and self.instance_attributes == other.instance_attributes
-        )
+        formatted_code = _generate_formatted_code(self)
+        if cut_documentation:
+            formatted_code = _cut_documentation_from_code(formatted_code, self)
+        return formatted_code
 
 
 def _generate_formatted_code(api_element: Union[Class, Function]) -> str:
@@ -390,14 +368,11 @@ def _cut_documentation_from_code(code: str, api_element: Union[Class, Function])
     return code
 
 
-@dataclass
+@dataclass(frozen=True)
 class Attribute:
     name: str
     types: Optional[AbstractType]
     class_id: Optional[str] = None
-
-    def __hash__(self) -> int:
-        return hash((self.name, self.class_id, self.types))
 
     def to_json(self) -> dict[str, Any]:
         types_json = self.types.to_json() if self.types is not None else None
@@ -409,29 +384,8 @@ class Attribute:
             json["name"], AbstractType.from_json(json.get("types", {})), class_id
         )
 
-    def __repr__(self) -> str:
-        type_str = (
-            " , type=" + str(self.types.to_json()) if self.types is not None else "None"
-        )
-        return (
-            "Attribute(class_id="
-            + str(self.class_id)
-            + "/"
-            + self.name
-            + type_str
-            + ")"
-        )
 
-    def __eq__(self, other: object) -> bool:
-        return (
-            isinstance(other, Attribute)
-            and self.name == other.name
-            and self.types == other.types
-            and self.class_id == other.class_id
-        )
-
-
-@dataclass
+@dataclass(frozen=True)
 class Function:
     id: str
     qname: str
@@ -442,10 +396,9 @@ class Function:
     reexported_by: list[str]
     documentation: FunctionDocumentation
     code: str
-    formatted_code: Optional[str] = field(init=False)
-
-    def __post_init__(self) -> None:
-        self.formatted_code = None
+    formatted_code: Optional[str] = field(
+        default=None, init=False, hash=False, compare=False
+    )
 
     @staticmethod
     def from_json(json: Any) -> Function:
@@ -487,50 +440,13 @@ class Function:
         }
 
     def get_formatted_code(self, *, cut_documentation: bool = False) -> str:
-        if self.formatted_code is None:
-            self.formatted_code = _generate_formatted_code(self)
-            if cut_documentation:
-                self.formatted_code = _cut_documentation_from_code(
-                    self.formatted_code, self
-                )
-        return self.formatted_code
-
-    def __repr__(self) -> str:
-        return "Function(id=" + self.id + ")"
-
-    def __hash__(self) -> int:
-        return hash(
-            (
-                self.id,
-                self.name,
-                self.qname,
-                frozenset(self.decorators),
-                frozenset(self.parameters),
-                frozenset(self.results),
-                self.is_public,
-                frozenset(self.reexported_by),
-                self.documentation,
-                self.code,
-            )
-        )
-
-    def __eq__(self, other: object) -> bool:
-        return (
-            isinstance(other, Function)
-            and self.id == other.id
-            and self.name == other.name
-            and self.qname == other.qname
-            and self.decorators == other.decorators
-            and self.parameters == other.parameters
-            and self.results == other.results
-            and self.is_public == other.is_public
-            and self.reexported_by == other.reexported_by
-            and self.documentation == other.documentation
-            and self.code == other.code
-        )
+        formatted_code = _generate_formatted_code(self)
+        if cut_documentation:
+            formatted_code = _cut_documentation_from_code(formatted_code, self)
+        return formatted_code
 
 
-@dataclass
+@dataclass(frozen=True)
 class Result:
     name: str
     docstring: ResultDocstring
@@ -547,24 +463,8 @@ class Result:
     def to_json(self) -> Any:
         return {"name": self.name, "docstring": self.docstring.to_json()}
 
-    def __repr__(self) -> str:
-        return (
-            "Result(function_id=" + str(self.function_id) + ", name=" + self.name + ")"
-        )
 
-    def __eq__(self, other: object) -> bool:
-        return (
-            isinstance(other, Result)
-            and self.name == other.name
-            and self.docstring == other.docstring
-            and self.function_id == other.function_id
-        )
-
-    def __hash__(self) -> int:
-        return hash((self.name, self.docstring, self.function_id))
-
-
-@dataclass
+@dataclass(frozen=True)
 class ResultDocstring:
     type: str
     description: str
@@ -578,13 +478,3 @@ class ResultDocstring:
 
     def to_json(self) -> Any:
         return {"type": self.type, "description": self.description}
-
-    def __eq__(self, other: object) -> bool:
-        return (
-            isinstance(other, ResultDocstring)
-            and self.type == other.type
-            and self.description == other.description
-        )
-
-    def __hash__(self) -> int:
-        return hash((self.type, self.description))

@@ -71,12 +71,9 @@ class UnchangedDiffer(AbstractDiffer):
         self, api_elementv1: API_ELEMENTS, api_elementv2: API_ELEMENTS
     ) -> bool:
         if isinstance(api_elementv1, (Class, Function)):
-            api_elementv1 = deepcopy(api_elementv1)
-            api_elementv1.code = ""
-            api_elementv1.formatted_code = ""
-            api_elementv2 = deepcopy(api_elementv2)
-            api_elementv2.code = ""
-            api_elementv2.formatted_code = ""
+            memo = {id(api_elementv1.code): "", id(api_elementv2.code): ""}
+            api_elementv1 = deepcopy(api_elementv1, memo=memo)
+            api_elementv2 = deepcopy(api_elementv2, memo=memo)
         return api_elementv1 == api_elementv2
 
     def compute_attribute_similarity(

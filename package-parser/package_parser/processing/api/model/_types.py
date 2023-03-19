@@ -29,7 +29,7 @@ class AbstractType(metaclass=ABCMeta):
         return UnionType.from_json(json)
 
 
-@dataclass
+@dataclass(frozen=True)
 class NamedType(AbstractType):
     name: str
 
@@ -46,19 +46,11 @@ class NamedType(AbstractType):
     def to_json(self) -> dict[str, str]:
         return {"kind": self.__class__.__name__, "name": self.name}
 
-    def __eq__(self, other: object) -> bool:
-        if isinstance(other, self.__class__):
-            return self.name == other.name
-        return False
 
-    def __hash__(self) -> int:
-        return hash(self.name)
-
-
-@dataclass
+@dataclass(frozen=True)
 class EnumType(AbstractType):
-    values: set[str] = field(default_factory=set)
-    full_match: str = ""
+    values: frozenset[str] = field(default_factory=frozenset)
+    full_match: str = field(default="", compare=False)
 
     @classmethod
     def from_json(cls, json: Any) -> Optional[EnumType]:
@@ -97,21 +89,20 @@ class EnumType(AbstractType):
                 elif inside_value:
                     value += char
 
-            return EnumType(values, enum_match.group(0))
+            return EnumType(frozenset(values), enum_match.group(0))
 
         return None
 
-    def update(self, enum: EnumType) -> None:
-        self.values.update(enum.values)
+    def update(self, enum: EnumType) -> EnumType:
+        values = set(self.values)
+        values.update(enum.values)
+        return EnumType(frozenset(values))
 
     def to_json(self) -> dict[str, Any]:
         return {"kind": self.__class__.__name__, "values": self.values}
 
-    def __hash__(self) -> int:
-        return hash((frozenset(self.values), self.full_match))
 
-
-@dataclass
+@dataclass(frozen=True)
 class BoundaryType(AbstractType):
     NEGATIVE_INFINITY: ClassVar = "NegativeInfinity"
     INFINITY: ClassVar = "Infinity"
@@ -122,7 +113,7 @@ class BoundaryType(AbstractType):
     min_inclusive: bool
     max_inclusive: bool
 
-    full_match: str = ""
+    full_match: str = field(default="", compare=False)
 
     @classmethod
     def _is_inclusive(cls, bracket: str) -> bool:
@@ -130,7 +121,7 @@ class BoundaryType(AbstractType):
             return False
         if bracket in ("[", "]"):
             return True
-        raise Exception(f"{bracket} is not one of []()")
+        raise ValueError(f"{bracket} is not one of []()")
 
     @classmethod
     def from_json(cls, json: Any) -> Optional[BoundaryType]:
@@ -206,18 +197,6 @@ class BoundaryType(AbstractType):
                 return self.max_inclusive == __o.max_inclusive
         return False
 
-    def __hash__(self) -> int:
-        return hash(
-            (
-                self.base_type,
-                self.min,
-                self.min_inclusive,
-                self.max,
-                self.max_inclusive,
-                self.full_match,
-            )
-        )
-
     def to_json(self) -> dict[str, Any]:
         return {
             "kind": self.__class__.__name__,
@@ -229,7 +208,7 @@ class BoundaryType(AbstractType):
         }
 
 
-@dataclass
+@dataclass(frozen=True)
 class UnionType(AbstractType):
     types: list[AbstractType]
 

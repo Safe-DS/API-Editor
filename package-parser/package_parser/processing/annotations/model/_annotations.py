@@ -82,18 +82,6 @@ class Interval:
             json["upperLimitType"],
         )
 
-    def __eq__(self, other: Any) -> bool:
-        return (
-            isinstance(other, Interval)
-            and self.isDiscrete == other.isDiscrete
-            and self.lowerIntervalLimit == other.lowerIntervalLimit
-            and isinstance(self.lowerIntervalLimit, type(self.lowerIntervalLimit))
-            and self.lowerLimitType == other.lowerLimitType
-            and self.upperIntervalLimit == other.upperIntervalLimit
-            and isinstance(self.upperIntervalLimit, type(self.upperIntervalLimit))
-            and self.upperLimitType == self.upperLimitType
-        )
-
 
 @dataclass
 class BoundaryAnnotation(AbstractAnnotation):
@@ -133,13 +121,6 @@ class EnumPair:
     @staticmethod
     def from_json(json: Any) -> EnumPair:
         return EnumPair(json["stringValue"], json["instanceName"])
-
-    def __eq__(self, other: Any) -> bool:
-        return (
-            isinstance(other, EnumPair)
-            and self.stringValue == other.stringValue
-            and self.instanceName == other.instanceName
-        )
 
 
 @dataclass
@@ -199,7 +180,7 @@ class ValueAnnotation(AbstractAnnotation, ABC):
             return OptionalAnnotation.from_json(json)
         if ValueAnnotation.Variant.REQUIRED.value == variant:
             return RequiredAnnotation.from_json(json)
-        raise Exception("unkonwn variant found")
+        raise KeyError("unkonwn variant found")
 
 
 @dataclass

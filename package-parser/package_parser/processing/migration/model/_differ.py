@@ -125,6 +125,7 @@ class SimpleDiffer(AbstractDiffer):
     ]
     previous_parameter_similarity: dict[str, dict[str, float]] = {}
     previous_function_similarity: dict[str, dict[str, float]] = {}
+    formatted_code: dict[str, dict[str, list[str]]] = {"apiv1": {}, "apiv2": {}}
 
     def get_related_mappings(
         self,
@@ -259,10 +260,7 @@ class SimpleDiffer(AbstractDiffer):
         """
         normalize_similarity = 6
 
-        code_similarity = self._compute_code_similarity(
-            classv1.get_formatted_code(cut_documentation=True),
-            classv2.get_formatted_code(cut_documentation=True),
-        )
+        code_similarity = self._compute_code_similarity(classv1, classv2)
         name_similarity = self._compute_name_similarity(classv1.name, classv2.name)
 
         attributes_similarity = distance(
@@ -340,10 +338,7 @@ class SimpleDiffer(AbstractDiffer):
 
         normalize_similarity = 5
 
-        code_similarity = self._compute_code_similarity(
-            functionv1.get_formatted_code(cut_documentation=True),
-            functionv2.get_formatted_code(cut_documentation=True),
-        )
+        code_similarity = self._compute_code_similarity(functionv1, functionv2)
         name_similarity = self._compute_name_similarity(
             functionv1.name, functionv2.name
         )
@@ -375,9 +370,28 @@ class SimpleDiffer(AbstractDiffer):
         self.previous_function_similarity[functionv1.id][functionv2.id] = result
         return result
 
-    def _compute_code_similarity(self, codev1: str, codev2: str) -> float:
-        splitv1 = codev1.split("\n")
-        splitv2 = codev2.split("\n")
+    CODE_CONTAINING_API_ELEMENT = TypeVar(
+        "CODE_CONTAINING_API_ELEMENT", Class, Function
+    )
+
+    def _compute_code_similarity(
+        self,
+        elementv1: CODE_CONTAINING_API_ELEMENT,
+        elementv2: CODE_CONTAINING_API_ELEMENT,
+    ) -> float:
+        if elementv1.id in self.formatted_code["apiv1"]:
+            splitv1 = self.formatted_code["apiv1"][elementv1.id]
+        else:
+            codev1 = elementv1.get_formatted_code(cut_documentation=True)
+            splitv1 = codev1.split("\n")
+            self.formatted_code["apiv1"][elementv1.id] = splitv1
+
+        if elementv2.id in self.formatted_code["apiv2"]:
+            splitv2 = self.formatted_code["apiv2"][elementv2.id]
+        else:
+            codev2 = elementv2.get_formatted_code(cut_documentation=True)
+            splitv2 = codev2.split("\n")
+            self.formatted_code["apiv2"][elementv2.id] = splitv2
         diff_code = distance(splitv1, splitv2) / max(len(splitv1), len(splitv2), 1)
         return 1 - diff_code
 

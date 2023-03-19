@@ -83,9 +83,6 @@ class Parameter:
             "type": self.type.to_json() if self.type is not None else {},
         }
 
-    def __repr__(self) -> str:
-        return "Parameter(id=" + self.id + ")"
-
 
 class ParameterAssignment(Enum):
     """
