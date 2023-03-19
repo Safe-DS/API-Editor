@@ -111,7 +111,7 @@ def test_too_different_mapping(differ: AbstractDiffer) -> None:
     apiv1.add_class(class_1)
     apiv2 = API("test", "test", "2.0")
     class_2 = Class(
-        "test/test.test/NotSimilarClass_",
+        "test/package/NotSimilarClass_",
         "NotSimilarClass_",
         [],
         [],

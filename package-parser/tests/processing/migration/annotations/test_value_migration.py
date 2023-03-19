@@ -29,11 +29,13 @@ from package_parser.processing.migration.model import (
 )
 
 
-def migrate_constant_annotation_data_one_to_one_mapping() -> Tuple[
-    Mapping,
-    AbstractAnnotation,
-    list[AbstractAnnotation],
-]:
+def migrate_constant_annotation_data_one_to_one_mapping() -> (
+    Tuple[
+        Mapping,
+        AbstractAnnotation,
+        list[AbstractAnnotation],
+    ]
+):
     parameterv1 = Parameter(
         id_="test/test.value.test1.testA",
         name="testA",
@@ -74,11 +76,13 @@ def migrate_constant_annotation_data_one_to_one_mapping() -> Tuple[
     return mapping, annotation, [annotationv2]
 
 
-def migrate_omitted_annotation_data_one_to_one_mapping() -> Tuple[
-    Mapping,
-    AbstractAnnotation,
-    list[AbstractAnnotation],
-]:
+def migrate_omitted_annotation_data_one_to_one_mapping() -> (
+    Tuple[
+        Mapping,
+        AbstractAnnotation,
+        list[AbstractAnnotation],
+    ]
+):
     parameterv1 = Parameter(
         id_="test/test.value.test2.testA",
         name="testA",
@@ -114,11 +118,13 @@ def migrate_omitted_annotation_data_one_to_one_mapping() -> Tuple[
     return OneToOneMapping(1.0, parameterv1, parameterv2), annotation, [annotationv2]
 
 
-def migrate_optional_annotation_data_one_to_one_mapping() -> Tuple[
-    Mapping,
-    AbstractAnnotation,
-    list[AbstractAnnotation],
-]:
+def migrate_optional_annotation_data_one_to_one_mapping() -> (
+    Tuple[
+        Mapping,
+        AbstractAnnotation,
+        list[AbstractAnnotation],
+    ]
+):
     parameterv1 = Parameter(
         id_="test/test.value.test3.testA",
         name="testA",
@@ -158,11 +164,13 @@ def migrate_optional_annotation_data_one_to_one_mapping() -> Tuple[
     return OneToOneMapping(1.0, parameterv1, parameterv2), annotation, [annotationv2]
 
 
-def migrate_required_annotation_data_one_to_one_mapping() -> Tuple[
-    Mapping,
-    AbstractAnnotation,
-    list[AbstractAnnotation],
-]:
+def migrate_required_annotation_data_one_to_one_mapping() -> (
+    Tuple[
+        Mapping,
+        AbstractAnnotation,
+        list[AbstractAnnotation],
+    ]
+):
     parameterv1 = Parameter(
         id_="test/test.value.test4.testA",
         name="testA",
@@ -198,11 +206,13 @@ def migrate_required_annotation_data_one_to_one_mapping() -> Tuple[
     return OneToOneMapping(1.0, parameterv1, parameterv2), annotation, [annotationv2]
 
 
-def migrate_constant_annotation_data_one_to_many_mapping() -> Tuple[
-    Mapping,
-    AbstractAnnotation,
-    list[AbstractAnnotation],
-]:
+def migrate_constant_annotation_data_one_to_many_mapping() -> (
+    Tuple[
+        Mapping,
+        AbstractAnnotation,
+        list[AbstractAnnotation],
+    ]
+):
     parameterv1 = Parameter(
         id_="test/test.value.test5.test",
         name="test",
@@ -307,11 +317,13 @@ def migrate_constant_annotation_data_one_to_many_mapping() -> Tuple[
     )
 
 
-def migrate_optional_annotation_data_one_to_many_mapping() -> Tuple[
-    Mapping,
-    AbstractAnnotation,
-    list[AbstractAnnotation],
-]:
+def migrate_optional_annotation_data_one_to_many_mapping() -> (
+    Tuple[
+        Mapping,
+        AbstractAnnotation,
+        list[AbstractAnnotation],
+    ]
+):
     parameterv1 = Parameter(
         id_="test/test.value.test6.test",
         name="test",
@@ -414,11 +426,13 @@ def migrate_optional_annotation_data_one_to_many_mapping() -> Tuple[
     )
 
 
-def migrate_required_annotation_data_one_to_many_mapping() -> Tuple[
-    Mapping,
-    AbstractAnnotation,
-    list[AbstractAnnotation],
-]:
+def migrate_required_annotation_data_one_to_many_mapping() -> (
+    Tuple[
+        Mapping,
+        AbstractAnnotation,
+        list[AbstractAnnotation],
+    ]
+):
     parameterv1 = Parameter(
         id_="test/test.value.test7.test",
         name="test",
@@ -568,11 +582,13 @@ def migrate_required_annotation_data_one_to_many_mapping() -> Tuple[
 
 
 # pylint: disable=duplicate-code
-def migrate_omitted_annotation_data_one_to_many_mapping() -> Tuple[
-    Mapping,
-    AbstractAnnotation,
-    list[AbstractAnnotation],
-]:
+def migrate_omitted_annotation_data_one_to_many_mapping() -> (
+    Tuple[
+        Mapping,
+        AbstractAnnotation,
+        list[AbstractAnnotation],
+    ]
+):
     parameterv1 = Parameter(
         id_="test/test.value.test8.test",
         name="test",
@@ -696,11 +712,13 @@ def migrate_omitted_annotation_data_one_to_many_mapping() -> Tuple[
     )
 
 
-def migrate_constant_annotation_data_duplicated() -> Tuple[
-    Mapping,
-    list[AbstractAnnotation],
-    list[AbstractAnnotation],
-]:
+def migrate_constant_annotation_data_duplicated() -> (
+    Tuple[
+        Mapping,
+        list[AbstractAnnotation],
+        list[AbstractAnnotation],
+    ]
+):
     parameterv1 = Parameter(
         id_="test/test.value.duplicate.testA",
         name="testA",
@@ -751,7 +769,7 @@ def migrate_constant_annotation_data_duplicated() -> Tuple[
         target="test/test.value.duplicate.testB",
         authors=["testauthor", migration_author],
         reviewers=[],
-        comment=get_migration_text(annotation, mapping),
+        comment=get_migration_text(annotation_2, mapping),
         reviewResult=EnumReviewResult.UNSURE,
         defaultValueType=ValueAnnotation.DefaultValueType.STRING,
         defaultValue="This is a string",
@@ -759,11 +777,13 @@ def migrate_constant_annotation_data_duplicated() -> Tuple[
     return mapping, [annotation, annotation_2], [annotationv2]
 
 
-def migrate_omitted_annotation_data_duplicated() -> Tuple[
-    Mapping,
-    list[AbstractAnnotation],
-    list[AbstractAnnotation],
-]:
+def migrate_omitted_annotation_data_duplicated() -> (
+    Tuple[
+        Mapping,
+        list[AbstractAnnotation],
+        list[AbstractAnnotation],
+    ]
+):
     parameterv1 = Parameter(
         id_="test/test.value.duplicate2.testA",
         name="testA",
@@ -819,11 +839,13 @@ def migrate_omitted_annotation_data_duplicated() -> Tuple[
     )
 
 
-def migrate_optional_annotation_data_duplicated() -> Tuple[
-    Mapping,
-    list[AbstractAnnotation],
-    list[AbstractAnnotation],
-]:
+def migrate_optional_annotation_data_duplicated() -> (
+    Tuple[
+        Mapping,
+        list[AbstractAnnotation],
+        list[AbstractAnnotation],
+    ]
+):
     parameterv1 = Parameter(
         id_="test/test.value.duplicate3.testA",
         name="testA",
@@ -885,11 +907,13 @@ def migrate_optional_annotation_data_duplicated() -> Tuple[
     )
 
 
-def migrate_required_annotation_data_duplicated() -> Tuple[
-    Mapping,
-    list[AbstractAnnotation],
-    list[AbstractAnnotation],
-]:
+def migrate_required_annotation_data_duplicated() -> (
+    Tuple[
+        Mapping,
+        list[AbstractAnnotation],
+        list[AbstractAnnotation],
+    ]
+):
     parameterv1 = Parameter(
         id_="test/test.value.duplicate4.testA",
         name="testA",

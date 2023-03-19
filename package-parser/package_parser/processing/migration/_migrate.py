@@ -1,7 +1,6 @@
 from dataclasses import dataclass, field
-from typing import Optional, Tuple, Union
+from typing import Optional, Union
 
-from package_parser.processing.annotations import are_semantic_equal
 from package_parser.processing.annotations.model import (
     AbstractAnnotation,
     AnnotationStore,
@@ -152,7 +151,7 @@ class Migration:
                     self.add_annotations_based_on_similarity(
                         annotation, mapping.get_similarity()
                     )
-        self._remove_duplicates()
+        self._handle_duplicates()
 
     def add_annotations_based_on_similarity(
         self, annotation: AbstractAnnotation, similarity: float
@@ -176,7 +175,7 @@ class Migration:
                     return api_element.name
                 if isinstance(api_element, Attribute):
                     return str(api_element.class_id) + "/" + api_element.name
-                return "/".join(api_element.id.split("/")[1:])
+                return api_element.id
 
             apiv1_elements = ", ".join(
                 [
@@ -291,17 +290,17 @@ class Migration:
         return not_mapped_api_elements
 
     def print(self, apiv1: API, apiv2: API) -> None:
-        print("**Similarity**|**APIV1**|**APIV2**|**comment**")
-        print(":-----:|:-----:|:-----:|:----:|")
+        print(
+            "**Similarity**|**APIV1**|**APIV2**|**comment**\n:-----:|:-----:|:-----:|:----:|"
+        )
         table_body = self._get_mappings_for_table()
         table_body.extend(self._get_not_mapped_api_elements_for_table(apiv1, apiv2))
         table_body.sort(
             key=lambda row: max(len(cell.split("/")) for cell in row.split("|")[:-1])
         )
-        for row in table_body:
-            print(row)
+        print("\n".join(table_body))
 
-    def _remove_duplicates(self) -> None:
+    def _handle_duplicates(self) -> None:
         for annotation_type in [
             "boundaryAnnotations",
             "calledAfterAnnotations",
@@ -310,12 +309,12 @@ class Migration:
             "expertAnnotations",
             "groupAnnotations",
             "moveAnnotations",
+            "pureAnnotations",
             "removeAnnotations",
             "renameAnnotations",
             "todoAnnotations",
             "valueAnnotations",
         ]:
-            duplicates: list[Tuple[AbstractAnnotation, AbstractAnnotation]] = []
             migrated_annotations = [
                 annotation
                 for annotation_store in [
@@ -324,49 +323,76 @@ class Migration:
                 ]
                 for annotation in getattr(annotation_store, annotation_type)
             ]
-
-            for annotation_a in migrated_annotations:
-                for annotation_b in migrated_annotations:
-                    if annotation_a is annotation_b:
+            duplicates_dict: dict[str, list[AbstractAnnotation]] = {}
+            for duplicated_annotations in migrated_annotations:
+                if duplicated_annotations.target in duplicates_dict:
+                    duplicates_dict[duplicated_annotations.target].append(
+                        duplicated_annotations
+                    )
+                    continue
+                for annotation in migrated_annotations:
+                    if (
+                        duplicated_annotations is annotation
+                        or annotation.target in duplicates_dict
+                    ):
                         continue
                     if (
-                        are_semantic_equal(annotation_a, annotation_b)
-                        and (annotation_b, annotation_a) not in duplicates
+                        isinstance(annotation, type(duplicated_annotations))
+                        and annotation.target == duplicated_annotations.target
                     ):
-                        duplicates.append((annotation_a, annotation_b))
-            for annotation_a, annotation_b in duplicates:
-                if (
-                    annotation_a.reviewResult != annotation_b.reviewResult
-                    and EnumReviewResult.UNSURE
-                    in (annotation_a.reviewResult, annotation_b.reviewResult)
-                ):
-                    annotation_a.reviewResult = EnumReviewResult.UNSURE
-                    annotation_b.reviewResult = EnumReviewResult.UNSURE
-                b_in_migrated_annotation_store = annotation_b in getattr(
-                    self.migrated_annotation_store, annotation_type
-                )
-                b_in_unsure_annotation_store = annotation_b in getattr(
-                    self.unsure_migrated_annotation_store, annotation_type
-                )
-                if annotation_a in getattr(
-                    self.migrated_annotation_store, annotation_type
-                ):
-                    if b_in_migrated_annotation_store:
-                        getattr(self.migrated_annotation_store, annotation_type).remove(
-                            annotation_b
-                        )
-                    if b_in_unsure_annotation_store:
-                        getattr(
-                            self.unsure_migrated_annotation_store, annotation_type
-                        ).remove(annotation_b)
-                if annotation_a in getattr(
-                    self.unsure_migrated_annotation_store, annotation_type
-                ):
-                    if b_in_migrated_annotation_store:
-                        getattr(self.migrated_annotation_store, annotation_type).remove(
-                            annotation_b
-                        )
-                    if b_in_unsure_annotation_store:
-                        getattr(
-                            self.unsure_migrated_annotation_store, annotation_type
-                        ).remove(annotation_b)
+                        duplicates = duplicates_dict.get(annotation.target, [])
+                        duplicates.append(annotation)
+                        duplicates.append(duplicated_annotations)
+                        duplicates_dict[duplicated_annotations.target] = duplicates
+                        break
+
+            for duplicates in duplicates_dict.values():
+                if len(duplicates) > 1:
+                    duplicates = sorted(
+                        duplicates, key=lambda annotation: annotation.reviewResult.name
+                    )
+                    different_values = set()
+                    first_annotation_and_value: Optional[
+                        tuple[AbstractAnnotation, str]
+                    ] = None
+                    for annotation in duplicates:
+                        annotation_dict = annotation.to_json()
+                        for key in [
+                            "target",
+                            "authors",
+                            "reviewers",
+                            "comment",
+                            "reviewResult",
+                        ]:
+                            del annotation_dict[key]
+                        annotation_value = str(annotation_dict)
+                        if first_annotation_and_value is None:
+                            first_annotation_and_value = annotation, annotation_value
+                        different_values.add(annotation_value)
+
+                    if first_annotation_and_value is not None:
+                        first_annotation, first_value = first_annotation_and_value
+                        if len(different_values) > 1:
+                            different_values.remove(first_value)
+                            comment = (
+                                "Conflicting Attribute during migration: "
+                                + ", ".join(sorted(different_values))
+                            )
+                            first_annotation.comment = (
+                                "\n".join([comment, first_annotation.comment])
+                                if len(first_annotation.comment) > 0
+                                else comment
+                            )
+                            first_annotation.reviewResult = EnumReviewResult.UNSURE
+                        for annotation_store in [
+                            self.migrated_annotation_store,
+                            self.unsure_migrated_annotation_store,
+                        ]:
+                            for annotation in duplicates:
+                                if annotation is first_annotation:
+                                    continue
+                                annotations: list[AbstractAnnotation] = getattr(
+                                    annotation_store, annotation_type
+                                )
+                                if annotation in annotations:
+                                    annotations.remove(annotation)

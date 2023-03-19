@@ -148,7 +148,16 @@ class StrictDiffer(AbstractDiffer):
         """
         is_global_functionv1 = len(functionv1.id.split("/")) == 3
         is_global_functionv2 = len(functionv2.id.split("/")) == 3
-        if (
+        if is_global_functionv1 and is_global_functionv2:
+            for mapping in self.previous_mappings:
+                if (
+                    functionv1 in mapping.get_apiv1_elements()
+                    and functionv2 in mapping.get_apiv2_elements()
+                ):
+                    return self.differ.compute_function_similarity(
+                        functionv1, functionv2
+                    )
+        elif (
             not is_global_functionv1 and not is_global_functionv2
         ) and self._api_elements_are_mapped_to_each_other(functionv1, functionv2):
             return self.differ.compute_function_similarity(functionv1, functionv2)

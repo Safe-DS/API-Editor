@@ -1,13 +1,20 @@
 import json
 import os
+from copy import deepcopy
 
 from package_parser.processing.annotations.model import (
     AbstractAnnotation,
     AnnotationStore,
+    EnumReviewResult,
+    TodoAnnotation,
 )
-from package_parser.processing.api.model import API
+from package_parser.processing.api.model import API, Class, ClassDocumentation
 from package_parser.processing.migration import APIMapping, Migration
-from package_parser.processing.migration.model import Mapping, SimpleDiffer
+from package_parser.processing.migration.model import (
+    ManyToOneMapping,
+    Mapping,
+    SimpleDiffer,
+)
 from tests.processing.migration.annotations.test_boundary_migration import (
     migrate_boundary_annotation_data_duplicated,
     migrate_boundary_annotation_data_one_to_many_mapping,
@@ -280,3 +287,79 @@ def _assert_annotation_stores_are_equal(
     assert sorted(actual_annotations.valueAnnotations, key=get_key) == sorted(
         expected_annotation_store.valueAnnotations, key=get_key
     )
+
+
+def test_handle_duplicates() -> None:
+    classv1_a = Class(
+        "test/test.duplicate/TestClass",
+        "Test",
+        [],
+        [],
+        True,
+        [],
+        ClassDocumentation("", ""),
+        "",
+        [],
+    )
+    classv1_b = deepcopy(classv1_a)
+    classv1_b.id = "test/test.duplicate/TestClass2"
+    classv2 = deepcopy(classv1_a)
+    base_annotation = TodoAnnotation(
+        classv1_a.id, [""], [""], "", EnumReviewResult.NONE, "todo"
+    )
+    duplicate_in_apiv2 = TodoAnnotation(
+        classv1_b.id, [""], [""], "", EnumReviewResult.NONE, "todo"
+    )
+    same_target_and_type_in_apiv2 = TodoAnnotation(
+        classv1_b.id, [""], [""], "", EnumReviewResult.NONE, "lightbringer"
+    )
+    same_target_and_type_in_both_api_versions = TodoAnnotation(
+        classv1_a.id, [""], [""], "", EnumReviewResult.NONE, "darkage"
+    )
+    annotation_store = AnnotationStore()
+    annotation_store.todoAnnotations = [
+        base_annotation,
+        duplicate_in_apiv2,
+        same_target_and_type_in_apiv2,
+        same_target_and_type_in_both_api_versions,
+    ]
+    migration = Migration(
+        annotation_store, [ManyToOneMapping(1.0, [classv1_a, classv1_b], classv2)]
+    )
+    migration.migrate_annotations()
+    store = AnnotationStore()
+    store.add_annotation(
+        TodoAnnotation.from_json(
+            {
+                "authors": ["", "migration"],
+                "comment": "Conflicting Attribute during migration: {'newTodo': 'lightbringer'}, {'newTodo': 'todo'}",
+                "newTodo": "darkage",
+                "reviewResult": "unsure",
+                "reviewers": [""],
+                "target": "test/test.duplicate/TestClass",
+            }
+        )
+    )
+    migrated_annotation_store = migration.migrated_annotation_store.to_json()
+    todoAnnotations = migrated_annotation_store.pop("todoAnnotations")
+    migrated_annotation_store["todoAnnotations"] = {}
+    assert (
+        migrated_annotation_store
+        == migration.unsure_migrated_annotation_store.to_json()
+        == AnnotationStore().to_json()
+    )
+    assert len(todoAnnotations) == 1
+    todo_values = ["darkage", "lightbringer", "todo"]
+    assert todoAnnotations[classv2.id]["newTodo"] in todo_values
+    todo_values.remove(todoAnnotations[classv2.id].pop("newTodo"))
+    assert todoAnnotations[classv2.id] == {
+        "authors": ["", "migration"],
+        "comment": "Conflicting Attribute during migration: {'newTodo': '"
+        + todo_values[0]
+        + "'}, {'newTodo': '"
+        + todo_values[1]
+        + "'}",
+        "reviewResult": "unsure",
+        "reviewers": [""],
+        "target": "test/test.duplicate/TestClass",
+    }

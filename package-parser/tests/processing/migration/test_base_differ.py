@@ -17,6 +17,9 @@ from package_parser.processing.api.model import (
     UnionType,
 )
 from package_parser.processing.migration.model import AbstractDiffer, SimpleDiffer
+from package_parser.processing.migration.model._differ import (
+    distance_elements_with_cost_function,
+)
 
 differ_list = [
     SimpleDiffer(
@@ -40,7 +43,7 @@ differ_list = [
     "differ",
     differ_list,
 )  # type: ignore
-def test_attribute_similarity(differ: AbstractDiffer):
+def test_attribute_similarity(differ: AbstractDiffer) -> None:
     attribute_a = Attribute("test_string", NamedType("str"))
     assert differ.compute_attribute_similarity(attribute_a, attribute_a) == 1
 
@@ -243,3 +246,24 @@ def test_simple_differ() -> None:
     for dict_ in simple_differ.assigned_by_look_up_similarity.values():
         for similarity in dict_.values():
             assert similarity >= 0
+
+
+def test_wheighted_levenshtein_distance() -> None:
+    def cost_function(iteration: int, max_iteration: int) -> float:
+        return (max_iteration - iteration + 1) / max_iteration
+
+    cost, max_iteration = distance_elements_with_cost_function(
+        ["a", "b", "c"], ["x", "b", "c"], cost_function=cost_function
+    )
+    assert cost == 1 and max_iteration == 3
+
+    cost, max_iteration = distance_elements_with_cost_function(
+        ["a", "b", "c"], ["a", "b", "z"], cost_function=cost_function
+    )
+    assert cost == 1 / 3 and max_iteration == 3
+
+    differ = SimpleDiffer(None, [], API("", "", ""), API("", "", ""))
+    assert (
+        differ._compute_id_similarity("api/test.test.text/a", "api/tests.tests.texts/b")
+        == 0
+    )

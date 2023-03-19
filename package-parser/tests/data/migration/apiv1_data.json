@@ -63,7 +63,7 @@
                     "docstring": {
                         "type": "",
                         "default_value": "",
-                        "description": ""
+                        "description": "test"
                     },
                     "type": {}
                 }
