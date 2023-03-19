@@ -7,9 +7,7 @@ on:
       - edited
       - synchronize
       - reopened
-  merge_group:
 
 jobs:
   check-format:
-    if: ${{ github.event_name == 'pull_request_target' }}
     uses: lars-reimann/.github/.github/workflows/pr-format-reusable.yml@main
