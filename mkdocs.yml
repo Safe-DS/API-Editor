@@ -3,7 +3,9 @@ repo_url: https://github.com/Safe-DS/API-Editor
 repo_name: Safe-DS/API-Editor
 
 nav:
-  - Home: README.md
+  - Home:
+    - README.md
+    - Changelog: CHANGELOG.md
   - GUI: gui.md
 
 # Configuration of MkDocs & Material for MkDocs --------------------------------
