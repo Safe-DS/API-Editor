@@ -22,7 +22,7 @@
         "@reduxjs/toolkit": "^1.9.3",
         "chart.js": "^3.9.1",
         "fastest-levenshtein": "^1.0.16",
-        "framer-motion": "^10.0.1",
+        "framer-motion": "^10.10.0",
         "idb-keyval": "^6.2.0",
         "katex": "^0.16.4",
         "lodash": "^4.17.21",
