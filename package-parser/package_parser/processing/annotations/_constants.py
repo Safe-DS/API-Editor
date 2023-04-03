@@ -1,1 +1,0 @@
-autogen_author = "$autogen$"

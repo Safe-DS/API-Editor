@@ -6,25 +6,26 @@ import { NameStringFilter } from './NameStringFilter';
 import { UsageFilter } from './UsageFilter';
 import { UsefulnessFilter } from './UsefulnessFilter';
 import { greaterThan } from './comparisons';
+import { describe, expect, it } from 'vitest';
 
 describe('createFilterFromString', () => {
-    test('handles an empty string', () => {
+    it('handles an empty string', () => {
         const completeFilter = createFilterFromString('');
         expect(completeFilter).toBeInstanceOf(ConjunctiveFilter);
-        expect((completeFilter as ConjunctiveFilter).filters).toEqual([]);
+        expect((completeFilter as ConjunctiveFilter).filters).toStrictEqual([]);
     });
 
-    test('handles a single positive token', () => {
+    it('handles a single positive token', () => {
         const completeFilter = createFilterFromString('is:public');
         expect(completeFilter).toBeInstanceOf(ConjunctiveFilter);
         expect((completeFilter as ConjunctiveFilter).filters).toHaveLength(1);
 
         const positiveFilter = (completeFilter as ConjunctiveFilter).filters[0];
         expect(positiveFilter).toBeInstanceOf(VisibilityFilter);
-        expect((positiveFilter as VisibilityFilter).visibility).toEqual(Visibility.Public);
+        expect((positiveFilter as VisibilityFilter).visibility).toStrictEqual(Visibility.Public);
     });
 
-    test('handles a single negated token', () => {
+    it('handles a single negated token', () => {
         const completeFilter = createFilterFromString('!is:public');
         expect(completeFilter).toBeInstanceOf(ConjunctiveFilter);
         expect((completeFilter as ConjunctiveFilter).filters).toHaveLength(1);
@@ -34,10 +35,10 @@ describe('createFilterFromString', () => {
 
         const positiveFilter = (negatedFilter as NegatedFilter).filter;
         expect(positiveFilter).toBeInstanceOf(VisibilityFilter);
-        expect((positiveFilter as VisibilityFilter).visibility).toEqual(Visibility.Public);
+        expect((positiveFilter as VisibilityFilter).visibility).toStrictEqual(Visibility.Public);
     });
 
-    test('handles multiple tokens', () => {
+    it('handles multiple tokens', () => {
         const completeFilter = createFilterFromString('is:public !is:public');
         expect(completeFilter).toBeInstanceOf(ConjunctiveFilter);
         expect((completeFilter as ConjunctiveFilter).filters).toHaveLength(2);
@@ -45,7 +46,7 @@ describe('createFilterFromString', () => {
         // First token
         const positiveFilter1 = (completeFilter as ConjunctiveFilter).filters[0];
         expect(positiveFilter1).toBeInstanceOf(VisibilityFilter);
-        expect((positiveFilter1 as VisibilityFilter).visibility).toEqual(Visibility.Public);
+        expect((positiveFilter1 as VisibilityFilter).visibility).toStrictEqual(Visibility.Public);
 
         // Second token
         const negatedFilter2 = (completeFilter as ConjunctiveFilter).filters[1];
@@ -53,10 +54,10 @@ describe('createFilterFromString', () => {
 
         const positiveFilter2 = (negatedFilter2 as NegatedFilter).filter;
         expect(positiveFilter2).toBeInstanceOf(VisibilityFilter);
-        expect((positiveFilter2 as VisibilityFilter).visibility).toEqual(Visibility.Public);
+        expect((positiveFilter2 as VisibilityFilter).visibility).toStrictEqual(Visibility.Public);
     });
 
-    test('handles name filter', () => {
+    it('handles name filter', () => {
         const completeFilter = createFilterFromString('name:=foo');
         expect(completeFilter).toBeInstanceOf(ConjunctiveFilter);
         expect((completeFilter as ConjunctiveFilter).filters).toHaveLength(1);
@@ -66,31 +67,31 @@ describe('createFilterFromString', () => {
         expect((positiveFilter as NameStringFilter).string).toBe('foo');
     });
 
-    test('handles usages filter', () => {
+    it('handles usages filter', () => {
         const completeFilter = createFilterFromString('usages:>2');
         expect(completeFilter).toBeInstanceOf(ConjunctiveFilter);
         expect((completeFilter as ConjunctiveFilter).filters).toHaveLength(1);
 
         const positiveFilter = (completeFilter as ConjunctiveFilter).filters[0];
         expect(positiveFilter).toBeInstanceOf(UsageFilter);
-        expect((positiveFilter as UsageFilter).comparison).toEqual(greaterThan);
+        expect((positiveFilter as UsageFilter).comparison).toStrictEqual(greaterThan);
         expect((positiveFilter as UsageFilter).expectedUsage).toBe(2);
     });
 
-    test('handles usefulness filter', () => {
+    it('handles usefulness filter', () => {
         const completeFilter = createFilterFromString('usefulness:>2');
         expect(completeFilter).toBeInstanceOf(ConjunctiveFilter);
         expect((completeFilter as ConjunctiveFilter).filters).toHaveLength(1);
 
         const positiveFilter = (completeFilter as ConjunctiveFilter).filters[0];
         expect(positiveFilter).toBeInstanceOf(UsefulnessFilter);
-        expect((positiveFilter as UsefulnessFilter).comparison).toEqual(greaterThan);
+        expect((positiveFilter as UsefulnessFilter).comparison).toStrictEqual(greaterThan);
         expect((positiveFilter as UsefulnessFilter).expectedUsefulness).toBe(2);
     });
 });
 
 describe('isValidFilterToken', () => {
-    test.each([
+    it.each([
         ['is:public', true],
         ['!is:public', true],
         ['name:=foo', true],

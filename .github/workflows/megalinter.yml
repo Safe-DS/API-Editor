@@ -2,10 +2,10 @@ name: MegaLinter
 
 on:
   pull_request:
-    branches: [main, master]
+    branches: [ main ]
 
 jobs:
-  run-megalinter:
+  megalinter:
     uses: lars-reimann/.github/.github/workflows/megalinter-reusable.yml@main
     secrets:
       PAT: ${{ secrets.PAT }}

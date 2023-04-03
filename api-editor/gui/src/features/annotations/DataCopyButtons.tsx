@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, Tooltip, useClipboard } from '@chakra-ui/react';
+import { Button, ButtonGroup, Tooltip } from '@chakra-ui/react';
 import React from 'react';
 import { FaClipboard } from 'react-icons/fa';
 import { useAppSelector } from '../../app/hooks';
@@ -16,13 +16,23 @@ export const DataCopyButtons: React.FC<MinimalDataButtonsProps> = function ({ ta
     const pythonPackage = useAppSelector(selectRawPythonPackage);
     const declaration = pythonPackage.getDeclarationById(target);
     const usages = useAppSelector(selectUsages);
-    const { onCopy: onCopyAPI } = useClipboard(
-        details(jsonCode(buildMinimalAPIJson(declaration)), `Minimal API Data for \`${target}\``),
-    );
-    const { onCopy: onCopyUsages } = useClipboard(
-        details(jsonCode(buildMinimalUsagesStoreJson(usages, declaration)), `Minimal Usage Store for \`${target}\``),
-    );
-    const { onCopy: onCopyQualifiedName } = useClipboard(declaration?.preferredQualifiedName() ?? '');
+
+    const onCopyAPI = () => {
+        navigator.clipboard.writeText(
+            details(jsonCode(buildMinimalAPIJson(declaration)), `Minimal API Data for \`${target}\``),
+        );
+    };
+    const onCopyUsages = () => {
+        navigator.clipboard.writeText(
+            details(
+                jsonCode(buildMinimalUsagesStoreJson(usages, declaration)),
+                `Minimal Usage Store for \`${target}\``,
+            ),
+        );
+    };
+    const onCopyQualifiedName = () => {
+        navigator.clipboard.writeText(declaration?.preferredQualifiedName() ?? '');
+    };
 
     return (
         <ButtonGroup size="sm" variant="outline" isAttached>

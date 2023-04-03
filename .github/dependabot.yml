@@ -5,23 +5,28 @@
 
 version: 2
 updates:
+  # root
   - package-ecosystem: 'github-actions'
     directory: '/'
     schedule:
       interval: 'monthly'
-  - package-ecosystem: 'gradle'
-    directory: '/api-editor'
-    schedule:
-      interval: 'monthly'
   - package-ecosystem: 'npm'
     directory: '/'
+    schedule:
+      interval: 'monthly'
+
+  # api-editor
+  - package-ecosystem: 'gradle'
+    directory: '/api-editor'
     schedule:
       interval: 'monthly'
   - package-ecosystem: 'npm'
     directory: '/api-editor/gui'
     schedule:
       interval: 'monthly'
+
+  # docs
   - package-ecosystem: 'pip'
-    directory: '/package-parser'
+    directory: '/docs'
     schedule:
       interval: 'monthly'

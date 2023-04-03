@@ -1,4 +1,5 @@
 import { PythonFromImport } from './PythonFromImport';
+import { expect, test } from 'vitest';
 
 test('toString without alias', () => {
     const pythonFromImport = new PythonFromImport('module', 'declaration');

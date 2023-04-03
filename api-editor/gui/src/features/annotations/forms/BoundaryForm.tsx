@@ -19,7 +19,6 @@ import {
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { numberPattern } from '../../../common/validation';
 import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
 import { AnnotationForm } from './AnnotationForm';
 import { Optional } from '../../../common/util/types';
@@ -169,7 +168,6 @@ export const BoundaryForm: React.FC<BoundaryFormProps> = function ({ target }) {
                     <NumberInput
                         {...register('interval.lowerIntervalLimit', {
                             required: 'This is required.',
-                            pattern: numberPattern,
                             valueAsNumber: true,
                             disabled: watch('interval.lowerLimitType') === ComparisonOperator.UNRESTRICTED,
                             validate: {
@@ -243,7 +241,6 @@ export const BoundaryForm: React.FC<BoundaryFormProps> = function ({ target }) {
                     <NumberInput
                         {...register('interval.upperIntervalLimit', {
                             required: 'This is required.',
-                            pattern: numberPattern,
                             valueAsNumber: true,
                             disabled: watch('interval.upperLimitType') === ComparisonOperator.UNRESTRICTED,
                             validate: {

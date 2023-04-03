@@ -1,0 +1,21 @@
+codecov:
+  notify:
+    after_n_builds: 2
+
+comment:
+  layout: 'header, diff, flags, components, files'
+
+component_management:
+  individual_components:
+    - component_id: module_backend
+      name: backend
+      paths:
+        - api-editor/backend/**
+    - component_id: module_desktop
+      name: desktop
+      paths:
+        - api-editor/desktop/**
+    - component_id: module_gui
+      name: gui
+      paths:
+        - api-editor/gui/**
