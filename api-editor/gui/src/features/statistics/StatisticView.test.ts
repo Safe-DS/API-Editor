@@ -5,6 +5,7 @@ import { PythonFunction } from '../packageData/model/PythonFunction';
 import { PythonParameter } from '../packageData/model/PythonParameter';
 import { UsageCountStore } from '../usages/model/UsageCountStore';
 import { getClassValues, getFunctionValues, getParameterValues } from './ApiSizeStatistics';
+import { expect, test } from 'vitest';
 
 const parameterTest: PythonParameter[] = [
     new PythonParameter(
@@ -236,18 +237,18 @@ const expectedParameterCount = new Map([
 
 test('getClassValues', () => {
     for (const [usedThreshold, values] of Array.from(expectedClassCount.entries())) {
-        expect(getClassValues(pythonPackage, usages, usedThreshold)).toEqual(values);
+        expect(getClassValues(pythonPackage, usages, usedThreshold)).toStrictEqual(values);
     }
 });
 
 test('getFunctionValues', () => {
     for (const [usedThreshold, values] of Array.from(expectedFunctionCount.entries())) {
-        expect(getFunctionValues(pythonPackage, usages, usedThreshold)).toEqual(values);
+        expect(getFunctionValues(pythonPackage, usages, usedThreshold)).toStrictEqual(values);
     }
 });
 
 test('getParameterValues', () => {
     for (const [usedThreshold, values] of Array.from(expectedParameterCount.entries())) {
-        expect(getParameterValues(pythonPackage, usages, usedThreshold)).toEqual(values);
+        expect(getParameterValues(pythonPackage, usages, usedThreshold)).toStrictEqual(values);
     }
 });

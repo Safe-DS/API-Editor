@@ -1,9 +1,8 @@
 codecov:
   notify:
-    after_n_builds: 3
+    after_n_builds: 2
 
 comment:
-  after_n_builds: 3
   layout: 'header, diff, flags, components, files'
 
 component_management:

@@ -1,6 +1,7 @@
 import { AnnotationStore as AnnotationStoreV1 } from './AnnotationStoreV1';
 import { AnnotationStore as AnnotationStoreV2 } from './AnnotationStoreV2';
 import { migrateAnnotationStoreToCurrentVersion } from './migrations';
+import { expect, test } from 'vitest';
 
 const v1: AnnotationStoreV1 = {
     schemaVersion: 1,
@@ -99,9 +100,9 @@ const v2: AnnotationStoreV2 = {
 };
 
 test('migrate v1 to v2', () => {
-    expect(migrateAnnotationStoreToCurrentVersion(v1)).toEqual(v2);
+    expect(migrateAnnotationStoreToCurrentVersion(v1)).toStrictEqual(v2);
 });
 
 test('migrate v2 to v2', () => {
-    expect(migrateAnnotationStoreToCurrentVersion(v2)).toEqual(v2);
+    expect(migrateAnnotationStoreToCurrentVersion(v2)).toStrictEqual(v2);
 });

@@ -1,5 +1,6 @@
 import { bugReportURL, featureRequestURL, missingAnnotationURL, userGuideURL, wrongAnnotationURL } from './urlBuilder';
 import fetch from 'node-fetch';
+import { expect, test } from 'vitest';
 
 test('user guide URL should be correct', async () => {
     const response = await fetch(userGuideURL);

@@ -35,7 +35,7 @@ tasks.register<NpmTask>("buildGUI") {
         "index.html",
         "package.json",
         "tsconfig.json",
-        "vite.config.ts"
+        "vite.config.ts",
     )
     outputs.dirs("dist")
 
@@ -47,7 +47,6 @@ tasks.register<NpmTask>("testGUI") {
 
     inputs.dir("src")
     inputs.files(
-        "jest.config.json",
         "package.json",
         "tsconfig.json",
     )

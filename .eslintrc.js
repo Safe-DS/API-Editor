@@ -4,10 +4,5 @@ module.exports = {
         tsconfigRootDir: __dirname,
         project: 'tsconfig.eslint.json',
     },
-    settings: {
-        jest: {
-            version: 27,
-        },
-    },
     extends: '@lars-reimann',
 };

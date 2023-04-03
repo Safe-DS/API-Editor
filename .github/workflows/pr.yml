@@ -85,7 +85,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Test with Jest
+      - name: Test with Vitest
         run: npm run test-with-coverage
 
       - name: Upload coverage to Codecov

@@ -1,4 +1,5 @@
 import { PythonPackage } from './PythonPackage';
+import { expect, test } from 'vitest';
 
 test('toString', () => {
     const pythonPackage = new PythonPackage('distribution', 'package', '0.0.1');

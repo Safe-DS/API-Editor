@@ -1,4 +1,5 @@
 import { PythonClass } from './PythonClass';
+import { expect, test } from 'vitest';
 
 test('toString without decorators and superclasses', () => {
     const pythonClass = new PythonClass('Class', 'Class', 'Class');
