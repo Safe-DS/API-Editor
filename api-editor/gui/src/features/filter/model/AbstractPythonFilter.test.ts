@@ -1,15 +1,15 @@
 // noinspection UnnecessaryLocalVariableJS,DuplicatedCode
 
-import {PythonClass} from '../../packageData/model/PythonClass';
-import {PythonFunction} from '../../packageData/model/PythonFunction';
-import {PythonModule} from '../../packageData/model/PythonModule';
-import {PythonParameter} from '../../packageData/model/PythonParameter';
-import {PythonDeclaration} from '../../packageData/model/PythonDeclaration';
-import {UsageCountStore} from '../../usages/model/UsageCountStore';
-import {PythonPackage} from '../../packageData/model/PythonPackage';
-import {NameStringFilter} from './NameStringFilter';
-import {initialAnnotationStore as annotations} from '../../annotations/annotationSlice';
-import {beforeEach, it, describe, expect} from 'vitest';
+import { PythonClass } from '../../packageData/model/PythonClass';
+import { PythonFunction } from '../../packageData/model/PythonFunction';
+import { PythonModule } from '../../packageData/model/PythonModule';
+import { PythonParameter } from '../../packageData/model/PythonParameter';
+import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
+import { UsageCountStore } from '../../usages/model/UsageCountStore';
+import { PythonPackage } from '../../packageData/model/PythonPackage';
+import { NameStringFilter } from './NameStringFilter';
+import { initialAnnotationStore as annotations } from '../../annotations/annotationSlice';
+import { beforeEach, it, describe, expect } from 'vitest';
 
 let pythonPackage: PythonPackage;
 

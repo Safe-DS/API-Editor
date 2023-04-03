@@ -1,6 +1,6 @@
-import {PythonFunction} from './PythonFunction';
-import {PythonParameter} from './PythonParameter';
-import {expect, test} from 'vitest';
+import { PythonFunction } from './PythonFunction';
+import { PythonParameter } from './PythonParameter';
+import { expect, test } from 'vitest';
 
 test('toString without decorators and parameters', () => {
     const pythonFunction = new PythonFunction('function', 'function', 'function');

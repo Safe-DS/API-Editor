@@ -1,5 +1,5 @@
 import { PythonParameter } from './PythonParameter';
-import {expect, test} from 'vitest';
+import { expect, test } from 'vitest';
 
 test('toString', () => {
     const pythonParameter = new PythonParameter('param', 'param', 'param');

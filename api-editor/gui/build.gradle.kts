@@ -35,7 +35,7 @@ tasks.register<NpmTask>("buildGUI") {
         "index.html",
         "package.json",
         "tsconfig.json",
-        "vite.config.ts"
+        "vite.config.ts",
     )
     outputs.dirs("dist")
 

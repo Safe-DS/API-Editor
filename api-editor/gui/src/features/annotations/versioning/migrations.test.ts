@@ -1,7 +1,7 @@
 import { AnnotationStore as AnnotationStoreV1 } from './AnnotationStoreV1';
 import { AnnotationStore as AnnotationStoreV2 } from './AnnotationStoreV2';
 import { migrateAnnotationStoreToCurrentVersion } from './migrations';
-import {expect, test} from 'vitest';
+import { expect, test } from 'vitest';
 
 const v1: AnnotationStoreV1 = {
     schemaVersion: 1,

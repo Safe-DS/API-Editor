@@ -1,5 +1,5 @@
 import { pluralize, truncate } from './stringOperations';
-import {expect, it, describe} from 'vitest';
+import { expect, it, describe } from 'vitest';
 
 describe('truncate', () => {
     it('should return strings with at most max length unchanged', () => {

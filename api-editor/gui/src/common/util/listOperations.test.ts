@@ -1,5 +1,5 @@
 import { groupBy, isEmptyList } from './listOperations';
-import {expect, test} from 'vitest';
+import { expect, test } from 'vitest';
 
 test('isEmptyList returns true for empty lists', () => {
     expect(isEmptyList([])).toBeTruthy();

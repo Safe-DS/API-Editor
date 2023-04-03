@@ -1,5 +1,5 @@
 import { PythonResult } from './PythonResult';
-import {expect, test} from 'vitest';
+import { expect, test } from 'vitest';
 
 test('toString', () => {
     const pythonResult = new PythonResult('result');

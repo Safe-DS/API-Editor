@@ -1,5 +1,5 @@
-import {numberPattern, booleanPattern, moduleNamePattern} from './validation';
-import {expect, test} from 'vitest';
+import { numberPattern, booleanPattern, moduleNamePattern } from './validation';
+import { expect, test } from 'vitest';
 
 test('valid natural number', () => {
     const testNumber = '1';

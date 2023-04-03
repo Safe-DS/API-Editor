@@ -1,12 +1,12 @@
-import {createFilterFromString, isValidFilterToken} from './filterFactory';
-import {ConjunctiveFilter} from './ConjunctiveFilter';
-import {Visibility, VisibilityFilter} from './VisibilityFilter';
-import {NegatedFilter} from './NegatedFilter';
-import {NameStringFilter} from './NameStringFilter';
-import {UsageFilter} from './UsageFilter';
-import {UsefulnessFilter} from './UsefulnessFilter';
-import {greaterThan} from './comparisons';
-import {describe, expect, it} from 'vitest';
+import { createFilterFromString, isValidFilterToken } from './filterFactory';
+import { ConjunctiveFilter } from './ConjunctiveFilter';
+import { Visibility, VisibilityFilter } from './VisibilityFilter';
+import { NegatedFilter } from './NegatedFilter';
+import { NameStringFilter } from './NameStringFilter';
+import { UsageFilter } from './UsageFilter';
+import { UsefulnessFilter } from './UsefulnessFilter';
+import { greaterThan } from './comparisons';
+import { describe, expect, it } from 'vitest';
 
 describe('createFilterFromString', () => {
     it('handles an empty string', () => {
