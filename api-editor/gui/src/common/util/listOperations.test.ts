@@ -2,11 +2,11 @@ import { groupBy, isEmptyList } from './listOperations';
 import {expect, test} from 'vitest';
 
 test('isEmptyList returns true for empty lists', () => {
-    expect(isEmptyList([])).toBe(true);
+    expect(isEmptyList([])).toBeTruthy();
 });
 
 test('isEmptyLists returns false for non-empty lists', () => {
-    expect(isEmptyList([1])).toBe(false);
+    expect(isEmptyList([1])).toBeFalsy();
 });
 
 test('groupBy with empty list', () => {

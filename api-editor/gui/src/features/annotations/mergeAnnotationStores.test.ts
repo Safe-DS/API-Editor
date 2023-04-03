@@ -3,12 +3,12 @@
 import { mergeAnnotationStores } from './mergeAnnotationStores';
 import { AnnotationStore } from './versioning/AnnotationStoreV2';
 import { initialAnnotationStore } from './annotationSlice';
-import {expect, test, describe} from 'vitest';
+import {expect, it, describe} from 'vitest';
 
 // Boundary --------------------------------------------------------------------
 
 describe('mergeBoundaryAnnotations', () => {
-    test('should keep non-conflicting annotations', () => {
+    it('should keep non-conflicting annotations', () => {
         const mine: AnnotationStore = {
             ...initialAnnotationStore,
             boundaryAnnotations: {
@@ -67,10 +67,10 @@ describe('mergeBoundaryAnnotations', () => {
             },
         };
 
-        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+        expect(mergeAnnotationStores(mine, theirs)).toStrictEqual(expected);
     });
 
-    test('should favor reviewed annotations in case of conflicts', () => {
+    it('should favor reviewed annotations in case of conflicts', () => {
         const mine: AnnotationStore = {
             ...initialAnnotationStore,
             boundaryAnnotations: {
@@ -125,10 +125,10 @@ describe('mergeBoundaryAnnotations', () => {
             },
         };
 
-        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+        expect(mergeAnnotationStores(mine, theirs)).toStrictEqual(expected);
     });
 
-    test('should favor manually created annotations in case of conflicts', () => {
+    it('should favor manually created annotations in case of conflicts', () => {
         const mine: AnnotationStore = {
             ...initialAnnotationStore,
             boundaryAnnotations: {
@@ -180,10 +180,10 @@ describe('mergeBoundaryAnnotations', () => {
             },
         };
 
-        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+        expect(mergeAnnotationStores(mine, theirs)).toStrictEqual(expected);
     });
 
-    test('should favor my annotations in case of conflicts', () => {
+    it('should favor my annotations in case of conflicts', () => {
         const mine: AnnotationStore = {
             ...initialAnnotationStore,
             boundaryAnnotations: {
@@ -235,14 +235,14 @@ describe('mergeBoundaryAnnotations', () => {
             },
         };
 
-        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+        expect(mergeAnnotationStores(mine, theirs)).toStrictEqual(expected);
     });
 });
 
 // Called After ----------------------------------------------------------------
 
 describe('mergeCalledAfterAnnotations', () => {
-    test('should keep non-conflicting annotations', () => {
+    it('should keep non-conflicting annotations', () => {
         const mine: AnnotationStore = {
             ...initialAnnotationStore,
             calledAfterAnnotations: {
@@ -307,10 +307,10 @@ describe('mergeCalledAfterAnnotations', () => {
             },
         };
 
-        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+        expect(mergeAnnotationStores(mine, theirs)).toStrictEqual(expected);
     });
 
-    test('should favor reviewed annotations in case of conflicts', () => {
+    it('should favor reviewed annotations in case of conflicts', () => {
         const mine: AnnotationStore = {
             ...initialAnnotationStore,
             calledAfterAnnotations: {
@@ -353,10 +353,10 @@ describe('mergeCalledAfterAnnotations', () => {
             },
         };
 
-        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+        expect(mergeAnnotationStores(mine, theirs)).toStrictEqual(expected);
     });
 
-    test('should favor manually created annotations in case of conflicts', () => {
+    it('should favor manually created annotations in case of conflicts', () => {
         const mine: AnnotationStore = {
             ...initialAnnotationStore,
             calledAfterAnnotations: {
@@ -396,10 +396,10 @@ describe('mergeCalledAfterAnnotations', () => {
             },
         };
 
-        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+        expect(mergeAnnotationStores(mine, theirs)).toStrictEqual(expected);
     });
 
-    test('should favor my annotations in case of conflicts', () => {
+    it('should favor my annotations in case of conflicts', () => {
         const mine: AnnotationStore = {
             ...initialAnnotationStore,
             calledAfterAnnotations: {
@@ -439,14 +439,14 @@ describe('mergeCalledAfterAnnotations', () => {
             },
         };
 
-        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+        expect(mergeAnnotationStores(mine, theirs)).toStrictEqual(expected);
     });
 });
 
 // Complete --------------------------------------------------------------------
 
 describe('mergeCompleteAnnotations', () => {
-    test('should keep non-conflicting annotations', () => {
+    it('should keep non-conflicting annotations', () => {
         const mine: AnnotationStore = {
             ...initialAnnotationStore,
             completeAnnotations: {
@@ -477,10 +477,10 @@ describe('mergeCompleteAnnotations', () => {
             },
         };
 
-        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+        expect(mergeAnnotationStores(mine, theirs)).toStrictEqual(expected);
     });
 
-    test('should favor my annotations in case of conflicts', () => {
+    it('should favor my annotations in case of conflicts', () => {
         const mine: AnnotationStore = {
             ...initialAnnotationStore,
             completeAnnotations: {
@@ -511,14 +511,14 @@ describe('mergeCompleteAnnotations', () => {
             },
         };
 
-        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+        expect(mergeAnnotationStores(mine, theirs)).toStrictEqual(expected);
     });
 });
 
 // Description -----------------------------------------------------------------
 
 describe('mergeDescriptionAnnotations', () => {
-    test('should keep non-conflicting annotations', () => {
+    it('should keep non-conflicting annotations', () => {
         const mine: AnnotationStore = {
             ...initialAnnotationStore,
             descriptionAnnotations: {
@@ -553,10 +553,10 @@ describe('mergeDescriptionAnnotations', () => {
             },
         };
 
-        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+        expect(mergeAnnotationStores(mine, theirs)).toStrictEqual(expected);
     });
 
-    test('should favor reviewed annotations in case of conflicts', () => {
+    it('should favor reviewed annotations in case of conflicts', () => {
         const mine: AnnotationStore = {
             ...initialAnnotationStore,
             descriptionAnnotations: {
@@ -593,10 +593,10 @@ describe('mergeDescriptionAnnotations', () => {
             },
         };
 
-        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+        expect(mergeAnnotationStores(mine, theirs)).toStrictEqual(expected);
     });
 
-    test('should favor manually created annotations in case of conflicts', () => {
+    it('should favor manually created annotations in case of conflicts', () => {
         const mine: AnnotationStore = {
             ...initialAnnotationStore,
             descriptionAnnotations: {
@@ -630,10 +630,10 @@ describe('mergeDescriptionAnnotations', () => {
             },
         };
 
-        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+        expect(mergeAnnotationStores(mine, theirs)).toStrictEqual(expected);
     });
 
-    test('should favor my annotations in case of conflicts', () => {
+    it('should favor my annotations in case of conflicts', () => {
         const mine: AnnotationStore = {
             ...initialAnnotationStore,
             descriptionAnnotations: {
@@ -667,14 +667,14 @@ describe('mergeDescriptionAnnotations', () => {
             },
         };
 
-        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+        expect(mergeAnnotationStores(mine, theirs)).toStrictEqual(expected);
     });
 });
 
 // Enum ------------------------------------------------------------------------
 
 describe('mergeEnumAnnotations', () => {
-    test('should keep non-conflicting annotations', () => {
+    it('should keep non-conflicting annotations', () => {
         const mine: AnnotationStore = {
             ...initialAnnotationStore,
             enumAnnotations: {
@@ -713,10 +713,10 @@ describe('mergeEnumAnnotations', () => {
             },
         };
 
-        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+        expect(mergeAnnotationStores(mine, theirs)).toStrictEqual(expected);
     });
 
-    test('should favor reviewed annotations in case of conflicts', () => {
+    it('should favor reviewed annotations in case of conflicts', () => {
         const mine: AnnotationStore = {
             ...initialAnnotationStore,
             enumAnnotations: {
@@ -756,10 +756,10 @@ describe('mergeEnumAnnotations', () => {
             },
         };
 
-        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+        expect(mergeAnnotationStores(mine, theirs)).toStrictEqual(expected);
     });
 
-    test('should favor manually created annotations in case of conflicts', () => {
+    it('should favor manually created annotations in case of conflicts', () => {
         const mine: AnnotationStore = {
             ...initialAnnotationStore,
             enumAnnotations: {
@@ -796,10 +796,10 @@ describe('mergeEnumAnnotations', () => {
             },
         };
 
-        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+        expect(mergeAnnotationStores(mine, theirs)).toStrictEqual(expected);
     });
 
-    test('should favor my annotations in case of conflicts', () => {
+    it('should favor my annotations in case of conflicts', () => {
         const mine: AnnotationStore = {
             ...initialAnnotationStore,
             enumAnnotations: {
@@ -836,14 +836,14 @@ describe('mergeEnumAnnotations', () => {
             },
         };
 
-        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+        expect(mergeAnnotationStores(mine, theirs)).toStrictEqual(expected);
     });
 });
 
 // Pure ------------------------------------------------------------------------
 
 describe('mergeExpertAnnotations', () => {
-    test('should keep non-conflicting annotations', () => {
+    it('should keep non-conflicting annotations', () => {
         const mine: AnnotationStore = {
             ...initialAnnotationStore,
             expertAnnotations: {
@@ -874,10 +874,10 @@ describe('mergeExpertAnnotations', () => {
             },
         };
 
-        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+        expect(mergeAnnotationStores(mine, theirs)).toStrictEqual(expected);
     });
 
-    test('should favor reviewed annotations in case of conflicts', () => {
+    it('should favor reviewed annotations in case of conflicts', () => {
         const mine: AnnotationStore = {
             ...initialAnnotationStore,
             expertAnnotations: {
@@ -911,10 +911,10 @@ describe('mergeExpertAnnotations', () => {
             },
         };
 
-        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+        expect(mergeAnnotationStores(mine, theirs)).toStrictEqual(expected);
     });
 
-    test('should favor manually created annotations in case of conflicts', () => {
+    it('should favor manually created annotations in case of conflicts', () => {
         const mine: AnnotationStore = {
             ...initialAnnotationStore,
             expertAnnotations: {
@@ -945,10 +945,10 @@ describe('mergeExpertAnnotations', () => {
             },
         };
 
-        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+        expect(mergeAnnotationStores(mine, theirs)).toStrictEqual(expected);
     });
 
-    test('should favor my annotations in case of conflicts', () => {
+    it('should favor my annotations in case of conflicts', () => {
         const mine: AnnotationStore = {
             ...initialAnnotationStore,
             expertAnnotations: {
@@ -979,14 +979,14 @@ describe('mergeExpertAnnotations', () => {
             },
         };
 
-        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+        expect(mergeAnnotationStores(mine, theirs)).toStrictEqual(expected);
     });
 });
 
 // Group -----------------------------------------------------------------------
 
 describe('mergeGroupAnnotations', () => {
-    test('should keep non-conflicting annotations', () => {
+    it('should keep non-conflicting annotations', () => {
         const mine: AnnotationStore = {
             ...initialAnnotationStore,
             groupAnnotations: {
@@ -1059,10 +1059,10 @@ describe('mergeGroupAnnotations', () => {
             },
         };
 
-        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+        expect(mergeAnnotationStores(mine, theirs)).toStrictEqual(expected);
     });
 
-    test('should favor reviewed annotations in case of conflicts', () => {
+    it('should favor reviewed annotations in case of conflicts', () => {
         const mine: AnnotationStore = {
             ...initialAnnotationStore,
             groupAnnotations: {
@@ -1108,10 +1108,10 @@ describe('mergeGroupAnnotations', () => {
             },
         };
 
-        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+        expect(mergeAnnotationStores(mine, theirs)).toStrictEqual(expected);
     });
 
-    test('should favor manually created annotations in case of conflicts', () => {
+    it('should favor manually created annotations in case of conflicts', () => {
         const mine: AnnotationStore = {
             ...initialAnnotationStore,
             groupAnnotations: {
@@ -1154,10 +1154,10 @@ describe('mergeGroupAnnotations', () => {
             },
         };
 
-        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+        expect(mergeAnnotationStores(mine, theirs)).toStrictEqual(expected);
     });
 
-    test('should favor my annotations in case of conflicts', () => {
+    it('should favor my annotations in case of conflicts', () => {
         const mine: AnnotationStore = {
             ...initialAnnotationStore,
             groupAnnotations: {
@@ -1200,14 +1200,14 @@ describe('mergeGroupAnnotations', () => {
             },
         };
 
-        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+        expect(mergeAnnotationStores(mine, theirs)).toStrictEqual(expected);
     });
 });
 
 // Move ------------------------------------------------------------------------
 
 describe('mergeMoveAnnotations', () => {
-    test('should keep non-conflicting annotations', () => {
+    it('should keep non-conflicting annotations', () => {
         const mine: AnnotationStore = {
             ...initialAnnotationStore,
             moveAnnotations: {
@@ -1242,10 +1242,10 @@ describe('mergeMoveAnnotations', () => {
             },
         };
 
-        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+        expect(mergeAnnotationStores(mine, theirs)).toStrictEqual(expected);
     });
 
-    test('should favor reviewed annotations in case of conflicts', () => {
+    it('should favor reviewed annotations in case of conflicts', () => {
         const mine: AnnotationStore = {
             ...initialAnnotationStore,
             moveAnnotations: {
@@ -1282,10 +1282,10 @@ describe('mergeMoveAnnotations', () => {
             },
         };
 
-        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+        expect(mergeAnnotationStores(mine, theirs)).toStrictEqual(expected);
     });
 
-    test('should favor manually created annotations in case of conflicts', () => {
+    it('should favor manually created annotations in case of conflicts', () => {
         const mine: AnnotationStore = {
             ...initialAnnotationStore,
             moveAnnotations: {
@@ -1319,10 +1319,10 @@ describe('mergeMoveAnnotations', () => {
             },
         };
 
-        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+        expect(mergeAnnotationStores(mine, theirs)).toStrictEqual(expected);
     });
 
-    test('should favor my annotations in case of conflicts', () => {
+    it('should favor my annotations in case of conflicts', () => {
         const mine: AnnotationStore = {
             ...initialAnnotationStore,
             moveAnnotations: {
@@ -1356,14 +1356,14 @@ describe('mergeMoveAnnotations', () => {
             },
         };
 
-        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+        expect(mergeAnnotationStores(mine, theirs)).toStrictEqual(expected);
     });
 });
 
 // Pure ------------------------------------------------------------------------
 
 describe('mergePureAnnotations', () => {
-    test('should keep non-conflicting annotations', () => {
+    it('should keep non-conflicting annotations', () => {
         const mine: AnnotationStore = {
             ...initialAnnotationStore,
             pureAnnotations: {
@@ -1394,10 +1394,10 @@ describe('mergePureAnnotations', () => {
             },
         };
 
-        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+        expect(mergeAnnotationStores(mine, theirs)).toStrictEqual(expected);
     });
 
-    test('should favor reviewed annotations in case of conflicts', () => {
+    it('should favor reviewed annotations in case of conflicts', () => {
         const mine: AnnotationStore = {
             ...initialAnnotationStore,
             pureAnnotations: {
@@ -1431,10 +1431,10 @@ describe('mergePureAnnotations', () => {
             },
         };
 
-        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+        expect(mergeAnnotationStores(mine, theirs)).toStrictEqual(expected);
     });
 
-    test('should favor manually created annotations in case of conflicts', () => {
+    it('should favor manually created annotations in case of conflicts', () => {
         const mine: AnnotationStore = {
             ...initialAnnotationStore,
             pureAnnotations: {
@@ -1465,10 +1465,10 @@ describe('mergePureAnnotations', () => {
             },
         };
 
-        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+        expect(mergeAnnotationStores(mine, theirs)).toStrictEqual(expected);
     });
 
-    test('should favor my annotations in case of conflicts', () => {
+    it('should favor my annotations in case of conflicts', () => {
         const mine: AnnotationStore = {
             ...initialAnnotationStore,
             pureAnnotations: {
@@ -1499,14 +1499,14 @@ describe('mergePureAnnotations', () => {
             },
         };
 
-        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+        expect(mergeAnnotationStores(mine, theirs)).toStrictEqual(expected);
     });
 });
 
 // Remove ----------------------------------------------------------------------
 
 describe('mergeRemoveAnnotations', () => {
-    test('should keep non-conflicting annotations', () => {
+    it('should keep non-conflicting annotations', () => {
         const mine: AnnotationStore = {
             ...initialAnnotationStore,
             removeAnnotations: {
@@ -1537,10 +1537,10 @@ describe('mergeRemoveAnnotations', () => {
             },
         };
 
-        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+        expect(mergeAnnotationStores(mine, theirs)).toStrictEqual(expected);
     });
 
-    test('should favor reviewed annotations in case of conflicts', () => {
+    it('should favor reviewed annotations in case of conflicts', () => {
         const mine: AnnotationStore = {
             ...initialAnnotationStore,
             removeAnnotations: {
@@ -1574,10 +1574,10 @@ describe('mergeRemoveAnnotations', () => {
             },
         };
 
-        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+        expect(mergeAnnotationStores(mine, theirs)).toStrictEqual(expected);
     });
 
-    test('should favor manually created annotations in case of conflicts', () => {
+    it('should favor manually created annotations in case of conflicts', () => {
         const mine: AnnotationStore = {
             ...initialAnnotationStore,
             removeAnnotations: {
@@ -1608,10 +1608,10 @@ describe('mergeRemoveAnnotations', () => {
             },
         };
 
-        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+        expect(mergeAnnotationStores(mine, theirs)).toStrictEqual(expected);
     });
 
-    test('should favor my annotations in case of conflicts', () => {
+    it('should favor my annotations in case of conflicts', () => {
         const mine: AnnotationStore = {
             ...initialAnnotationStore,
             removeAnnotations: {
@@ -1642,14 +1642,14 @@ describe('mergeRemoveAnnotations', () => {
             },
         };
 
-        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+        expect(mergeAnnotationStores(mine, theirs)).toStrictEqual(expected);
     });
 });
 
 // Rename ----------------------------------------------------------------------
 
 describe('mergeRenameAnnotations', () => {
-    test('should keep non-conflicting annotations', () => {
+    it('should keep non-conflicting annotations', () => {
         const mine: AnnotationStore = {
             ...initialAnnotationStore,
             renameAnnotations: {
@@ -1684,10 +1684,10 @@ describe('mergeRenameAnnotations', () => {
             },
         };
 
-        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+        expect(mergeAnnotationStores(mine, theirs)).toStrictEqual(expected);
     });
 
-    test('should favor reviewed annotations in case of conflicts', () => {
+    it('should favor reviewed annotations in case of conflicts', () => {
         const mine: AnnotationStore = {
             ...initialAnnotationStore,
             renameAnnotations: {
@@ -1724,10 +1724,10 @@ describe('mergeRenameAnnotations', () => {
             },
         };
 
-        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+        expect(mergeAnnotationStores(mine, theirs)).toStrictEqual(expected);
     });
 
-    test('should favor manually created annotations in case of conflicts', () => {
+    it('should favor manually created annotations in case of conflicts', () => {
         const mine: AnnotationStore = {
             ...initialAnnotationStore,
             renameAnnotations: {
@@ -1761,10 +1761,10 @@ describe('mergeRenameAnnotations', () => {
             },
         };
 
-        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+        expect(mergeAnnotationStores(mine, theirs)).toStrictEqual(expected);
     });
 
-    test('should favor my annotations in case of conflicts', () => {
+    it('should favor my annotations in case of conflicts', () => {
         const mine: AnnotationStore = {
             ...initialAnnotationStore,
             renameAnnotations: {
@@ -1798,14 +1798,14 @@ describe('mergeRenameAnnotations', () => {
             },
         };
 
-        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+        expect(mergeAnnotationStores(mine, theirs)).toStrictEqual(expected);
     });
 });
 
 // Todo ------------------------------------------------------------------------
 
 describe('mergeTodoAnnotations', () => {
-    test('should keep non-conflicting annotations', () => {
+    it('should keep non-conflicting annotations', () => {
         const mine: AnnotationStore = {
             ...initialAnnotationStore,
             todoAnnotations: {
@@ -1840,10 +1840,10 @@ describe('mergeTodoAnnotations', () => {
             },
         };
 
-        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+        expect(mergeAnnotationStores(mine, theirs)).toStrictEqual(expected);
     });
 
-    test('should favor reviewed annotations in case of conflicts', () => {
+    it('should favor reviewed annotations in case of conflicts', () => {
         const mine: AnnotationStore = {
             ...initialAnnotationStore,
             todoAnnotations: {
@@ -1880,10 +1880,10 @@ describe('mergeTodoAnnotations', () => {
             },
         };
 
-        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+        expect(mergeAnnotationStores(mine, theirs)).toStrictEqual(expected);
     });
 
-    test('should favor manually created annotations in case of conflicts', () => {
+    it('should favor manually created annotations in case of conflicts', () => {
         const mine: AnnotationStore = {
             ...initialAnnotationStore,
             todoAnnotations: {
@@ -1917,10 +1917,10 @@ describe('mergeTodoAnnotations', () => {
             },
         };
 
-        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+        expect(mergeAnnotationStores(mine, theirs)).toStrictEqual(expected);
     });
 
-    test('should favor my annotations in case of conflicts', () => {
+    it('should favor my annotations in case of conflicts', () => {
         const mine: AnnotationStore = {
             ...initialAnnotationStore,
             todoAnnotations: {
@@ -1954,14 +1954,14 @@ describe('mergeTodoAnnotations', () => {
             },
         };
 
-        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+        expect(mergeAnnotationStores(mine, theirs)).toStrictEqual(expected);
     });
 });
 
 // Value -----------------------------------------------------------------------
 
 describe('mergeValueAnnotations', () => {
-    test('should keep non-conflicting annotations', () => {
+    it('should keep non-conflicting annotations', () => {
         const mine: AnnotationStore = {
             ...initialAnnotationStore,
             valueAnnotations: {
@@ -2000,10 +2000,10 @@ describe('mergeValueAnnotations', () => {
             },
         };
 
-        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+        expect(mergeAnnotationStores(mine, theirs)).toStrictEqual(expected);
     });
 
-    test('should favor reviewed annotations in case of conflicts', () => {
+    it('should favor reviewed annotations in case of conflicts', () => {
         const mine: AnnotationStore = {
             ...initialAnnotationStore,
             valueAnnotations: {
@@ -2044,10 +2044,10 @@ describe('mergeValueAnnotations', () => {
             },
         };
 
-        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+        expect(mergeAnnotationStores(mine, theirs)).toStrictEqual(expected);
     });
 
-    test('should favor manually created annotations in case of conflicts', () => {
+    it('should favor manually created annotations in case of conflicts', () => {
         const mine: AnnotationStore = {
             ...initialAnnotationStore,
             valueAnnotations: {
@@ -2085,10 +2085,10 @@ describe('mergeValueAnnotations', () => {
             },
         };
 
-        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+        expect(mergeAnnotationStores(mine, theirs)).toStrictEqual(expected);
     });
 
-    test('should favor my annotations in case of conflicts', () => {
+    it('should favor my annotations in case of conflicts', () => {
         const mine: AnnotationStore = {
             ...initialAnnotationStore,
             valueAnnotations: {
@@ -2124,6 +2124,6 @@ describe('mergeValueAnnotations', () => {
             },
         };
 
-        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+        expect(mergeAnnotationStores(mine, theirs)).toStrictEqual(expected);
     });
 });
