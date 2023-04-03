@@ -47,7 +47,6 @@ tasks.register<NpmTask>("testGUI") {
 
     inputs.dir("src")
     inputs.files(
-        "jest.config.json",
         "package.json",
         "tsconfig.json",
     )

@@ -3,6 +3,7 @@
 import { mergeAnnotationStores } from './mergeAnnotationStores';
 import { AnnotationStore } from './versioning/AnnotationStoreV2';
 import { initialAnnotationStore } from './annotationSlice';
+import {expect, test, describe} from 'vitest';
 
 // Boundary --------------------------------------------------------------------
 

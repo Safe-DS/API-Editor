@@ -1,4 +1,5 @@
 import { HeatMapInterpolation, redRatio } from './HeatMapTag';
+import {expect, test, describe} from 'vitest';
 
 describe('redRatio', () => {
     test.each`

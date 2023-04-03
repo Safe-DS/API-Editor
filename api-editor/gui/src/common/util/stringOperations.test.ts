@@ -1,4 +1,5 @@
 import { pluralize, truncate } from './stringOperations';
+import {expect, test, describe} from 'vitest';
 
 describe('truncate', () => {
     test('should return strings with at most max length unchanged', () => {

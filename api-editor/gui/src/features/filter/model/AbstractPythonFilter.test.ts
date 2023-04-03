@@ -9,6 +9,7 @@ import { UsageCountStore } from '../../usages/model/UsageCountStore';
 import { PythonPackage } from '../../packageData/model/PythonPackage';
 import { NameStringFilter } from './NameStringFilter';
 import { initialAnnotationStore as annotations } from '../../annotations/annotationSlice';
+import {expect, test, beforeEach, describe} from 'vitest';
 
 let pythonPackage: PythonPackage;
 

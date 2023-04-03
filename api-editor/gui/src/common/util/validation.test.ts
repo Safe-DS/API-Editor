@@ -1,4 +1,5 @@
 import { isValidJsonFile, isValidPythonIdentifier } from './validation';
+import {expect, test} from 'vitest';
 
 test('valid name starting with lower case letter', () => {
     const testString = 'hallo_welt';
