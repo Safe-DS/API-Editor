@@ -30,5 +30,5 @@ tmp/
 api-editor/backend/src/main/resources/static/
 
 # Other
-.DS_Store/
+.DS_Store
 *.log
