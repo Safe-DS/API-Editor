@@ -48,7 +48,7 @@
         "@hookform/devtools": "^4.3.1",
         "@lars-reimann/prettier-config": "^5.0.0",
         "@types/node-fetch": "^2.6.3",
-        "@types/react": "^18.0.37",
+        "@types/react": "^18.2.0",
         "@types/react-dom": "^18.0.11",
         "@types/react-router-dom": "^5.3.3",
         "@types/react-syntax-highlighter": "^15.5.6",
