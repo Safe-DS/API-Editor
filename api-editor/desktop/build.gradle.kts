@@ -37,7 +37,7 @@ compose.desktop {
 
 dependencies {
     implementation(compose.desktop.currentOs)
-    implementation("org.jetbrains.compose.components:components-splitpane:1.3.1")
+    implementation("org.jetbrains.compose.components:components-splitpane:1.4.0")
 
     testImplementation(kotlin("test"))
     testImplementation("io.kotest:kotest-assertions-core-jvm:5.5.5")
