@@ -37,7 +37,7 @@ kover {
 // Subprojects ---------------------------------------------------------------------------------------------------------
 
 subprojects {
-    group = "com.larsreimann.api-editor"
+    group = "com.safeds.api-editor"
     version = "1.0.0"
 
     repositories {

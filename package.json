@@ -1,5 +1,5 @@
 {
-    "name": "com.larsreimann.api_editor",
+    "name": "com.safeds.api_editor",
     "version": "0.0.1",
     "private": true,
     "prettier": "@lars-reimann/prettier-config",

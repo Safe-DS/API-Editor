@@ -14,7 +14,7 @@ import {
     ValueAnnotation,
 } from '../../annotations/versioning/AnnotationStoreV2';
 
-const dataPathPrefix = 'com.larsreimann.apiEditor.model.';
+const dataPathPrefix = 'com.safeds.apiEditor.model.';
 
 const convertDefaultValue = (type: DefaultValueType, value: DefaultValue) => {
     switch (type) {
