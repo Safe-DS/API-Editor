@@ -1,4 +1,4 @@
-rootProject.name = "com.larsreimann.python_api_editor"
+rootProject.name = "com.safeds.apiEditor"
 
 include(
     "backend",

@@ -1,4 +1,3 @@
-import org.jetbrains.compose.compose
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -24,10 +23,10 @@ tasks.withType<KotlinCompile> {
 
 compose.desktop {
     application {
-        mainClass = "com.larsreimann.python_api_editor.MainKt"
+        mainClass = "com.safeds.apiEditor.MainKt"
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "python-api-editor"
+            packageName = "api-editor"
             packageVersion = "1.0.0"
         }
     }
