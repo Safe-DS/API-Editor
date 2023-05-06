@@ -1,5 +1,6 @@
 package com.safeds.apiEditor.transformation
 
+import com.larsreimann.modeling.descendants
 import com.safeds.apiEditor.model.GroupAnnotation
 import com.safeds.apiEditor.model.PythonParameterAssignment
 import com.safeds.apiEditor.mutableModel.PythonAttribute
@@ -13,7 +14,6 @@ import com.safeds.apiEditor.mutableModel.PythonPackage
 import com.safeds.apiEditor.mutableModel.PythonParameter
 import com.safeds.apiEditor.mutableModel.PythonReference
 import com.safeds.apiEditor.transformation.processingExceptions.ConflictingGroupException
-import com.larsreimann.modeling.descendants
 
 /**
  * Processes and removes `@group` annotations.

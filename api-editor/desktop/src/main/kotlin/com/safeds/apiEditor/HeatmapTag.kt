@@ -25,7 +25,7 @@ fun HeatmapTag(
     Badge(
         modifier = modifier,
         backgroundColor = backgroundColor,
-        contentColor = contentColorForBackgroundColor(backgroundColor)
+        contentColor = contentColorForBackgroundColor(backgroundColor),
     ) {
         Text(text = actualValue.toString(), fontSize = 5.em)
     }
@@ -44,14 +44,13 @@ enum class HeatmapInterpolation {
     /**
      * The heatmap interpolates logarithmically between minColor and maxColor.
      */
-    Logarithmic
+    Logarithmic,
 }
 
 /**
  * Computes the ratio between the [actualValue] and the [maxValue] and applies the [interpolation] to the result.
  */
 private fun computeRatio(actualValue: Int, maxValue: Int, interpolation: HeatmapInterpolation): Float {
-
     // Handle edge cases
     if (actualValue <= 0) {
         return 0f

@@ -179,7 +179,7 @@ const testClasses: PythonClass[] = [
 
 const testModules = [new PythonModule('test/test.test', 'test.test', [], [], testClasses, [])];
 const pythonPackage = new PythonPackage('distribution', 'sklearn', 'version', testModules);
-/*--------------------------------------------------------------------------------------------------------------------*/
+/* -------------------------------------------------------------------------------------------------------------------- */
 
 const parameterUsages = new Map([
     ['test/test.test/parameterTestClass/privateParameterTestFunction/privateParameterTest', 1],

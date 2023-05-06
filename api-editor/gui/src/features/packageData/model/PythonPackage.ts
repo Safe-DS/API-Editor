@@ -68,9 +68,9 @@ export class PythonPackage extends PythonDeclaration {
     }
 
     getClasses(): PythonClass[] {
-        let result: PythonClass[] = [];
+        const result: PythonClass[] = [];
         for (const module of this.getModules()) {
-            let children = module.children();
+            const children = module.children();
             for (const child of children) {
                 if (child instanceof PythonClass) {
                     result.push(child);
@@ -81,9 +81,9 @@ export class PythonPackage extends PythonDeclaration {
     }
 
     getFunctions(): PythonFunction[] {
-        let result: PythonFunction[] = [];
+        const result: PythonFunction[] = [];
         for (const module of this.getModules()) {
-            let children = module.children();
+            const children = module.children();
             for (const child of children) {
                 if (child instanceof PythonFunction) {
                     result.push(child);
@@ -91,7 +91,7 @@ export class PythonPackage extends PythonDeclaration {
             }
         }
         for (const pythonClass of this.getClasses()) {
-            let children = pythonClass.children();
+            const children = pythonClass.children();
             for (const child of children) {
                 result.push(child);
             }
@@ -100,9 +100,9 @@ export class PythonPackage extends PythonDeclaration {
     }
 
     getParameters(): PythonParameter[] {
-        let result: PythonParameter[] = [];
+        const result: PythonParameter[] = [];
         for (const pythonFunction of this.getFunctions()) {
-            let children = pythonFunction.children();
+            const children = pythonFunction.children();
             for (const child of children) {
                 result.push(child);
             }

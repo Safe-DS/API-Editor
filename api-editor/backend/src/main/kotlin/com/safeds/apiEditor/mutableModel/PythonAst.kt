@@ -2,6 +2,8 @@
 
 package com.safeds.apiEditor.mutableModel
 
+import com.larsreimann.modeling.ModelNode
+import com.larsreimann.modeling.ancestorsOrSelf
 import com.safeds.apiEditor.model.Boundary
 import com.safeds.apiEditor.model.EditorAnnotation
 import com.safeds.apiEditor.model.PythonFromImport
@@ -9,8 +11,6 @@ import com.safeds.apiEditor.model.PythonImport
 import com.safeds.apiEditor.model.PythonParameterAssignment
 import com.safeds.apiEditor.model.PythonParameterAssignment.NAMED_VARARG
 import com.safeds.apiEditor.model.PythonParameterAssignment.POSITIONAL_VARARG
-import com.larsreimann.modeling.ModelNode
-import com.larsreimann.modeling.ancestorsOrSelf
 
 sealed class PythonAstNode : ModelNode()
 

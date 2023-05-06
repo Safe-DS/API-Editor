@@ -1,5 +1,7 @@
 package com.safeds.apiEditor.transformation
 
+import com.larsreimann.modeling.closest
+import com.larsreimann.modeling.descendants
 import com.safeds.apiEditor.model.EnumAnnotation
 import com.safeds.apiEditor.mutableModel.PythonArgument
 import com.safeds.apiEditor.mutableModel.PythonAttribute
@@ -13,8 +15,6 @@ import com.safeds.apiEditor.mutableModel.PythonParameter
 import com.safeds.apiEditor.mutableModel.PythonReference
 import com.safeds.apiEditor.mutableModel.PythonString
 import com.safeds.apiEditor.transformation.processingExceptions.ConflictingEnumException
-import com.larsreimann.modeling.closest
-import com.larsreimann.modeling.descendants
 
 /**
  * Processes and removes `@enum` annotations.

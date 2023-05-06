@@ -131,7 +131,7 @@ const annotationsSlice = createSlice({
     initialState: initialAnnotationSlice,
     reducers: {
         undo(state) {
-            if (0 <= state.queueIndex && state.queueIndex < state.queue.length) {
+            if (state.queueIndex >= 0 && state.queueIndex < state.queue.length) {
                 return {
                     ...state,
                     annotations: state.queue[state.queueIndex],
@@ -141,7 +141,7 @@ const annotationsSlice = createSlice({
             return state;
         },
         redo(state) {
-            if (0 <= state.queueIndex + 2 && state.queueIndex + 2 < state.queue.length) {
+            if (state.queueIndex + 2 >= 0 && state.queueIndex + 2 < state.queue.length) {
                 return {
                     ...state,
                     annotations: state.queue[state.queueIndex + 2],
@@ -1027,7 +1027,7 @@ const selectAllAnnotationsOnTarget =
         const todoAnnotation = selectTodoAnnotation(target)(state);
         const valueAnnotation = selectValueAnnotation(target)(state);
 
-        let result: Annotation[] = [];
+        const result: Annotation[] = [];
         if (boundaryAnnotation) {
             result.push(boundaryAnnotation);
         }

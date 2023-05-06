@@ -1,19 +1,5 @@
 package com.safeds.apiEditor.codegen
 
-import com.safeds.apiEditor.model.PythonParameterAssignment.IMPLICIT
-import com.safeds.apiEditor.mutableModel.PythonAttribute
-import com.safeds.apiEditor.mutableModel.PythonClass
-import com.safeds.apiEditor.mutableModel.PythonEnum
-import com.safeds.apiEditor.mutableModel.PythonEnumInstance
-import com.safeds.apiEditor.mutableModel.PythonExpression
-import com.safeds.apiEditor.mutableModel.PythonFunction
-import com.safeds.apiEditor.mutableModel.PythonModule
-import com.safeds.apiEditor.mutableModel.PythonNamedType
-import com.safeds.apiEditor.mutableModel.PythonParameter
-import com.safeds.apiEditor.mutableModel.PythonResult
-import com.safeds.apiEditor.mutableModel.PythonStringifiedExpression
-import com.safeds.apiEditor.mutableModel.PythonStringifiedType
-import com.safeds.apiEditor.mutableModel.PythonType
 import com.larsreimann.safeds.constant.SdsFileExtension
 import com.larsreimann.safeds.emf.createSdsAnnotationCall
 import com.larsreimann.safeds.emf.createSdsArgument
@@ -45,6 +31,20 @@ import com.larsreimann.safeds.safeDS.SdsParameter
 import com.larsreimann.safeds.safeDS.SdsResult
 import com.larsreimann.safeds.serializer.SerializationResult
 import com.larsreimann.safeds.serializer.serializeToFormattedString
+import com.safeds.apiEditor.model.PythonParameterAssignment.IMPLICIT
+import com.safeds.apiEditor.mutableModel.PythonAttribute
+import com.safeds.apiEditor.mutableModel.PythonClass
+import com.safeds.apiEditor.mutableModel.PythonEnum
+import com.safeds.apiEditor.mutableModel.PythonEnumInstance
+import com.safeds.apiEditor.mutableModel.PythonExpression
+import com.safeds.apiEditor.mutableModel.PythonFunction
+import com.safeds.apiEditor.mutableModel.PythonModule
+import com.safeds.apiEditor.mutableModel.PythonNamedType
+import com.safeds.apiEditor.mutableModel.PythonParameter
+import com.safeds.apiEditor.mutableModel.PythonResult
+import com.safeds.apiEditor.mutableModel.PythonStringifiedExpression
+import com.safeds.apiEditor.mutableModel.PythonStringifiedType
+import com.safeds.apiEditor.mutableModel.PythonType
 
 /**
  * Create Safe-DS stub code for the Python module.

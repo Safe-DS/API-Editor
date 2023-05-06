@@ -1,5 +1,7 @@
 package com.safeds.apiEditor.codegen
 
+import com.larsreimann.modeling.closest
+import com.larsreimann.modeling.descendants
 import com.safeds.apiEditor.model.Boundary
 import com.safeds.apiEditor.model.ComparisonOperator.LESS_THAN
 import com.safeds.apiEditor.model.ComparisonOperator.LESS_THAN_OR_EQUALS
@@ -35,8 +37,6 @@ import com.safeds.apiEditor.mutableModel.PythonString
 import com.safeds.apiEditor.mutableModel.PythonStringifiedExpression
 import com.safeds.apiEditor.mutableModel.PythonStringifiedType
 import com.safeds.apiEditor.mutableModel.PythonType
-import com.larsreimann.modeling.closest
-import com.larsreimann.modeling.descendants
 
 /* ********************************************************************************************************************
  * Declarations

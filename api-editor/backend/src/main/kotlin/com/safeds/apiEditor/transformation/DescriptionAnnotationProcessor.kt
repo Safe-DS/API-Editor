@@ -1,12 +1,12 @@
 package com.safeds.apiEditor.transformation
 
+import com.larsreimann.modeling.descendants
 import com.safeds.apiEditor.model.DescriptionAnnotation
 import com.safeds.apiEditor.mutableModel.PythonClass
 import com.safeds.apiEditor.mutableModel.PythonDeclaration
 import com.safeds.apiEditor.mutableModel.PythonFunction
 import com.safeds.apiEditor.mutableModel.PythonPackage
 import com.safeds.apiEditor.mutableModel.PythonParameter
-import com.larsreimann.modeling.descendants
 
 /**
  * Processes and removes `@description` annotations.

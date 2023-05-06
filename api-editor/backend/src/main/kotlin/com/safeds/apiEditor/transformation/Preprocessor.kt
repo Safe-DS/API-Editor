@@ -1,5 +1,7 @@
 package com.safeds.apiEditor.transformation
 
+import com.larsreimann.modeling.closest
+import com.larsreimann.modeling.descendants
 import com.safeds.apiEditor.model.PythonParameterAssignment
 import com.safeds.apiEditor.mutableModel.OriginalPythonClass
 import com.safeds.apiEditor.mutableModel.PythonArgument
@@ -13,8 +15,6 @@ import com.safeds.apiEditor.mutableModel.PythonParameter
 import com.safeds.apiEditor.mutableModel.PythonPositionalSpread
 import com.safeds.apiEditor.mutableModel.PythonReference
 import com.safeds.apiEditor.mutableModel.PythonStringifiedExpression
-import com.larsreimann.modeling.closest
-import com.larsreimann.modeling.descendants
 
 /**
  * Removes private declarations.

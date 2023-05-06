@@ -1,5 +1,7 @@
 package com.safeds.apiEditor.transformation
 
+import com.larsreimann.modeling.ModelNode
+import com.larsreimann.modeling.descendants
 import com.safeds.apiEditor.model.PythonParameterAssignment
 import com.safeds.apiEditor.model.PythonParameterAssignment.IMPLICIT
 import com.safeds.apiEditor.mutableModel.PythonAttribute
@@ -10,8 +12,6 @@ import com.safeds.apiEditor.mutableModel.PythonFunction
 import com.safeds.apiEditor.mutableModel.PythonPackage
 import com.safeds.apiEditor.mutableModel.PythonParameter
 import com.safeds.apiEditor.mutableModel.PythonStringifiedExpression
-import com.larsreimann.modeling.ModelNode
-import com.larsreimann.modeling.descendants
 import java.lang.IllegalStateException
 
 /**

@@ -1,9 +1,9 @@
 package com.safeds.apiEditor.transformation
 
+import com.larsreimann.modeling.descendants
 import com.safeds.apiEditor.model.PureAnnotation
 import com.safeds.apiEditor.mutableModel.PythonFunction
 import com.safeds.apiEditor.mutableModel.PythonPackage
-import com.larsreimann.modeling.descendants
 
 /**
  * Processes and removes `@pure` annotations.

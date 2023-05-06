@@ -1,5 +1,7 @@
 package com.safeds.apiEditor.transformation
 
+import com.larsreimann.modeling.closest
+import com.larsreimann.modeling.descendants
 import com.safeds.apiEditor.model.ConstantAnnotation
 import com.safeds.apiEditor.model.DefaultBoolean
 import com.safeds.apiEditor.model.DefaultNone
@@ -21,8 +23,6 @@ import com.safeds.apiEditor.mutableModel.PythonParameter
 import com.safeds.apiEditor.mutableModel.PythonReference
 import com.safeds.apiEditor.mutableModel.PythonString
 import com.safeds.apiEditor.mutableModel.PythonStringifiedExpression
-import com.larsreimann.modeling.closest
-import com.larsreimann.modeling.descendants
 
 /**
  * Processes and removes `@constant`, `@optional`, and `@required` annotations.

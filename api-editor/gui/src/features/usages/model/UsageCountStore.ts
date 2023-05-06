@@ -209,7 +209,7 @@ export class UsageCountStore {
 
     public getUsedPublicParameters(pyPackage: PythonPackage, usedThreshold: number): PythonParameter[] {
         const pythonParameters = pyPackage.getParameters();
-        let usedParameters: PythonParameter[] = [];
+        const usedParameters: PythonParameter[] = [];
         for (const pyParameter of pythonParameters) {
             const tmp = this.parameterUsages.get(pyParameter.id);
             if (tmp !== undefined && pyParameter.isPublic) {
@@ -225,7 +225,7 @@ export class UsageCountStore {
         const usedParameters = this.getUsedPublicParameters(pyPackage, usedThreshold);
         let usefulParameter = 0;
         for (const pyParameter of usedParameters) {
-            let tmp = this.valueUsages.get(pyParameter.id);
+            const tmp = this.valueUsages.get(pyParameter.id);
             if (tmp !== undefined) {
                 if (tmp.size > 1) {
                     usefulParameter++;

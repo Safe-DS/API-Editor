@@ -1,10 +1,10 @@
 package com.safeds.apiEditor.transformation
 
+import com.larsreimann.modeling.descendants
 import com.safeds.apiEditor.model.Boundary
 import com.safeds.apiEditor.model.BoundaryAnnotation
 import com.safeds.apiEditor.mutableModel.PythonPackage
 import com.safeds.apiEditor.mutableModel.PythonParameter
-import com.larsreimann.modeling.descendants
 
 /**
  * Processes and removes `@boundary` annotations.

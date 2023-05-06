@@ -33,15 +33,14 @@ fun Content(settings: Settings) {
     PythonApiEditorTheme(darkTheme = settings.darkMode) {
         val splitterState = rememberSplitPaneState(initialPositionPercentage = 0.4f)
         HorizontalSplitPane(
-            splitPaneState = splitterState
+            splitPaneState = splitterState,
         ) {
             first(160.dp) {
                 Row(
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.fillMaxSize(),
                 ) {
-
 //                    Column(modifier = Modifier.padding(5.dp), verticalArrangement = Arrangement.spacedBy(5.dp)) {
 //                        HeatmapTag(0, 10000, interpolation = HeatmapInterpolation.Logarithmic)
 //                        HeatmapTag(1, 10000, interpolation = HeatmapInterpolation.Logarithmic)
@@ -53,7 +52,7 @@ fun Content(settings: Settings) {
                     AnnotationDropdown(
                         showAttribute = true,
                         showBoundary = true,
-                        showCalledAfter = true
+                        showCalledAfter = true,
                     )
                 }
             }
@@ -61,7 +60,7 @@ fun Content(settings: Settings) {
                 Row(
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.fillMaxSize(),
                 ) {
 //                    Column(modifier = Modifier.padding(5.dp), verticalArrangement = Arrangement.spacedBy(5.dp)) {
 //                        HeatmapTag(0, 10000)
@@ -79,7 +78,7 @@ fun Content(settings: Settings) {
                         Modifier
                             .width(1.dp)
                             .fillMaxHeight()
-                            .background(SolidColor(Color.Gray), alpha = 0.50f)
+                            .background(SolidColor(Color.Gray), alpha = 0.50f),
                     )
                 }
                 handle {
@@ -88,7 +87,7 @@ fun Content(settings: Settings) {
                             .markAsHandle()
                             .cursorForHorizontalResize()
                             .width(9.dp)
-                            .fillMaxHeight()
+                            .fillMaxHeight(),
                     )
                 }
             }

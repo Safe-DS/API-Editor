@@ -70,7 +70,7 @@ private val LightGreenColorPalette = lightColors(
     onPrimary = Color.White,
     onSecondary = Color.Black,
     onBackground = Color.Black,
-    onSurface = Color.Black
+    onSurface = Color.Black,
 )
 
 private val LightPurpleColorPalette = lightColors(
@@ -82,7 +82,7 @@ private val LightPurpleColorPalette = lightColors(
     onPrimary = Color.White,
     onSecondary = Color.Black,
     onBackground = Color.Black,
-    onSurface = Color.Black
+    onSurface = Color.Black,
 )
 
 private val LightBlueColorPalette = lightColors(
@@ -94,7 +94,7 @@ private val LightBlueColorPalette = lightColors(
     onPrimary = Color.White,
     onSecondary = Color.Black,
     onBackground = Color.Black,
-    onSurface = Color.Black
+    onSurface = Color.Black,
 )
 
 private val LightOrangeColorPalette = lightColors(
@@ -106,7 +106,7 @@ private val LightOrangeColorPalette = lightColors(
     onPrimary = Color.White,
     onSecondary = Color.Black,
     onBackground = Color.Black,
-    onSurface = Color.Black
+    onSurface = Color.Black,
 )
 
 enum class ColorPallet {
@@ -130,6 +130,6 @@ fun PythonApiEditorTheme(
         colors = colors,
         typography = typography,
         shapes = shapes,
-        content = content
+        content = content,
     )
 }

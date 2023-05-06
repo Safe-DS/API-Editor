@@ -176,7 +176,8 @@ enum class AnnotationTarget(private val target: String) {
     GLOBAL_FUNCTION("global function"),
     METHOD("method"),
     CONSTRUCTOR_PARAMETER("constructor parameter"),
-    FUNCTION_PARAMETER("function parameter");
+    FUNCTION_PARAMETER("function parameter"),
+    ;
 
     override fun toString(): String {
         return target

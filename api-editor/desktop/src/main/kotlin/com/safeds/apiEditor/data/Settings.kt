@@ -12,5 +12,5 @@ class Settings {
 enum class HeatmapMode {
     None,
     Usages,
-    Annotations
+    Annotations,
 }

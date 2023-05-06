@@ -6,7 +6,7 @@ const libraryAnalyzerBaseURL = 'https://github.com/Safe-DS/Library-Analyzer';
 
 // Documentation
 
-const documentationBaseURL = `https://api-editor.readthedocs.io/en/latest`;
+const documentationBaseURL = 'https://api-editor.readthedocs.io/en/latest';
 
 export const userGuideURL = `${documentationBaseURL}/gui`;
 
