@@ -14,9 +14,7 @@ import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.Application
 import io.ktor.server.application.call
 import io.ktor.server.application.install
-import io.ktor.server.http.content.defaultResource
-import io.ktor.server.http.content.resources
-import io.ktor.server.http.content.static
+import io.ktor.server.http.content.*
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.request.receive
 import io.ktor.server.response.header
@@ -35,10 +33,7 @@ fun Application.configureRouting() {
     }
 
     routing {
-        static("/") {
-            resources("static")
-            defaultResource("static/index.html")
-        }
+        staticResources("/", "static")
 
         route("/api-editor") {
             echo()
