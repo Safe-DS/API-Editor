@@ -39,7 +39,7 @@ dependencies {
     implementation("org.jetbrains.compose.components:components-splitpane:1.4.0")
 
     testImplementation(kotlin("test"))
-    testImplementation("io.kotest:kotest-assertions-core-jvm:5.6.1")
+    testImplementation("io.kotest:kotest-assertions-core-jvm:5.6.2")
     testImplementation("io.mockk:mockk:1.13.5")
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.9.3")
 }
