@@ -34,7 +34,7 @@
         "react-hook-form": "^7.43.9",
         "react-icons": "^4.8.0",
         "react-markdown": "^8.0.7",
-        "react-redux": "^8.0.5",
+        "react-redux": "^8.0.7",
         "react-router": "^6.9.0",
         "react-router-dom": "^6.10.0",
         "react-syntax-highlighter": "^15.5.0",
