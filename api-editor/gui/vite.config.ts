@@ -1,3 +1,4 @@
+/// <reference types="vitest" />
 import reactRefresh from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 
@@ -11,6 +12,15 @@ export default defineConfig({
                 target: 'http://127.0.0.1:4280',
                 changeOrigin: true,
             },
+        },
+    },
+    test: {
+        chaiConfig: {
+            truncateThreshold: 0,
+        },
+        coverage: {
+            provider: 'v8',
+            include: ['src'],
         },
     },
 });
