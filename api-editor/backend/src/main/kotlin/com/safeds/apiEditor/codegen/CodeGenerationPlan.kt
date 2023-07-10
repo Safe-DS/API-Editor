@@ -1,6 +1,5 @@
 package com.safeds.apiEditor.codegen
 
-import com.larsreimann.safeds.constant.SdsFileExtension
 import com.safeds.apiEditor.mutableModel.PythonModule
 import com.safeds.apiEditor.mutableModel.PythonPackage
 import java.io.BufferedInputStream
@@ -18,7 +17,6 @@ fun PythonPackage.generateCode(): File {
     for (module in modules) {
         try {
             createPythonFile(workingDirectory, module)
-            createStubFile(workingDirectory, module)
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -35,14 +33,6 @@ private fun createPythonFile(workingDirectory: File, module: PythonModule) {
         .resolve("adapter")
         .resolve(module.name.replace('.', '/') + ".py")
         .createFile(module.toPythonCode())
-}
-
-private fun createStubFile(workingDirectory: File, module: PythonModule) {
-    workingDirectory
-        .resolve("stub")
-        .resolve(module.name.replace('.', '/'))
-        .resolve(module.name.split(".").last() + "." + SdsFileExtension.Stub)
-        .createFile(module.toStubCode())
 }
 
 private fun File.createFile(content: String) {
