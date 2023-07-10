@@ -1,6 +1,5 @@
 package com.safeds.apiEditor.codegen
 
-import com.larsreimann.safeds.constant.SdsFileExtension
 import com.safeds.apiEditor.mutableModel.PythonModule
 import com.safeds.apiEditor.mutableModel.PythonPackage
 import java.io.BufferedInputStream
