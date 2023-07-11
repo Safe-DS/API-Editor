@@ -3,14 +3,14 @@
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/safe-ds/api-editor)](https://github.com/lars-reimann/api-editor/releases/latest)
 [![Main](https://github.com/lars-reimann/api-editor/actions/workflows/main.yml/badge.svg)](https://github.com/lars-reimann/api-editor/actions/workflows/main.yml)
 [![codecov](https://codecov.io/gh/Safe-DS/API-Editor/branch/main/graph/badge.svg?token=xGW2Qs4zXS)](https://codecov.io/gh/Safe-DS/API-Editor)
-[![Documentation Status](https://readthedocs.org/projects/api-editor/badge/?version=stable)](https://api-editor.safe-ds.com)
+[![Documentation Status](https://readthedocs.org/projects/api-editor/badge/?version=stable)](https://api-editor.safeds.com)
 [![DOI](https://zenodo.org/badge/365253624.svg)](https://zenodo.org/badge/latestdoi/365253624)
 
 The `api-editor` is a tool to improve the API of a Python library in a semi-automated manner. Several improvements are suggested automatically and the user can add further improvements manually in a user-friendly GUI. These improvements are implemented automatically by the tool as [_wrappers_][adapter-pattern] that provide the desired API while internally using the existing Python library.
 
 The automation described above relies on structured information about the existing Python library. This information can be computed automatically by the [library-analyzer][library-analyzer].
 
-You can find the full documentation [here](https://api-editor.safe-ds.com).
+You can find the full documentation [here](https://api-editor.safeds.com).
 
 ## For Users
 
@@ -53,7 +53,15 @@ Now you are ready to explore the API and review existing annotations.
     ```
 3. Open [localhost:5173](http://localhost:5173) in your browser.
 
-[data]: https://github.com/Safe-DS/API-Editor/tree/main/data
-[library-analyzer]: https://github.com/Safe-DS/Library-Analyzer
-[safe-ds]: https://github.com/Safe-DS/DSL
+## Contributing
+
+We welcome contributions from everyone. As a starting point, check the following resources:
+
+* [Contributing page](https://github.com/Safe-DS/API-Editor/contribute)
+
+If you need further help, please [use our discussion forum][forum].
+
 [adapter-pattern]: https://en.wikipedia.org/wiki/Adapter_pattern
+[library-analyzer]: https://github.com/Safe-DS/Library-Analyzer
+[data]: https://github.com/Safe-DS/API-Editor/tree/main/data
+[forum]: https://github.com/orgs/Safe-DS/discussions

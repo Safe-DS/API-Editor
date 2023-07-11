@@ -1,3 +1,10 @@
+## [1.92.2](https://github.com/Safe-DS/API-Editor/compare/v1.92.1...v1.92.2) (2023-04-20)
+
+
+### Bug Fixes
+
+* update NPM dependencies ([9f36807](https://github.com/Safe-DS/API-Editor/commit/9f3680725cbcbfb95e6ff71e76feca47a10c8d6a))
+
 ## [1.92.1](https://github.com/Safe-DS/API-Editor/compare/v1.92.0...v1.92.1) (2023-03-24)
 
 

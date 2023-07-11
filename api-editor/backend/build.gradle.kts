@@ -15,7 +15,7 @@ plugins {
 }
 
 application {
-    mainClass.set("com.larsreimann.apiEditor.server.ApplicationKt")
+    mainClass.set("com.safeds.apiEditor.server.ApplicationKt")
 }
 
 java {
@@ -34,10 +34,10 @@ tasks.withType<ShadowJar> {
 
 // Dependencies --------------------------------------------------------------------------------------------------------
 
-val ktorVersion = "2.2.4"
+val ktorVersion = "2.3.2"
 
 dependencies {
-    implementation("ch.qos.logback:logback-classic:1.4.6")
+    implementation("ch.qos.logback:logback-classic:1.4.8")
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
     implementation("io.ktor:ktor-server:$ktorVersion")
     implementation("io.ktor:ktor-server-netty:$ktorVersion")
@@ -45,13 +45,13 @@ dependencies {
     implementation("com.larsreimann.safe-ds:safe-ds-core:1.0.0")
 
     // Required, otherwise serializeToFormattedString does not compile
-    implementation("org.eclipse.xtext:org.eclipse.xtext:2.30.0")
+    implementation("org.eclipse.xtext:org.eclipse.xtext:2.31.0")
 
     testImplementation(kotlin("test"))
-    testImplementation("io.kotest:kotest-assertions-core-jvm:5.5.5")
+    testImplementation("io.kotest:kotest-assertions-core-jvm:5.6.2")
     testImplementation("io.ktor:ktor-server-test-host:$ktorVersion")
-    testImplementation("io.mockk:mockk:1.13.4")
-    testImplementation("org.junit.jupiter:junit-jupiter-params:5.9.2")
+    testImplementation("io.mockk:mockk:1.13.5")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:5.9.3")
 }
 
 // Tasks ---------------------------------------------------------------------------------------------------------------

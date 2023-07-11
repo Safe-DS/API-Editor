@@ -132,6 +132,6 @@ On the menu bar is a button to delete all annotations. Use this button wisely, o
 
 The button _Generate adapters_ creates the improved API.
 If there are any conflicts with annotations, they will be displayed and a new API won't be generated.
-e.g, a module cannot have the annotations remove and move. One of them should be removed.
+For example, a class cannot have the annotations remove and move. One of them should be removed.
 After generation, you can select the folder in which the file is to be stored.
-It is a zip file with two folders. They are _adapter_ which contains the new API and stubs.
+It is a zip file that contains the folder _adapter_ which contains the new API.

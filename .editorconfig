@@ -12,6 +12,6 @@ insert_final_newline = true
 indent_size = 2
 
 [*.{kt,kts}]
-ktlint_disabled_rules = filename
+ktlint_standard_filename = disabled
 ij_kotlin_allow_trailing_comma = true
 ij_kotlin_allow_trailing_comma_on_call_site = true
