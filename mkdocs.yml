@@ -1,6 +1,7 @@
 site_name: API-Editor
 repo_url: https://github.com/Safe-DS/API-Editor
 repo_name: Safe-DS/API-Editor
+edit_uri: edit/main/docs/
 site_url: !ENV READTHEDOCS_CANONICAL_URL
 
 nav:
