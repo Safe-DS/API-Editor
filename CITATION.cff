@@ -7,7 +7,7 @@ message: >-
   'preferred-citation'.
 type: software
 title: API-Editor
-repository-code: https://github.com/lars-reimann/api-editor
+repository-code: https://github.com/Safe-DS/API-Editor
 license: MIT
 preferred-citation:
   type: conference-paper
