@@ -1,4 +1,14 @@
-import { Box, Button, ButtonGroup, Icon, IconButton, SimpleGrid, Text as ChakraText, Tooltip } from '@chakra-ui/react';
+import {
+    Box,
+    Button,
+    ButtonGroup,
+    Icon,
+    IconButton,
+    SimpleGrid,
+    Text as ChakraText,
+    Tooltip,
+    useToast,
+} from '@chakra-ui/react';
 import React from 'react';
 import { FaCheck, FaFlag, FaQuestion, FaRobot, FaTimes, FaTrash, FaUser, FaWrench } from 'react-icons/fa';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
@@ -59,7 +69,6 @@ import {
     showValueAnnotationForm,
 } from '../ui/uiSlice';
 import { truncate } from '../../common/util/stringOperations';
-import { wrongAnnotationURL } from '../externalLinks/urlBuilder';
 import {
     Annotation,
     BoundaryAnnotation,
@@ -352,6 +361,8 @@ const AnnotationTag: React.FC<AnnotationTagProps> = function ({
     const authorText = createAuthorText(authors);
     const username = useAppSelector(selectUsername);
 
+    const toast = useToast();
+
     let rightIcon;
     if (authors.includes(username)) {
         rightIcon = <FaUser />;
@@ -546,7 +557,10 @@ const AnnotationTag: React.FC<AnnotationTagProps> = function ({
                             variant="outline"
                             disabled={reviewResult === ReviewResult.Correct || !isValidUsername}
                             onClick={() => {
-                                window.open(wrongAnnotationURL(type, annotation), '_blank');
+                                toast({
+                                    colorScheme: "blue",
+                                    description: "Removed for double-blind review."
+                                })
                             }}
                         />
                     </Tooltip>

@@ -1,9 +1,21 @@
-import { Box, Button, Icon, Menu, MenuButton, MenuDivider, MenuGroup, MenuItem, MenuList } from '@chakra-ui/react';
+import {
+    Box,
+    Button,
+    Icon,
+    Menu,
+    MenuButton,
+    MenuDivider,
+    MenuGroup,
+    MenuItem,
+    MenuList,
+    useToast,
+} from '@chakra-ui/react';
 import React from 'react';
 import { FaBug, FaChevronDown, FaLightbulb } from 'react-icons/fa';
-import { bugReportURL, featureRequestURL, userGuideURL } from '../externalLinks/urlBuilder';
 
 export const HelpMenu = function () {
+    const toast = useToast()
+
     return (
         <Box>
             <Menu>
@@ -15,7 +27,10 @@ export const HelpMenu = function () {
                         <MenuItem
                             paddingLeft={8}
                             onClick={() => {
-                                window.open(userGuideURL, '_blank');
+                                toast({
+                                    colorScheme: "blue",
+                                    description: "Removed for double-blind review."
+                                })
                             }}
                         >
                             User Guide
@@ -26,7 +41,10 @@ export const HelpMenu = function () {
                         <MenuItem
                             paddingLeft={8}
                             onClick={() => {
-                                window.open(bugReportURL, '_blank');
+                                toast({
+                                    colorScheme: "blue",
+                                    description: "Removed for double-blind review."
+                                })
                             }}
                             icon={<FaBug />}
                         >
@@ -35,7 +53,10 @@ export const HelpMenu = function () {
                         <MenuItem
                             paddingLeft={8}
                             onClick={() => {
-                                window.open(featureRequestURL, '_blank');
+                                toast({
+                                    colorScheme: "blue",
+                                    description: "Removed for double-blind review."
+                                })
                             }}
                             icon={<FaLightbulb />}
                         >
