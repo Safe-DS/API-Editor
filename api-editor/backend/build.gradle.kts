@@ -34,7 +34,7 @@ tasks.withType<ShadowJar> {
 
 // Dependencies --------------------------------------------------------------------------------------------------------
 
-val ktorVersion = "2.3.2"
+val ktorVersion = "2.3.3"
 
 dependencies {
     implementation("ch.qos.logback:logback-classic:1.4.8")
