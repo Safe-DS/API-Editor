@@ -21,7 +21,7 @@
         "@emotion/react": "^11.10.8",
         "@emotion/styled": "^11.11.0",
         "@reduxjs/toolkit": "^1.9.5",
-        "chart.js": "^4.3.0",
+        "chart.js": "^4.4.0",
         "fastest-levenshtein": "^1.0.16",
         "framer-motion": "^10.12.18",
         "idb-keyval": "^6.2.1",
