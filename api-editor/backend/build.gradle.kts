@@ -37,7 +37,7 @@ tasks.withType<ShadowJar> {
 val ktorVersion = "2.3.4"
 
 dependencies {
-    implementation("ch.qos.logback:logback-classic:1.4.8")
+    implementation("ch.qos.logback:logback-classic:1.4.11")
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
     implementation("io.ktor:ktor-server:$ktorVersion")
     implementation("io.ktor:ktor-server-netty:$ktorVersion")
