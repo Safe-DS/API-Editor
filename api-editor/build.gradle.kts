@@ -5,7 +5,7 @@ plugins {
     id("org.jetbrains.kotlinx.kover") version "0.6.1"
 
     // Pin versions for subprojects
-    kotlin("jvm") version "1.8.20" apply false
+    kotlin("jvm") version "1.9.20" apply false
     kotlin("plugin.serialization") version "1.8.20" apply false
     id("com.github.johnrengelman.shadow") version "8.1.1" apply false
     id("com.github.node-gradle.node") version "7.0.0" apply false
