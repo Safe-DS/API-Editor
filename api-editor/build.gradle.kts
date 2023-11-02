@@ -2,7 +2,7 @@
 
 plugins {
     idea
-    id("org.jetbrains.kotlinx.kover") version "0.6.1"
+    id("org.jetbrains.kotlinx.kover") version "0.7.4"
 
     // Pin versions for subprojects
     kotlin("jvm") version "1.8.20" apply false
