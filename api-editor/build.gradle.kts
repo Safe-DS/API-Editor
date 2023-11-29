@@ -23,17 +23,6 @@ idea {
     }
 }
 
-kover {
-    koverMerged {
-        enable()
-        filters {
-            projects {
-                excludes.add("gui")
-            }
-        }
-    }
-}
-
 // Subprojects ---------------------------------------------------------------------------------------------------------
 
 subprojects {
