@@ -2,7 +2,7 @@
 
 plugins {
     idea
-    id("org.jetbrains.kotlinx.kover") version "0.6.1"
+    id("org.jetbrains.kotlinx.kover") version "0.7.5"
 
     // Pin versions for subprojects
     kotlin("jvm") version "1.9.21" apply false
@@ -20,17 +20,6 @@ idea {
     module {
         excludeDirs.add(file("gradle"))
         excludeDirs.add(file("node_modules"))
-    }
-}
-
-kover {
-    koverMerged {
-        enable()
-        filters {
-            projects {
-                excludes.add("gui")
-            }
-        }
     }
 }
 
