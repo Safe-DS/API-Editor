@@ -41,7 +41,7 @@
         "react-window": "^1.8.10",
         "rehype-katex": "^6.0.3",
         "remark-gfm": "^3.0.1",
-        "remark-math": "^5.1.0"
+        "remark-math": "^6.0.0"
     },
     "devDependencies": {
         "@chakra-ui/cli": "^2.4.1",
