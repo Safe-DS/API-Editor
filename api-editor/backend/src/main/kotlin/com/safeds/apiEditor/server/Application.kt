@@ -1,6 +1,5 @@
 package com.safeds.apiEditor.server
 
-import com.larsreimann.safeds.SafeDSStandaloneSetup
 import io.ktor.server.application.Application
 import io.ktor.server.application.install
 import io.ktor.server.netty.EngineMain
@@ -13,7 +12,6 @@ import io.ktor.server.request.path
 import org.slf4j.event.Level
 
 fun main(args: Array<String>) {
-    SafeDSStandaloneSetup.doSetup()
     EngineMain.main(args)
 }
 
