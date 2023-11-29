@@ -53,7 +53,7 @@
         "@types/react-router-dom": "^5.3.3",
         "@types/react-syntax-highlighter": "^15.5.10",
         "@types/react-window": "^1.8.8",
-        "@types/uuid": "^9.0.2",
+        "@types/uuid": "^9.0.7",
         "@vitejs/plugin-react": "^4.2.0",
         "@vitest/coverage-v8": "^0.34.6",
         "node-fetch": "^3.3.2",
