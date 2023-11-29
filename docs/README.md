@@ -1,5 +1,7 @@
 # API-Editor
 
+**Project status:** The development of a proof-of-concept implementation is done. We are currently focussing our attention on other projects.
+
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/safe-ds/api-editor)](https://github.com/lars-reimann/api-editor/releases/latest)
 [![Main](https://github.com/lars-reimann/api-editor/actions/workflows/main.yml/badge.svg)](https://github.com/lars-reimann/api-editor/actions/workflows/main.yml)
 [![codecov](https://codecov.io/gh/Safe-DS/API-Editor/branch/main/graph/badge.svg?token=xGW2Qs4zXS)](https://codecov.io/gh/Safe-DS/API-Editor)
