@@ -1,4 +1,4 @@
 mkdocs==1.5.3
 mkdocs-glightbox==0.3.4
-mkdocs-material==9.4.7
+mkdocs-material==9.4.14
 mkdocs-section-index==0.3.8
