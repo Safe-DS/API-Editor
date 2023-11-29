@@ -18,7 +18,7 @@
         "@chakra-ui/styled-system": "^2.9.2",
         "@chakra-ui/system": "^2.6.2",
         "@chakra-ui/theme-tools": "^2.1.1",
-        "@emotion/react": "^11.10.8",
+        "@emotion/react": "^11.11.1",
         "@emotion/styled": "^11.11.0",
         "@reduxjs/toolkit": "^1.9.7",
         "chart.js": "^4.4.0",
