@@ -49,7 +49,7 @@
         "@lars-reimann/prettier-config": "^5.0.0",
         "@types/node-fetch": "^2.6.9",
         "@types/react": "^18.2.39",
-        "@types/react-dom": "^18.2.7",
+        "@types/react-dom": "^18.2.17",
         "@types/react-router-dom": "^5.3.3",
         "@types/react-syntax-highlighter": "^15.5.10",
         "@types/react-window": "^1.8.8",
