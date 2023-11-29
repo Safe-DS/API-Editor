@@ -44,7 +44,7 @@ dependencies {
     implementation("com.larsreimann:modeling-core:3.1.1")
 
     testImplementation(kotlin("test"))
-    testImplementation("io.kotest:kotest-assertions-core-jvm:5.6.2")
+    testImplementation("io.kotest:kotest-assertions-core-jvm:5.8.0")
     testImplementation("io.ktor:ktor-server-test-host:$ktorVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.10.0")
 }
