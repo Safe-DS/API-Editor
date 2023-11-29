@@ -1,3 +1,10 @@
+## [1.93.0](https://github.com/Safe-DS/API-Editor/compare/v1.92.2...v1.93.0) (2023-11-29)
+
+
+### Features
+
+* remove generation of Safe-DS stubs ([#1396](https://github.com/Safe-DS/API-Editor/issues/1396)) ([59a555b](https://github.com/Safe-DS/API-Editor/commit/59a555b66f11eaf674fba1c2af4fc0ebcc1aa375))
+
 ## [1.92.2](https://github.com/Safe-DS/API-Editor/compare/v1.92.1...v1.92.2) (2023-04-20)
 
 
