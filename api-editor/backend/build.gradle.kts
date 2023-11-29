@@ -74,11 +74,12 @@ tasks {
     startScripts {
         doLast {
             val winScriptFile = file(windowsScript)
-            val winFileText = winScriptFile.readText()
-                .replace(
-                    Regex("set CLASSPATH=.*"),
-                    "rem original CLASSPATH declaration replaced by:\nset CLASSPATH=%APP_HOME%\\\\lib\\\\*",
-                )
+            val winFileText =
+                winScriptFile.readText()
+                    .replace(
+                        Regex("set CLASSPATH=.*"),
+                        "rem original CLASSPATH declaration replaced by:\nset CLASSPATH=%APP_HOME%\\\\lib\\\\*",
+                    )
 
             winScriptFile.writeText(winFileText)
         }
