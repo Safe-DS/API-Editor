@@ -15,7 +15,7 @@
     "prettier": "@lars-reimann/prettier-config",
     "dependencies": {
         "@chakra-ui/react": "^2.8.0",
-        "@chakra-ui/styled-system": "^2.9.1",
+        "@chakra-ui/styled-system": "^2.9.2",
         "@chakra-ui/system": "^2.6.0",
         "@chakra-ui/theme-tools": "^2.1.1",
         "@emotion/react": "^11.10.8",
